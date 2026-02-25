@@ -314,12 +314,12 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 <h2 className="text-4xl md:text-5xl mb-12 md:20 tracking-tighter italic">{th.how_it_works}</h2>
                 <div className="grid md:grid-cols-3 gap-12">
                     {[
-                        { icon: Search, title: th.step1_title, desc: th.step1_desc },
-                        { icon: Utensils, title: th.step2_title, desc: th.step2_desc },
-                        { icon: MapPin, title: th.step3_title, desc: th.step3_desc }
+                        { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
+                        { icon: Utensils, title: th.step2_title, desc: th.step2_desc, color: "icon-orange" },
+                        { icon: MapPin, title: th.step3_title, desc: th.step3_desc, color: "icon-green" }
                     ].map((item, i) => (
-                        <div key={i} className="flex flex-col items-center">
-                            <div className="w-24 h-24 bg-accent/20 flex items-center justify-center rounded-[2rem] text-primary mb-8">
+                        <div key={i} className="flex flex-col items-center group">
+                            <div className={`w-24 h-24 ${item.color} flex items-center justify-center rounded-[2rem] mb-8 transition-transform group-hover:scale-110 shadow-lg shadow-black/5`}>
                                 <item.icon size={44} />
                             </div>
                             <h4 className="text-2xl mb-4 uppercase font-black text-text-main">{item.title}</h4>

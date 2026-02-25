@@ -69,6 +69,59 @@
   .dark .card-hover:hover {
     box-shadow: 0 25px 50px -12px rgba(255, 107, 53, 0.2);
   }
+
+  .prism-border {
+    position: relative;
+    z-index: 1;
+  }
+
+  .prism-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    filter: blur(5px);
+    z-index: -1;
+    animation: rainbow 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: inherit;
+  }
+
+  .prism-border:hover::before {
+    opacity: 0.6;
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0 0;
+    }
+
+    50% {
+      background-position: 400% 0;
+    }
+
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  .icon-blue {
+    @apply text-blue-500 bg-blue-500/10;
+  }
+
+  .icon-green {
+    @apply text-green-500 bg-green-500/10;
+  }
+
+  .icon-orange {
+    @apply text-orange-500 bg-orange-500/10;
+  }
+
+  .icon-purple {
+    @apply text-purple-500 bg-purple-500/10;
+  }
 }
 
 .selection\:bg-accent *::selection {

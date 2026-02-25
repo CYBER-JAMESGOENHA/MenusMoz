@@ -124,14 +124,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
                         <div className="grid grid-cols-2 md:flex md:flex-col gap-6 reveal">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-primary"><MapPin size={24} /></div>
+                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center icon-green"><MapPin size={24} /></div>
                                 <div>
                                     <p className="text-xs font-bold uppercase text-text-dim/40">Localização</p>
                                     <p className="font-bold text-text-main">{restaurant.location}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-primary"><Clock size={24} /></div>
+                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center icon-orange"><Clock size={24} /></div>
                                 <div>
                                     <p className="text-xs font-bold uppercase text-text-dim/40">Horário</p>
                                     <p className="font-bold text-text-main">{restaurant.hours}</p>
@@ -142,13 +142,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
                     <div className="lg:col-span-2 space-y-16">
                         {/* Sticky Category Nav */}
-                        <div className="sticky top-24 z-[50] -mx-6 px-6 py-4 bg-surface/80 backdrop-blur-md border-y border-border-subtle overflow-x-auto no-scrollbar mb-8">
+                        <div className="sticky top-24 z-[50] -mx-6 px-6 py-4 bg-surface/80 backdrop-blur-md border-y border-border-subtle overflow-x-auto no-scrollbar mb-8 shadow-sm">
+                            <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0"></div>
                             <div className="flex gap-4 min-w-max">
                                 {restaurant.menuCategories.map((category, idx) => (
                                     <a
                                         key={idx}
                                         href={`#cat-${idx}`}
-                                        className="category-nav-link px-6 py-2 rounded-full font-bold text-sm bg-bg border border-border-subtle text-text-dim hover:border-primary/30 transition-all [&.active]:bg-primary [&.active]:text-white [&.active]:border-primary"
+                                        className="category-nav-link px-6 py-2 rounded-full font-bold text-sm bg-bg border border-border-subtle text-text-dim hover:border-primary/30 transition-all [&.active]:bg-primary [&.active]:text-white [&.active]:border-primary hover:scale-105"
                                     >
                                         {category.name}
                                     </a>
@@ -177,17 +178,18 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                         ))}
                     </div>
 
-                    <div className="space-y-8 reveal">
-                        <div className="bg-primary/5 p-8 rounded-[2rem] border border-primary/10 sticky top-48">
-                            <h4 className="font-black text-xl mb-6 uppercase tracking-wider text-text-main">{t.quick_res}</h4>
-                            <p className="text-sm text-text-dim mb-8 font-medium">{t.res_desc}</p>
-                            <div className="space-y-4">
+                    <div className="space-y-8 lg:sticky lg:top-32 h-fit">
+                        <div className="bg-primary/5 p-8 rounded-[3rem] border border-primary/10 shadow-sm relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150"></div>
+                            <h4 className="font-black text-xl mb-6 uppercase tracking-wider text-text-main relative z-10">{t.quick_res}</h4>
+                            <p className="text-sm text-text-dim mb-8 font-medium relative z-10">{t.res_desc}</p>
+                            <div className="space-y-4 relative z-10">
                                 <a
                                     href={whatsappLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={triggerHaptic}
-                                    className="w-full bg-primary text-white py-5 rounded-3xl font-black text-xl hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30"
+                                    className="prism-border w-full bg-primary text-white py-5 rounded-3xl font-black text-xl hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30"
                                 >
                                     <MessageCircle size={24} /> {t.whatsapp_res}
                                 </a>
@@ -200,16 +202,17 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                             </div>
                         </div>
 
-                        <div className="bg-black text-white p-8 rounded-[2rem]">
-                            <div className="flex items-center gap-2 mb-4 text-accent">
+                        <div className="bg-surface border border-border-subtle p-8 rounded-[3rem] shadow-xl relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8"></div>
+                            <div className="flex items-center gap-2 mb-4 text-accent relative z-10">
                                 <Star fill="currentColor" size={20} />
                                 <Star fill="currentColor" size={20} />
                                 <Star fill="currentColor" size={20} />
                                 <Star fill="currentColor" size={20} />
                                 <Star fill="currentColor" size={20} />
                             </div>
-                            <p className="italic text-lg mb-6">"Simplesmente o melhor marisco de Maputo. O atendimento é impecável e a vista é magnífica."</p>
-                            <p className="font-bold uppercase text-xs tracking-[0.2em] text-white/40">— Maria Santos, Foodie</p>
+                            <p className="italic text-lg mb-6 text-text-main relative z-10">"Simplesmente o melhor marisco de Maputo. O atendimento é impecável e a vista é magnífica."</p>
+                            <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— Maria Santos, Foodie</p>
                         </div>
                     </div>
                 </div>
