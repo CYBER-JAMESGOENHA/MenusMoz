@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Basic Colors */
+  --color-primary: #E03C31;
+  --color-accent: #FFB347;
+
+  /* Dynamic Background and Text */
+  --color-bg: var(--bg-color);
+  --color-surface: var(--surface-color);
+  --color-text-main: var(--text-color);
+  --color-text-dim: var(--text-dim-color);
+  --color-border-subtle: var(--border-color);
+
+  --radius-custom: 2rem;
+  --radius-custom-lg: 3rem;
+}
+
+:root {
+  --bg-color: #F9F6F0;
+  --surface-color: #FFFFFF;
+  --text-color: #000000;
+  --text-dim-color: rgba(0, 0, 0, 0.6);
+  --border-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --bg-color: #121212;
+  --surface-color: #1E1E1E;
+  --text-color: #F9F6F0;
+  --text-dim-color: rgba(249, 246, 240, 0.6);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text-main antialiased font-body transition-colors duration-300;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold;
+  }
+}
+
+@layer components {
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .glass {
+    @apply backdrop-blur-md border transition-all duration-300;
+    background-color: var(--surface-color);
+    opacity: 0.7;
+    border-color: var(--border-color);
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl;
+    /* Custom shadow based on mode */
+  }
+
+  .dark .card-hover:hover {
+    box-shadow: 0 25px 50px -12px rgba(224, 60, 49, 0.2);
+  }
+}
+
+.selection\:bg-accent *::selection {
+  background-color: var(--color-accent);
+}
+
+.selection\:text-primary *::selection {
+  color: var(--color-primary);
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
