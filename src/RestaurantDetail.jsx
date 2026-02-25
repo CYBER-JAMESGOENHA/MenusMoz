@@ -43,29 +43,29 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     return (
         <div ref={containerRef} className="pb-32">
             {/* Header Image */}
-            <div className="relative h-[40vh] md:h-[60vh] overflow-hidden">
+            <div className="relative h-[45vh] md:h-[60vh] overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-black/20"></div>
-                <div className="absolute top-32 left-4 md:left-12 flex gap-4">
-                    <Link to="/" className="glass p-4 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all group">
-                        <ChevronLeft className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-bold pr-2">{t.back}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-black/30"></div>
+                <div className="absolute top-24 md:top-32 left-4 md:left-12 flex gap-3">
+                    <Link to="/" className="glass p-3 md:p-4 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all group border-none shadow-lg">
+                        <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="font-bold pr-1 text-sm md:text-base">{t.back}</span>
                     </Link>
                     <button
                         onClick={() => toggleFavorite(restaurant.id)}
-                        className={`glass p-4 rounded-full transition-all ${isFavorite ? 'bg-primary text-white' : 'hover:bg-white text-text-main'}`}
+                        className={`glass p-3 md:p-4 rounded-full transition-all border-none shadow-lg ${isFavorite ? 'bg-primary text-white scale-110' : 'hover:bg-white text-text-main'}`}
                     >
-                        <Heart fill={isFavorite ? "currentColor" : "none"} />
+                        <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
                     </button>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 -mt-32 relative z-10">
-                <div className="bg-surface rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-border-subtle border border-border-subtle transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 -mt-20 md:-mt-32 relative z-10">
+                <div className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-16 shadow-2xl shadow-border-subtle border border-border-subtle transition-colors duration-300">
                     <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-16">
                         <div className="reveal">
                             <div className="flex gap-3 mb-4">
@@ -76,8 +76,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                     {checkIsOpen(restaurant.hours) ? th.open_now : th.closed}
                                 </span>
                             </div>
-                            <h1 className="text-5xl md:text-7xl mb-6 tracking-tighter text-text-main font-heading font-black">{restaurant.name}</h1>
-                            <p className="text-xl text-text-dim max-w-2xl leading-relaxed">{restaurant.description}</p>
+                            <h1 className="text-4xl md:text-7xl mb-4 md:mb-6 tracking-tighter text-text-main font-heading font-black leading-[1.1]">{restaurant.name}</h1>
+                            <p className="text-lg md:text-xl text-text-dim max-w-2xl leading-relaxed">{restaurant.description}</p>
                         </div>
 
                         <div className="grid grid-cols-2 md:flex md:flex-col gap-6 reveal">
@@ -128,7 +128,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                 <div className="space-y-4">
                                     <a
                                         href={`tel:${restaurant.whatsapp}`}
-                                        className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-black transition-all flex items-center justify-center gap-2"
+                                        className="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
                                     >
                                         <Phone size={18} /> Ligar
                                     </a>
@@ -136,7 +136,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                         href={whatsappLink}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-full glass py-4 rounded-2xl font-bold hover:bg-accent/20 transition-all flex items-center justify-center gap-2 text-text-main"
+                                        className="w-full glass py-4 rounded-2xl font-bold hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-text-main border-none shadow-sm"
                                     >
                                         {t.whatsapp_res}
                                     </a>

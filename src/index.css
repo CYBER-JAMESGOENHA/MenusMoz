@@ -6,7 +6,7 @@
   --font-mono: "JetBrains Mono", monospace;
 
   /* Basic Colors */
-  --color-primary: #E03C31;
+  --color-primary: #FF6B35;
   --color-accent: #FFB347;
 
   /* Dynamic Background and Text */
@@ -57,10 +57,8 @@
   }
 
   .glass {
-    @apply backdrop-blur-md border transition-all duration-300;
-    background-color: var(--surface-color);
-    opacity: 0.7;
-    border-color: var(--border-color);
+    @apply backdrop-blur-md border border-border-subtle transition-all duration-300;
+    background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
   }
 
   .card-hover {
@@ -69,7 +67,7 @@
   }
 
   .dark .card-hover:hover {
-    box-shadow: 0 25px 50px -12px rgba(224, 60, 49, 0.2);
+    box-shadow: 0 25px 50px -12px rgba(255, 107, 53, 0.2);
   }
 }
 

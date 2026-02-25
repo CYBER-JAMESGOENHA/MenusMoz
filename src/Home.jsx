@@ -50,7 +50,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                 </button>
             </div>
 
-            <div className="p-8">
+            <div className="p-5 md:p-8">
                 <h3 className="text-2xl mb-2 text-text-main">{restaurant.name}</h3>
                 <p className="text-text-dim text-sm mb-6 line-clamp-2">{restaurant.description}</p>
 
@@ -68,7 +68,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                         to={`/restaurante/${restaurant.slug}`}
                         className="w-full bg-black text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary transition-colors"
                     >
-                        {t.view_full_menu} <ChevronRight size={18} />
+                        {t.view_full_menu} <ChevronRight size={16} />
                     </Link>
                 </div>
             </div>
@@ -167,13 +167,13 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     return (
         <div className="relative overflow-hidden">
             {/* Hero Section */}
-            <section ref={heroRef} className="relative pt-44 pb-32 px-4 overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-4/5 bg-accent/20 blur-[120px] rounded-full -z-10"></div>
+            <section ref={heroRef} className="relative pt-32 md:pt-44 pb-20 md:pb-32 px-4 overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-4/5 bg-primary/5 blur-[120px] rounded-full -z-10"></div>
                 <div className="max-w-7xl mx-auto text-center hero-content">
-                    <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full font-bold text-sm uppercase tracking-widest mb-6">
+                    <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
                         🇨🇼 Maputo • Matola • Beira
                     </span>
-                    <h1 className="text-6xl md:text-8xl mb-4 leading-[0.9] tracking-tighter text-text-main">
+                    <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
                         {t.hero.title_part1} <br />{showOnlyFavorites ? <span className="text-primary italic">Favoritos</span> : <span className="text-primary italic">{t.hero.title_part2}</span>}
                     </h1>
                     <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
@@ -186,10 +186,10 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             placeholder={t.hero.search_placeholder}
                             value={searchQuery}
                             onChange={handleSearch}
-                            className="w-full h-20 pl-8 pr-32 rounded-[2rem] glass border-border-subtle text-xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-text-dim/50 text-text-main"
+                            className="w-full h-16 md:h-20 pl-6 md:pl-8 pr-28 md:pr-32 rounded-2xl md:rounded-[2rem] glass border-border-subtle text-lg md:text-xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-text-dim/50 text-text-main"
                         />
-                        <button className="absolute right-3 top-3 bottom-3 bg-primary text-white px-8 rounded-2xl flex items-center gap-3 font-bold hover:bg-black transition-all">
-                            <Search size={22} /> <span className="hidden sm:inline">Descobrir</span>
+                        <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-5 md:px-8 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+                            <Search size={20} /> <span className="hidden sm:inline">Descobrir</span>
                         </button>
 
                         {suggestions.length > 0 && (
@@ -311,7 +311,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* How it works */}
             <section className="max-w-7xl mx-auto px-4 mb-32 text-center">
-                <h2 className="text-5xl mb-20 tracking-tighter italic">{th.how_it_works}</h2>
+                <h2 className="text-4xl md:text-5xl mb-12 md:20 tracking-tighter italic">{th.how_it_works}</h2>
                 <div className="grid md:grid-cols-3 gap-12">
                     {[
                         { icon: Search, title: th.step1_title, desc: th.step1_desc },
