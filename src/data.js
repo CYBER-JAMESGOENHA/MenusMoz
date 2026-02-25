@@ -46,23 +46,38 @@ export const RESTAURANTS = [
       {
         name: "Entradas",
         items: [
-          { name: "Casquinha de Siri", price: "350 MT", desc: "Carne de siri temperada e gratinada." },
-          { name: "Lulas Salteadas", price: "450 MT", desc: "Lulas frescas com alho e salsa." }
+          { name: "Casquinha de Siri", price: "350 MT", desc: "Carne de siri temperada e gratinada com queijo da ilha." },
+          { name: "Lulas Salteadas", price: "450 MT", desc: "Lulas frescas com alho, salsa e um toque de piri-piri." },
+          { name: "Gambas à Guilho", price: "680 MT", desc: "Gambas descascadas com molho de alho e vinho branco." },
+          { name: "Amêijoas à Bulhão Pato", price: "550 MT", desc: "Amêijoas frescas com azeite, alho e coentros." }
         ]
       },
       {
         name: "Pratos Principais",
         items: [
-          { name: "Lagosta Grelhada", price: "2.400 MT", desc: "Lagosta inteira com manteiga de limão." },
-          { name: "Camarão Tigre", price: "1.850 MT", desc: "Camarão grelhado com molho piri-piri." },
-          { name: "Arroz de Marisco", price: "950 MT", desc: "Arroz malandrinho com variados frutos do mar." }
+          { name: "Lagosta Grelhada", price: "2.400 MT", desc: "Lagosta inteira com manteiga de limão e batata frita." },
+          { name: "Camarão Tigre Grelhado", price: "1.850 MT", desc: "Camarão gigante com molho piri-piri da casa." },
+          { name: "Arroz de Marisco Especial", price: "950 MT", desc: "Arroz malandrinho com variados frutos do mar e coentros." },
+          { name: "Caril de Camarão", price: "820 MT", desc: "Camarão de Maputo com leite de coco e arroz basmati." },
+          { name: "Peixe da Ilha Grelhado", price: "850 MT", desc: "Posta de peixe do dia com molho de manteiga e legumes." },
+          { name: "Penne de Frutos do Mar", price: "720 MT", desc: "Massa com camarão, lulas e amêijoas em molho de tomate." }
+        ]
+      },
+      {
+        name: "Sobremesas",
+        items: [
+          { name: "Pudim de Leite de Coco", price: "220 MT", desc: "Receita tradicional com calda de caramelo." },
+          { name: "Fruta da Época", price: "150 MT", desc: "Seleção de papas, manga e ananás fresco." },
+          { name: "Mousse de Chocolate", price: "180 MT", desc: "Chocolate belga com flor de sal." }
         ]
       },
       {
         name: "Bebidas",
         items: [
-          { name: "Vinho Branco Alentejo", price: "1.200 MT", desc: "Garrafa 750ml." },
-          { name: "Limonada Natural", price: "150 MT", desc: "Feita na hora com hortelã." }
+          { name: "Vinho Branco Alentejo", price: "1.200 MT", desc: "Garrafa 750ml - Adega de Portalegre." },
+          { name: "Limonada com Hortelã", price: "150 MT", desc: "Feita na hora com limões orgânicos." },
+          { name: "Cerveja 2M Imperial", price: "80 MT", desc: "A cerveja preferida de Maputo." },
+          { name: "Água Natural 1.5L", price: "60 MT", desc: "Água mineral fresca." }
         ]
       }
     ]
