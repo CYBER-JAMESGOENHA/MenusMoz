@@ -61,6 +61,31 @@
     background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
   }
 
+  .paper-texture {
+    position: relative;
+    background-color: var(--surface-color);
+  }
+
+  .paper-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .menu-book {
+    @apply relative perspective-1000 shadow-2xl rounded-[1rem] overflow-hidden;
+    min-height: 600px;
+  }
+
+  .menu-page {
+    @apply absolute inset-0 w-full h-full p-8 md:p-12 overflow-y-auto bg-surface transition-all duration-500;
+    backface-visibility: hidden;
+  }
+
   .card-hover {
     @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl;
     /* Custom shadow based on mode */
@@ -130,6 +155,11 @@
 
 .selection\:text-primary *::selection {
   color: var(--color-primary);
+}
+
+/* Custom Utilities for 3D Effects */
+.perspective-1000 {
+  perspective: 1000px;
 }
 
 /* Hide scrollbar but keep functionality */

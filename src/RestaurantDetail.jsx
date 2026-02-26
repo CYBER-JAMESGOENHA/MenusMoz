@@ -1,9 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, MapPin, Clock, Phone, Share2, Star, MessageCircle } from 'lucide-react';
+import { ChevronLeft, MapPin, Clock, Phone, Share2, Star, MessageCircle, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { RESTAURANTS, checkIsOpen } from './data';
-
 import { translations } from './translations';
 import { Heart } from 'lucide-react';
 
@@ -32,6 +31,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     const { slug } = useParams();
     const restaurant = RESTAURANTS.find(r => r.slug === slug);
     const containerRef = useRef(null);
+    const pageRef = useRef(null);
+    const [activePage, setActivePage] = useState(0);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -45,25 +46,22 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
             });
         }, containerRef);
 
-        // Intersection Observer for sticky navigation highlighting
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    document.querySelectorAll('.category-nav-link').forEach(link => {
-                        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-                    });
-                }
-            });
-        }, { threshold: 0.5, rootMargin: "-100px 0px -50% 0px" });
-
-        document.querySelectorAll('section[id^="cat-"]').forEach(section => observer.observe(section));
-
-        return () => {
-            ctx.revert();
-            observer.disconnect();
-        };
+        return () => ctx.revert();
     }, [slug]);
+
+    // Page flip animation logic
+    useEffect(() => {
+        if (!pageRef.current) return;
+
+        const ctx = gsap.context(() => {
+            gsap.fromTo(pageRef.current,
+                { opacity: 0, rotateY: 20, x: 20 },
+                { opacity: 1, rotateY: 0, x: 0, duration: 0.6, ease: "back.out(1.2)" }
+            );
+        }, pageRef);
+
+        return () => ctx.revert();
+    }, [activePage]);
 
     const handleShare = async () => {
         if (navigator.share) {
@@ -95,8 +93,10 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     const isFavorite = favorites.includes(restaurant.id);
     const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do MenusMOZ.`)}`;
 
+    const currentCategory = restaurant.menuCategories[activePage];
+
     return (
-        <div ref={containerRef} className="pb-32">
+        <div ref={containerRef} className="pb-32 bg-bg transition-colors duration-500">
             {/* Header Image */}
             <div className="relative h-[45vh] md:h-[60vh] overflow-hidden">
                 <img
@@ -126,7 +126,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 -mt-20 md:-mt-32 relative z-10">
-                <div className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-16 shadow-2xl shadow-border-subtle border border-border-subtle transition-colors duration-300">
+                <div className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-16 shadow-2xl border border-border-subtle transition-colors duration-300">
 
                     {/* Restaurant Header */}
                     <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
@@ -164,46 +164,81 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                         </div>
                     </div>
 
-                    {/* Main content grid: menu on the left, sidebar on the right */}
+                    {/* Main content grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
 
-                        {/* Menu Column */}
-                        <div className="lg:col-span-2 space-y-16">
-                            {/* Sticky Category Nav */}
-                            <div className="sticky top-24 z-[50] -mx-6 px-6 py-4 bg-surface/80 backdrop-blur-md border-y border-border-subtle overflow-x-auto no-scrollbar mb-8 shadow-sm">
-                                <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0"></div>
-                                <div className="flex gap-4 min-w-max">
-                                    {restaurant.menuCategories.map((category, idx) => (
-                                        <a
-                                            key={idx}
-                                            href={`#cat-${idx}`}
-                                            className="category-nav-link px-6 py-2 rounded-full font-bold text-sm bg-bg border border-border-subtle text-text-dim hover:border-primary/30 transition-all [&.active]:bg-primary [&.active]:text-white [&.active]:border-primary hover:scale-105"
-                                        >
-                                            {category.name}
-                                        </a>
-                                    ))}
-                                </div>
+                        {/* Interactive "Cardápio" Column */}
+                        <div className="lg:col-span-2 space-y-8">
+                            {/* Category Selector (Menu Tabs) */}
+                            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                                {restaurant.menuCategories.map((category, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => { setActivePage(idx); triggerHaptic(); }}
+                                        className={`px-6 py-3 rounded-2xl font-black text-sm transition-all whitespace-nowrap border-b-4 ${activePage === idx
+                                            ? 'bg-primary text-white border-primary shadow-lg scale-105'
+                                            : 'bg-surface text-text-dim border-border-subtle hover:bg-primary/5'
+                                            }`}
+                                    >
+                                        {category.name}
+                                    </button>
+                                ))}
                             </div>
 
-                            {restaurant.menuCategories.map((category, idx) => (
-                                <section key={idx} id={`cat-${idx}`} className="reveal scroll-mt-48">
-                                    <h3 className="text-3xl mb-8 flex items-center gap-4 text-text-main">
-                                        {category.name}
-                                        <div className="h-px bg-border-subtle flex-1"></div>
-                                    </h3>
-                                    <div className="space-y-8">
-                                        {category.items.map((item, i) => (
-                                            <div key={i} className="group cursor-default">
-                                                <div className="flex justify-between items-end mb-2">
-                                                    <h4 className="text-xl font-bold group-hover:text-primary transition-colors text-text-main">{item.name}</h4>
+                            {/* Physical Page Container */}
+                            <div className="menu-book paper-texture min-h-[700px] flex flex-col">
+                                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-b from-black/10 to-transparent pointer-events-none"></div>
+                                <div className="absolute top-0 left-0 w-4 h-full bg-gradient-to-r from-black/5 to-transparent pointer-events-none"></div>
+
+                                <div ref={pageRef} className="flex-1 p-8 md:p-16">
+                                    <div className="text-center mb-16">
+                                        <div className="w-12 h-1 bg-primary mx-auto mb-6"></div>
+                                        <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter text-text-main uppercase">
+                                            {currentCategory.name}
+                                        </h2>
+                                        <p className="text-text-dim mt-2 uppercase tracking-[0.3em] text-[10px] font-bold">
+                                            MenusMOZ Selection
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-12">
+                                        {currentCategory.items.map((item, i) => (
+                                            <div key={i} className="group relative">
+                                                <div className="flex justify-between items-baseline mb-2">
+                                                    <h4 className="text-xl md:text-2xl font-bold text-text-main group-hover:text-primary transition-colors flex items-center gap-3">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-primary/30"></span>
+                                                        {item.name}
+                                                    </h4>
+                                                    <div className="flex-1 border-b border-dotted border-border-subtle mx-4"></div>
                                                     <span className="font-mono text-xl font-black text-primary">{item.price}</span>
                                                 </div>
-                                                <p className="text-text-dim/80">{item.desc}</p>
+                                                <p className="text-text-dim/70 leading-relaxed md:pl-4">{item.desc}</p>
                                             </div>
                                         ))}
                                     </div>
-                                </section>
-                            ))}
+
+                                    {/* Page Navigation */}
+                                    <div className="mt-20 pt-12 border-t border-border-subtle flex justify-between items-center text-text-dim text-sm font-bold uppercase tracking-widest">
+                                        <button
+                                            onClick={() => activePage > 0 && setActivePage(activePage - 1)}
+                                            disabled={activePage === 0}
+                                            className={`flex items-center gap-2 hover:text-primary transition-colors ${activePage === 0 ? 'opacity-0' : ''}`}
+                                        >
+                                            <ChevronLeft size={16} /> Voltar
+                                        </button>
+                                        <span className="bg-primary/10 px-4 py-1 rounded-full text-primary">
+                                            Pág. {activePage + 1} de {restaurant.menuCategories.length}
+                                        </span>
+                                        <button
+                                            onClick={() => activePage < restaurant.menuCategories.length - 1 && setActivePage(activePage + 1)}
+                                            disabled={activePage === restaurant.menuCategories.length - 1}
+                                            className={`flex items-center gap-2 hover:text-primary transition-colors ${activePage === restaurant.menuCategories.length - 1 ? 'opacity-0' : ''}`}
+                                        >
+                                            Próxima <ChevronRight size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Sidebar Column */}
@@ -232,7 +267,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                 </div>
                             </div>
 
-                            {/* Review Box — dynamic per restaurant */}
+                            {/* Review Box */}
                             <div className="bg-surface border border-border-subtle p-8 rounded-[3rem] shadow-xl relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8"></div>
                                 <div className="flex items-center gap-2 mb-4 text-accent relative z-10">
