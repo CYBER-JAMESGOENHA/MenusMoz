@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, ChevronRight, MapPin, Utensils, Heart, Tag } from 'lucide-react';
+import { Search, ChevronRight, MapPin, Utensils, Heart, Tag, Star } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,10 +8,33 @@ import { RESTAURANTS, CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const StarRating = ({ rating }) => {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    return (
+        <div className="flex items-center gap-1">
+            {[1, 2, 3, 4, 5].map(i => (
+                <Star
+                    key={i}
+                    size={12}
+                    className={i <= full ? 'text-accent' : i === full + 1 && half ? 'text-accent opacity-60' : 'text-text-dim/30'}
+                    fill={i <= full ? 'currentColor' : i === full + 1 && half ? 'currentColor' : 'none'}
+                />
+            ))}
+            <span className="text-xs font-bold text-text-dim ml-1">{rating.toFixed(1)}</span>
+        </div>
+    );
+};
+
 const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
     const t = translations[lang].home;
+
+    // Safely pick a category with items — prefer index 1, fallback to 0
+    const previewCategory = restaurant.menuCategories.length > 1
+        ? restaurant.menuCategories[1]
+        : restaurant.menuCategories[0];
 
     return (
         <div
@@ -51,11 +74,21 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
             </div>
 
             <div className="p-5 md:p-8">
-                <h3 className="text-2xl mb-2 text-text-main">{restaurant.name}</h3>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="text-2xl text-text-main">{restaurant.name}</h3>
+                    {restaurant.rating && (
+                        <div className="flex items-center gap-1 shrink-0 mt-1">
+                            <StarRating rating={restaurant.rating} />
+                            {restaurant.reviewCount && (
+                                <span className="text-[10px] text-text-dim ml-1">({restaurant.reviewCount})</span>
+                            )}
+                        </div>
+                    )}
+                </div>
                 <p className="text-text-dim text-sm mb-6 line-clamp-2">{restaurant.description}</p>
 
                 <div className="space-y-3">
-                    {restaurant.menuCategories[1].items.slice(0, 3).map((item, idx) => (
+                    {previewCategory.items.slice(0, 3).map((item, idx) => (
                         <div key={idx} className="flex justify-between items-center group/item">
                             <span className="text-sm border-b border-border-subtle flex-1 mr-4 pb-1 text-text-dim">{item.name}</span>
                             <span className="font-mono text-primary font-bold text-sm">{item.price}</span>
@@ -76,6 +109,31 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
     );
 };
 
+const EmptyFavorites = ({ lang }) => {
+    const isPt = lang === 'pt';
+    return (
+        <div className="col-span-full flex flex-col items-center justify-center py-32 text-center">
+            <div className="w-24 h-24 rounded-[2rem] bg-primary/10 flex items-center justify-center mb-8">
+                <Heart size={44} className="text-primary" />
+            </div>
+            <h3 className="text-3xl font-black tracking-tighter text-text-main mb-4">
+                {isPt ? 'Nenhum favorito ainda' : 'No favorites yet'}
+            </h3>
+            <p className="text-text-dim max-w-sm mb-10 text-lg">
+                {isPt
+                    ? 'Guarda os teus restaurantes favoritos tocando no ❤️ em qualquer card.'
+                    : 'Save your favorite restaurants by tapping ❤️ on any card.'}
+            </p>
+            <Link
+                to="/"
+                className="bg-primary text-white px-10 py-4 rounded-2xl font-black text-lg hover:brightness-110 transition-all shadow-lg shadow-primary/20"
+            >
+                {isPt ? 'Explorar Restaurantes' : 'Explore Restaurants'}
+            </Link>
+        </div>
+    );
+};
+
 export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites }) {
     const t = translations[lang];
     const th = t.home;
@@ -86,6 +144,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const heroRef = useRef(null);
     const gridRef = useRef(null);
     const slideshowRef = useRef(null);
+    const searchRef = useRef(null);
 
     const handleSearch = (e) => {
         const query = e.target.value;
@@ -112,6 +171,17 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             setSuggestions([]);
         }
     };
+
+    // Close search dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (searchRef.current && !searchRef.current.contains(e.target)) {
+                setSuggestions([]);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -170,164 +240,191 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             <section ref={heroRef} className="relative pt-32 md:pt-44 pb-20 md:pb-32 px-4 overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-4/5 bg-primary/5 blur-[120px] rounded-full -z-10"></div>
                 <div className="max-w-7xl mx-auto text-center hero-content">
-                    <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
-                        🇨🇼 Maputo • Matola • Beira
-                    </span>
-                    <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
-                        {t.hero.title_part1} <br />{showOnlyFavorites ? <span className="text-primary italic">Favoritos</span> : <span className="text-primary italic">{t.hero.title_part2}</span>}
-                    </h1>
-                    <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
-                        {t.hero.subtitle}
-                    </p>
+                    {showOnlyFavorites ? (
+                        <>
+                            <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
+                                ❤️ Os teus favoritos
+                            </span>
+                            <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
+                                {lang === 'pt' ? 'Os teus' : 'Your'} <br /><span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
+                            </h1>
+                            <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
+                                {lang === 'pt'
+                                    ? 'Os restaurantes que guardaste para visitar.'
+                                    : 'The restaurants you saved to visit.'}
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
+                                {t.hero.badge}
+                            </span>
+                            <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
+                                {t.hero.title_part1} <br /><span className="text-primary italic">{t.hero.title_part2}</span>
+                            </h1>
+                            <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
+                                {t.hero.subtitle}
+                            </p>
 
-                    <div className="max-w-3xl mx-auto relative group">
-                        <input
-                            type="text"
-                            placeholder={t.hero.search_placeholder}
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            className="w-full h-16 md:h-20 pl-6 md:pl-8 pr-28 md:pr-32 rounded-2xl md:rounded-[2rem] glass border-border-subtle text-lg md:text-xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-text-dim/50 text-text-main"
-                        />
-                        <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-5 md:px-8 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">
-                            <Search size={20} /> <span className="hidden sm:inline">Descobrir</span>
-                        </button>
+                            <div ref={searchRef} className="max-w-3xl mx-auto relative group">
+                                <input
+                                    type="text"
+                                    placeholder={t.hero.search_placeholder}
+                                    value={searchQuery}
+                                    onChange={handleSearch}
+                                    className="w-full h-16 md:h-20 pl-6 md:pl-8 pr-28 md:pr-32 rounded-2xl md:rounded-[2rem] glass border-border-subtle text-lg md:text-xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-text-dim/50 text-text-main"
+                                />
+                                <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-5 md:px-8 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+                                    <Search size={20} /> <span className="hidden sm:inline">Descobrir</span>
+                                </button>
 
-                        {suggestions.length > 0 && (
-                            <div className="absolute top-full left-0 right-0 mt-4 bg-surface border border-border-subtle rounded-3xl shadow-2xl overflow-hidden z-[1000] text-left">
-                                {suggestions.map((s, i) => (
-                                    <Link
-                                        key={i}
-                                        to={`/restaurante/${s.slug}`}
-                                        className="flex items-center justify-between px-8 py-4 hover:bg-primary/5 transition-colors border-b border-border-subtle last:border-0"
-                                    >
-                                        <div>
-                                            <p className="font-bold text-text-main">{s.name}</p>
-                                            <p className="text-xs text-text-dim uppercase tracking-wider">
-                                                {s.type === 'restaurant' ? 'Restaurante' : `Prato em ${s.restaurant}`}
-                                            </p>
-                                        </div>
-                                        <ChevronRight size={16} className="text-primary" />
-                                    </Link>
-                                ))}
+                                {suggestions.length > 0 && (
+                                    <div className="absolute top-full left-0 right-0 mt-4 bg-surface border border-border-subtle rounded-3xl shadow-2xl overflow-hidden z-[1000] text-left">
+                                        {suggestions.map((s, i) => (
+                                            <Link
+                                                key={i}
+                                                to={`/restaurante/${s.slug}`}
+                                                onClick={() => { setSuggestions([]); setSearchQuery(''); }}
+                                                className="flex items-center justify-between px-8 py-4 hover:bg-primary/5 transition-colors border-b border-border-subtle last:border-0"
+                                            >
+                                                <div>
+                                                    <p className="font-bold text-text-main">{s.name}</p>
+                                                    <p className="text-xs text-text-dim uppercase tracking-wider">
+                                                        {s.type === 'restaurant' ? 'Restaurante' : `Prato em ${s.restaurant}`}
+                                                    </p>
+                                                </div>
+                                                <ChevronRight size={16} className="text-primary" />
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
+                        </>
+                    )}
                 </div>
             </section>
 
-            {/* Featured Slideshow */}
-            <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 mb-20 reveal overflow-hidden">
-                <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
+            {/* Featured Slideshow — only on main page */}
+            {!showOnlyFavorites && (
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 mb-20 reveal overflow-hidden">
+                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
-                    {/* Active Slide Background */}
-                    <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden">
-                        <img
-                            key={`img-${currentSlide}`}
-                            src={FEATURED_DISHES[currentSlide].image}
-                            alt={FEATURED_DISHES[currentSlide].name}
-                            className="slide-image w-full h-full object-cover rounded-l-[3rem] opacity-50"
-                        />
-                    </div>
-                    {/* Mobile background */}
-                    <div className="absolute inset-0 lg:hidden -z-0 overflow-hidden">
-                        <img
-                            key={`mob-img-${currentSlide}`}
-                            src={FEATURED_DISHES[currentSlide].image}
-                            alt={FEATURED_DISHES[currentSlide].name}
-                            className="slide-image w-full h-full object-cover opacity-30"
-                        />
-                    </div>
+                        {/* Active Slide Background */}
+                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden">
+                            <img
+                                key={`img-${currentSlide}`}
+                                src={FEATURED_DISHES[currentSlide].image}
+                                alt={FEATURED_DISHES[currentSlide].name}
+                                className="slide-image w-full h-full object-cover rounded-l-[3rem] opacity-50"
+                            />
+                        </div>
+                        {/* Mobile background */}
+                        <div className="absolute inset-0 lg:hidden -z-0 overflow-hidden">
+                            <img
+                                key={`mob-img-${currentSlide}`}
+                                src={FEATURED_DISHES[currentSlide].image}
+                                alt={FEATURED_DISHES[currentSlide].name}
+                                className="slide-image w-full h-full object-cover opacity-30"
+                            />
+                        </div>
 
-                    <div className="relative z-10 max-w-xl p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
-                        <span className="text-accent font-bold uppercase tracking-[0.3em] text-sm">
-                            {FEATURED_DISHES[currentSlide].tagline}
-                        </span>
-                        <h2 className="text-4xl md:text-6xl mt-6 mb-8 uppercase italic font-black leading-none text-white whitespace-pre-line">
-                            {FEATURED_DISHES[currentSlide].name.replace(' ', '\n')}
-                        </h2>
-                        <p className="text-lg md:text-xl text-white/70 mb-12 font-medium">
-                            {FEATURED_DISHES[currentSlide].desc}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-8">
-                            <Link
-                                to={FEATURED_DISHES[currentSlide].link}
-                                className="bg-primary px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all text-lg whitespace-nowrap"
-                            >
-                                {th.view_restaurant}
-                            </Link>
-                            <div className="font-mono text-3xl font-bold text-accent">
-                                {FEATURED_DISHES[currentSlide].price}
+                        <div className="relative z-10 max-w-xl p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                            <span className="text-accent font-bold uppercase tracking-[0.3em] text-sm">
+                                {FEATURED_DISHES[currentSlide].tagline}
+                            </span>
+                            <h2 className="text-4xl md:text-6xl mt-6 mb-8 uppercase italic font-black leading-none text-white whitespace-pre-line">
+                                {FEATURED_DISHES[currentSlide].name.replace(' ', '\n')}
+                            </h2>
+                            <p className="text-lg md:text-xl text-white/70 mb-12 font-medium">
+                                {FEATURED_DISHES[currentSlide].desc}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-8">
+                                <Link
+                                    to={FEATURED_DISHES[currentSlide].link}
+                                    className="bg-primary px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all text-lg whitespace-nowrap"
+                                >
+                                    {th.view_restaurant}
+                                </Link>
+                                <div className="font-mono text-3xl font-bold text-accent">
+                                    {FEATURED_DISHES[currentSlide].price}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Fixed Pagination dots */}
-                    <div className="absolute bottom-8 left-8 md:bottom-16 md:left-16 z-20 flex gap-3">
-                        {FEATURED_DISHES.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setCurrentSlide(i)}
-                                className={`h-2 rounded-full transition-all duration-500 ${currentSlide === i ? 'w-12 bg-primary' : 'w-2 bg-white/20'}`}
-                            />
-                        ))}
+                        {/* Pagination dots */}
+                        <div className="absolute bottom-8 left-8 md:bottom-16 md:left-16 z-20 flex gap-3">
+                            {FEATURED_DISHES.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrentSlide(i)}
+                                    className={`h-2 rounded-full transition-all duration-500 ${currentSlide === i ? 'w-12 bg-primary' : 'w-2 bg-white/20'}`}
+                                />
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             {/* Categories */}
-            <section className="max-w-7xl mx-auto px-4 mb-20 overflow-x-auto no-scrollbar py-4">
-                <div className="flex gap-3 min-w-max">
-                    {CATEGORIES.map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`px-8 py-4 rounded-full font-bold transition-all whitespace-nowrap ${activeCategory === cat
-                                ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-105'
-                                : 'bg-surface text-text-main border border-border-subtle hover:border-primary/30'
-                                }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
-            </section>
+            {!showOnlyFavorites && (
+                <section className="max-w-7xl mx-auto px-4 mb-20 overflow-x-auto no-scrollbar py-4">
+                    <div className="flex gap-3 min-w-max">
+                        {CATEGORIES.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveCategory(cat)}
+                                className={`px-8 py-4 rounded-full font-bold transition-all whitespace-nowrap ${activeCategory === cat
+                                    ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-105'
+                                    : 'bg-surface text-text-main border border-border-subtle hover:border-primary/30'
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* Restaurant Grid */}
             <section className="max-w-7xl mx-auto px-4 pb-32">
                 <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredRestaurants.map(rest => (
-                        <div key={rest.id} className="restaurant-card">
-                            <RestaurantCard
-                                restaurant={rest}
-                                isFavorite={favorites.includes(rest.id)}
-                                toggleFavorite={toggleFavorite}
-                                lang={lang}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-
-            {/* How it works */}
-            <section className="max-w-7xl mx-auto px-4 mb-32 text-center">
-                <h2 className="text-4xl md:text-5xl mb-12 md:20 tracking-tighter italic">{th.how_it_works}</h2>
-                <div className="grid md:grid-cols-3 gap-12">
-                    {[
-                        { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
-                        { icon: Utensils, title: th.step2_title, desc: th.step2_desc, color: "icon-orange" },
-                        { icon: MapPin, title: th.step3_title, desc: th.step3_desc, color: "icon-green" }
-                    ].map((item, i) => (
-                        <div key={i} className="flex flex-col items-center group">
-                            <div className={`w-24 h-24 ${item.color} flex items-center justify-center rounded-[2rem] mb-8 transition-transform group-hover:scale-110 shadow-lg shadow-black/5`}>
-                                <item.icon size={44} />
+                    {filteredRestaurants.length === 0 && showOnlyFavorites
+                        ? <EmptyFavorites lang={lang} />
+                        : filteredRestaurants.map(rest => (
+                            <div key={rest.id} className="restaurant-card">
+                                <RestaurantCard
+                                    restaurant={rest}
+                                    isFavorite={favorites.includes(rest.id)}
+                                    toggleFavorite={toggleFavorite}
+                                    lang={lang}
+                                />
                             </div>
-                            <h4 className="text-2xl mb-4 uppercase font-black text-text-main">{item.title}</h4>
-                            <p className="text-text-dim max-w-[250px]">{item.desc}</p>
-                        </div>
-                    ))}
+                        ))
+                    }
                 </div>
             </section>
+
+            {/* How it works — only on main page */}
+            {!showOnlyFavorites && (
+                <section className="max-w-7xl mx-auto px-4 mb-32 text-center">
+                    <h2 className="text-4xl md:text-5xl mb-12 md:20 tracking-tighter italic">{th.how_it_works}</h2>
+                    <div className="grid md:grid-cols-3 gap-12">
+                        {[
+                            { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
+                            { icon: Utensils, title: th.step2_title, desc: th.step2_desc, color: "icon-orange" },
+                            { icon: MapPin, title: th.step3_title, desc: th.step3_desc, color: "icon-green" }
+                        ].map((item, i) => (
+                            <div key={i} className="flex flex-col items-center group">
+                                <div className={`w-24 h-24 ${item.color} flex items-center justify-center rounded-[2rem] mb-8 transition-transform group-hover:scale-110 shadow-lg shadow-black/5`}>
+                                    <item.icon size={44} />
+                                </div>
+                                <h4 className="text-2xl mb-4 uppercase font-black text-text-main">{item.title}</h4>
+                                <p className="text-text-dim max-w-[250px]">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
         </div>
     );
 }

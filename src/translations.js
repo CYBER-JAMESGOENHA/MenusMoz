@@ -8,7 +8,7 @@ export const translations = {
             login: "Entrar"
         },
         hero: {
-            badge: "🇨🇼 Maputo • Matola • Beira",
+            badge: "🇲🇿 Maputo • Matola • Beira",
             title_part1: "O sabor digital de",
             title_part2: "Moçambique",
             subtitle: "Explore os melhores menus, do curry mais picante aos mariscos frescos da nossa costa.",
@@ -51,7 +51,7 @@ export const translations = {
             login: "Login"
         },
         hero: {
-            badge: "🇨🇼 Maputo • Matola • Beira",
+            badge: "🇲🇿 Maputo • Matola • Beira",
             title_part1: "The digital flavor of",
             title_part2: "Mozambique",
             subtitle: "Explore the best menus, from the spiciest curry to fresh seafood from our coast.",

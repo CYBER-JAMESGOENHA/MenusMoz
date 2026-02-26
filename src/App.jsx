@@ -99,15 +99,27 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount }) => 
                 key={i}
                 to={link.to}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-3xl font-black tracking-tighter text-text-main hover:text-primary transition-colors"
-                style={{ transitionDelay: `${i * 50}ms` }}
+                className="text-3xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-300"
+                style={{
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+                  transitionDelay: isMenuOpen ? `${i * 60}ms` : '0ms'
+                }}
               >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <div className="flex gap-4">
+          <div
+            className="flex gap-4"
+            style={{
+              opacity: isMenuOpen ? 1 : 0,
+              transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.3s ease, transform 0.3s ease',
+              transitionDelay: isMenuOpen ? '360ms' : '0ms'
+            }}
+          >
             <button
               onClick={() => { setLang(lang === 'pt' ? 'en' : 'pt'); setIsMenuOpen(false); }}
               className="px-6 py-3 rounded-2xl glass font-bold text-text-main flex items-center gap-2 border-none shadow-sm"
@@ -122,7 +134,15 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount }) => 
             </button>
           </div>
 
-          <button className="w-full max-w-xs bg-primary text-white py-5 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 mt-8">
+          <button
+            className="w-full max-w-xs bg-primary text-white py-5 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 mt-8"
+            style={{
+              opacity: isMenuOpen ? 1 : 0,
+              transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'opacity 0.3s ease, transform 0.3s ease',
+              transitionDelay: isMenuOpen ? '420ms' : '0ms'
+            }}
+          >
             {t.login}
           </button>
         </div>
@@ -164,6 +184,24 @@ const Footer = ({ lang }) => {
             </div>
           </div>
         </div>
+        {/* Newsletter CTA */}
+        <div className="mb-16 bg-primary/5 border border-primary/10 rounded-[2rem] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 justify-between">
+          <div>
+            <h4 className="text-2xl font-black tracking-tighter text-text-main mb-2">Fique por dentro do sabor 🇲🇿</h4>
+            <p className="text-text-dim">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
+          </div>
+          <div className="flex gap-3 w-full md:w-auto">
+            <input
+              type="email"
+              placeholder="O seu email..."
+              className="flex-1 md:w-72 h-14 px-6 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
+            />
+            <button className="bg-primary text-white px-8 py-3 rounded-2xl font-black whitespace-nowrap hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+              Subscrever
+            </button>
+          </div>
+        </div>
+
         <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-sm">
           <p>© 2026 MenusMOZ — O orgulho de cozinhar digital.</p>
           <div className="flex gap-8">
