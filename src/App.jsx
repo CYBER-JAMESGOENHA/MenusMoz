@@ -7,9 +7,11 @@ import About from './About';
 import Blog from './Blog';
 import ForOwners from './ForOwners';
 import Map from './Map';
+import CustomCursor from './CustomCursor';
+import LoginModal from './LoginModal';
 import { translations } from './translations';
 
-const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount }) => {
+const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = translations[lang].nav;
@@ -69,7 +71,10 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount }) => 
             </button>
           </div>
 
-          <button className="hidden md:block bg-primary text-white px-6 py-2.5 rounded-full font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
+          <button
+            onClick={onLoginOpen}
+            className="hidden md:block bg-primary text-white px-6 py-2.5 rounded-full font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
+          >
             {t.login}
           </button>
 
@@ -135,6 +140,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount }) => 
           </div>
 
           <button
+            onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
             className="w-full max-w-xs bg-primary text-white py-5 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 mt-8"
             style={{
               opacity: isMenuOpen ? 1 : 0,
@@ -227,6 +233,8 @@ export default function App() {
     return saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
 
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -249,12 +257,15 @@ export default function App() {
   return (
     <Router>
       <main className="min-h-screen relative bg-bg transition-colors duration-300">
+        <CustomCursor />
+        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
         <Navbar
           darkMode={darkMode}
           toggleDarkMode={() => setDarkMode(!darkMode)}
           lang={lang}
           setLang={setLang}
           favoritesCount={favorites.length}
+          onLoginOpen={() => setIsLoginOpen(true)}
         />
         <Routes>
           <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />

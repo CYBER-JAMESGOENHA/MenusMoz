@@ -4,6 +4,8 @@
   --font-heading: "Space Grotesk", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+  --font-menu: "Playfair Display", "Cormorant Garamond", serif;
+  --font-garamond: "Cormorant Garamond", serif;
 
   /* Basic Colors */
   --color-primary: #FF6B35;
@@ -61,29 +63,97 @@
     background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
   }
 
+  /* Premium Paper Texture */
   .paper-texture {
     position: relative;
-    background-color: var(--surface-color);
+    background-color: #FDFAF4;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(255, 248, 220, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(245, 235, 210, 0.3) 0%, transparent 60%);
+  }
+
+  .dark .paper-texture {
+    background-color: #1a1714;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(60, 50, 30, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(50, 40, 25, 0.3) 0%, transparent 60%);
   }
 
   .paper-texture::before {
     content: "";
     position: absolute;
     inset: 0;
-    opacity: 0.05;
+    opacity: 0.04;
     pointer-events: none;
     z-index: 1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
   }
 
+  /* Menu Book Container */
   .menu-book {
-    @apply relative perspective-1000 shadow-2xl rounded-[1rem] overflow-hidden;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
     min-height: 600px;
+    perspective: 2000px;
+    /* Spine shadow for physical book feel */
+    box-shadow:
+      -4px 0 8px rgba(0, 0, 0, 0.08),
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 32px 80px rgba(0, 0, 0, 0.08);
+  }
+
+  .dark .menu-book {
+    box-shadow:
+      -4px 0 8px rgba(0, 0, 0, 0.3),
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      0 32px 80px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Left spine line (book binding) */
+  .menu-book::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.12), transparent);
+    z-index: 10;
+    pointer-events: none;
   }
 
   .menu-page {
     @apply absolute inset-0 w-full h-full p-8 md:p-12 overflow-y-auto bg-surface transition-all duration-500;
     backface-visibility: hidden;
+    transform-origin: left center;
+  }
+
+  /* Elegant ornamental divider for menu */
+  .menu-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .menu-divider::before,
+  .menu-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(var(--color-primary), 0.3), transparent);
+    background: linear-gradient(to right, transparent, color-mix(in srgb, #FF6B35 40%, transparent), transparent);
+  }
+
+  /* High-gastronomy font utility */
+  .font-menu {
+    font-family: "Playfair Display", "Cormorant Garamond", serif;
+  }
+
+  .font-garamond {
+    font-family: "Cormorant Garamond", serif;
   }
 
   .card-hover {
