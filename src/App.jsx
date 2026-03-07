@@ -222,15 +222,17 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
-            className="w-full max-w-xs bg-primary text-white py-5 rounded-3xl font-black text-xl shadow-2xl shadow-primary/30 mt-8"
+            className="login-moz-btn w-full max-w-xs mt-8 scale-125 md:scale-100"
             style={{
               opacity: isMenuOpen ? 1 : 0,
               transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
               transition: 'opacity 0.3s ease, transform 0.3s ease',
-              transitionDelay: isMenuOpen ? '420ms' : '0ms'
+              transitionDelay: isMenuOpen ? '420ms' : '0ms',
+              height: '48px'
             }}
           >
-            {t.login}
+            <span className="login-moz-lens">🇲🇿</span>
+            <span className="login-moz-label">{t.login}</span>
           </button>
         </div>
       </div>

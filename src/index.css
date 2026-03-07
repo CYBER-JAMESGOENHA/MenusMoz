@@ -97,7 +97,6 @@
     overflow: hidden;
     min-height: 600px;
     perspective: 2000px;
-    /* Spine shadow for physical book feel */
     box-shadow:
       -4px 0 8px rgba(0, 0, 0, 0.08),
       0 8px 32px rgba(0, 0, 0, 0.12),
@@ -111,7 +110,6 @@
       0 32px 80px rgba(0, 0, 0, 0.3);
   }
 
-  /* Left spine line (book binding) */
   .menu-book::after {
     content: '';
     position: absolute;
@@ -130,7 +128,6 @@
     transform-origin: left center;
   }
 
-  /* Elegant ornamental divider for menu */
   .menu-divider {
     display: flex;
     align-items: center;
@@ -147,7 +144,6 @@
     background: linear-gradient(to right, transparent, color-mix(in srgb, #FF6B35 40%, transparent), transparent);
   }
 
-  /* High-gastronomy font utility */
   .font-menu {
     font-family: "Playfair Display", "Cormorant Garamond", serif;
   }
@@ -158,7 +154,6 @@
 
   .card-hover {
     @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl;
-    /* Custom shadow based on mode */
   }
 
   .dark .card-hover:hover {
@@ -217,6 +212,110 @@
   .icon-purple {
     @apply text-purple-500 bg-purple-500/10;
   }
+
+  /* ── Botão Login — Bandeira de Moçambique ──────────────────────────────── */
+  .login-moz-btn {
+    position: relative;
+    overflow: hidden;
+    height: 42px;
+    padding: 0 22px 0 10px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.22s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.22s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1.5px rgba(255, 255, 255, 0.12);
+  }
+
+  /* Faixas horizontais da bandeira */
+  .login-moz-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        #009A44 0%, #009A44 33%,
+        #fff 33%, #fff 34.5%,
+        #1a1a1a 34.5%, #1a1a1a 65.5%,
+        #fff 65.5%, #fff 67%,
+        #FCE300 67%, #FCE300 100%);
+    z-index: 0;
+  }
+
+  /* Triângulo vermelho à esquerda */
+  .login-moz-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46%;
+    height: 100%;
+    background: linear-gradient(135deg, #CE1126 50%, transparent 50%);
+    z-index: 1;
+  }
+
+  /* Círculo com efeito lupa / desfoque */
+  .login-moz-lens {
+    position: relative;
+    z-index: 3;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px) saturate(2);
+    -webkit-backdrop-filter: blur(8px) saturate(2);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 0.08),
+      inset 0 1px 3px rgba(255, 255, 255, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    animation: lensGlow 2.8s ease-in-out infinite;
+  }
+
+  @keyframes lensGlow {
+
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.08),
+        inset 0 1px 3px rgba(255, 255, 255, 0.35),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    50% {
+      box-shadow:
+        0 0 0 5px rgba(255, 255, 255, 0.18),
+        inset 0 1px 3px rgba(255, 255, 255, 0.5),
+        0 2px 12px rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  .login-moz-label {
+    position: relative;
+    z-index: 3;
+  }
+
+  .login-moz-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1.5px rgba(255, 255, 255, 0.2);
+  }
+
+  .login-moz-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────── */
 }
 
 .selection\:bg-accent *::selection {
@@ -227,12 +326,10 @@
   color: var(--color-primary);
 }
 
-/* Custom Utilities for 3D Effects */
 .perspective-1000 {
   perspective: 1000px;
 }
 
-/* Hide scrollbar but keep functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -240,4 +337,97 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Mozambique Flag Login Button */
+.login-moz-btn {
+  position: relative;
+  height: 42px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 24px;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  background: transparent;
+}
+
+.login-moz-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Horizontal Stripes: Green, Black (thin lines), Yellow */
+  background: linear-gradient(to bottom,
+      #009A44 0%, #009A44 33.33%,
+      #FFFFFF 33.33%, #FFFFFF 36%,
+      #1a1a1a 36%, #1a1a1a 64%,
+      #FFFFFF 64%, #FFFFFF 66.66%,
+      #FCE300 66.66%, #FCE300 100%);
+  z-index: 1;
+}
+
+.login-moz-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48%;
+  height: 100%;
+  background: linear-gradient(135deg, #CE1126 50%, transparent 50%);
+  z-index: 2;
+}
+
+.login-moz-lens {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px) saturate(2);
+  -webkit-backdrop-filter: blur(8px) saturate(2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  z-index: 3;
+  animation: lensGlow 3s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.login-moz-label {
+  position: relative;
+  z-index: 3;
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  margin-left: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.02em;
+}
+
+.login-moz-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.login-moz-btn:active {
+  transform: scale(0.97);
+}
+
+@keyframes lensGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
 }
