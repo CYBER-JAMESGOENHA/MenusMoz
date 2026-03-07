@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, ChevronRight, MapPin, Utensils, Heart, Tag, Star } from 'lucide-react';
+import { MapPin, Utensils, Heart, Tag, Star } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -138,55 +138,15 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const t = translations[lang];
     const th = t.home;
     const [activeCategory, setActiveCategory] = useState("Tudo");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const heroRef = useRef(null);
     const gridRef = useRef(null);
     const slideshowRef = useRef(null);
-    const searchRef = useRef(null);
 
-    const handleSearch = (e) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-        if (query.length > 1) {
-            const filteredRest = RESTAURANTS.filter(r =>
-                r.name.toLowerCase().includes(query.toLowerCase()) ||
-                r.cuisine.toLowerCase().includes(query.toLowerCase())
-            ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug }));
-
-            const filteredDishes = [];
-            RESTAURANTS.forEach(r => {
-                r.menuCategories.forEach(cat => {
-                    cat.items.forEach(item => {
-                        if (item.name.toLowerCase().includes(query.toLowerCase())) {
-                            filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
-                        }
-                    });
-                });
-            });
-
-            setSuggestions([...filteredRest, ...filteredDishes.slice(0, 5)]);
-        } else {
-            setSuggestions([]);
-        }
-    };
-
-    // Close search dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (searchRef.current && !searchRef.current.contains(e.target)) {
-                setSuggestions([]);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide(prev => (prev + 1) % FEATURED_DISHES.length);
-        }, 5000);
+        }, 2500);
         return () => clearInterval(timer);
     }, []);
 
@@ -205,14 +165,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from(".hero-content > *", {
-                y: 60,
-                opacity: 0,
-                duration: 1,
-                stagger: 0.2,
-                ease: "power4.out"
-            });
-
             gsap.utils.toArray(".restaurant-card").forEach((card, i) => {
                 gsap.from(card, {
                     scrollTrigger: {
@@ -236,77 +188,26 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     return (
         <div className="relative overflow-hidden">
-            {/* Hero Section */}
-            <section ref={heroRef} className="relative pt-32 md:pt-44 pb-20 md:pb-32 px-4 overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-4/5 bg-primary/5 blur-[120px] rounded-full -z-10"></div>
-                <div className="max-w-7xl mx-auto text-center hero-content">
-                    {showOnlyFavorites ? (
-                        <>
-                            <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
-                                ❤️ Os teus favoritos
-                            </span>
-                            <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
-                                {lang === 'pt' ? 'Os teus' : 'Your'} <br /><span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
-                            </h1>
-                            <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
-                                {lang === 'pt'
-                                    ? 'Os restaurantes que guardaste para visitar.'
-                                    : 'The restaurants you saved to visit.'}
-                            </p>
-                        </>
-                    ) : (
-                        <>
-                            <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
-                                {t.hero.badge}
-                            </span>
-                            <h1 className="text-5xl md:text-8xl mb-4 leading-[1.1] md:leading-[0.9] tracking-tighter text-text-main">
-                                {t.hero.title_part1} <br /><span className="text-primary italic">{t.hero.title_part2}</span>
-                            </h1>
-                            <p className="text-xl md:text-2xl text-text-dim max-w-2xl mx-auto mb-12 font-medium">
-                                {t.hero.subtitle}
-                            </p>
+            {/* Favorites Mini Header — only when showOnlyFavorites */}
+            {showOnlyFavorites && (
+                <section className="pt-36 pb-8 px-4 text-center">
+                    <div className="max-w-7xl mx-auto">
+                        <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
+                            ❤️ Os teus favoritos
+                        </span>
+                        <h1 className="text-5xl md:text-7xl mb-4 leading-tight tracking-tighter text-text-main">
+                            {lang === 'pt' ? 'Os teus' : 'Your'} <span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
+                        </h1>
+                        <p className="text-xl text-text-dim max-w-2xl mx-auto font-medium">
+                            {lang === 'pt' ? 'Os restaurantes que guardaste para visitar.' : 'The restaurants you saved to visit.'}
+                        </p>
+                    </div>
+                </section>
+            )}
 
-                            <div ref={searchRef} className="max-w-3xl mx-auto relative group">
-                                <input
-                                    type="text"
-                                    placeholder={t.hero.search_placeholder}
-                                    value={searchQuery}
-                                    onChange={handleSearch}
-                                    className="w-full h-16 md:h-20 pl-6 md:pl-8 pr-28 md:pr-32 rounded-2xl md:rounded-[2rem] glass border-border-subtle text-lg md:text-xl focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-text-dim/50 text-text-main"
-                                />
-                                <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-5 md:px-8 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">
-                                    <Search size={20} /> <span className="hidden sm:inline">Descobrir</span>
-                                </button>
-
-                                {suggestions.length > 0 && (
-                                    <div className="absolute top-full left-0 right-0 mt-4 bg-surface border border-border-subtle rounded-3xl shadow-2xl overflow-hidden z-[1000] text-left">
-                                        {suggestions.map((s, i) => (
-                                            <Link
-                                                key={i}
-                                                to={`/restaurante/${s.slug}`}
-                                                onClick={() => { setSuggestions([]); setSearchQuery(''); }}
-                                                className="flex items-center justify-between px-8 py-4 hover:bg-primary/5 transition-colors border-b border-border-subtle last:border-0"
-                                            >
-                                                <div>
-                                                    <p className="font-bold text-text-main">{s.name}</p>
-                                                    <p className="text-xs text-text-dim uppercase tracking-wider">
-                                                        {s.type === 'restaurant' ? 'Restaurante' : `Prato em ${s.restaurant}`}
-                                                    </p>
-                                                </div>
-                                                <ChevronRight size={16} className="text-primary" />
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </>
-                    )}
-                </div>
-            </section>
-
-            {/* Featured Slideshow — only on main page */}
+            {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 mb-20 reveal overflow-hidden">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-20 reveal overflow-hidden">
                     <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}

@@ -265,9 +265,9 @@ export const CATEGORIES = [
 export const FEATURED_DISHES = [
   {
     id: 1,
-    name: "Matapa Zambeziana",
+    name: "Carne à Zambeziana",
     tagline: "Destaque do Dia",
-    desc: "Folhas de mandioquinha processadas com leite de coco e amendoim, acompanhadas por camarão tigre da nossa costa.",
+    desc: "Pedaços suculentos de carne grelhada marinados em leite de coco e piri-piri, servidos com arroz e acompanhamentos da casa.",
     price: "850 MT",
     image: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop",
     link: "/restaurante/cantinho-do-gato"

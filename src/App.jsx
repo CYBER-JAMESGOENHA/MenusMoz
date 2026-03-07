@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X, Search, ChevronRight } from 'lucide-react';
+import { RESTAURANTS } from './data';
 import Home from './Home';
 import RestaurantDetail from './RestaurantDetail';
 import About from './About';
@@ -10,6 +11,84 @@ import Map from './Map';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
 import { translations } from './translations';
+
+const NavbarSearch = ({ lang }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const searchRef = useRef(null);
+  const navigate = useNavigate();
+  const t = translations[lang];
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.length > 1) {
+      const filteredRest = RESTAURANTS.filter(r =>
+        r.name.toLowerCase().includes(query.toLowerCase()) ||
+        r.cuisine.toLowerCase().includes(query.toLowerCase())
+      ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug }));
+
+      const filteredDishes = [];
+      RESTAURANTS.forEach(r => {
+        r.menuCategories.forEach(cat => {
+          cat.items.forEach(item => {
+            if (item.name.toLowerCase().includes(query.toLowerCase())) {
+              filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
+            }
+          });
+        });
+      });
+      setSuggestions([...filteredRest, ...filteredDishes.slice(0, 3)]);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSuggestions([]);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={searchRef} className="relative hidden lg:block">
+      <div className="flex items-center gap-2 glass border border-border-subtle rounded-2xl px-4 py-2 w-64 xl:w-80">
+        <Search size={15} className="text-text-dim shrink-0" />
+        <input
+          type="text"
+          placeholder={t.hero?.search_placeholder || 'Pesquisar...'}
+          value={searchQuery}
+          onChange={handleSearch}
+          className="bg-transparent border-none outline-none text-sm text-text-main placeholder:text-text-dim/50 w-full"
+        />
+      </div>
+      {suggestions.length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border-subtle rounded-2xl shadow-2xl overflow-hidden z-[2000] text-left">
+          {suggestions.map((s, i) => (
+            <Link
+              key={i}
+              to={`/restaurante/${s.slug}`}
+              onClick={() => { setSuggestions([]); setSearchQuery(''); }}
+              className="flex items-center justify-between px-5 py-3 hover:bg-primary/5 transition-colors border-b border-border-subtle last:border-0"
+            >
+              <div>
+                <p className="font-bold text-sm text-text-main">{s.name}</p>
+                <p className="text-[10px] text-text-dim uppercase tracking-wider">
+                  {s.type === 'restaurant' ? 'Restaurante' : `Prato em ${s.restaurant}`}
+                </p>
+              </div>
+              <ChevronRight size={14} className="text-primary" />
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,9 +104,8 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${isScrolled || isMenuOpen ? 'py-4' : 'py-8'}`}>
       <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-500 ${isScrolled || isMenuOpen ? 'glass px-6 py-3 mx-4 rounded-3xl' : 'bg-transparent px-4'}`}>
-        <Link to="/" className="flex items-center gap-2 z-[1001]" onClick={() => setIsMenuOpen(false)}>
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">M</div>
-          <span className="font-heading font-black text-2xl tracking-tighter text-primary">MenusMOZ</span>
+        <Link to="/" className="flex items-center z-[1001]" onClick={() => setIsMenuOpen(false)}>
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
         </Link>
 
         {/* Desktop Menu */}
@@ -37,6 +115,9 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
           <Link to="/sobre" className="hover:text-primary transition-colors">{t.about}</Link>
           <Link to="/proprietarios" className="hover:text-primary transition-colors">{t.owners}</Link>
         </div>
+
+        {/* Search Bar */}
+        <NavbarSearch lang={lang} />
 
         <div className="flex items-center gap-2 md:gap-4">
           <div className="hidden sm:flex items-center gap-2 md:gap-4">
@@ -167,7 +248,7 @@ const Footer = ({ lang }) => {
         <div className="grid md:grid-cols-4 gap-12 mb-20">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-8 uppercase font-heading font-black text-3xl tracking-tighter text-primary">
-              MenusMOZ
+              Locais de Moz
             </div>
             <p className="text-text-dim text-xl max-w-md">
               {t.desc}
@@ -209,7 +290,7 @@ const Footer = ({ lang }) => {
         </div>
 
         <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-sm">
-          <p>© 2026 MenusMOZ — O orgulho de cozinhar digital.</p>
+          <p>© 2026 Locais de Moz — O orgulho de cozinhar digital.</p>
           <div className="flex gap-8">
             <a href="#">Privacidade</a>
             <a href="#">Termos de Uso</a>

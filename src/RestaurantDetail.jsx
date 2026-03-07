@@ -138,7 +138,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     const currentCategory = restaurant.menuCategories[activePage];
 
     return (
-        <div ref={containerRef} className="pb-32 bg-bg transition-colors duration-500">
+        <div ref={containerRef} className="pb-40 lg:pb-32 bg-bg transition-colors duration-500">
             {/* Header Image */}
             <div className="relative h-[45vh] md:h-[60vh] overflow-hidden">
                 <img
@@ -317,8 +317,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
                         {/* Sidebar Column */}
                         <div className="space-y-8 lg:sticky lg:top-32 h-fit">
-                            {/* Reservation Box */}
-                            <div className="bg-primary/5 p-8 rounded-[3rem] border border-primary/10 shadow-sm relative overflow-hidden group">
+                            {/* Reservation Box — desktop only in sidebar */}
+                            <div className="hidden lg:block bg-primary/5 p-8 rounded-[3rem] border border-primary/10 shadow-sm relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150" />
                                 <h4 className="font-black text-xl mb-6 uppercase tracking-wider text-text-main relative z-10">{t.quick_res}</h4>
                                 <p className="text-sm text-text-dim mb-8 font-medium relative z-10">{t.res_desc}</p>
@@ -373,6 +373,30 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* ===== MOBILE FIXED WHATSAPP BAR ===== */}
+            <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
+                {/* Backdrop blur panel */}
+                <div className="bg-bg/80 backdrop-blur-xl border-t border-border-subtle px-4 py-4 flex flex-col items-center gap-3 shadow-2xl">
+                    <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={triggerHaptic}
+                        className="w-full max-w-sm bg-primary text-white py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl shadow-primary/40 hover:brightness-110 active:scale-95 transition-all"
+                    >
+                        <MessageCircle size={22} />
+                        {t.whatsapp_res}
+                    </a>
+                    <a
+                        href={`tel:${restaurant.whatsapp}`}
+                        onClick={triggerHaptic}
+                        className="w-full max-w-sm glass py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-text-main border border-border-subtle text-sm hover:bg-primary/10 active:scale-95 transition-all"
+                    >
+                        <Phone size={16} /> Ligar Direto
+                    </a>
                 </div>
             </div>
         </div>
