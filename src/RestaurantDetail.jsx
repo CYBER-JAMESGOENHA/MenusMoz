@@ -277,7 +277,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                                     >
                                                         {item.name}
                                                     </h4>
-                                                    <div className="flex-1 border-b border-dotted border-text-dim/20 mx-2 mb-1 min-w-[20px]" />
+                                                    <div className="flex-1 border-b border-dotted border-text-dim/20 mx-2 mb-1 min-w-[10px]" />
                                                     <span
                                                         className="font-bold text-xl text-primary shrink-0"
                                                         style={{ fontFamily: "'JetBrains Mono', monospace" }}

@@ -66,7 +66,7 @@ const NavbarSearch = ({ lang }) => {
         />
       </div>
       {suggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border-subtle rounded-2xl shadow-2xl overflow-hidden z-[2000] text-left">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border-subtle rounded-2xl shadow-2xl overflow-hidden z-[2000] text-left w-full max-w-[calc(100vw-2rem)]">
           {suggestions.map((s, i) => (
             <Link
               key={i}
@@ -339,7 +339,7 @@ export default function App() {
 
   return (
     <Router>
-      <main className="min-h-screen relative bg-bg transition-colors duration-300">
+      <main className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
         <CustomCursor />
         <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
         <Navbar

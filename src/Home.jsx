@@ -320,7 +320,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                                     <item.icon size={44} />
                                 </div>
                                 <h4 className="text-2xl mb-4 uppercase font-black text-text-main">{item.title}</h4>
-                                <p className="text-text-dim max-w-[250px]">{item.desc}</p>
+                                <p className="text-text-dim max-w-xs mx-auto md:max-w-[250px]">{item.desc}</p>
                             </div>
                         ))}
                     </div>
