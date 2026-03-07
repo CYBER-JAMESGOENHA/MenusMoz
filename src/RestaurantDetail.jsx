@@ -110,8 +110,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: `MenusMOZ — ${restaurant.name}`,
-                    text: `Olha este menu incrível no MenusMOZ: ${restaurant.description}`,
+                    title: `Locais de Moz — ${restaurant.name}`,
+                    text: `Olha este menu incrível no Locais de Moz: ${restaurant.description}`,
                     url: window.location.href,
                 });
             } catch (err) {
@@ -134,7 +134,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     }
 
     const isFavorite = favorites.includes(restaurant.id);
-    const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do MenusMOZ.`)}`;
+    const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do Locais de Moz.`)}`;
     const currentCategory = restaurant.menuCategories[activePage];
 
     return (
@@ -152,6 +152,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                         <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         <span className="font-bold pr-1 text-sm md:text-base">{t.back}</span>
                     </Link>
+
                     <button
                         onClick={() => { toggleFavorite(restaurant.id); triggerHaptic(); }}
                         className={`glass p-3 md:p-4 rounded-full transition-all border-none shadow-lg ${isFavorite ? 'bg-primary text-white scale-110' : 'hover:bg-white text-text-main'}`}
@@ -254,7 +255,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                     {/* Category Header — Garamond style */}
                                     <div className="text-center mb-10">
                                         <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-primary/60 mb-3">
-                                            MenusMOZ — Seleção
+                                            Locais de Moz — Seleção
                                         </p>
                                         <h2
                                             className="text-4xl md:text-6xl font-black tracking-tight text-text-main leading-none"
@@ -363,7 +364,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                 >
                                     "Simplesmente o melhor da cidade. O atendimento é impecável e os sabores são autênticos."
                                 </p>
-                                <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— Cliente Verificado, MenusMOZ</p>
+                                <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— Cliente Verificado, Locais de Moz</p>
                             </div>
 
                             {/* Scroll hint on mobile */}

@@ -87,7 +87,7 @@ export default function Map({ lang }) {
                                 <Navigation className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/5 pointer-events-none" size={400} />
 
                                 {/* Pins */}
-                                {filteredRestaurants.map((rest, idx) => (
+                                {filteredRestaurants.map((rest) => (
                                     <button
                                         key={rest.id}
                                         onClick={() => setSelectedRestaurant(rest)}

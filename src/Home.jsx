@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Utensils, Heart, Tag, Star } from 'lucide-react';
+import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -88,8 +88,8 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                 <p className="text-text-dim text-sm mb-6 line-clamp-2">{restaurant.description}</p>
 
                 <div className="space-y-3">
-                    {previewCategory.items.slice(0, 3).map((item, idx) => (
-                        <div key={idx} className="flex justify-between items-center group/item">
+                    {previewCategory.items.slice(0, 3).map((item) => (
+                        <div key={item.name} className="flex justify-between items-center group/item">
                             <span className="text-sm border-b border-border-subtle flex-1 mr-4 pb-1 text-text-dim">{item.name}</span>
                             <span className="font-mono text-primary font-bold text-sm">{item.price}</span>
                         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X, Search, ChevronRight } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import Home from './Home';
@@ -16,7 +16,6 @@ const NavbarSearch = ({ lang }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const searchRef = useRef(null);
-  const navigate = useNavigate();
   const t = translations[lang];
 
   const handleSearch = (e) => {
@@ -154,9 +153,10 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={onLoginOpen}
-            className="hidden md:block bg-primary text-white px-6 py-2.5 rounded-full font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
+            className="login-moz-btn hidden md:flex items-center gap-2"
           >
-            {t.login}
+            <span className="login-moz-lens">🇲🇿</span>
+            <span className="login-moz-label">{t.login}</span>
           </button>
 
           {/* Mobile Menu Toggle */}

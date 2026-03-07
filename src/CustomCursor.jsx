@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
 export default function CustomCursor() {
     const cursorRef = useRef(null);
     const followerRef = useRef(null);
-    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         const cursor = cursorRef.current;
@@ -30,13 +29,11 @@ export default function CustomCursor() {
 
         const handleHoverStart = (e) => {
             if (e.target.closest('button, a, input, [role="button"]')) {
-                setIsHovering(true);
                 gsap.to(follower, { scale: 2.5, backgroundColor: 'rgba(255, 107, 53, 0.15)', duration: 0.3 });
             }
         };
 
         const handleHoverEnd = () => {
-            setIsHovering(false);
             gsap.to(follower, { scale: 1, backgroundColor: 'transparent', duration: 0.3 });
         };
 
