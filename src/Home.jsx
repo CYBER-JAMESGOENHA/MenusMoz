@@ -176,17 +176,19 @@ const HomeSearch = ({ lang }) => {
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mb-8 relative z-[100]">
-            <div className="group relative">
-                <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-3xl group-hover:bg-primary/20 transition-all duration-500" />
-                <div className="relative flex items-center glass border border-border-subtle rounded-3xl px-6 py-5 shadow-2xl">
-                    <Search size={24} className="text-primary shrink-0 mr-4" />
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 pt-32 md:pt-40 mb-8 relative z-[100]">
+            <div className="group relative transform transition-all duration-300 hover:-translate-y-1">
+                {/* Subtle animated glowing border effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-lg opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+
+                <div className="relative flex items-center bg-surface/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] px-8 py-5 md:py-6 shadow-2xl">
+                    <Search size={28} className="text-primary shrink-0 mr-4" />
                     <input
                         type="text"
                         placeholder={t.hero?.search_placeholder || 'O que você quer comer hoje?'}
                         value={searchQuery}
                         onChange={handleSearch}
-                        className="bg-transparent border-none outline-none text-xl text-text-main placeholder:text-text-dim/40 w-full font-medium"
+                        className="bg-transparent border-none outline-none text-xl md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-heading font-medium"
                     />
                 </div>
 
