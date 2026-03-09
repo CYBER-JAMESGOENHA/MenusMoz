@@ -103,9 +103,16 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${isScrolled || isMenuOpen ? 'py-4' : 'py-8'}`}>
       <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-500 ${isScrolled || isMenuOpen ? 'glass px-6 py-3 mx-4 rounded-3xl' : 'bg-transparent px-4'}`}>
-        <Link to="/" className="flex items-center z-[1001]" onClick={() => setIsMenuOpen(false)}>
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
+        <Link to="/" className="flex items-center gap-3 z-[1001]" onClick={() => setIsMenuOpen(false)}>
+          <div className="w-10 h-10 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
+          {/* Logo Name: Hidden on mobile since we center it below, shown on desktop */}
+          <span className="hidden lg:block font-black text-xl tracking-tighter text-text-main whitespace-nowrap">Locais de Moz</span>
         </Link>
+
+        {/* Website Name centered on Mobile */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-lg tracking-tighter text-text-main italic z-[1000] pointer-events-none lg:hidden">
+          Locais de Moz
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 font-medium text-text-main/80">
