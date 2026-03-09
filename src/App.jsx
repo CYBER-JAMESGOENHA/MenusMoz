@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X, Search, ChevronRight } from 'lucide-react';
+import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import Home from './Home';
 import RestaurantDetail from './RestaurantDetail';
@@ -103,11 +103,21 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   return (
     <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${isScrolled || isMenuOpen ? 'py-4' : 'py-8'}`}>
       <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-500 ${isScrolled || isMenuOpen ? 'glass px-6 py-3 mx-4 rounded-3xl' : 'bg-transparent px-4'}`}>
-        <Link to="/" className="flex items-center gap-3 z-[1001]" onClick={() => setIsMenuOpen(false)}>
-          <div className="w-10 h-10 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
-          {/* Logo Name: Hidden on mobile since we center it below, shown on desktop */}
-          <span className="hidden lg:block font-black text-xl tracking-tighter text-text-main whitespace-nowrap">Locais de Moz</span>
-        </Link>
+        <div className="flex items-center gap-3 z-[1001]">
+          {/* Mobile Menu Toggle (Left Side on Mobile) */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20"
+          >
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
+          {/* Desktop Logo */}
+          <Link to="/" className="hidden lg:flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
+            <div className="w-10 h-10 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
+            <span className="font-black text-xl tracking-tighter text-text-main whitespace-nowrap">Locais de Moz</span>
+          </Link>
+        </div>
 
         {/* Website Name centered on Mobile */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-lg tracking-tighter text-text-main italic z-[1000] pointer-events-none lg:hidden">
@@ -166,13 +176,14 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
             <span className="login-moz-label">{t.login}</span>
           </button>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/20 z-[1001]"
+          {/* Mobile Ordering Icon (Right Side on Mobile) */}
+          <Link
+            to="/"
+            className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl glass hover:bg-primary/10 transition-all text-text-main shadow-sm z-[1001]"
           >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <ShoppingBag size={20} />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+          </Link>
         </div>
       </div>
 
