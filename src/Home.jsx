@@ -207,11 +207,11 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-20 reveal overflow-hidden">
-                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-12 reveal overflow-hidden">
+                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}
-                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden">
+                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden pointer-events-none">
                             <img
                                 key={`img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
@@ -220,35 +220,32 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             />
                         </div>
                         {/* Mobile background */}
-                        <div className="absolute inset-0 lg:hidden -z-0 overflow-hidden">
+                        <div className="absolute inset-0 lg:hidden -z-0 overflow-hidden pointer-events-none">
                             <img
                                 key={`mob-img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
                                 alt={FEATURED_DISHES[currentSlide].name}
-                                className="slide-image w-full h-full object-cover opacity-30"
+                                className="slide-image w-full h-full object-cover opacity-40"
                             />
                         </div>
 
-                        <div className="relative z-10 max-w-xl p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
-                            <span className="text-accent font-bold uppercase tracking-[0.3em] text-sm">
+                        <div className="relative z-10 max-w-xl p-6 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                            <span className="text-accent font-bold uppercase tracking-[0.3em] text-[10px] md:text-sm">
                                 {FEATURED_DISHES[currentSlide].tagline}
                             </span>
-                            <h2 className="text-4xl md:text-6xl mt-6 mb-8 uppercase italic font-black leading-none text-white whitespace-pre-line">
-                                {FEATURED_DISHES[currentSlide].name.replace(' ', '\n')}
+                            <h2 className="text-3xl md:text-6xl mt-3 md:mt-6 mb-4 md:mb-8 uppercase italic font-black leading-none text-white whitespace-normal md:whitespace-pre-line">
+                                {FEATURED_DISHES[currentSlide].name}
                             </h2>
-                            <p className="text-lg md:text-xl text-white/70 mb-12 font-medium">
+                            <p className="text-sm md:text-xl text-white/70 mb-6 md:mb-12 font-medium line-clamp-2 md:line-clamp-none">
                                 {FEATURED_DISHES[currentSlide].desc}
                             </p>
                             <div className="flex flex-wrap items-center gap-8">
                                 <Link
                                     to={FEATURED_DISHES[currentSlide].link}
-                                    className="bg-primary px-10 py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all text-lg whitespace-nowrap"
+                                    className="bg-primary px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all text-base md:text-lg whitespace-nowrap"
                                 >
                                     {th.view_restaurant}
                                 </Link>
-                                <div className="font-mono text-3xl font-bold text-accent">
-                                    {FEATURED_DISHES[currentSlide].price}
-                                </div>
                             </div>
                         </div>
 
@@ -268,8 +265,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Categories */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mb-20 overflow-x-auto no-scrollbar py-4">
-                    <div className="flex gap-3 min-w-max">
+                <section className="max-w-7xl mx-auto px-4 mb-20 overflow-x-auto no-scrollbar py-4 w-full">
+                    <div className="flex gap-3 min-w-0 md:min-w-max">
                         {CATEGORIES.map(cat => (
                             <button
                                 key={cat}

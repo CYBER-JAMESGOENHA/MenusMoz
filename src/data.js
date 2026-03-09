@@ -265,28 +265,28 @@ export const CATEGORIES = [
 export const FEATURED_DISHES = [
   {
     id: 1,
-    name: "Carne à Zambeziana",
-    tagline: "Destaque do Dia",
-    desc: "Pedaços suculentos de carne grelhada marinados em leite de coco e piri-piri, servidos com arroz e acompanhamentos da casa.",
-    price: "850 MT",
+    name: "O Cantinho do Gato",
+    tagline: "Sabor Tradicional 🇲🇿",
+    desc: "A autêntica experiência da gastronomia moçambicana. Venha provar o melhor da nossa terra.",
+    price: "",
     image: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop",
     link: "/restaurante/cantinho-do-gato"
   },
   {
     id: 2,
-    name: "Bacalhau à Lagareiro",
-    tagline: "Especial Português",
-    desc: "Posta de bacalhau premium assada com azeite virgem, batatas a murro e grelos salteados.",
-    price: "1.450 MT",
+    name: "Pátio do Luís",
+    tagline: "Requinte & Tradição",
+    desc: "O melhor da cozinha portuguesa com um toque moderno. Pratos premium para momentos especiais.",
+    price: "",
     image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1200&auto=format&fit=crop",
     link: "/restaurante/patio-luis"
   },
   {
     id: 3,
-    name: "Grelhada Mista do Mar",
-    tagline: "Frescura Suprema",
-    desc: "Uma seleção dos melhores mariscos do dia: lagosta, camarão tigre e lulas, grelhados no carvão.",
-    price: "2.800 MT",
+    name: "Sabor do Mar",
+    tagline: "Frescura Absoluta 🌊",
+    desc: "Mariscos frescos da baía de Maputo direto para a sua mesa. O destino número 1 para amantes do mar.",
+    price: "",
     image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=1200&auto=format&fit=crop",
     link: "/restaurante/sabor-do-mar"
   }
