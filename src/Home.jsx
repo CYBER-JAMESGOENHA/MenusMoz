@@ -246,25 +246,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
         }
     }, [currentSlide]);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.utils.toArray(".restaurant-card").forEach((card, i) => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.8,
-                    delay: i % 3 * 0.1,
-                    ease: "power2.out"
-                });
-            });
-        });
-        return () => ctx.revert();
-    }, []);
 
     const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
