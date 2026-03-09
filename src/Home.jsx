@@ -176,12 +176,12 @@ const HomeSearch = ({ lang }) => {
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-4 md:mt-6 mb-4 relative z-[100]">
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-4 md:mt-4 mb-4 relative z-[100]">
             <div className="group relative transform transition-all duration-300 hover:-translate-y-1">
                 {/* Subtle animated glowing border effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-lg opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
 
-                <div className="relative flex items-center bg-surface/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] px-8 py-5 md:py-6 shadow-2xl">
+                <div className="relative flex items-center bg-surface/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] px-8 py-5 md:py-4 shadow-2xl">
                     <Search size={28} className="text-primary shrink-0 mr-4" />
                     <input
                         type="text"
@@ -271,8 +271,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-20 md:pt-24 mb-2 reveal overflow-hidden">
-                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-20 md:pt-20 mb-2 reveal overflow-hidden">
+                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[400px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}
                         <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden pointer-events-none">
@@ -293,14 +293,14 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             />
                         </div>
 
-                        <div className="relative z-10 max-w-xl p-6 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                        <div className="relative z-10 max-w-xl p-6 md:p-10 slide-content" key={`content-${currentSlide}`}>
                             <span className="text-accent font-bold uppercase tracking-[0.3em] text-[10px] md:text-sm">
                                 {FEATURED_DISHES[currentSlide].tagline}
                             </span>
-                            <h2 className="text-3xl md:text-6xl mt-3 md:mt-6 mb-4 md:mb-8 uppercase italic font-black leading-none text-white whitespace-normal md:whitespace-pre-line">
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl mt-3 md:mt-4 mb-4 md:mb-4 uppercase italic font-black leading-none text-white whitespace-normal md:whitespace-pre-line">
                                 {FEATURED_DISHES[currentSlide].name}
                             </h2>
-                            <p className="text-sm md:text-xl text-white/70 mb-6 md:mb-12 font-medium line-clamp-2 md:line-clamp-none">
+                            <p className="text-sm md:text-lg lg:text-xl text-white/70 mb-6 md:mb-6 font-medium line-clamp-2 md:line-clamp-none">
                                 {FEATURED_DISHES[currentSlide].desc}
                             </p>
                             <div className="flex flex-wrap items-center gap-8">
