@@ -134,6 +134,87 @@ const EmptyFavorites = ({ lang }) => {
     );
 };
 
+const HomeSearch = ({ lang }) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const searchRef = useRef(null);
+    const t = translations[lang];
+
+    const handleSearch = (e) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        if (query.length > 1) {
+            const filteredRest = RESTAURANTS.filter(r =>
+                r.name.toLowerCase().includes(query.toLowerCase()) ||
+                r.cuisine.toLowerCase().includes(query.toLowerCase())
+            ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug }));
+
+            const filteredDishes = [];
+            RESTAURANTS.forEach(r => {
+                r.menuCategories.forEach(cat => {
+                    cat.items.forEach(item => {
+                        if (item.name.toLowerCase().includes(query.toLowerCase())) {
+                            filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
+                        }
+                    });
+                });
+            });
+            setSuggestions([...filteredRest, ...filteredDishes.slice(0, 5)]);
+        } else {
+            setSuggestions([]);
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (searchRef.current && !searchRef.current.contains(e.target)) {
+                setSuggestions([]);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    return (
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mb-8 relative z-[100]">
+            <div className="group relative">
+                <div className="absolute inset-0 bg-primary/10 blur-2xl rounded-3xl group-hover:bg-primary/20 transition-all duration-500" />
+                <div className="relative flex items-center glass border border-border-subtle rounded-3xl px-6 py-5 shadow-2xl">
+                    <Search size={24} className="text-primary shrink-0 mr-4" />
+                    <input
+                        type="text"
+                        placeholder={t.hero?.search_placeholder || 'O que você quer comer hoje?'}
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        className="bg-transparent border-none outline-none text-xl text-text-main placeholder:text-text-dim/40 w-full font-medium"
+                    />
+                </div>
+
+                {suggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-4 bg-surface/95 backdrop-blur-xl border border-border-subtle rounded-[2rem] shadow-2xl overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-300">
+                        {suggestions.map((s, i) => (
+                            <Link
+                                key={i}
+                                to={`/restaurante/${s.slug}`}
+                                onClick={() => { setSuggestions([]); setSearchQuery(''); }}
+                                className="flex items-center justify-between px-8 py-4 hover:bg-primary/10 transition-colors border-b border-border-subtle last:border-0"
+                            >
+                                <div>
+                                    <p className="font-bold text-lg text-text-main">{s.name}</p>
+                                    <p className="text-xs text-text-dim uppercase tracking-widest font-bold">
+                                        {s.type === 'restaurant' ? 'Estabelecimento' : `Prato • ${s.restaurant}`}
+                                    </p>
+                                </div>
+                                <ChevronRight size={18} className="text-primary" />
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
 export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites }) {
     const t = translations[lang];
     const th = t.home;
@@ -205,9 +286,11 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
+            {!showOnlyFavorites && <HomeSearch lang={lang} />}
+
             {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-12 reveal overflow-hidden">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 mb-12 reveal overflow-hidden">
                     <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}
