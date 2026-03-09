@@ -290,7 +290,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-2 reveal overflow-hidden">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-8 md:pt-10 mb-2 reveal overflow-hidden">
                     <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}
