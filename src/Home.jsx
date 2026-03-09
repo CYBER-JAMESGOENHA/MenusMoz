@@ -176,7 +176,7 @@ const HomeSearch = ({ lang }) => {
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-6 md:mt-10 mb-6 relative z-[100]">
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-4 md:mt-6 mb-4 relative z-[100]">
             <div className="group relative transform transition-all duration-300 hover:-translate-y-1">
                 {/* Subtle animated glowing border effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-lg opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
@@ -290,7 +290,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Hero, only on main page */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-4 reveal overflow-hidden">
+                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-28 md:pt-36 mb-2 reveal overflow-hidden">
                     <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[550px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
 
                         {/* Active Slide Background */}
@@ -350,7 +350,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Categories */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mb-6 overflow-x-auto no-scrollbar py-2 w-full">
+                <section className="max-w-7xl mx-auto px-4 mb-4 overflow-x-auto no-scrollbar py-2 w-full">
                     <div className="flex gap-3 min-w-0 md:min-w-max">
                         {CATEGORIES.map(cat => (
                             <button
@@ -369,7 +369,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {/* Restaurant Grid */}
-            <section className="max-w-7xl mx-auto px-4 pb-10">
+            <section className="max-w-7xl mx-auto px-4 pb-6">
                 <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <EmptyFavorites lang={lang} />
@@ -389,8 +389,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* How it works — only on main page */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mb-10 text-center">
-                    <h2 className="text-4xl md:text-5xl mb-6 md:mb-10 tracking-tighter italic">{th.how_it_works}</h2>
+                <section className="max-w-7xl mx-auto px-4 mb-6 text-center">
+                    <h2 className="text-4xl md:text-5xl mb-4 md:mb-6 tracking-tighter italic">{th.how_it_works}</h2>
                     <div className="grid md:grid-cols-3 gap-12">
                         {[
                             { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
