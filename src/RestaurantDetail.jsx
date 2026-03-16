@@ -342,6 +342,25 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                 </div>
                             </div>
 
+                            {/* Featured Dish Spotlight */}
+                            <div className="bg-moz-green/5 border border-moz-green/10 p-8 rounded-[3rem] relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-moz-green/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-moz-green/20 transition-all" />
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 bg-moz-green/20 rounded-xl flex items-center justify-center text-moz-green">
+                                        <Star size={20} fill="currentColor" />
+                                    </div>
+                                    <span className="font-black text-xs uppercase tracking-[0.2em] text-moz-green">Sugestão do Chef</span>
+                                </div>
+                                <h4 className="text-2xl font-display italic text-text-main mb-3">O Nosso Famoso {currentCategory.items[0].name}</h4>
+                                <p className="text-text-dim text-sm leading-relaxed mb-6 italic">"{currentCategory.items[0].desc}"</p>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-2xl font-black text-moz-green">{currentCategory.items[0].price}</span>
+                                    <button className="bg-white text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-moz-green hover:text-white transition-all">
+                                        <ChevronRight size={20} />
+                                    </button>
+                                </div>
+                            </div>
+
                             {/* Review Box */}
                             <div className="bg-surface border border-border-subtle p-8 rounded-[3rem] shadow-xl relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8" />
@@ -362,13 +381,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                     className="italic text-lg mb-6 text-text-main relative z-10 leading-relaxed"
                                     style={{ fontFamily: "'Playfair Display', serif" }}
                                 >
-                                    "Simplesmente o melhor da cidade. O atendimento é impecável e os sabores são autênticos."
+                                    "Simplesmente o melhor da cidade. O atendimento é impecável e os sabores são autênticos. Recomendo vivamente a qualquer pessoa que queira o verdadeiro sabor de Moz."
                                 </p>
                                 <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— Cliente Verificado, Locais de Moz</p>
                             </div>
 
                             {/* Scroll hint on mobile */}
-                            <div className="flex flex-col items-center gap-2 text-text-dim/30 lg:hidden">
+                            <div className="flex flex-col items-center gap-2 text-text-dim/30 lg:hidden py-12">
                                 <ChevronDown size={18} className="animate-bounce" />
                                 <span className="text-xs uppercase tracking-widest font-bold">Deslize para mais</span>
                             </div>

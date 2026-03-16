@@ -12,13 +12,14 @@ export default function Map({ lang }) {
     const t = translations[lang];
 
     useEffect(() => {
+         window.scrollTo(0, 0);
         const ctx = gsap.context(() => {
             gsap.from(".reveal", {
-                y: 20,
+                y: 40,
                 opacity: 0,
-                duration: 0.6,
+                duration: 1.2,
                 stagger: 0.1,
-                ease: "power2.out"
+                ease: "power4.out"
             });
         }, containerRef);
         return () => ctx.revert();
@@ -30,112 +31,157 @@ export default function Map({ lang }) {
     );
 
     return (
-        <div ref={containerRef} className="pt-32 pb-20 min-h-screen bg-bg">
+        <div ref={containerRef} className="pt-48 pb-20 min-h-screen bg-bg selection:bg-primary/20">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12 reveal">
-                    <div>
-                        <Link to="/" className="flex items-center gap-2 text-primary font-bold mb-4 hover:gap-3 transition-all">
-                            <ChevronLeft size={20} /> {t.detail.back}
-                        </Link>
-                        <h1 className="text-4xl md:text-6xl font-heading font-black tracking-tighter text-text-main">
-                            Explorar o <span className="text-primary italic">Mapa</span>
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-20 reveal">
+                    <div className="max-w-2xl">
+                         <span className="bg-primary/10 text-primary px-8 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.4em] mb-10 inline-block">
+                            Geolocalização
+                        </span>
+                        <h1 className="text-6xl md:text-9xl mb-8 tracking-tighter text-text-main font-display italic leading-[0.85]">
+                            Roteiro de <span className="text-primary italic">Moz</span>
                         </h1>
+                        <p className="text-xl md:text-3xl text-text-dim font-medium leading-relaxed italic">
+                            Encontre os santuários da gastronomia perto de si através do nosso mapa interactivo.
+                        </p>
                     </div>
 
-                    <div className="relative w-full md:w-96">
+                    <div className="relative w-full lg:w-[450px] group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
                         <input
                             type="text"
-                            placeholder={t.hero.search_placeholder}
+                            placeholder={t.hero?.search_placeholder || 'Onde quer ir?'}
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full h-14 pl-6 pr-12 rounded-2xl glass border-border-subtle focus:outline-none focus:ring-2 focus:ring-primary/20 text-text-main"
+                            className="relative w-full h-20 pl-8 pr-16 rounded-3xl bg-surface border-none focus:ring-4 focus:ring-primary/10 text-xl font-display font-medium text-text-main placeholder:text-text-dim/30 shadow-2xl transition-all"
                         />
-                        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim" size={20} />
+                        <Search className="absolute right-8 top-1/2 -translate-y-1/2 text-primary" size={28} />
                     </div>
                 </div>
 
-                <div className="grid lg:grid-cols-4 gap-8 h-[70vh] reveal">
+                <div className="grid lg:grid-cols-4 gap-12 h-[80vh] reveal items-stretch">
                     {/* Sidebar List */}
-                    <div className="lg:col-span-1 bg-surface rounded-[2rem] border border-border-subtle overflow-hidden flex flex-col">
-                        <div className="p-6 border-b border-border-subtle">
-                            <p className="text-xs font-bold uppercase tracking-widest text-text-dim">Resultados ({filteredRestaurants.length})</p>
+                    <div className="lg:col-span-1 glass bg-surface/50 rounded-[3.5rem] border border-border-subtle overflow-hidden flex flex-col shadow-premium">
+                        <div className="p-8 border-b border-border-subtle bg-white/50 dark:bg-black/50 backdrop-blur-md">
+                            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-text-main">Destinos ({filteredRestaurants.length})</h3>
                         </div>
-                        <div className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+                        <div className="flex-1 overflow-y-auto no-scrollbar p-6 space-y-4">
                             {filteredRestaurants.map(rest => (
                                 <button
                                     key={rest.id}
                                     onClick={() => setSelectedRestaurant(rest)}
-                                    className={`w-full text-left p-4 rounded-2xl transition-all border ${selectedRestaurant?.id === rest.id ? 'bg-primary/10 border-primary shadow-lg shadow-primary/5' : 'bg-bg/50 border-transparent hover:border-border-subtle'}`}
+                                    className={`w-full text-left p-6 rounded-[2.5rem] transition-all border duration-500 group ${selectedRestaurant?.id === rest.id ? 'bg-primary/5 border-primary/30 shadow-premium scale-[1.02]' : 'bg-transparent border-transparent hover:border-border-subtle hover:bg-white/30'}`}
                                 >
-                                    <h4 className="font-bold text-text-main mb-1">{rest.name}</h4>
-                                    <p className="text-xs text-text-dim uppercase tracking-wider mb-2">{rest.cuisine}</p>
-                                    <div className="flex items-center gap-2 text-[10px] text-text-dim/60">
-                                        <MapPin size={10} /> {rest.location}
+                                    <div className="flex flex-col gap-1">
+                                        <h4 className={`font-black uppercase text-xs tracking-widest transition-colors ${selectedRestaurant?.id === rest.id ? 'text-primary' : 'text-text-main group-hover:text-primary'}`}>{rest.name}</h4>
+                                        <p className="text-[10px] text-text-dim/60 font-black uppercase tracking-[0.2em]">{rest.cuisine}</p>
+                                    </div>
+                                    <div className="mt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-text-dim/40">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-moz-green animate-pulse" /> {rest.location}
                                     </div>
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Styled Map Placeholder */}
-                    <div className="lg:col-span-3 relative bg-surface rounded-[3rem] border border-border-subtle overflow-hidden shadow-2xl">
-                        {/* Mock Map Background (Abstract Grid) */}
-                        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(var(--border-subtle) 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+                    {/* Styled Map Container */}
+                    <div className="lg:col-span-3 h-[70vh] lg:h-auto relative bg-surface rounded-[4rem] border border-border-subtle overflow-hidden shadow-premium">
+                        {/* Map Grid Pattern */}
+                        <div className="absolute inset-0 opacity-20 pointer-events-none" 
+                             style={{ 
+                                backgroundImage: `radial-gradient(circle at 2px 2px, var(--color-primary-dark) 1px, transparent 0)`, 
+                                backgroundSize: '60px 60px' 
+                             }} 
+                        />
+                        
+                         {/* Animated Glowing Blobs */}
+                        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+                        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-moz-green/5 rounded-full blur-[120px]" />
 
-                        <div className="absolute inset-0 flex items-center justify-center p-20">
-                            <div className="relative w-full h-full border-2 border-dashed border-border-subtle/50 rounded-[2rem] flex items-center justify-center bg-bg/20 overflow-hidden">
-                                <Navigation className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/5 pointer-events-none" size={400} />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="relative w-full h-full p-20 flex items-center justify-center">
+                                {/* Large Navigation Icon as Background */}
+                                <Navigation className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/[0.03] pointer-events-none" size={600} strokeWidth={0.5} />
 
-                                {/* Pins */}
+                                {/* Interactive Pins */}
                                 {filteredRestaurants.map((rest) => (
-                                    <button
+                                    <div
                                         key={rest.id}
-                                        onClick={() => setSelectedRestaurant(rest)}
-                                        className="absolute transform -translate-x-1/2 -translate-y-1/2 group z-20"
+                                        className="absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-700 hover:z-50"
                                         style={{
                                             left: `${(rest.coords.lng + 35) * 5}%`,
                                             top: `${(Math.abs(rest.coords.lat) - 15) * 8}%`
                                         }}
                                     >
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${selectedRestaurant?.id === rest.id ? 'bg-primary text-white scale-125 shadow-xl shadow-primary/40' : 'bg-white text-primary shadow-lg hover:scale-110'}`}>
-                                            <MapPin size={20} fill={selectedRestaurant?.id === rest.id ? "white" : "none"} />
-                                        </div>
-                                        <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-black text-white px-3 py-1 rounded-lg text-xs whitespace-nowrap font-bold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none ${selectedRestaurant?.id === rest.id ? 'opacity-100 translate-y-0' : 'translate-y-2'}`}>
-                                            {rest.name}
-                                        </div>
-                                    </button>
+                                        <button
+                                            onClick={() => setSelectedRestaurant(rest)}
+                                            className="group relative flex flex-col items-center"
+                                        >
+                                            <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-700 shadow-2xl ${selectedRestaurant?.id === rest.id ? 'bg-primary text-white scale-125 ring-[12px] ring-primary/10' : 'bg-white/90 backdrop-blur-md text-primary hover:scale-110 hover:bg-white border border-border-subtle shadow-black/5'}`}>
+                                                <MapPin size={28} fill={selectedRestaurant?.id === rest.id ? "white" : "none"} />
+                                            </div>
+                                            
+                                            {/* Tooltip Label */}
+                                            <div className={`mt-4 bg-black/90 backdrop-blur-xl text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl transition-all duration-500 whitespace-nowrap pointer-events-none ${selectedRestaurant?.id === rest.id ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90 group-hover:opacity-100 group-hover:translate-y-0'}`}>
+                                                {rest.name}
+                                            </div>
+                                        </button>
+                                    </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Selected Info Overlay */}
+                        {/* Selected Info Card Overlay */}
                         {selectedRestaurant && (
-                            <div className="absolute bottom-8 left-8 right-8 md:right-auto md:w-96 bg-surface p-6 rounded-[2rem] border border-primary/20 shadow-2xl reveal shadow-primary/10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <div className="flex gap-4 mb-6">
-                                    <img src={selectedRestaurant.image} className="w-16 h-16 rounded-xl object-cover" alt="" />
-                                    <div>
-                                        <h3 className="text-xl font-bold text-text-main">{selectedRestaurant.name}</h3>
-                                        <p className="text-xs text-text-dim uppercase tracking-widest">{selectedRestaurant.cuisine}</p>
+                            <div className="absolute bottom-10 left-10 right-10 md:right-auto md:w-[450px] overflow-hidden bg-surface/80 backdrop-blur-3xl p-8 rounded-[3.5rem] border border-white/20 shadow-premium animate-in fade-in slide-in-from-bottom-8 duration-700">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16" />
+                                
+                                <div className="flex gap-8 mb-10 items-center">
+                                    <div className="relative shrink-0">
+                                        <img src={selectedRestaurant.image} className="w-24 h-24 rounded-3xl object-cover shadow-2xl" alt="" />
+                                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-moz-yellow rounded-2xl flex items-center justify-center text-black shadow-xl">
+                                             <Star size={18} fill="currentColor" />
+                                        </div>
                                     </div>
-                                    <button onClick={() => setSelectedRestaurant(null)} className="ml-auto text-text-dim hover:text-text-main">
-                                        <ChevronLeft className="rotate-90" size={20} />
+                                    <div className="flex-1">
+                                         <div className="bg-primary/10 text-primary px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest inline-block mb-3">
+                                            Em Destaque
+                                        </div>
+                                        <h3 className="text-3xl font-display italic text-text-main leading-none mb-2">{selectedRestaurant.name}</h3>
+                                        <p className="text-[10px] text-text-dim/60 font-black uppercase tracking-[0.3em] font-mono">{selectedRestaurant.cuisine}</p>
+                                    </div>
+                                    <button onClick={() => setSelectedRestaurant(null)} className="absolute top-6 right-6 w-10 h-10 rounded-full glass flex items-center justify-center text-text-dim hover:text-primary transition-colors">
+                                        <X size={20} />
                                     </button>
                                 </div>
-                                <div className="flex gap-4">
-                                    <Link to={`/restaurante/${selectedRestaurant.slug}`} className="flex-1 bg-primary text-white py-3 rounded-xl font-bold text-center hover:bg-black transition-all">
-                                        Ver Menu
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Link to={`/restaurante/${selectedRestaurant.slug}`} className="bg-text-main text-surface py-5 rounded-2xl font-black text-xs uppercase tracking-widest text-center hover:bg-primary transition-all shadow-xl flex items-center justify-center gap-2">
+                                        Explorar Menu <ChevronRight size={14} />
                                     </Link>
-                                    <a href={`https://www.google.com/maps/search/?api=1&query=${selectedRestaurant.coords.lat},${selectedRestaurant.coords.lng}`} target="_blank" rel="noreferrer" className="glass px-4 rounded-xl flex items-center justify-center hover:bg-accent/20 transition-all text-text-main">
-                                        <Navigation size={18} />
+                                    <a 
+                                        href={`https://www.google.com/maps/search/?api=1&query=${selectedRestaurant.coords.lat},${selectedRestaurant.coords.lng}`} 
+                                        target="_blank" 
+                                        rel="noreferrer" 
+                                        className="glass flex items-center justify-center gap-3 rounded-2xl font-black text-xs uppercase tracking-widest text-text-main hover:bg-primary/5 transition-all"
+                                    >
+                                        <Navigation size={18} /> GPS
                                     </a>
                                 </div>
                             </div>
                         )}
 
+                        {/* Floating Interaction Helper */}
                         {!selectedRestaurant && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="bg-surface/80 backdrop-blur-md px-8 py-4 rounded-2xl border border-border-subtle flex items-center gap-3 text-text-dim">
-                                    <Info size={18} /> Clique num pin ou escolha na lista para explorar
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4">
+                                <div className="bg-primary/5 backdrop-blur-3xl px-12 py-6 rounded-[2.5rem] border border-primary/20 flex flex-col items-center gap-4 text-center animate-bounce-slow">
+                                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                                        <MapPin size={32} />
+                                    </div>
+                                    <div>
+                                         <p className="text-sm font-black uppercase tracking-[0.2em] text-text-main">Inicie a Exploração</p>
+                                         <p className="text-xs font-medium text-text-dim mt-1 italic opacity-60">"Toque num santuário no mapa para detalhar."</p>
+                                    </div>
                                 </div>
                             </div>
                         )}

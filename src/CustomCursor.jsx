@@ -4,63 +4,111 @@ import { gsap } from 'gsap';
 export default function CustomCursor() {
     const cursorRef = useRef(null);
     const followerRef = useRef(null);
+    const spotlightRef = useRef(null);
 
     useEffect(() => {
         const cursor = cursorRef.current;
         const follower = followerRef.current;
+        const spotlight = spotlightRef.current;
+
+        if (!cursor || !follower || !spotlight) return;
 
         const onMouseMove = (e) => {
+            const { clientX: x, clientY: y } = e;
+            
+            // Fast Dot
             gsap.to(cursor, {
-                x: e.clientX,
-                y: e.clientY,
+                x, y,
                 duration: 0.1,
-                ease: "power2.out"
+                ease: "none"
             });
+
+            // Fluid Ring
             gsap.to(follower, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.3,
+                x, y,
+                duration: 0.4,
                 ease: "power3.out"
+            });
+
+            // Large Spotlight
+            gsap.to(spotlight, {
+                x, y,
+                duration: 1.2,
+                ease: "power2.out"
             });
         };
 
-        const onMouseDown = () => gsap.to([cursor, follower], { scale: 0.8, duration: 0.2 });
-        const onMouseUp = () => gsap.to([cursor, follower], { scale: 1, duration: 0.2 });
-
         const handleHoverStart = (e) => {
-            if (e.target.closest('button, a, input, [role="button"]')) {
-                gsap.to(follower, { scale: 2.5, backgroundColor: 'rgba(255, 107, 53, 0.15)', duration: 0.3 });
+            const isClickable = e.target.closest('button, a, input, [role="button"], .interactive');
+            if (isClickable) {
+                gsap.to(follower, { 
+                    scale: 3, 
+                    backgroundColor: 'white',
+                    mixBlendMode: 'difference',
+                    borderWidth: 0,
+                    duration: 0.4,
+                    ease: "back.out(1.7)"
+                });
+                gsap.to(cursor, { scale: 0, duration: 0.3 });
             }
         };
 
         const handleHoverEnd = () => {
-            gsap.to(follower, { scale: 1, backgroundColor: 'transparent', duration: 0.3 });
+            gsap.to(follower, { 
+                scale: 1, 
+                backgroundColor: 'transparent',
+                mixBlendMode: 'normal',
+                borderWidth: 1,
+                duration: 0.4 
+            });
+            gsap.to(cursor, { scale: 1, duration: 0.3 });
+        };
+
+        const onMouseDown = () => {
+            gsap.to(follower, { scale: 0.6, duration: 0.2 });
+            gsap.to(cursor, { scale: 2, duration: 0.2 });
+        };
+        
+        const onMouseUp = () => {
+            gsap.to(follower, { scale: 1, duration: 0.2 });
+            gsap.to(cursor, { scale: 1, duration: 0.2 });
         };
 
         window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mouseover', handleHoverStart);
         window.addEventListener('mouseout', handleHoverEnd);
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mouseup', onMouseUp);
 
         return () => {
             window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mousedown', onMouseDown);
-            window.removeEventListener('mouseup', onMouseUp);
             window.removeEventListener('mouseover', handleHoverStart);
             window.removeEventListener('mouseout', handleHoverEnd);
+            window.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mouseup', onMouseUp);
         };
     }, []);
 
     return (
         <>
+            {/* Ambient Spotlight */}
             <div
-                ref={cursorRef}
-                className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+                ref={spotlightRef}
+                className="fixed top-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full pointer-events-none z-[0] -translate-x-1/2 -translate-y-1/2 blur-[120px] hidden md:block"
             />
+            
+            {/* The Main Ring */}
             <div
                 ref={followerRef}
-                className="fixed top-0 left-0 w-8 h-8 border border-primary/30 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+                className="fixed top-0 left-0 w-10 h-10 border border-primary/40 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 hidden md:block transition-[border-width] duration-300"
+                style={{ willChange: 'transform' }}
+            />
+
+            {/* The Precision Dot */}
+            <div
+                ref={cursorRef}
+                className="fixed top-0 left-0 w-1.5 h-1.5 bg-primary rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 hidden md:block shadow-primary-glow"
+                style={{ willChange: 'transform' }}
             />
         </>
     );

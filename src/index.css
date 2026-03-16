@@ -1,15 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: "Space Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-heading: "Playfair Display SC", serif;
+  --font-body: "Karla", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   --font-menu: "Playfair Display", "Cormorant Garamond", serif;
   --font-garamond: "Cormorant Garamond", serif;
+  --font-display: "Playfair Display", serif;
 
   /* Basic Colors */
-  --color-primary: #FF6B35;
-  --color-accent: #FFB347;
+  --color-primary: #DC2626;
+  --color-primary-dark: #991B1B;
+  --color-accent: #CA8A04;
+  --color-accent-light: #FACC15;
+  --color-secondary: #F87171;
+
+  /* Premium Palette */
+  --color-moz-green: #009A44;
+  --color-moz-yellow: #FCE300;
+  --color-moz-red: #CE1126;
 
   /* Dynamic Background and Text */
   --color-bg: var(--bg-color);
@@ -18,24 +27,27 @@
   --color-text-dim: var(--text-dim-color);
   --color-border-subtle: var(--border-color);
 
-  --radius-custom: 2rem;
-  --radius-custom-lg: 3rem;
+  --radius-custom: 2.5rem;
+  --radius-custom-lg: 4rem;
+
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.1);
+  --shadow-primary-glow: 0 0 40px -10px rgba(220, 38, 38, 0.4);
 }
 
 :root {
-  --bg-color: #F9F6F0;
+  --bg-color: #FDFAF4;
   --surface-color: #FFFFFF;
-  --text-color: #000000;
-  --text-dim-color: rgba(0, 0, 0, 0.6);
-  --border-color: rgba(0, 0, 0, 0.05);
+  --text-color: #1A1A1A;
+  --text-dim-color: #4B5563;
+  --border-color: rgba(0, 0, 0, 0.06);
 }
 
 .dark {
-  --bg-color: #121212;
-  --surface-color: #1E1E1E;
-  --text-color: #F9F6F0;
-  --text-dim-color: rgba(249, 246, 240, 0.6);
-  --border-color: rgba(255, 255, 255, 0.1);
+  --bg-color: #0A0A0A;
+  --surface-color: #161616;
+  --text-color: #F9FDF9;
+  --text-dim-color: #9CA3AF;
+  --border-color: rgba(255, 255, 255, 0.08);
 }
 
 @layer base {
@@ -69,35 +81,52 @@
   }
 
   .glass {
-    @apply backdrop-blur-md border border-border-subtle transition-all duration-300;
-    background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
+    @apply backdrop-blur-xl border border-border-subtle transition-all duration-500;
+    background-color: color-mix(in srgb, var(--surface-color), transparent 25%);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .glass {
+    background-color: rgba(22, 22, 22, 0.7);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
   }
 
   /* Premium Paper Texture */
   .paper-texture {
     position: relative;
     background-color: #FDFAF4;
-    background-image:
+    background-image: 
+      url("https://www.transparenttextures.com/patterns/handmade-paper.png"),
       radial-gradient(ellipse at 20% 50%, rgba(255, 248, 220, 0.4) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 50%, rgba(245, 235, 210, 0.3) 0%, transparent 60%);
+    box-shadow: 
+      inset 0 0 100px rgba(0, 0, 0, 0.02),
+      0 30px 60px -12px rgba(0, 0, 0, 0.25),
+      0 18px 36px -18px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
   }
 
   .dark .paper-texture {
     background-color: #1a1714;
-    background-image:
+    background-image: 
+      url("https://www.transparenttextures.com/patterns/dark-matter.png"),
       radial-gradient(ellipse at 20% 50%, rgba(60, 50, 30, 0.4) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 50%, rgba(50, 40, 25, 0.3) 0%, transparent 60%);
+    box-shadow: 
+      inset 0 0 100px rgba(0, 0, 0, 0.2),
+      0 30px 60px -12px rgba(0, 0, 0, 0.5);
   }
 
   .paper-texture::before {
-    content: "";
+    content: '';
     position: absolute;
-    inset: 0;
-    opacity: 0.04;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.05), transparent, rgba(0,0,0,0.05));
+    z-index: 5;
     pointer-events: none;
-    z-index: 1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
   }
 
   /* Menu Book Container */
@@ -163,7 +192,16 @@
   }
 
   .card-hover {
-    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl;
+    @apply transition-all duration-700 cubic-bezier(0.34, 1.56, 0.64, 1) hover:-translate-y-3;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark .card-hover:hover {
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
   }
 
   .dark .card-hover:hover {

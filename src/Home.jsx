@@ -26,12 +26,29 @@ const StarRating = ({ rating }) => {
     );
 };
 
+const EmptyFavorites = ({ lang }) => {
+    const t = lang === 'pt' ? 'Não tens favoritos ainda.' : 'No favorites yet.';
+    const sub = lang === 'pt' ? 'Explora os melhores sabores de Moçambique e guarda os teus preferidos aqui.' : 'Explore the best flavors of Mozambique and save your favorites here.';
+    const btn = lang === 'pt' ? 'Explorar Agora' : 'Explore Now';
+    return (
+        <div className="col-span-full py-32 text-center reveal">
+            <div className="w-32 h-32 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary mx-auto mb-10 shadow-premium">
+                <Heart size={64} />
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display mb-6 tracking-tight text-text-main italic">{t}</h2>
+            <p className="text-text-dim text-xl max-w-md mx-auto mb-12 font-medium leading-relaxed italic">"{sub}"</p>
+            <Link to="/" className="inline-flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-full font-black text-lg shadow-premium hover:shadow-primary-glow transition-all">
+                {btn} <ChevronRight size={24} />
+            </Link>
+        </div>
+    );
+};
+
 const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
     const t = translations[lang].home;
 
-    // Safely pick a category with items — prefer index 1, fallback to 0
     const previewCategory = restaurant.menuCategories.length > 1
         ? restaurant.menuCategories[1]
         : restaurant.menuCategories[0];
@@ -39,104 +56,83 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
     return (
         <div
             ref={cardRef}
-            className="group relative bg-surface rounded-[2rem] overflow-hidden card-hover border border-border-subtle"
+            className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative h-72 overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="absolute top-6 left-6 flex flex-col gap-2">
                     <div className="flex gap-2">
-                        <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-primary">
+                        <div className="bg-white/95 backdrop-blur-xl px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-primary shadow-sm">
                             {restaurant.cuisine}
                         </div>
-                        <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm ${checkIsOpen(restaurant.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
+                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] backdrop-blur-xl shadow-sm ${checkIsOpen(restaurant.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
                             {checkIsOpen(restaurant.hours) ? t.open_now : t.closed}
                         </div>
                     </div>
-                    {restaurant.offer && (
-                        <div className="bg-accent text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-1 shadow-lg self-start">
-                            <Tag size={10} /> {restaurant.offer}
-                        </div>
-                    )}
                 </div>
 
                 <button
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(restaurant.id); }}
-                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all ${isFavorite ? 'bg-primary text-white scale-110' : 'bg-white/50 text-black hover:bg-white'}`}
+                    className={`absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
                 >
-                    <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
+                    <Heart size={22} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
                 </button>
+                
+                <div className="absolute bottom-6 left-6 right-6 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                     <p className="text-white text-xs font-medium line-clamp-2 italic">"{restaurant.description}"</p>
+                </div>
             </div>
 
-            <div className="p-5 md:p-8">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="text-2xl text-text-main">{restaurant.name}</h3>
+            <div className="p-8 md:p-10">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                    <h3 className="text-3xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
-                        <div className="flex items-center gap-1 shrink-0 mt-1">
+                        <div className="flex flex-col items-end gap-1 shrink-0 mt-1">
                             <StarRating rating={restaurant.rating} />
                             {restaurant.reviewCount && (
-                                <span className="text-[10px] text-text-dim ml-1">({restaurant.reviewCount})</span>
+                                <span className="text-[10px] font-bold text-text-dim uppercase tracking-widest">{restaurant.reviewCount} {lang === 'pt' ? 'avaliações' : 'reviews'}</span>
                             )}
                         </div>
                     )}
                 </div>
-                <p className="text-text-dim text-sm mb-6 line-clamp-2">{restaurant.description}</p>
 
-                <div className="space-y-3">
-                    {previewCategory.items.slice(0, 3).map((item) => (
-                        <div key={item.name} className="flex justify-between items-center group/item">
-                            <span className="text-sm border-b border-border-subtle flex-1 mr-4 pb-1 text-text-dim">{item.name}</span>
-                            <span className="font-mono text-primary font-bold text-sm">{item.price}</span>
+                <div className="space-y-4 mb-8">
+                    {previewCategory.items.slice(0, 2).map((item) => (
+                        <div key={item.name} className="flex justify-between items-end group/item">
+                            <div className="flex flex-col">
+                                <span className="text-sm font-bold text-text-main">{item.name}</span>
+                                <span className="text-[10px] text-text-dim uppercase tracking-wider">{previewCategory.name}</span>
+                            </div>
+                            <div className="flex-1 border-b border-dotted border-border-subtle mx-4 mb-1.5" />
+                            <span className="font-mono text-primary font-black text-sm">{item.price}</span>
                         </div>
                     ))}
                 </div>
 
-                <div className={`mt-8 transition-all duration-500 scale-y-0 origin-top h-0 ${isHovered ? 'scale-y-100 h-12' : ''}`}>
-                    <Link
-                        to={`/restaurante/${restaurant.slug}`}
-                        className="w-full bg-black text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary transition-colors"
-                    >
-                        {t.view_full_menu} <ChevronRight size={16} />
-                    </Link>
-                </div>
+                <Link
+                    to={`/restaurante/${restaurant.slug}`}
+                    className="w-full bg-text-main text-surface py-4 rounded-2xl font-black flex items-center justify-center gap-3 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                >
+                    {t.view_full_menu} <ChevronRight size={18} />
+                </Link>
             </div>
         </div>
     );
 };
 
-const EmptyFavorites = ({ lang }) => {
-    const isPt = lang === 'pt';
-    return (
-        <div className="col-span-full flex flex-col items-center justify-center py-10 text-center">
-            <div className="w-24 h-24 rounded-[2rem] bg-primary/10 flex items-center justify-center mb-8">
-                <Heart size={44} className="text-primary" />
-            </div>
-            <h3 className="text-3xl font-black tracking-tighter text-text-main mb-4">
-                {isPt ? 'Nenhum favorito ainda' : 'No favorites yet'}
-            </h3>
-            <p className="text-text-dim max-w-sm mb-10 text-lg">
-                {isPt
-                    ? 'Guarda os teus restaurantes favoritos tocando no ❤️ em qualquer card.'
-                    : 'Save your favorite restaurants by tapping ❤️ on any card.'}
-            </p>
-            <Link
-                to="/"
-                className="bg-primary text-white px-10 py-4 rounded-2xl font-black text-lg hover:brightness-110 transition-all shadow-lg shadow-primary/20"
-            >
-                {isPt ? 'Explorar Restaurantes' : 'Explore Restaurants'}
-            </Link>
-        </div>
-    );
-};
 
 const HomeSearch = ({ lang }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [isFocused, setIsFocused] = useState(false);
     const searchRef = useRef(null);
     const t = translations[lang];
 
@@ -169,6 +165,7 @@ const HomeSearch = ({ lang }) => {
         const handleClickOutside = (e) => {
             if (searchRef.current && !searchRef.current.contains(e.target)) {
                 setSuggestions([]);
+                setIsFocused(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -176,38 +173,48 @@ const HomeSearch = ({ lang }) => {
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-4 md:mt-4 mb-4 relative z-[100]">
-            <div className="group relative transform transition-all duration-300 hover:-translate-y-1">
-                {/* Subtle animated glowing border effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-primary rounded-[2.5rem] blur-lg opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-6 mb-8 relative z-[100]">
+            <div className={`group relative transform transition-all duration-700 ${isFocused ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}>
+                {/* Animated glowing border effect */}
+                <div className={`absolute -inset-1 bg-gradient-to-r from-primary via-moz-yellow to-moz-green rounded-[3rem] blur-xl transition-all duration-1000 ${isFocused ? 'opacity-40 animate-pulse' : 'opacity-0 group-hover:opacity-20'}`}></div>
 
-                <div className="relative flex items-center bg-surface/90 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-[2.5rem] px-8 py-5 md:py-4 shadow-2xl">
-                    <Search size={28} className="text-primary shrink-0 mr-4" />
+                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-[3rem] px-8 py-5 md:py-6 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
+                    <Search size={28} className={`transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/50'}`} />
                     <input
                         type="text"
                         placeholder={t.hero?.search_placeholder || 'O que você quer comer hoje?'}
                         value={searchQuery}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => !suggestions.length && setIsFocused(false)}
                         onChange={handleSearch}
-                        className="bg-transparent border-none outline-none text-xl md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-heading font-medium"
+                        className="bg-transparent border-none outline-none text-xl md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
                     />
                 </div>
 
                 {suggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-4 bg-surface/95 backdrop-blur-xl border border-border-subtle rounded-[2rem] shadow-2xl overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className="absolute top-full left-0 right-0 mt-4 bg-surface/95 backdrop-blur-2xl border border-border-subtle rounded-custom shadow-premium overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-500">
+                        <div className="px-8 py-4 bg-primary/5 border-b border-border-subtle">
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{lang === 'pt' ? 'Resultados Encontrados' : 'Search Results'}</span>
+                        </div>
                         {suggestions.map((s, i) => (
                             <Link
                                 key={i}
                                 to={`/restaurante/${s.slug}`}
-                                onClick={() => { setSuggestions([]); setSearchQuery(''); }}
-                                className="flex items-center justify-between px-8 py-4 hover:bg-primary/10 transition-colors border-b border-border-subtle last:border-0"
+                                onClick={() => { setSuggestions([]); setSearchQuery(''); setIsFocused(false); }}
+                                className="flex items-center justify-between px-8 py-5 hover:bg-primary/5 transition-all group/item border-b border-border-subtle last:border-0"
                             >
-                                <div>
-                                    <p className="font-bold text-lg text-text-main">{s.name}</p>
-                                    <p className="text-xs text-text-dim uppercase tracking-widest font-bold">
-                                        {s.type === 'restaurant' ? 'Estabelecimento' : `Prato • ${s.restaurant}`}
-                                    </p>
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${s.type === 'restaurant' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'}`}>
+                                        {s.type === 'restaurant' ? <Utensils size={18} /> : <Heart size={18} />}
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-lg text-text-main group-hover/item:text-primary transition-colors">{s.name}</p>
+                                        <p className="text-[10px] text-text-dim uppercase tracking-widest font-black">
+                                            {s.type === 'restaurant' ? (lang === 'pt' ? 'Estabelecimento' : 'Restaurant') : `${lang === 'pt' ? 'Prato' : 'Dish'} • ${s.restaurant}`}
+                                        </p>
+                                    </div>
                                 </div>
-                                <ChevronRight size={18} className="text-primary" />
+                                <ChevronRight size={20} className="text-primary opacity-0 group-hover/item:opacity-100 transform translate-x-2 group-hover/item:translate-x-0 transition-all" />
                             </Link>
                         ))}
                     </div>
@@ -246,81 +253,93 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
         }
     }, [currentSlide]);
 
+    useEffect(() => {
+        if (filteredRestaurants.length > 0) {
+            gsap.to(".restaurant-card", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: gridRef.current,
+                    start: "top 85%",
+                }
+            });
+        }
+    }, [filteredRestaurants, activeCategory]);
+
 
     const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
 
     return (
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden selection:bg-primary/20">
             {/* Favorites Mini Header — only when showOnlyFavorites */}
             {showOnlyFavorites && (
-                <section className="pt-36 pb-8 px-4 text-center">
+                <section className="pt-40 pb-12 px-4 text-center">
                     <div className="max-w-7xl mx-auto">
-                        <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-bold text-[10px] md:text-sm uppercase tracking-widest mb-6">
-                            ❤️ Os teus favoritos
+                        <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-8">
+                            ❤️ {lang === 'pt' ? 'Os teus favoritos' : 'Your Favorites'}
                         </span>
-                        <h1 className="text-5xl md:text-7xl mb-4 leading-tight tracking-tighter text-text-main">
+                        <h1 className="text-6xl md:text-8xl mb-6 leading-[0.9] tracking-tighter text-text-main font-display italic">
                             {lang === 'pt' ? 'Os teus' : 'Your'} <span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
                         </h1>
-                        <p className="text-xl text-text-dim max-w-2xl mx-auto font-medium">
-                            {lang === 'pt' ? 'Os restaurantes que guardaste para visitar.' : 'The restaurants you saved to visit.'}
-                        </p>
                     </div>
                 </section>
             )}
 
-            {/* Featured Slideshow — Hero, only on main page */}
+            {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-7xl mx-auto px-4 pt-20 md:pt-20 mb-2 reveal overflow-hidden">
-                    <div className="relative rounded-[3rem] bg-black text-white overflow-hidden min-h-[300px] md:min-h-[400px] border border-white/5 shadow-2xl shadow-primary/5 flex items-center">
+                <section ref={slideshowRef} className="max-w-[1600px] mx-auto px-4 pt-24 md:pt-32 mb-12 reveal overflow-hidden">
+                    <div className="relative rounded-custom-lg bg-black text-white overflow-hidden min-h-[500px] md:min-h-[650px] border border-white/10 shadow-premium flex items-center">
 
-                        {/* Active Slide Background */}
-                        <div className="absolute top-0 right-0 w-full lg:w-1/2 h-full -z-0 hidden lg:block overflow-hidden pointer-events-none">
+                        {/* Active Slide Background with Mask */}
+                        <div className="absolute inset-0 z-0 h-full w-full">
                             <img
                                 key={`img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
                                 alt={FEATURED_DISHES[currentSlide].name}
-                                className="slide-image w-full h-full object-cover rounded-l-[3rem] opacity-50"
+                                className="slide-image w-full h-full object-cover rounded-custom-lg opacity-60 scale-105"
                             />
-                        </div>
-                        {/* Mobile background */}
-                        <div className="absolute inset-0 lg:hidden -z-0 overflow-hidden pointer-events-none">
-                            <img
-                                key={`mob-img-${currentSlide}`}
-                                src={FEATURED_DISHES[currentSlide].image}
-                                alt={FEATURED_DISHES[currentSlide].name}
-                                className="slide-image w-full h-full object-cover opacity-40"
-                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-1 hidden lg:block" />
+                            <div className="absolute inset-0 bg-black/40 z-1 lg:hidden" />
                         </div>
 
-                        <div className="relative z-10 max-w-xl p-6 md:p-10 slide-content" key={`content-${currentSlide}`}>
-                            <span className="text-accent font-bold uppercase tracking-[0.3em] text-[10px] md:text-sm">
-                                {FEATURED_DISHES[currentSlide].tagline}
-                            </span>
-                            <h2 className="text-3xl md:text-5xl lg:text-6xl mt-3 md:mt-4 mb-4 md:mb-4 uppercase italic font-black leading-none text-white whitespace-normal md:whitespace-pre-line">
+                        <div className="relative z-10 max-w-2xl p-8 md:p-20 slide-content" key={`content-${currentSlide}`}>
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="h-px w-12 bg-accent" />
+                                <span className="text-accent font-black uppercase tracking-[0.4em] text-xs md:text-sm">
+                                    {FEATURED_DISHES[currentSlide].tagline}
+                                </span>
+                            </div>
+                            <h2 className="text-5xl md:text-8xl lg:text-9xl mb-8 leading-[0.85] tracking-tighter italic font-display text-white">
                                 {FEATURED_DISHES[currentSlide].name}
                             </h2>
-                            <p className="text-sm md:text-lg lg:text-xl text-white/70 mb-6 md:mb-6 font-medium line-clamp-2 md:line-clamp-none">
+                            <p className="text-lg md:text-2xl text-white/80 mb-10 font-medium leading-relaxed max-w-lg">
                                 {FEATURED_DISHES[currentSlide].desc}
                             </p>
                             <div className="flex flex-wrap items-center gap-8">
                                 <Link
                                     to={FEATURED_DISHES[currentSlide].link}
-                                    className="bg-primary px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all text-base md:text-lg whitespace-nowrap"
+                                    className="bg-white text-black px-12 py-5 rounded-2xl font-black hover:bg-primary hover:text-white transition-all text-lg shadow-2xl flex items-center gap-2 group/btn"
                                 >
-                                    {th.view_restaurant}
+                                    {th.view_restaurant} <ChevronRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
                         </div>
 
-                        {/* Pagination dots */}
-                        <div className="absolute bottom-8 left-8 md:bottom-16 md:left-16 z-20 flex gap-3">
-                            {FEATURED_DISHES.map((_, i) => (
+                        {/* Pagination with labels */}
+                        <div className="absolute bottom-12 left-8 md:bottom-20 md:left-20 z-20 flex items-end gap-6 overflow-hidden">
+                             {FEATURED_DISHES.map((dish, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className={`h-2 rounded-full transition-all duration-500 ${currentSlide === i ? 'w-12 bg-primary' : 'w-2 bg-white/20'}`}
-                                />
+                                    className="flex flex-col items-start gap-2 group transition-all"
+                                >
+                                    <span className={`text-[10px] font-black uppercase tracking-widest transition-all ${currentSlide === i ? 'text-primary' : 'text-white/40 group-hover:text-white'}`}>0{i+1}</span>
+                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-16 bg-primary' : 'w-8 bg-white/20'}`} />
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -329,17 +348,17 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {!showOnlyFavorites && <HomeSearch lang={lang} />}
 
-            {/* Categories */}
+            {/* Categories — tactile pills */}
             {!showOnlyFavorites && (
                 <section className="max-w-7xl mx-auto px-4 mb-4 overflow-x-auto no-scrollbar py-2 w-full">
-                    <div className="flex gap-3 min-w-0 md:min-w-max">
+                    <div className="flex gap-4 min-w-0 md:min-w-max pb-4">
                         {CATEGORIES.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-8 py-4 rounded-full font-bold transition-all whitespace-nowrap ${activeCategory === cat
-                                    ? 'bg-primary text-white shadow-xl shadow-primary/20 scale-105'
-                                    : 'bg-surface text-text-main border border-border-subtle hover:border-primary/30'
+                                className={`px-10 py-4 rounded-full font-black text-sm transition-all duration-500 whitespace-nowrap ${activeCategory === cat
+                                    ? 'bg-primary text-white shadow-premium shadow-primary/30 -translate-y-1 scale-105'
+                                    : 'bg-surface text-text-main border border-border-subtle hover:border-primary/50 hover:shadow-lg'
                                     }`}
                             >
                                 {cat}
@@ -350,12 +369,12 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {/* Restaurant Grid */}
-            <section className="max-w-7xl mx-auto px-4 pb-6">
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <section className="max-w-7xl mx-auto px-4 pb-16">
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <EmptyFavorites lang={lang} />
                         : filteredRestaurants.map(rest => (
-                            <div key={rest.id} className="restaurant-card">
+                            <div key={rest.id} className="restaurant-card opacity-0 translate-y-8">
                                 <RestaurantCard
                                     restaurant={rest}
                                     isFavorite={favorites.includes(rest.id)}

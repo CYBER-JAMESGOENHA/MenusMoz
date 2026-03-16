@@ -25,14 +25,14 @@ const NavbarSearch = ({ lang }) => {
       const filteredRest = RESTAURANTS.filter(r =>
         r.name.toLowerCase().includes(query.toLowerCase()) ||
         r.cuisine.toLowerCase().includes(query.toLowerCase())
-      ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug }));
+      ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug, image: r.image }));
 
       const filteredDishes = [];
       RESTAURANTS.forEach(r => {
         r.menuCategories.forEach(cat => {
           cat.items.forEach(item => {
             if (item.name.toLowerCase().includes(query.toLowerCase())) {
-              filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
+              filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug, image: r.image });
             }
           });
         });
@@ -55,34 +55,42 @@ const NavbarSearch = ({ lang }) => {
 
   return (
     <div ref={searchRef} className="relative hidden lg:block">
-      <div className="flex items-center gap-2 glass border border-border-subtle rounded-2xl px-4 py-2 w-64 xl:w-80">
-        <Search size={15} className="text-text-dim shrink-0" />
+      <div className="flex items-center gap-3 glass border border-border-subtle rounded-3xl px-6 py-2.5 w-64 xl:w-96 group focus-within:w-[450px] transition-all duration-500 bg-white/10">
+        <Search size={18} className="text-primary shrink-0 transition-transform group-focus-within:scale-125" />
         <input
           type="text"
-          placeholder={t.hero?.search_placeholder || 'Pesquisar...'}
+          placeholder={t.hero?.search_placeholder || 'Ouse descobrir...'}
           value={searchQuery}
           onChange={handleSearch}
-          className="bg-transparent border-none outline-none text-sm text-text-main placeholder:text-text-dim/50 w-full"
+          className="bg-transparent border-none outline-none text-sm font-bold text-text-main placeholder:text-text-dim/30 w-full"
         />
       </div>
       {suggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border-subtle rounded-2xl shadow-2xl overflow-hidden z-[2000] text-left w-full max-w-[calc(100vw-2rem)]">
-          {suggestions.map((s, i) => (
-            <Link
-              key={i}
-              to={`/restaurante/${s.slug}`}
-              onClick={() => { setSuggestions([]); setSearchQuery(''); }}
-              className="flex items-center justify-between px-5 py-3 hover:bg-primary/5 transition-colors border-b border-border-subtle last:border-0"
-            >
-              <div>
-                <p className="font-bold text-sm text-text-main">{s.name}</p>
-                <p className="text-[10px] text-text-dim uppercase tracking-wider">
-                  {s.type === 'restaurant' ? 'Restaurante' : `Prato em ${s.restaurant}`}
-                </p>
-              </div>
-              <ChevronRight size={14} className="text-primary" />
-            </Link>
-          ))}
+        <div className="absolute top-full left-0 right-0 mt-4 bg-surface/80 backdrop-blur-3xl border border-white/20 rounded-[2.5rem] shadow-premium overflow-hidden z-[2000] text-left w-[450px] animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="p-4 bg-primary/5 border-b border-border-subtle">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Sugestões de Maputo</span>
+          </div>
+          <div className="max-h-[60vh] overflow-y-auto no-scrollbar">
+            {suggestions.map((s, i) => (
+              <Link
+                key={i}
+                to={`/restaurante/${s.slug}`}
+                onClick={() => { setSuggestions([]); setSearchQuery(''); }}
+                className="flex items-center gap-4 px-6 py-4 hover:bg-primary/5 transition-all group border-b border-border-subtle last:border-0"
+              >
+                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                  <img src={s.image} className="w-full h-full object-cover" alt="" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-black text-sm text-text-main group-hover:text-primary transition-colors">{s.name}</p>
+                  <p className="text-[10px] text-text-dim/50 font-black uppercase tracking-widest mt-0.5">
+                    {s.type === 'restaurant' ? 'Restaurante' : `Especialidade em ${s.restaurant}`}
+                  </p>
+                </div>
+                <ChevronRight size={16} className="text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -95,74 +103,64 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   const t = translations[lang].nav;
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${isScrolled || isMenuOpen ? 'py-4' : 'py-8'}`}>
-      <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-500 ${isScrolled || isMenuOpen ? 'glass px-6 py-3 mx-4 rounded-3xl' : 'bg-transparent px-4'}`}>
-        <div className="flex items-center gap-3 z-[1001]">
-          {/* Mobile Menu Toggle (Left Side on Mobile) */}
+    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-700 ${isScrolled || isMenuOpen ? 'py-4' : 'py-10'}`}>
+      <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-700 ${isScrolled || isMenuOpen ? 'glass px-8 py-4 mx-4 rounded-3xl shadow-premium' : 'bg-transparent px-4'}`}>
+        <div className="flex items-center gap-4 z-[1001]">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20"
+            className="lg:hidden w-12 h-12 flex items-center justify-center rounded-2xl bg-primary text-white shadow-primary-glow"
           >
-            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Desktop Logo */}
-          <Link to="/" className="hidden lg:flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
-            <div className="w-10 h-10 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/20">L</div>
-            <span className="font-black text-xl tracking-tighter text-text-main whitespace-nowrap">Locais de Moz</span>
+          <Link to="/" className="hidden lg:flex items-center gap-4 group" onClick={() => setIsMenuOpen(false)}>
+            <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
+            <div className="flex flex-col -gap-1">
+                <span className="font-black text-2xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
+            </div>
           </Link>
         </div>
 
-        {/* Website Name centered on Mobile */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-black text-lg tracking-tighter text-text-main italic z-[1000] pointer-events-none lg:hidden">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden font-display italic font-black text-2xl tracking-tighter text-text-main z-[1000] pointer-events-none">
           Locais de Moz
         </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8 font-medium text-text-main/80">
-          <Link to="/" className="hover:text-primary transition-colors">{t.home}</Link>
-          <Link to="/blog" className="hover:text-primary transition-colors">{t.sabor}</Link>
-          <Link to="/sobre" className="hover:text-primary transition-colors">{t.about}</Link>
-          <Link to="/proprietarios" className="hover:text-primary transition-colors">{t.owners}</Link>
+        <div className="hidden lg:flex items-center gap-10 font-black text-sm uppercase tracking-widest text-text-main/70">
+          <Link to="/" className="hover:text-primary transition-colors focus:text-primary outline-none">Home</Link>
+          <Link to="/blog" className="hover:text-primary transition-colors focus:text-primary outline-none">Sabor</Link>
+          <Link to="/sobre" className="hover:text-primary transition-colors focus:text-primary outline-none">Sobre</Link>
+          <Link to="/proprietarios" className="hover:text-primary transition-colors focus:text-primary outline-none">Negócios</Link>
         </div>
 
-        {/* Search Bar */}
-        <NavbarSearch lang={lang} />
-
-        <div className="flex items-center gap-2 md:gap-4">
-          <div className="hidden sm:flex items-center gap-2 md:gap-4">
-            <button
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3">
+             <button
               onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-              className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-primary/10 transition-all text-text-main border-none shadow-sm"
-              title="Change Language"
+              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
             >
               <Globe size={18} />
-              <span className="ml-1 text-[10px] font-bold uppercase">{lang}</span>
+              <span className="ml-1 text-[10px] font-black uppercase">{lang}</span>
             </button>
 
-            <Link to="/favoritos" className="relative w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-primary/10 transition-all text-text-main border-none shadow-sm">
-              <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} />
+            <Link to="/favoritos" className="relative w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none">
+              <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
               {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-primary-glow">
                   {favoritesCount}
                 </span>
               )}
             </Link>
 
-            <Link to="/mapa" className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-primary/10 transition-all text-text-main border-none shadow-sm">
-              <MapIcon size={18} />
-            </Link>
-
             <button
               onClick={toggleDarkMode}
-              className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-primary/10 transition-all text-primary border-none shadow-sm"
-              aria-label="Toggle Dark Mode"
+              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-primary border-none"
             >
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -170,27 +168,25 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={onLoginOpen}
-            className="login-moz-btn hidden md:flex items-center gap-2"
+            className="login-moz-btn hidden lg:flex scale-110 ml-4 h-[44px]"
           >
             <span className="login-moz-lens">🇲🇿</span>
-            <span className="login-moz-label">{t.login}</span>
+            <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
           </button>
 
-          {/* Mobile Ordering Icon (Right Side on Mobile) */}
           <Link
-            to="/"
-            className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-xl glass hover:bg-primary/10 transition-all text-text-main shadow-sm z-[1001]"
+            to="/mapa"
+            className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main z-[1001]"
           >
-            <ShoppingBag size={20} />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+            <MapIcon size={22} />
           </Link>
         </div>
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-surface/95 backdrop-blur-xl z-[900] transition-all duration-500 lg:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+      <div className={`fixed inset-0 bg-surface/95 backdrop-blur-3xl z-[900] transition-all duration-700 lg:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
         <div className="flex flex-col items-center justify-center h-full gap-8 p-8">
-          <div className="flex flex-col items-center gap-6 mb-12 text-center">
+          <div className="flex flex-col items-center gap-8 mb-12 text-center">
             {[
               { to: "/", label: t.home },
               { to: "/blog", label: t.sabor },
@@ -203,11 +199,11 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
                 key={i}
                 to={link.to}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-3xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-300"
+                className="text-4xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-500"
                 style={{
                   opacity: isMenuOpen ? 1 : 0,
-                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
-                  transitionDelay: isMenuOpen ? `${i * 60}ms` : '0ms'
+                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
+                  transitionDelay: isMenuOpen ? `${i * 80}ms` : '0ms'
                 }}
               >
                 {link.label}
@@ -216,41 +212,41 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
           </div>
 
           <div
-            className="flex gap-4"
+            className="flex gap-6"
             style={{
               opacity: isMenuOpen ? 1 : 0,
-              transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.3s ease, transform 0.3s ease',
-              transitionDelay: isMenuOpen ? '360ms' : '0ms'
+              transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
+              transition: 'all 0.5s ease',
+              transitionDelay: isMenuOpen ? '480ms' : '0ms'
             }}
           >
             <button
               onClick={() => { setLang(lang === 'pt' ? 'en' : 'pt'); setIsMenuOpen(false); }}
-              className="px-6 py-3 rounded-2xl glass font-bold text-text-main flex items-center gap-2 border-none shadow-sm"
+              className="w-14 h-14 rounded-2xl glass font-black text-text-main flex items-center justify-center border-none shadow-premium"
             >
-              <Globe size={20} /> {lang.toUpperCase()}
+              <Globe size={24} />
             </button>
             <button
               onClick={() => { toggleDarkMode(); setIsMenuOpen(false); }}
-              className="px-6 py-3 rounded-2xl glass font-bold text-primary flex items-center gap-2 border-none shadow-sm"
+              className="w-14 h-14 rounded-2xl glass font-black text-primary flex items-center justify-center border-none shadow-premium"
             >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />} {darkMode ? 'Light' : 'Dark'}
+              {darkMode ? <Sun size={24} /> : <Moon size={24} />}
             </button>
           </div>
 
           <button
             onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
-            className="login-moz-btn w-full max-w-xs mt-8 scale-125 md:scale-100"
+            className="login-moz-btn w-full max-w-xs mt-12 scale-125"
             style={{
               opacity: isMenuOpen ? 1 : 0,
-              transform: isMenuOpen ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'opacity 0.3s ease, transform 0.3s ease',
-              transitionDelay: isMenuOpen ? '420ms' : '0ms',
-              height: '48px'
+              transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
+              transition: 'all 0.5s ease',
+              transitionDelay: isMenuOpen ? '560ms' : '0ms',
+              height: '56px'
             }}
           >
             <span className="login-moz-lens">🇲🇿</span>
-            <span className="login-moz-label">{t.login}</span>
+            <span className="login-moz-label font-black uppercase text-xs tracking-[0.2em]">{t.login}</span>
           </button>
         </div>
       </div>
@@ -263,58 +259,65 @@ const Footer = ({ lang }) => {
   const tn = translations[lang].nav;
 
   return (
-    <footer className="bg-surface pt-24 pb-12 rounded-t-[3rem] transition-colors duration-300">
+    <footer className="bg-surface pt-32 pb-16 rounded-t-custom-lg transition-colors duration-300 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-moz-green via-moz-yellow to-moz-red opacity-30" />
+      
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-12 mb-20">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-8 uppercase font-heading font-black text-3xl tracking-tighter text-primary">
-              Locais de Moz
-            </div>
-            <p className="text-text-dim text-xl max-w-md">
-              {t.desc}
+        <div className="grid md:grid-cols-12 gap-16 mb-24">
+          <div className="md:col-span-5">
+            <Link to="/" className="flex items-center gap-4 mb-8 group">
+              <div className="w-14 h-14 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-3xl shadow-primary-glow group-hover:rotate-12 transition-transform">L</div>
+              <div className="flex flex-col">
+                <span className="text-3xl font-black tracking-tighter text-text-main leading-none uppercase">Locais de Moz</span>
+                <span className="text-xs font-black uppercase tracking-[0.4em] text-primary mt-1">Digital Gastronomy</span>
+              </div>
+            </Link>
+            <p className="text-text-dim text-xl leading-relaxed max-w-md italic font-medium">
+              "{t.desc}"
             </p>
-          </div>
-          <div>
-            <h5 className="font-bold mb-6 text-sm uppercase tracking-widest text-primary">{t.platform}</h5>
-            <div className="flex flex-col gap-4 text-text-dim">
-              <Link to="/sobre" className="hover:text-text-main">{tn.about}</Link>
-              <Link to="/blog" className="hover:text-text-main">{tn.sabor}</Link>
-              <Link to="/proprietarios" className="hover:text-text-main">{tn.owners}</Link>
+            
+            <div className="flex gap-4 mt-10">
+                {['Instagram', 'Facebook', 'Twitter', 'LinkedIn'].map(social => (
+                    <a key={social} href="#" className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-primary hover:text-white transition-all transform hover:-translate-y-2">
+                        <span className="sr-only">{social}</span>
+                        <div className="w-5 h-5 bg-current opacity-20" />
+                    </a>
+                ))}
             </div>
           </div>
-          <div>
-            <h5 className="font-bold mb-6 text-sm uppercase tracking-widest text-primary">Social</h5>
-            <div className="flex flex-col gap-4 text-text-dim">
-              <a href="#" className="hover:text-text-main">Instagram</a>
-              <a href="#" className="hover:text-text-main">Facebook</a>
-              <a href="#" className="hover:text-text-main">LinkedIn</a>
+          
+          <div className="md:col-span-2 md:offset-1">
+            <h5 className="font-black mb-8 text-xs uppercase tracking-[0.3em] text-primary">{t.platform}</h5>
+            <div className="flex flex-col gap-5 text-lg font-bold text-text-dim">
+              <Link to="/sobre" className="hover:text-primary transition-colors">{tn.about}</Link>
+              <Link to="/blog" className="hover:text-primary transition-colors">{tn.sabor}</Link>
+              <Link to="/proprietarios" className="hover:text-primary transition-colors">{tn.owners}</Link>
+              <Link to="/mapa" className="hover:text-primary transition-colors">Mapa</Link>
             </div>
           </div>
-        </div>
-        {/* Newsletter CTA */}
-        <div className="mb-16 bg-primary/5 border border-primary/10 rounded-[2rem] p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 justify-between">
-          <div>
-            <h4 className="text-2xl font-black tracking-tighter text-text-main mb-2">Fique por dentro do sabor 🇲🇿</h4>
-            <p className="text-text-dim">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
-          </div>
-          <div className="flex gap-3 w-full md:w-auto">
-            <input
-              type="email"
-              placeholder="O seu email..."
-              className="flex-1 md:w-72 h-14 px-6 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/50 focus:outline-none focus:ring-4 focus:ring-primary/10 transition-all"
-            />
-            <button className="bg-primary text-white px-8 py-3 rounded-2xl font-black whitespace-nowrap hover:brightness-110 transition-all shadow-lg shadow-primary/20">
-              Subscrever
-            </button>
+
+          <div className="md:col-span-4">
+             <h5 className="font-black mb-8 text-xs uppercase tracking-[0.3em] text-primary">Sabor na Caixa</h5>
+             <p className="text-text-dim mb-8 font-medium">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
+             <div className="relative group">
+                <input
+                  type="email"
+                  placeholder="Seu melhor email..."
+                  className="w-full h-16 pl-6 pr-32 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/40 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium"
+                />
+                <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-6 rounded-xl font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-primary-glow">
+                  OK
+                </button>
+             </div>
           </div>
         </div>
 
-        <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-sm">
-          <p>© 2026 Locais de Moz — O orgulho de cozinhar digital.</p>
-          <div className="flex gap-8">
-            <a href="#">Privacidade</a>
-            <a href="#">Termos de Uso</a>
-            <a href="#">Contactos</a>
+        <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-xs font-black uppercase tracking-widest">
+          <p>© 2026 Locais de Moz — Moçambique Digital.</p>
+          <div className="flex gap-10">
+            <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
+            <a href="#" className="hover:text-primary transition-colors">Termos</a>
+            <a href="#" className="hover:text-primary transition-colors">Contactos</a>
           </div>
         </div>
       </div>
@@ -357,28 +360,38 @@ export default function App() {
 
   return (
     <Router>
-      <main className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
+      <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
         <CustomCursor />
-        <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
-        <Navbar
-          darkMode={darkMode}
-          toggleDarkMode={() => setDarkMode(!darkMode)}
-          lang={lang}
-          setLang={setLang}
-          favoritesCount={favorites.length}
-          onLoginOpen={() => setIsLoginOpen(true)}
-        />
-        <Routes>
-          <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-          <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-          <Route path="/mapa" element={<Map lang={lang} />} />
-          <Route path="/sobre" element={<About lang={lang} />} />
-          <Route path="/blog" element={<Blog lang={lang} />} />
-          <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
-          <Route path="/favoritos" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} />} />
-        </Routes>
-        <Footer lang={lang} />
-      </main>
+        
+        {/* Global Ambient Background */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-moz-green/5 rounded-full blur-[120px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.03] mix-blend-overlay" />
+        </div>
+
+        <div className="relative z-10">
+            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
+            <Navbar
+              darkMode={darkMode}
+              toggleDarkMode={() => setDarkMode(!darkMode)}
+              lang={lang}
+              setLang={setLang}
+              favoritesCount={favorites.length}
+              onLoginOpen={() => setIsLoginOpen(true)}
+            />
+            <Routes>
+              <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+              <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+              <Route path="/mapa" element={<Map lang={lang} />} />
+              <Route path="/sobre" element={<About lang={lang} />} />
+              <Route path="/blog" element={<Blog lang={lang} />} />
+              <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
+              <Route path="/favoritos" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} />} />
+            </Routes>
+            <Footer lang={lang} />
+        </div>
+      </div>
     </Router>
   );
 }
