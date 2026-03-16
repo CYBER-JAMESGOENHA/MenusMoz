@@ -42,36 +42,25 @@ export default function CustomCursor() {
             const isClickable = e.target.closest('button, a, input, [role="button"], .interactive');
             if (isClickable) {
                 gsap.to(follower, { 
-                    scale: 3, 
-                    backgroundColor: 'white',
-                    mixBlendMode: 'difference',
-                    borderWidth: 0,
-                    duration: 0.4,
-                    ease: "back.out(1.7)"
+                    borderWidth: 2,
+                    duration: 0.3
                 });
-                gsap.to(cursor, { scale: 0, duration: 0.3 });
             }
         };
 
         const handleHoverEnd = () => {
             gsap.to(follower, { 
-                scale: 1, 
-                backgroundColor: 'transparent',
-                mixBlendMode: 'normal',
                 borderWidth: 1,
-                duration: 0.4 
+                duration: 0.3
             });
-            gsap.to(cursor, { scale: 1, duration: 0.3 });
         };
 
         const onMouseDown = () => {
-            gsap.to(follower, { scale: 0.6, duration: 0.2 });
-            gsap.to(cursor, { scale: 2, duration: 0.2 });
+            gsap.to(cursor, { opacity: 0.5, duration: 0.2 });
         };
         
         const onMouseUp = () => {
-            gsap.to(follower, { scale: 1, duration: 0.2 });
-            gsap.to(cursor, { scale: 1, duration: 0.2 });
+            gsap.to(cursor, { opacity: 1, duration: 0.2 });
         };
 
         window.addEventListener('mousemove', onMouseMove);
