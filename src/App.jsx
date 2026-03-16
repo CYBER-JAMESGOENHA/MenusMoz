@@ -168,7 +168,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={onLoginOpen}
-            className="login-moz-btn hidden lg:flex scale-110 ml-4 shadow-primary/20"
+            className="login-moz-btn hidden lg:flex scale-110 ml-4"
           >
             <span className="login-moz-lens">🇲🇿</span>
             <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
@@ -241,8 +241,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
               opacity: isMenuOpen ? 1 : 0,
               transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.5s ease',
-              transitionDelay: isMenuOpen ? '560ms' : '0ms',
-              height: '56px'
+              transitionDelay: isMenuOpen ? '560ms' : '0ms'
             }}
           >
             <span className="login-moz-lens">🇲🇿</span>
@@ -365,9 +364,8 @@ export default function App() {
         
         {/* Global Ambient Background */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-moz-green/10 rounded-full blur-[120px]" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.03] mix-blend-overlay" />
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/[0.03] rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.01] mix-blend-overlay" />
         </div>
 
         <div className="relative z-10">

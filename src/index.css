@@ -36,7 +36,7 @@
 
 :root {
   --bg-color: #FFFFFF;
-  --surface-color: #F9FAFB;
+  --surface-color: #FFFFFF;
   --text-color: #1A1A1A;
   --text-dim-color: #4B5563;
   --border-color: rgba(0, 0, 0, 0.08);
@@ -298,9 +298,10 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 46%;
+    width: 60px;
     height: 100%;
-    background: linear-gradient(135deg, #CE1126 50%, transparent 50%);
+    background: #CE1126;
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
     z-index: 1;
   }
 
