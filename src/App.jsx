@@ -109,8 +109,8 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-700 ${isScrolled || isMenuOpen ? 'py-4' : 'py-10'}`}>
-      <div className={`mx-auto max-w-7xl px-4 flex items-center justify-between transition-all duration-700 ${isScrolled || isMenuOpen ? 'glass px-8 py-4 mx-4 rounded-3xl shadow-premium' : 'bg-transparent px-4'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-700 ${isScrolled || isMenuOpen ? 'py-3 md:py-4' : 'py-6 md:py-10'}`}>
+      <div className={`mx-auto max-w-7xl px-2 sm:px-4 flex items-center justify-between transition-all duration-700 ${isScrolled || isMenuOpen ? 'glass px-6 sm:px-8 py-3 md:py-4 mx-2 sm:mx-4 rounded-2xl md:rounded-3xl shadow-premium' : 'bg-transparent'}`}>
         <div className="flex items-center gap-4 z-[1001]">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -168,7 +168,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={onLoginOpen}
-            className="login-moz-btn hidden lg:flex scale-110 ml-4 h-[44px]"
+            className="login-moz-btn hidden lg:flex scale-110 ml-4 shadow-primary/20"
           >
             <span className="login-moz-lens">🇲🇿</span>
             <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
@@ -199,7 +199,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
                 key={i}
                 to={link.to}
                 onClick={() => setIsMenuOpen(false)}
-                className="text-4xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-500"
+                className="text-3xl sm:text-4xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-500"
                 style={{
                   opacity: isMenuOpen ? 1 : 0,
                   transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
@@ -236,7 +236,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
-            className="login-moz-btn w-full max-w-xs mt-12 scale-125"
+            className="login-moz-btn w-full max-w-xs mt-12"
             style={{
               opacity: isMenuOpen ? 1 : 0,
               transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
@@ -365,8 +365,8 @@ export default function App() {
         
         {/* Global Ambient Background */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-moz-green/5 rounded-full blur-[120px]" />
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-moz-green/10 rounded-full blur-[120px]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.03] mix-blend-overlay" />
         </div>
 

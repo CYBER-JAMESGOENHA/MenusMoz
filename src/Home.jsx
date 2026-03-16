@@ -91,9 +91,9 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                 </div>
             </div>
 
-            <div className="p-8 md:p-10">
-                <div className="flex items-start justify-between gap-4 mb-4">
-                    <h3 className="text-3xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
+            <div className="p-6 md:p-10">
+                <div className="flex items-start justify-between gap-4 mb-3 md:mb-4">
+                    <h3 className="text-2xl md:text-3xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
                         <div className="flex flex-col items-end gap-1 shrink-0 mt-1">
                             <StarRating rating={restaurant.rating} />
@@ -178,8 +178,8 @@ const HomeSearch = ({ lang }) => {
                 {/* Animated glowing border effect */}
                 <div className={`absolute -inset-1 bg-gradient-to-r from-primary via-moz-yellow to-moz-green rounded-[3rem] blur-xl transition-all duration-1000 ${isFocused ? 'opacity-40 animate-pulse' : 'opacity-0 group-hover:opacity-20'}`}></div>
 
-                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-[3rem] px-8 py-5 md:py-6 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
-                    <Search size={28} className={`transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/50'}`} />
+                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-3xl md:rounded-[3rem] px-5 sm:px-8 py-3.5 md:py-6 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
+                    <Search size={22} className={`transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/50'}`} />
                     <input
                         type="text"
                         placeholder={t.hero?.search_placeholder || 'O que você quer comer hoje?'}
@@ -187,7 +187,7 @@ const HomeSearch = ({ lang }) => {
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => !suggestions.length && setIsFocused(false)}
                         onChange={handleSearch}
-                        className="bg-transparent border-none outline-none text-xl md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
+                        className="bg-transparent border-none outline-none text-lg md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
                     />
                 </div>
 
@@ -290,8 +290,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-20 md:pt-24 mb-10 reveal overflow-hidden">
-                    <div className="relative rounded-custom-lg bg-black text-white overflow-hidden min-h-[400px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
+                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-28 md:pt-36 mb-10 reveal overflow-hidden">
+                    <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[380px] sm:min-h-[420px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
                         <div className="absolute inset-0 z-0 h-full w-full">
@@ -299,28 +299,29 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                                 key={`img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
                                 alt={FEATURED_DISHES[currentSlide].name}
-                                className="slide-image w-full h-full object-cover rounded-custom-lg opacity-100 scale-100 transition-all duration-1000"
+                                className="slide-image w-full h-full object-cover rounded-3xl md:rounded-custom-lg opacity-100 scale-100 transition-all duration-1000"
                             />
-                            {/* Very subtle overlay for light feel */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-1" />
+                            {/* Even lighter adaptive overlay for maximum image "light" */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-1" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-1 hidden sm:block" />
                         </div>
 
-                        <div className="relative z-10 max-w-lg p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
-                            <div className="flex flex-col gap-2 mb-3">
-                                <span className="text-accent font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px]">
+                        <div className="relative z-10 w-full max-w-lg p-6 sm:p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                            <div className="flex flex-col gap-1.5 md:gap-2 mb-3 md:mb-4">
+                                <span className="text-accent font-black uppercase tracking-[0.4em] text-[8px] md:text-[10px]">
                                     {FEATURED_DISHES[currentSlide].tagline}
                                 </span>
                             </div>
-                            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-3 leading-tight tracking-tighter italic font-display text-white drop-shadow-md">
+                            <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl mb-3 md:mb-4 leading-tight tracking-tighter italic font-display text-white drop-shadow-xl">
                                 {FEATURED_DISHES[currentSlide].name}
                             </h2>
-                            <p className="text-sm md:text-base text-white/95 mb-5 font-medium leading-relaxed max-w-xs drop-shadow-sm">
+                            <p className="text-xs sm:text-sm md:text-base text-white/95 mb-5 md:mb-6 font-medium leading-relaxed max-w-[240px] sm:max-w-xs drop-shadow-lg">
                                 {FEATURED_DISHES[currentSlide].desc}
                             </p>
-                            <div className="flex flex-wrap items-center gap-6">
+                            <div className="flex flex-wrap items-center gap-4 md:gap-6">
                                 <Link
                                     to={FEATURED_DISHES[currentSlide].link}
-                                    className="bg-white text-black px-8 py-3 rounded-xl font-black hover:bg-primary hover:text-white transition-all text-sm shadow-xl flex items-center gap-2 group/btn"
+                                    className="bg-white text-black px-8 py-3.5 md:py-3 rounded-xl font-black hover:bg-primary hover:text-white transition-all text-xs md:text-sm shadow-xl flex items-center gap-2 group/btn min-h-[44px]"
                                 >
                                     {th.view_restaurant} <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </Link>
@@ -328,14 +329,14 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         </div>
 
                         {/* Classic Horizontal Pagination — Numbers Removed for Premium Vibe */}
-                        <div className="absolute bottom-10 left-8 md:bottom-12 md:left-16 z-20 flex items-center gap-4">
+                        <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-8 md:bottom-12 md:left-16 z-20 flex items-center gap-3 sm:gap-4">
                              {FEATURED_DISHES.map((dish, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className="group py-4"
+                                    className="group py-2 sm:py-4 min-h-[44px] flex items-center"
                                 >
-                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-12 bg-primary' : 'w-6 bg-white/30 group-hover:bg-white/60'}`} />
+                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-10 sm:w-12 bg-primary' : 'w-5 sm:w-6 bg-white/30 group-hover:bg-white/60'}`} />
                                 </button>
                             ))}
                         </div>
@@ -348,12 +349,12 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             {/* Categories — tactile pills */}
             {!showOnlyFavorites && (
                 <section className="max-w-7xl mx-auto px-4 mb-4 overflow-x-auto no-scrollbar py-2 w-full">
-                    <div className="flex gap-4 min-w-0 md:min-w-max pb-4">
+                    <div className="flex gap-3 md:gap-4 min-w-0 md:min-w-max pb-2 md:pb-4">
                         {CATEGORIES.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-10 py-4 rounded-full font-black text-sm transition-all duration-500 whitespace-nowrap ${activeCategory === cat
+                                className={`px-6 md:px-10 py-3 md:py-4 rounded-full font-black text-xs md:text-sm transition-all duration-500 whitespace-nowrap min-h-[44px] ${activeCategory === cat
                                     ? 'bg-primary text-white shadow-premium shadow-primary/30 -translate-y-1 scale-105'
                                     : 'bg-surface text-text-main border border-border-subtle hover:border-primary/50 hover:shadow-lg'
                                     }`}

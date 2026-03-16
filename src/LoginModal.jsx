@@ -58,7 +58,7 @@ export default function LoginModal({ isOpen, onClose, lang }) {
         >
             <div
                 ref={contentRef}
-                className="relative w-full max-w-lg bg-surface/80 backdrop-blur-3xl p-10 md:p-16 rounded-[4rem] border border-white/20 shadow-premium overflow-hidden"
+                className="relative w-full max-w-lg bg-surface/80 backdrop-blur-3xl p-8 sm:p-10 md:p-16 rounded-[2.5rem] md:rounded-[4rem] border border-white/20 shadow-premium overflow-hidden"
                 onClick={e => e.stopPropagation()}
             >
                  {/* Decorative background depth */}
