@@ -250,8 +250,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
             );
             gsap.fromTo(".slide-image",
-                { opacity: 0, scale: 1.05 },
-                { opacity: 0.5, scale: 1, duration: 4, ease: "power1.out" }
+                { opacity: 0, scale: 1.15, filter: "blur(10px) brightness(0.5)" },
+                { opacity: 1, scale: 1, filter: "blur(0px) brightness(1)", duration: 2.5, ease: "power2.out" }
             );
         }
     }, [currentSlide]);
@@ -288,58 +288,77 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
-            {/* Featured Slideshow — Editorial Hero */}
+            {/* Featured Slideshow — Cinematic Advertisement Billboard */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1600px] mx-auto px-4 pt-24 md:pt-32 mb-12 reveal overflow-hidden">
-                    <div className="relative rounded-custom-lg bg-black text-white overflow-hidden min-h-[500px] md:min-h-[650px] border border-white/10 shadow-premium flex items-center">
+                <section ref={slideshowRef} className="w-full mx-auto px-0 pt-20 md:pt-24 mb-16 reveal overflow-hidden">
+                    <div className="relative bg-black text-white overflow-hidden min-h-[70vh] md:min-h-[85vh] flex items-end">
 
-                        {/* Active Slide Background with Mask */}
+                        {/* Full-Bleed Immersive Background */}
                         <div className="absolute inset-0 z-0 h-full w-full">
                             <img
                                 key={`img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
                                 alt={FEATURED_DISHES[currentSlide].name}
-                                className="slide-image w-full h-full object-cover rounded-custom-lg opacity-60 scale-105"
+                                className="slide-image w-full h-full object-cover opacity-100"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-1 hidden lg:block" />
-                            <div className="absolute inset-0 bg-black/40 z-1 lg:hidden" />
+                            {/* Gradient Layers for Text Legibility while keeping center clear */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-1" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent z-1 hidden md:block" />
+                            
+                            {/* Animated light flare for premium feel */}
+                            <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-primary/5 rounded-full blur-[150px] animate-pulse pointer-events-none" />
                         </div>
 
-                        <div className="relative z-10 max-w-2xl p-8 md:p-20 slide-content" key={`content-${currentSlide}`}>
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="h-px w-12 bg-accent" />
-                                <span className="text-accent font-black uppercase tracking-[0.4em] text-xs md:text-sm">
-                                    {FEATURED_DISHES[currentSlide].tagline}
-                                </span>
-                            </div>
-                            <h2 className="text-5xl md:text-8xl lg:text-9xl mb-8 leading-[0.85] tracking-tighter italic font-display text-white">
-                                {FEATURED_DISHES[currentSlide].name}
-                            </h2>
-                            <p className="text-lg md:text-2xl text-white/80 mb-10 font-medium leading-relaxed max-w-lg">
-                                {FEATURED_DISHES[currentSlide].desc}
-                            </p>
-                            <div className="flex flex-wrap items-center gap-8">
-                                <Link
-                                    to={FEATURED_DISHES[currentSlide].link}
-                                    className="bg-white text-black px-12 py-5 rounded-2xl font-black hover:bg-primary hover:text-white transition-all text-lg shadow-2xl flex items-center gap-2 group/btn"
-                                >
-                                    {th.view_restaurant} <ChevronRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
-                                </Link>
+                        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 pb-24 md:pb-32 slide-content" key={`content-${currentSlide}`}>
+                            <div className="flex flex-col gap-6">
+                                <div className="flex items-center gap-4">
+                                     <div className="bg-primary/20 backdrop-blur-xl border border-primary/30 px-4 py-2 rounded-xl flex items-center gap-2">
+                                         <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                         <span className="text-white font-black text-[10px] uppercase tracking-[0.3em]">PROMOÇÃO EXCLUSIVA</span>
+                                     </div>
+                                     <span className="text-white/60 font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">
+                                        {FEATURED_DISHES[currentSlide].tagline}
+                                    </span>
+                                </div>
+                                <h2 className="text-6xl md:text-9xl lg:text-[11rem] mb-6 leading-[0.8] tracking-tighter italic font-display text-white drop-shadow-2xl">
+                                    {FEATURED_DISHES[currentSlide].name}
+                                </h2>
+                                <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-16">
+                                    <p className="text-lg md:text-2xl text-white/90 font-medium leading-relaxed max-w-xl italic border-l-2 border-primary/50 pl-8">
+                                        {FEATURED_DISHES[currentSlide].desc}
+                                    </p>
+                                    <Link
+                                        to={FEATURED_DISHES[currentSlide].link}
+                                        className="prism-border bg-white text-black px-14 py-6 rounded-2xl font-black hover:bg-primary hover:text-white transition-all text-xl shadow-2xl flex items-center gap-3 group/btn shrink-0 w-fit"
+                                    >
+                                        RESERVAR AGORA <ChevronRight size={24} className="group-hover/btn:translate-x-2 transition-transform" />
+                                    </Link>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Pagination with labels */}
-                        <div className="absolute bottom-12 left-8 md:bottom-20 md:left-20 z-20 flex items-end gap-6 overflow-hidden">
+                        {/* Vertical Indicators — Billboard Style */}
+                        <div className="absolute top-1/2 right-8 md:right-12 -translate-y-1/2 z-20 flex flex-col items-center gap-8">
                              {FEATURED_DISHES.map((dish, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className="flex flex-col items-start gap-2 group transition-all"
+                                    className="flex items-center gap-4 group transition-all"
                                 >
-                                    <span className={`text-[10px] font-black uppercase tracking-widest transition-all ${currentSlide === i ? 'text-primary' : 'text-white/40 group-hover:text-white'}`}>0{i+1}</span>
-                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-16 bg-primary' : 'w-8 bg-white/20'}`} />
+                                    <span className={`text-[10px] font-black uppercase tracking-widest transition-all vertical-text ${currentSlide === i ? 'text-primary' : 'text-white/40 group-hover:text-white'}`}>
+                                        PROMO 0{i+1}
+                                    </span>
+                                    <div className={`w-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'h-16 bg-primary' : 'h-8 bg-white/20'}`} />
                                 </button>
                             ))}
+                        </div>
+
+                        {/* Animated Bottom Progress Bar */}
+                        <div className="absolute bottom-0 left-0 h-1 bg-white/10 w-full z-20">
+                            <div 
+                                className="h-full bg-primary transition-all duration-[2500ms] ease-linear"
+                                style={{ width: `${(currentSlide + 1) * (100 / FEATURED_DISHES.length)}%` }}
+                            />
                         </div>
                     </div>
                 </section>
