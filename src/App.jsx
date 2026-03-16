@@ -184,9 +184,9 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-surface/95 backdrop-blur-3xl z-[900] transition-all duration-700 lg:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="flex flex-col items-center justify-center h-full gap-8 p-8">
-          <div className="flex flex-col items-center gap-8 mb-12 text-center">
+      <div className={`fixed inset-0 bg-surface/98 backdrop-blur-3xl z-[900] transition-all duration-700 lg:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className="flex flex-col items-center justify-center h-full gap-4 p-8 overflow-y-auto no-scrollbar">
+          <div className="flex flex-col items-center gap-6 mb-2 text-center">
             {[
               { to: "/", label: t.home },
               { to: "/blog", label: t.sabor },
@@ -236,7 +236,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <button
             onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
-            className="login-moz-btn w-full max-w-xs mt-12"
+            className="login-moz-btn w-full max-w-xs mt-2"
             style={{
               opacity: isMenuOpen ? 1 : 0,
               transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
