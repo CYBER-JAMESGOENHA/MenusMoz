@@ -1,0 +1,75 @@
+﻿
+> menusmoz@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 4 modules transformed.
+node.exe : [31mΓ£ù[39m 
+Build failed in 130ms
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([31mΓ£  
+  ù[39m Build failed in 1   
+ 30ms:String) [], RemoteE    
+xception
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[31merror during build:
+[31m[@tailwindcss/vite:gener
+ate:build] Cannot apply 
+unknown utility class 
+`cubic-bezier(0.34,`[31m
+file: [36mC:/Users/Dilma Goe
+nha/MenusMoz/src/index.css[3
+1m
+    at onInvalidCandidate (fi
+le:///C:/Users/Dilma%20Goenha
+/MenusMoz/node_modules/tailwi
+ndcss/dist/chunk-L5IEUH3R.mjs
+:21:1511)
+    at $e (file:///C:/Users/D
+ilma%20Goenha/MenusMoz/node_m
+odules/tailwindcss/dist/chunk
+-L5IEUH3R.mjs:16:36740)
+    at file:///C:/Users/Dilma
+%20Goenha/MenusMoz/node_modul
+es/tailwindcss/dist/chunk-L5I
+EUH3R.mjs:21:355
+    at Ar (file:///C:/Users/D
+ilma%20Goenha/MenusMoz/node_m
+odules/tailwindcss/dist/chunk
+-L5IEUH3R.mjs:3:1733)
+    at I (file:///C:/Users/Di
+lma%20Goenha/MenusMoz/node_mo
+dules/tailwindcss/dist/chunk-
+L5IEUH3R.mjs:3:1377)
+    at Ce (file:///C:/Users/D
+ilma%20Goenha/MenusMoz/node_m
+odules/tailwindcss/dist/chunk
+-L5IEUH3R.mjs:21:172)
+    at Gi (file:///C:/Users/D
+ilma%20Goenha/MenusMoz/node_m
+odules/tailwindcss/dist/chunk
+-L5IEUH3R.mjs:38:294)
+    at async ao (file:///C:/U
+sers/Dilma%20Goenha/MenusMoz/
+node_modules/tailwindcss/dist
+/chunk-L5IEUH3R.mjs:38:631)
+    at async vf (file:///C:/U
+sers/Dilma%20Goenha/MenusMoz/
+node_modules/tailwindcss/dist
+/chunk-L5IEUH3R.mjs:38:1406)
+    at async uu (file:///C:/U
+sers/Dilma%20Goenha/MenusMoz/
+node_modules/@tailwindcss/nod
+e/dist/index.mjs:10:3458)[39
+m

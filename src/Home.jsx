@@ -233,6 +233,9 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const slideshowRef = useRef(null);
 
 
+    const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
+        .filter(r => !showOnlyFavorites || favorites.includes(r.id));
+
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide(prev => (prev + 1) % FEATURED_DISHES.length);
@@ -268,10 +271,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             });
         }
     }, [filteredRestaurants, activeCategory]);
-
-
-    const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
-        .filter(r => !showOnlyFavorites || favorites.includes(r.id));
 
     return (
         <div className="relative overflow-hidden selection:bg-primary/20">

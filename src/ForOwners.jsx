@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { TrendingUp, Globe, ShieldCheck, Mail } from 'lucide-react';
+import { TrendingUp, Globe, ShieldCheck, Mail, Rocket } from 'lucide-react';
 
 export default function ForOwners() {
     const containerRef = useRef(null);

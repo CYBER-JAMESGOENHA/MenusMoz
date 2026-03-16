@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, MapPin, Search, Navigation, Info } from 'lucide-react';
+import { ChevronLeft, MapPin, Search, Navigation, Info, Star, X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { RESTAURANTS } from './data';
 import { translations } from './translations';
