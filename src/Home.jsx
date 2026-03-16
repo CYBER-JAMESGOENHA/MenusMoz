@@ -290,8 +290,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1600px] mx-auto px-4 pt-24 md:pt-32 mb-12 reveal overflow-hidden">
-                    <div className="relative rounded-custom-lg bg-black text-white overflow-hidden min-h-[500px] md:min-h-[650px] border border-white/10 shadow-premium flex items-center">
+                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-20 md:pt-24 mb-10 reveal overflow-hidden">
+                    <div className="relative rounded-custom-lg bg-black text-white overflow-hidden min-h-[400px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
                         <div className="absolute inset-0 z-0 h-full w-full">
@@ -305,16 +305,16 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-1" />
                         </div>
 
-                        <div className="relative z-10 max-w-lg p-8 md:p-20 slide-content" key={`content-${currentSlide}`}>
-                            <div className="flex flex-col gap-2 mb-4">
+                        <div className="relative z-10 max-w-lg p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                            <div className="flex flex-col gap-2 mb-3">
                                 <span className="text-accent font-black uppercase tracking-[0.4em] text-[9px] md:text-[10px]">
                                     {FEATURED_DISHES[currentSlide].tagline}
                                 </span>
                             </div>
-                            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-4 leading-tight tracking-tighter italic font-display text-white drop-shadow-md">
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl mb-3 leading-tight tracking-tighter italic font-display text-white drop-shadow-md">
                                 {FEATURED_DISHES[currentSlide].name}
                             </h2>
-                            <p className="text-sm md:text-base text-white/95 mb-6 font-medium leading-relaxed max-w-xs drop-shadow-sm">
+                            <p className="text-sm md:text-base text-white/95 mb-5 font-medium leading-relaxed max-w-xs drop-shadow-sm">
                                 {FEATURED_DISHES[currentSlide].desc}
                             </p>
                             <div className="flex flex-wrap items-center gap-6">
@@ -327,16 +327,15 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             </div>
                         </div>
 
-                        {/* Classic Horizontal Pagination */}
-                        <div className="absolute bottom-10 left-8 md:bottom-16 md:left-20 z-20 flex items-end gap-6">
+                        {/* Classic Horizontal Pagination — Numbers Removed for Premium Vibe */}
+                        <div className="absolute bottom-10 left-8 md:bottom-12 md:left-16 z-20 flex items-center gap-4">
                              {FEATURED_DISHES.map((dish, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className="flex flex-col items-start gap-2 group transition-all"
+                                    className="group py-4"
                                 >
-                                    <span className={`text-[10px] font-black uppercase tracking-widest transition-all ${currentSlide === i ? 'text-primary' : 'text-white/60 group-hover:text-white'}`}>0{i+1}</span>
-                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-16 bg-primary' : 'w-8 bg-white/30'}`} />
+                                    <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-12 bg-primary' : 'w-6 bg-white/30 group-hover:bg-white/60'}`} />
                                 </button>
                             ))}
                         </div>
