@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Map as MapIcon, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
+import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import Home from './Home';
 import RestaurantDetail from './RestaurantDetail';
 import About from './About';
 import Blog from './Blog';
 import ForOwners from './ForOwners';
-import Map from './Map';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
 import { translations } from './translations';
@@ -174,12 +173,6 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
             <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
           </button>
 
-          <Link
-            to="/mapa"
-            className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main z-[1001]"
-          >
-            <MapIcon size={22} />
-          </Link>
         </div>
       </div>
 
@@ -192,8 +185,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
               { to: "/blog", label: t.sabor },
               { to: "/sobre", label: t.about },
               { to: "/proprietarios", label: t.owners },
-              { to: "/favoritos", label: `Favoritos (${favoritesCount})` },
-              { to: "/mapa", label: "Mapa Interativo" }
+              { to: "/favoritos", label: `Favoritos (${favoritesCount})` }
             ].map((link, i) => (
               <Link
                 key={i}
@@ -291,7 +283,6 @@ const Footer = ({ lang }) => {
               <Link to="/sobre" className="hover:text-primary transition-colors">{tn.about}</Link>
               <Link to="/blog" className="hover:text-primary transition-colors">{tn.sabor}</Link>
               <Link to="/proprietarios" className="hover:text-primary transition-colors">{tn.owners}</Link>
-              <Link to="/mapa" className="hover:text-primary transition-colors">Mapa</Link>
             </div>
           </div>
 
@@ -381,7 +372,6 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
               <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-              <Route path="/mapa" element={<Map lang={lang} />} />
               <Route path="/sobre" element={<About lang={lang} />} />
               <Route path="/blog" element={<Blog lang={lang} />} />
               <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
