@@ -312,8 +312,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-16 md:pt-20 mb-6 reveal overflow-hidden">
-                    <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[340px] sm:min-h-[380px] md:min-h-[440px] border border-white/10 shadow-premium flex items-center">
+                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-12 md:pt-14 mb-2 reveal overflow-hidden">
+                    <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[280px] sm:min-h-[320px] md:min-h-[380px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
                         <div className="hero-parallax-bg absolute inset-0 z-0 h-[115%] w-full -top-[7.5%]">
@@ -328,7 +328,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-1 hidden sm:block" />
                         </div>
 
-                        <div className="relative z-10 w-full max-w-lg p-6 sm:p-8 md:p-16 slide-content" key={`content-${currentSlide}`}>
+                        <div className="relative z-10 w-full max-w-lg p-6 sm:p-8 md:p-10 slide-content" key={`content-${currentSlide}`}>
                             <div className="flex flex-col gap-1.5 md:gap-2 mb-3 md:mb-4">
                                 <span className="text-accent font-black uppercase tracking-[0.4em] text-[8px] md:text-[10px]">
                                     {FEATURED_DISHES[currentSlide].tagline}
