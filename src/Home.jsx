@@ -101,17 +101,18 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                     )}
                 </div>
 
-                <div className="space-y-4 mb-8">
-                    {previewCategory.items.slice(0, 2).map((item) => (
-                        <div key={item.name} className="flex justify-between items-end group/item">
-                            <div className="flex flex-col">
-                                <span className="text-sm font-bold text-text-main">{item.name}</span>
-                                <span className="text-[10px] text-text-dim uppercase tracking-wider">{previewCategory.name}</span>
-                            </div>
-                            <div className="flex-1 border-b border-dotted border-border-subtle mx-4 mb-1.5" />
-                            <span className="font-mono text-primary font-black text-sm">{item.price}</span>
+                <div className="mb-6 bg-surface border border-border-subtle rounded-2xl p-4 group-hover:border-primary/30 transition-colors shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Utensils size={12} className="text-primary" />
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">{lang === 'pt' ? 'Sugestão do Chef' : 'Chef\'s Suggestion'}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-start gap-3">
+                           <span className="text-sm font-bold text-text-main leading-tight line-clamp-1" title={previewCategory.items[0].name}>{previewCategory.items[0].name}</span>
+                           <span className="font-mono text-primary font-black text-[13px] whitespace-nowrap mt-0.5">{previewCategory.items[0].price}</span>
                         </div>
-                    ))}
+                        <p className="text-[11px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
+                    </div>
                 </div>
 
                 <Link
