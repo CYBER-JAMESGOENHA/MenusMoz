@@ -108,8 +108,8 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-700 ${isScrolled || isMenuOpen ? 'py-3 md:py-4' : 'py-6 md:py-10'}`}>
-      <div className={`mx-auto max-w-7xl px-2 sm:px-4 flex items-center justify-between transition-all duration-700 ${isScrolled || isMenuOpen ? 'glass px-6 sm:px-8 py-3 md:py-4 mx-2 sm:mx-4 rounded-2xl md:rounded-3xl shadow-premium' : 'bg-transparent'}`}>
+    <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled || isMenuOpen ? 'top-2 md:top-3' : 'top-4 md:top-6'}`}>
+      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-3 md:py-4 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
         <div className="flex items-center gap-4 z-[1001]">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
