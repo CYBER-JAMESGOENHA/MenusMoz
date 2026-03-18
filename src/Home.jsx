@@ -310,7 +310,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
-            {/* Featured Slideshow — Editorial Hero */}
+            {/* Featured Slideshow — Editorial Hero — Reverted Layout */}
             {!showOnlyFavorites && (
                 <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-20 md:pt-24 mb-2 reveal overflow-hidden">
                     <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[240px] sm:min-h-[280px] md:min-h-[320px] border border-white/10 shadow-premium flex items-center">
