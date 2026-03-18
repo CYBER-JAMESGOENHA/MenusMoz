@@ -109,29 +109,29 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
   return (
     <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled || isMenuOpen ? 'top-2 md:top-3' : 'top-4 md:top-6'}`}>
-      <div className={`mx-auto max-w-5xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-3 md:py-4 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
+      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-2 md:py-2.5 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
         <div className="flex items-center gap-4 z-[1001]">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden w-12 h-12 flex items-center justify-center rounded-2xl bg-primary text-white shadow-primary-glow"
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-2xl bg-primary text-white shadow-primary-glow"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
 
-          <Link to="/" className="hidden lg:flex items-center gap-4 group" onClick={() => setIsMenuOpen(false)}>
-            <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
+          <Link to="/" className="hidden lg:flex items-center gap-3 group" onClick={() => setIsMenuOpen(false)}>
+            <div className="w-10 h-10 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
             <div className="flex flex-col -gap-1">
-                <span className="font-black text-2xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
+                <span className="font-black text-xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
             </div>
           </Link>
         </div>
 
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden font-display italic font-black text-2xl tracking-tighter text-text-main z-[1000] pointer-events-none">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden font-display italic font-black text-xl tracking-tighter text-text-main z-[1000] pointer-events-none">
           Locais de Moz
         </div>
 
-        <div className="hidden lg:flex items-center gap-6 font-black text-sm uppercase tracking-widest text-text-main/70">
+        <div className="hidden lg:flex items-center gap-10 font-black text-xs uppercase tracking-widest text-text-main/70">
           <Link to="/" className="hover:text-primary transition-colors focus:text-primary outline-none">Home</Link>
           <Link to="/blog" className="hover:text-primary transition-colors focus:text-primary outline-none">Sabor</Link>
           <Link to="/sobre" className="hover:text-primary transition-colors focus:text-primary outline-none">Sobre</Link>
@@ -139,17 +139,17 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2">
              <button
               onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
+              className="w-9 h-9 flex items-center justify-center rounded-[1rem] glass hover:bg-primary/10 transition-all text-text-main border-none"
             >
               <Globe size={18} />
               <span className="ml-1 text-[10px] font-black uppercase">{lang}</span>
             </button>
 
-            <Link to="/favoritos" className="relative w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none">
-              <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
+            <Link to="/favoritos" className="relative w-9 h-9 flex items-center justify-center rounded-[1rem] glass hover:bg-primary/10 transition-all text-text-main border-none">
+              <Heart size={16} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
               {favoritesCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-primary-glow">
                   {favoritesCount}
@@ -159,15 +159,15 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
             <button
               onClick={toggleDarkMode}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-primary border-none"
+              className="w-9 h-9 flex items-center justify-center rounded-[1rem] glass hover:bg-primary/10 transition-all text-primary border-none"
             >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
             </button>
           </div>
 
           <button
             onClick={onLoginOpen}
-            className="login-moz-btn hidden lg:flex scale-110 ml-4"
+            className="login-moz-btn hidden lg:flex scale-90 ml-1 origin-right"
           >
             <span className="login-moz-lens">🇲🇿</span>
             <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
