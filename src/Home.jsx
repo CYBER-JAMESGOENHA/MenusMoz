@@ -60,7 +60,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="relative h-72 overflow-hidden">
+            <div className="relative h-56 overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
@@ -91,7 +91,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                 </div>
             </div>
 
-            <div className="p-6 md:p-10">
+            <div className="p-5 md:p-6">
                 <div className="flex items-start justify-between gap-4 mb-3 md:mb-4">
                     <h3 className="text-2xl md:text-3xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
