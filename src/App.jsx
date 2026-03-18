@@ -109,7 +109,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
   return (
     <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled || isMenuOpen ? 'top-2 md:top-3' : 'top-4 md:top-6'}`}>
-      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-3 md:py-4 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
+      <div className={`mx-auto max-w-5xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-3 md:py-4 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
         <div className="flex items-center gap-4 z-[1001]">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -131,7 +131,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
           Locais de Moz
         </div>
 
-        <div className="hidden lg:flex items-center gap-10 font-black text-sm uppercase tracking-widest text-text-main/70">
+        <div className="hidden lg:flex items-center gap-6 font-black text-sm uppercase tracking-widest text-text-main/70">
           <Link to="/" className="hover:text-primary transition-colors focus:text-primary outline-none">Home</Link>
           <Link to="/blog" className="hover:text-primary transition-colors focus:text-primary outline-none">Sabor</Link>
           <Link to="/sobre" className="hover:text-primary transition-colors focus:text-primary outline-none">Sobre</Link>
