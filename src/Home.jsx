@@ -384,13 +384,13 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
-            {/* Restaurant Grid */}
+            {/* Restaurant Carousel */}
             <section className="max-w-7xl mx-auto px-4 pb-16">
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <div ref={gridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-8 pt-4 no-scrollbar snap-x snap-mandatory">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
-                        ? <EmptyFavorites lang={lang} />
+                        ? <div className="w-full shrink-0"><EmptyFavorites lang={lang} /></div>
                         : filteredRestaurants.map(rest => (
-                            <div key={rest.id} className="restaurant-card opacity-0 translate-y-8">
+                            <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[320px] lg:w-[270px] xl:w-[290px] snap-start">
                                 <RestaurantCard
                                     restaurant={rest}
                                     isFavorite={favorites.includes(rest.id)}
@@ -400,6 +400,18 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             </div>
                         ))
                     }
+                    {/* View All Card */}
+                    {filteredRestaurants.length > 0 && !showOnlyFavorites && (
+                        <div className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[320px] lg:w-[270px] xl:w-[290px] snap-start flex items-center justify-center">
+                            <Link to="/restaurantes" className="flex flex-col items-center justify-center gap-4 w-full h-full min-h-[420px] bg-surface rounded-custom-lg border border-border-subtle card-hover hover:border-primary/50 group/viewall transition-all duration-300">
+                                <div className="w-20 h-20 rounded-[2rem] bg-primary/10 text-primary flex items-center justify-center group-hover/viewall:bg-primary group-hover/viewall:text-white group-hover/viewall:shadow-primary-glow transition-all duration-500 group-hover/viewall:scale-110">
+                                    <ChevronRight size={40} className="group-hover/viewall:translate-x-1 transition-transform" />
+                                </div>
+                                <h3 className="font-display text-3xl font-black italic text-text-main group-hover/viewall:text-primary transition-colors">{lang === 'pt' ? 'Ver Todos' : 'View All'}</h3>
+                                <p className="text-xs font-bold text-text-dim uppercase tracking-widest">{lang === 'pt' ? 'Explorar' : 'Explore'}</p>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
 
