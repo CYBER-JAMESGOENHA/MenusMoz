@@ -290,7 +290,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-28 md:pt-36 mb-10 reveal overflow-hidden">
+                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-16 md:pt-20 mb-10 reveal overflow-hidden">
                     <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[380px] sm:min-h-[420px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
