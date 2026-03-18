@@ -235,6 +235,16 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     useEffect(() => {
         if (slideshowRef.current) {
+            // Efeito de push contínuo (bouncing)
+            gsap.to(slideshowRef.current, {
+                y: -15,
+                duration: 2.5,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Efeito de parallax no scroll (puxando ligeiramente na direção oposta ao dar o scroll real)
             gsap.to(".hero-parallax-bg", {
                 y: "15%",
                 ease: "none",
@@ -343,11 +353,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                             </div>
                         </div>
 
-                        {/* Scroll Indicator */}
-                        <div className="absolute bottom-6 md:bottom-12 right-6 md:right-16 z-20 hidden sm:flex flex-col items-center gap-2 cursor-pointer opacity-80 hover:opacity-100 transition-opacity" onClick={() => window.scrollBy({top: 500, behavior: 'smooth'})}>
-                            <Mouse size={20} className="animate-bounce text-white drop-shadow-lg" />
-                            <span className="text-[9px] font-black tracking-widest text-white uppercase vertical-text mt-4">Scroll</span>
-                        </div>
+                        {/* Scroll Indicator REMOVED */}
 
                         {/* Classic Horizontal Pagination — Numbers Removed for Premium Vibe */}
                         <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-8 md:bottom-12 md:left-16 z-20 flex items-center gap-3 sm:gap-4">
