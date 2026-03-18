@@ -235,15 +235,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     useEffect(() => {
         if (slideshowRef.current) {
-            // Efeito de push contínuo (bouncing)
-            gsap.to(slideshowRef.current, {
-                y: -15,
-                duration: 2.5,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-
             // Efeito de parallax no scroll (puxando ligeiramente na direção oposta ao dar o scroll real)
             gsap.to(".hero-parallax-bg", {
                 y: "15%",
