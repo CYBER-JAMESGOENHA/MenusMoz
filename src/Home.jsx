@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, Mouse } from 'lucide-react';
+import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -232,6 +232,13 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const gridRef = useRef(null);
     const slideshowRef = useRef(null);
 
+    const scrollCarousel = (direction) => {
+        if (gridRef.current) {
+            const scrollAmount = window.innerWidth > 1024 ? 900 : window.innerWidth > 768 ? 600 : 320;
+            gridRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+        }
+    };
+
 
     useEffect(() => {
         if (slideshowRef.current) {
@@ -385,7 +392,20 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {/* Restaurant Carousel */}
-            <section className="max-w-7xl mx-auto px-4 pb-16">
+            <section className="max-w-7xl mx-auto px-4 pb-16 relative group/carousel">
+                <button 
+                  onClick={(e) => { e.preventDefault(); scrollCarousel('left'); }}
+                  className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
+                >
+                    <ChevronLeft size={28} />
+                </button>
+                <button 
+                  onClick={(e) => { e.preventDefault(); scrollCarousel('right'); }}
+                  className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-100 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary animate-pulse hover:animate-none"
+                >
+                    <ChevronRight size={28} />
+                </button>
+
                 <div ref={gridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-8 pt-4 no-scrollbar snap-x snap-mandatory">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <div className="w-full shrink-0"><EmptyFavorites lang={lang} /></div>
