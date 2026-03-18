@@ -386,7 +386,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Restaurant Grid */}
             <section className="max-w-7xl mx-auto px-4 pb-16">
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <EmptyFavorites lang={lang} />
                         : filteredRestaurants.map(rest => (
