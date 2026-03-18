@@ -93,7 +93,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
 
             <div className="p-5 md:p-6">
                 <div className="flex items-start justify-between gap-4 mb-3 md:mb-4">
-                    <h3 className="text-2xl md:text-3xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
+                    <h3 className="text-xl font-display leading-tight text-text-main truncate group-hover:text-primary transition-colors" title={restaurant.name}>{restaurant.name}</h3>
                     {restaurant.rating && (
                         <div className="flex flex-col items-end gap-1 shrink-0 mt-1">
                             <StarRating rating={restaurant.rating} />
