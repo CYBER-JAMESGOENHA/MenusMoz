@@ -92,14 +92,11 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
             </div>
 
             <div className="p-5 md:p-6">
-                <div className="flex items-start justify-between gap-4 mb-3 md:mb-4">
-                    <h3 className="text-xl font-display leading-tight text-text-main truncate group-hover:text-primary transition-colors" title={restaurant.name}>{restaurant.name}</h3>
+                <div className="flex flex-col gap-1.5 mb-4 md:mb-5">
+                    <h3 className="text-xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
-                        <div className="flex flex-col items-end gap-1 shrink-0 mt-1">
+                        <div className="flex items-center">
                             <StarRating rating={restaurant.rating} />
-                            {restaurant.reviewCount && (
-                                <span className="text-[10px] font-bold text-text-dim uppercase tracking-widest">{restaurant.reviewCount} {lang === 'pt' ? 'avaliações' : 'reviews'}</span>
-                            )}
                         </div>
                     )}
                 </div>
