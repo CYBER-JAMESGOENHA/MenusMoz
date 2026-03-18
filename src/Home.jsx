@@ -172,12 +172,12 @@ const HomeSearch = ({ lang }) => {
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-6 mb-8 relative z-[100]">
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-2 mb-2 relative z-[100]">
             <div className={`group relative transform transition-all duration-700 ${isFocused ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}>
                 {/* Animated glowing border effect */}
                 <div className={`absolute -inset-1 bg-gradient-to-r from-primary via-moz-yellow to-moz-green rounded-[3rem] blur-xl transition-all duration-1000 ${isFocused ? 'opacity-40 animate-pulse' : 'opacity-0 group-hover:opacity-20'}`}></div>
 
-                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-3xl md:rounded-[3rem] px-5 sm:px-8 py-3.5 md:py-6 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
+                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-3xl md:rounded-[3rem] px-5 sm:px-8 py-3 md:py-4 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
                     <Search size={22} className={`transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/50'}`} />
                     <input
                         type="text"
@@ -372,13 +372,13 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Categories — tactile pills */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mb-4 overflow-x-auto no-scrollbar py-2 w-full">
-                    <div className="flex gap-3 md:gap-4 min-w-0 md:min-w-max pb-2 md:pb-4">
+                <section className="max-w-7xl mx-auto px-4 mb-2 overflow-x-auto no-scrollbar w-full">
+                    <div className="flex gap-3 md:gap-4 min-w-0 md:min-w-max pb-1">
                         {CATEGORIES.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-6 md:px-10 py-3 md:py-4 rounded-full font-black text-xs md:text-sm transition-all duration-500 whitespace-nowrap min-h-[44px] ${activeCategory === cat
+                                className={`px-6 md:px-10 py-2.5 md:py-3 rounded-full font-black text-xs md:text-sm transition-all duration-500 whitespace-nowrap min-h-[40px] ${activeCategory === cat
                                     ? 'bg-primary text-white shadow-premium shadow-primary/30 -translate-y-1 scale-105'
                                     : 'bg-surface text-text-main border border-border-subtle hover:border-primary/50 hover:shadow-lg'
                                     }`}
@@ -405,7 +405,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     <ChevronRight size={28} />
                 </button>
 
-                <div ref={gridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-8 pt-4 no-scrollbar snap-x snap-mandatory">
+                <div ref={gridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <div className="w-full shrink-0"><EmptyFavorites lang={lang} /></div>
                         : filteredRestaurants.map(rest => (
