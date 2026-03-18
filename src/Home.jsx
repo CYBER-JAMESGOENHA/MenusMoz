@@ -101,23 +101,24 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                     )}
                 </div>
 
-                <div className="mb-6 bg-surface border border-border-subtle rounded-2xl p-4 group-hover:border-primary/30 transition-colors shadow-sm">
+                <div className="mb-5">
                     <div className="flex items-center gap-2 mb-2">
-                        <Utensils size={12} className="text-primary" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">{lang === 'pt' ? 'Sugestão do Chef' : 'Chef\'s Suggestion'}</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                        <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary/80">{lang === 'pt' ? 'Assinatura do Chef' : 'Chef\'s Signature'}</span>
                     </div>
-                    <div className="flex flex-col gap-1">
-                        <div className="flex justify-between items-start gap-3">
-                           <span className="text-sm font-bold text-text-main leading-tight line-clamp-1" title={previewCategory.items[0].name}>{previewCategory.items[0].name}</span>
-                           <span className="font-mono text-primary font-black text-[13px] whitespace-nowrap mt-0.5">{previewCategory.items[0].price}</span>
+                    <div className="flex flex-col gap-1.5">
+                        <div className="flex justify-between items-baseline gap-3">
+                           <span className="text-base font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory.items[0].name}</span>
+                           <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-2 relative top-[-4px]" />
+                           <span className="font-mono text-text-main font-black text-[12px] whitespace-nowrap">{previewCategory.items[0].price}</span>
                         </div>
-                        <p className="text-[11px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
+                        <p className="text-[10px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
                     </div>
                 </div>
 
                 <Link
                     to={`/restaurante/${restaurant.slug}`}
-                    className="w-full bg-text-main text-surface py-4 rounded-2xl font-black flex items-center justify-center gap-3 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                    className="w-full bg-text-main text-surface py-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
                 >
                     {t.view_full_menu} <ChevronRight size={18} />
                 </Link>
@@ -311,8 +312,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Featured Slideshow — Editorial Hero */}
             {!showOnlyFavorites && (
-                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-16 md:pt-20 mb-10 reveal overflow-hidden">
-                    <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[380px] sm:min-h-[420px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
+                <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-16 md:pt-20 mb-6 reveal overflow-hidden">
+                    <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[340px] sm:min-h-[380px] md:min-h-[440px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
                         <div className="hero-parallax-bg absolute inset-0 z-0 h-[115%] w-full -top-[7.5%]">
@@ -390,7 +391,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {/* Restaurant Carousel */}
-            <section className="max-w-7xl mx-auto px-4 pb-16 relative group/carousel">
+            <section className="max-w-7xl mx-auto px-4 pb-8 md:pb-12 relative group/carousel">
                 <button 
                   onClick={(e) => { e.preventDefault(); scrollCarousel('left'); }}
                   className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
@@ -435,9 +436,9 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* How it works — only on main page */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mb-6 text-center">
-                    <h2 className="text-4xl md:text-5xl mb-4 md:mb-6 tracking-tighter italic">{th.how_it_works}</h2>
-                    <div className="grid md:grid-cols-3 gap-12">
+                <section className="max-w-7xl mx-auto px-4 pb-8 text-center mt-4">
+                    <h2 className="text-3xl md:text-4xl mb-4 md:mb-6 tracking-tighter italic">{th.how_it_works}</h2>
+                    <div className="grid md:grid-cols-3 gap-8">
                         {[
                             { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
                             { icon: Utensils, title: th.step2_title, desc: th.step2_desc, color: "icon-orange" },
