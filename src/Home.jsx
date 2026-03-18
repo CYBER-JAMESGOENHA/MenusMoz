@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight } from 'lucide-react';
+import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, Mouse } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -233,6 +233,21 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const slideshowRef = useRef(null);
 
 
+    useEffect(() => {
+        if (slideshowRef.current) {
+            gsap.to(".hero-parallax-bg", {
+                y: "15%",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: slideshowRef.current,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        }
+    }, []);
+
     const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
 
@@ -294,7 +309,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[380px] sm:min-h-[420px] md:min-h-[480px] border border-white/10 shadow-premium flex items-center">
 
                         {/* Brighter Advertisement Background */}
-                        <div className="absolute inset-0 z-0 h-full w-full">
+                        <div className="hero-parallax-bg absolute inset-0 z-0 h-[115%] w-full -top-[7.5%]">
                             <img
                                 key={`img-${currentSlide}`}
                                 src={FEATURED_DISHES[currentSlide].image}
@@ -326,6 +341,12 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                                     {th.view_restaurant} <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
+                        </div>
+
+                        {/* Scroll Indicator */}
+                        <div className="absolute bottom-6 md:bottom-12 right-6 md:right-16 z-20 hidden sm:flex flex-col items-center gap-2 cursor-pointer opacity-80 hover:opacity-100 transition-opacity" onClick={() => window.scrollBy({top: 500, behavior: 'smooth'})}>
+                            <Mouse size={20} className="animate-bounce text-white drop-shadow-lg" />
+                            <span className="text-[9px] font-black tracking-widest text-white uppercase vertical-text mt-4">Scroll</span>
                         </div>
 
                         {/* Classic Horizontal Pagination — Numbers Removed for Premium Vibe */}
