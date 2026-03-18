@@ -91,7 +91,7 @@ const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
                 </div>
             </div>
 
-            <div className="p-5 md:p-6">
+            <div className="px-5 pb-5 pt-3 md:px-6 md:pb-6 md:pt-4">
                 <div className="flex flex-col gap-1.5 mb-4 md:mb-5">
                     <h3 className="text-xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
