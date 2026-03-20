@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, X } from 'lucide-react';
-import { RESTAURANTS, CATEGORIES } from './data';
+import { CATEGORIES } from './data';
 import { RestaurantCard } from './Home';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 
-export default function RestaurantListing({ lang, favorites, toggleFavorite }) {
+export default function RestaurantListing({ lang, favorites, toggleFavorite, restaurants = [] }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get('q') || '';
     
@@ -19,7 +19,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite }) {
     const t = translations[lang];
 
     // Filter logic
-    const filteredRestaurants = RESTAURANTS.filter(r => {
+    const filteredRestaurants = restaurants.filter(r => {
         let match = true;
         if (searchTerm) {
             match = r.name.toLowerCase().includes(searchTerm.toLowerCase()) || 

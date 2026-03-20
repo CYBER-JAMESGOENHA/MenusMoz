@@ -4,7 +4,7 @@ import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useNavigate } from 'react-router-dom';
-import { RESTAURANTS, CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
+import { CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -185,7 +185,7 @@ export const DishCard = ({ dish }) => {
     );
 };
 
-const HomeSearch = ({ lang }) => {
+const HomeSearch = ({ lang, restaurants = [] }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
@@ -204,15 +204,15 @@ const HomeSearch = ({ lang }) => {
         const query = e.target.value;
         setSearchQuery(query);
         if (query.length > 1) {
-            const filteredRest = RESTAURANTS.filter(r =>
+            const filteredRest = restaurants.filter(r =>
                 r.name.toLowerCase().includes(query.toLowerCase()) ||
                 r.cuisine.toLowerCase().includes(query.toLowerCase())
             ).map(r => ({ type: 'restaurant', name: r.name, slug: r.slug }));
 
             const filteredDishes = [];
-            RESTAURANTS.forEach(r => {
-                r.menuCategories.forEach(cat => {
-                    cat.items.forEach(item => {
+            restaurants.forEach(r => {
+                r.menu_categories?.forEach(cat => {
+                    cat.menu_items?.forEach(item => {
                         if (item.name.toLowerCase().includes(query.toLowerCase())) {
                             filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
                         }
@@ -289,7 +289,7 @@ const HomeSearch = ({ lang }) => {
     );
 };
 
-export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites }) {
+export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [] }) {
     const t = translations[lang];
     const th = t.home;
     const [activeCategory, setActiveCategory] = useState("Tudo");
@@ -322,7 +322,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
         }
     }, []);
 
-    const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
+    const filteredRestaurants = (activeCategory === "Tudo" ? restaurants : restaurants.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
 
     const topDishes = filteredRestaurants.map(rest => {
@@ -445,7 +445,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
-            {!showOnlyFavorites && <HomeSearch lang={lang} />}
+            {!showOnlyFavorites && <HomeSearch lang={lang} restaurants={restaurants} />}
 
             {/* Categories — tactile pills */}
             {!showOnlyFavorites && (
