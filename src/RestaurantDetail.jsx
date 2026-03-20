@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, MapPin, Clock, Phone, Share2, Star, MessageCircle, ChevronRight, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
-import { RESTAURANTS, checkIsOpen } from './data';
+import { checkIsOpen } from './data';
+import { restaurantService } from './services/restaurantService';
 import { translations } from './translations';
 import { Heart } from 'lucide-react';
 
@@ -46,12 +47,22 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     const t = translations[lang].detail;
     const th = translations[lang].home;
     const { slug } = useParams();
-    const restaurant = RESTAURANTS.find(r => r.slug === slug);
+    const [restaurant, setRestaurant] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const containerRef = useRef(null);
     const pageRef = useRef(null);
     const tabsRef = useRef(null);
     const [activePage, setActivePage] = useState(0);
     const [isFlipping, setIsFlipping] = useState(false);
+
+    useEffect(() => {
+        const fetchRestaurant = async () => {
+            const data = await restaurantService.getBySlug(slug);
+            setRestaurant(data);
+            setIsLoading(false);
+        };
+        fetchRestaurant();
+    }, [slug]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -123,6 +134,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
     const triggerHaptic = () => {
         if (navigator.vibrate) navigator.vibrate(20);
     };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-bg">
+                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     if (!restaurant) {
         return (
