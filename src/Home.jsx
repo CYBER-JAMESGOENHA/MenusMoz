@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse } from 'lucide-react';
+import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse, ArrowUpRight } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -127,6 +127,49 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
     );
 };
 
+export const DishCard = ({ dish }) => {
+    return (
+        <Link to={`/restaurante/${dish.slug}`} className="group relative bg-surface border border-border-subtle rounded-[2rem] p-6 flex flex-col h-[380px] w-[300px] hover:border-primary hover:shadow-premium transition-all duration-500 overflow-hidden">
+            
+            {/* The dramatic background image of the restaurant, very faded to act as texture */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <img src={dish.image} alt="" className="w-full h-full object-cover opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 grayscale" />
+                <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
+            </div>
+
+            <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-6">
+                    <span className="bg-text-main text-surface px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-sm">
+                        {dish.dishPrice}
+                    </span>
+                    <Heart size={20} className="text-black/20 group-hover:text-primary transition-colors" />
+                </div>
+                
+                <div className="mb-auto">
+                    <h3 className="text-3xl font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors mb-4 italic line-clamp-3">
+                        {dish.dishName}
+                    </h3>
+                    <p className="text-sm text-text-dim font-medium leading-relaxed line-clamp-3">
+                        {dish.dishDesc}
+                    </p>
+                </div>
+                
+                <div className="mt-8 border-t border-black/10 pt-5 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-md shrink-0">
+                        <img src={dish.image} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[9px] uppercase tracking-widest font-black text-primary mb-0.5">Disponível no</p>
+                        <p className="text-base font-bold text-text-main truncate group-hover:text-primary transition-colors">{dish.name}</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-300">
+                        <ArrowUpRight size={18} />
+                    </div>
+                </div>
+            </div>
+        </Link>
+    );
+};
 
 const HomeSearch = ({ lang }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -238,12 +281,13 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     const [activeCategory, setActiveCategory] = useState("Tudo");
     const [currentSlide, setCurrentSlide] = useState(0);
     const gridRef = useRef(null);
+    const dishGridRef = useRef(null);
     const slideshowRef = useRef(null);
 
-    const scrollCarousel = (direction) => {
-        if (gridRef.current) {
+    const scrollCarousel = (direction, ref) => {
+        if (ref.current) {
             const scrollAmount = window.innerWidth > 1024 ? 900 : window.innerWidth > 768 ? 600 : 320;
-            gridRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+            ref.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
         }
     };
 
@@ -266,6 +310,16 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     const filteredRestaurants = (activeCategory === "Tudo" ? RESTAURANTS : RESTAURANTS.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
+
+    const topDishes = filteredRestaurants.map(rest => {
+        const dish = rest.menuCategories[0]?.items[0] || {};
+        return {
+            ...rest,
+            dishName: dish.name || 'Prato Especial',
+            dishPrice: dish.price || 'Sob Consulta',
+            dishDesc: dish.desc || 'Receita exclusiva do chef, preparada com ingredientes frescos da mais alta qualidade.'
+        };
+    });
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -399,16 +453,24 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
+            {/* Restaurant Carousel Title */}
+            {!showOnlyFavorites && (
+                <div className="max-w-7xl mx-auto px-4 mt-12 mb-6">
+                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">Locais Mais Visitados</h2>
+                    <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">Descubra os espaços favoritos da cidade</p>
+                </div>
+            )}
+
             {/* Restaurant Carousel */}
             <section className="max-w-7xl mx-auto px-4 pb-8 md:pb-12 relative group/carousel">
                 <button 
-                  onClick={(e) => { e.preventDefault(); scrollCarousel('left'); }}
+                  onClick={(e) => { e.preventDefault(); scrollCarousel('left', gridRef); }}
                   className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
                 >
                     <ChevronLeft size={28} />
                 </button>
                 <button 
-                  onClick={(e) => { e.preventDefault(); scrollCarousel('right'); }}
+                  onClick={(e) => { e.preventDefault(); scrollCarousel('right', gridRef); }}
                   className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-100 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary animate-pulse hover:animate-none"
                 >
                     <ChevronRight size={28} />
@@ -442,6 +504,40 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     )}
                 </div>
             </section>
+
+            {/* Dish Carousel Title */}
+            {!showOnlyFavorites && (
+                <div className="max-w-7xl mx-auto px-4 mt-8 mb-6">
+                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">Os Mais Pedidos</h2>
+                    <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">Criações irresistíveis dos nossos melhores restaurantes</p>
+                </div>
+            )}
+
+            {/* Dish Carousel */}
+            {!showOnlyFavorites && (
+                <section className="max-w-7xl mx-auto px-4 pb-16 md:pb-20 relative group/dishcarousel">
+                    <button 
+                      onClick={(e) => { e.preventDefault(); scrollCarousel('left', dishGridRef); }}
+                      className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
+                    >
+                        <ChevronLeft size={28} />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.preventDefault(); scrollCarousel('right', dishGridRef); }}
+                      className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-100 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary animate-pulse hover:animate-none"
+                    >
+                        <ChevronRight size={28} />
+                    </button>
+
+                    <div ref={dishGridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
+                        {topDishes.map((dish, idx) => (
+                            <div key={`dish-${idx}`} className="restaurant-card opacity-0 translate-y-8 shrink-0 snap-start">
+                                <DishCard dish={dish} />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* How it works — only on main page */}
             {!showOnlyFavorites && (
