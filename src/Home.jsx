@@ -84,10 +84,10 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                     <div className="flex gap-2">
                         <div className="bg-white/95 backdrop-blur-xl px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] text-primary shadow-sm">
-                            {restaurant.cuisine}
+                            {restaurant.cuisines?.[0]?.name || restaurant.cuisine}
                         </div>
-                        <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] backdrop-blur-xl shadow-sm ${checkIsOpen(restaurant.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
-                            {checkIsOpen(restaurant.hours) ? t.open_now : t.closed}
+                        <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] backdrop-blur-xl shadow-sm ${restaurant.isOpen ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
+                            {restaurant.isOpen ? t.open_now : t.closed}
                         </div>
                     </div>
                 </div>

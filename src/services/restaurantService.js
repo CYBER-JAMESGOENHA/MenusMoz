@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { RESTAURANTS } from '../data'
+import { RESTAURANTS, checkIsOpen } from '../data'
 
 /**
  * SERVIÇO DE RESTAURANTES
@@ -9,18 +9,27 @@ import { RESTAURANTS } from '../data'
 const mapRestaurant = (r) => ({
   ...r,
   image: r.image_url,
+  // Usar coordenadas decimais se disponíveis, senão o fallback JSONB
+  lat: r.latitude || (r.coords?.lat),
+  lng: r.longitude || (r.coords?.lng),
   reviewCount: r.review_count,
+  // A View já nos dá as tags normalizadas e o estado is_open calculado no servidor
+  cuisines: r.tags || [{ name: r.cuisine, slug: r.cuisine?.toLowerCase() }],
+  isOpen: r.is_open !== undefined ? r.is_open : checkIsOpen(r.hours),
   menuCategories: (r.menu_categories || []).map(cat => ({
     ...cat,
     items: (cat.menu_items || []).map(item => ({
       ...item,
+      // Usar novo preço numérico formatado
+      price: item.price_value ? `${item.price_value} ${item.currency || 'MT'}` : item.price,
+      priceValue: item.price_value,
       desc: item.description
     }))
   }))
 });
 
 export const restaurantService = {
-  // 🔍 BUSCA - Todos os restaurantes ativos
+  // 🔍 BUSCA - Todos os restaurantes ativos usando a VIEW inteligente
   async getAll() {
     if (!isSupabaseConfigured) {
       console.info('📦 A usar dados locais (data.js)...')
@@ -28,7 +37,7 @@ export const restaurantService = {
     }
 
     const { data, error } = await supabase
-      .from('restaurants')
+      .from('active_restaurants_view')
       .select(`
         *,
         menu_categories (
@@ -36,7 +45,6 @@ export const restaurantService = {
           menu_items (*)
         )
       `)
-      .eq('is_active', true)
       .order('rating', { ascending: false })
 
     if (error) {
@@ -53,7 +61,7 @@ export const restaurantService = {
     }
 
     const { data, error } = await supabase
-      .from('restaurants')
+      .from('active_restaurants_view')
       .select(`
         *,
         menu_categories (
