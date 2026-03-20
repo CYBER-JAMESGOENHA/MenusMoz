@@ -3,9 +3,8 @@ import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, 
 import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RESTAURANTS, CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
-import TopBarFilters from './TopBarFilters';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -135,6 +134,14 @@ const HomeSearch = ({ lang }) => {
     const [isFocused, setIsFocused] = useState(false);
     const searchRef = useRef(null);
     const t = translations[lang];
+    const navigate = useNavigate();
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && searchQuery.trim()) {
+            setSuggestions([]);
+            navigate(`/restaurantes?q=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
 
     const handleSearch = (e) => {
         const query = e.target.value;
@@ -187,6 +194,7 @@ const HomeSearch = ({ lang }) => {
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => !suggestions.length && setIsFocused(false)}
                         onChange={handleSearch}
+                        onKeyDown={handleKeyDown}
                         className="bg-transparent border-none outline-none text-lg md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
                     />
                 </div>
@@ -370,9 +378,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {!showOnlyFavorites && <HomeSearch lang={lang} />}
-
-            {/* Top Bar Showcase */}
-            {!showOnlyFavorites && <div className="my-8"><TopBarFilters lang={lang} /></div>}
 
             {/* Categories — tactile pills */}
             {!showOnlyFavorites && (

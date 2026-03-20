@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import Home from './Home';
@@ -9,6 +9,7 @@ import Blog from './Blog';
 import ForOwners from './ForOwners';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
+import RestaurantListing from './RestaurantListing';
 import { translations } from './translations';
 
 const NavbarSearch = ({ lang }) => {
@@ -16,6 +17,7 @@ const NavbarSearch = ({ lang }) => {
   const [suggestions, setSuggestions] = useState([]);
   const searchRef = useRef(null);
   const t = translations[lang];
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     const query = e.target.value;
@@ -52,6 +54,13 @@ const NavbarSearch = ({ lang }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      setSuggestions([]);
+      navigate(`/restaurantes?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
     <div ref={searchRef} className="relative hidden lg:block">
       <div className="flex items-center gap-3 glass border border-border-subtle rounded-3xl px-6 py-2.5 w-64 xl:w-96 group focus-within:w-[450px] transition-all duration-500 bg-white/10">
@@ -61,6 +70,7 @@ const NavbarSearch = ({ lang }) => {
           placeholder={t.hero?.search_placeholder || 'Ouse descobrir...'}
           value={searchQuery}
           onChange={handleSearch}
+          onKeyDown={handleKeyDown}
           className="bg-transparent border-none outline-none text-sm font-bold text-text-main placeholder:text-text-dim/30 w-full"
         />
       </div>
@@ -376,6 +386,7 @@ export default function App() {
               <Route path="/blog" element={<Blog lang={lang} />} />
               <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
               <Route path="/favoritos" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} />} />
+              <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
             </Routes>
             <Footer lang={lang} />
         </div>
