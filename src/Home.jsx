@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse, ArrowUpRight } from 'lucide-react';
 import { translations } from './translations';
 import { gsap } from 'gsap';
@@ -44,26 +44,39 @@ const EmptyFavorites = ({ lang }) => {
     );
 };
 
-export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
+export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
     const t = translations[lang].home;
 
-    const previewCategory = restaurant.menuCategories.length > 1
-        ? restaurant.menuCategories[1]
-        : restaurant.menuCategories[0];
+    const previewCategory = useMemo(() => {
+        return restaurant.menuCategories.length > 1
+            ? restaurant.menuCategories[1]
+            : restaurant.menuCategories[0];
+    }, [restaurant.menuCategories]);
+
+    const handleToggleFavorite = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFavorite(restaurant.id);
+    }, [restaurant.id, toggleFavorite]);
+
+    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
     return (
         <div
             ref={cardRef}
             className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <div className="relative h-24 overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -80,7 +93,8 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
                 </div>
 
                 <button
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(restaurant.id); }}
+                    onClick={handleToggleFavorite}
+                    aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
                     className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
                 >
                     <Heart size={18} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
@@ -125,7 +139,7 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
             </div>
         </div>
     );
-};
+});
 
 export const DishCard = ({ dish }) => {
     return (
@@ -133,7 +147,7 @@ export const DishCard = ({ dish }) => {
             
             {/* The dramatic background image of the restaurant, very faded to act as texture */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <img src={dish.image} alt="" className="w-full h-full object-cover opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 grayscale" />
+                <img src={dish.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 grayscale" />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
             </div>
 
@@ -156,7 +170,7 @@ export const DishCard = ({ dish }) => {
                 
                 <div className="mt-6 border-t border-black/10 pt-4 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-surface shadow-md shrink-0">
-                        <img src={dish.image} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <img src={dish.image} alt={dish.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-[8px] uppercase tracking-widest font-black text-primary mb-0.5">Disponível no</p>

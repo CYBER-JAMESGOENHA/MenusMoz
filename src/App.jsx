@@ -1,17 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
 import { RESTAURANTS } from './data';
-import Home from './Home';
-import RestaurantDetail from './RestaurantDetail';
-import About from './About';
-import Blog from './Blog';
-import ForOwners from './ForOwners';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
-import RestaurantListing from './RestaurantListing';
 import MobileBottomNav from './MobileBottomNav';
 import { translations } from './translations';
+
+const Home = lazy(() => import('./Home'));
+const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
+const About = lazy(() => import('./About'));
+const Blog = lazy(() => import('./Blog'));
+const ForOwners = lazy(() => import('./ForOwners'));
+const RestaurantListing = lazy(() => import('./RestaurantListing'));
+
+export const LoadingSpinner = () => (
+    <div className="flex items-center justify-center min-h-screen bg-bg">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+);
 
 const NavbarSearch = ({ lang }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -384,15 +391,17 @@ export default function App() {
               favoritesCount={favorites.length} 
               onLoginOpen={() => setIsLoginOpen(true)} 
             />
-            <Routes>
-              <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-              <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-              <Route path="/sobre" element={<About lang={lang} />} />
-              <Route path="/blog" element={<Blog lang={lang} />} />
-              <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
-              <Route path="/favoritos" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} />} />
-              <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-            </Routes>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+                <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+                <Route path="/sobre" element={<About lang={lang} />} />
+                <Route path="/blog" element={<Blog lang={lang} />} />
+                <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
+                <Route path="/favoritos" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} />} />
+                <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+              </Routes>
+            </Suspense>
             <Footer lang={lang} />
         </div>
       </div>
