@@ -51,11 +51,11 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite }) {
 
     return (
         <div className="min-h-screen bg-bg pt-28 pb-20">
-            <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-col md:flex-row gap-8 relative">
+            <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-col md:flex-row gap-6 relative">
                 
                 {/* Mobile Filter Toggle */}
                 <button 
-                    className="md:hidden flex items-center justify-center gap-2 w-full bg-surface border border-border-subtle py-3 rounded-2xl font-black text-text-main shadow-sm"
+                    className="md:hidden flex items-center justify-center gap-2 w-full bg-surface border border-border-subtle py-2.5 rounded-xl font-black text-text-main shadow-sm"
                     onClick={() => setIsMobileFiltersOpen(true)}
                 >
                     <Filter size={18} /> Filtrar Resultados
@@ -129,19 +129,19 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite }) {
 
                 {/* Main Grid */}
                 <main className="flex-1 min-w-0">
-                    <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between border-b border-border-subtle pb-4 gap-4">
+                    <div className="mb-5 flex flex-col sm:flex-row sm:items-end justify-between border-b border-border-subtle pb-3 gap-3">
                          <div>
-                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block mb-2">Explorar</span>
-                             <h2 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-text-main italic leading-none">
+                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block mb-1.5">Explorar</span>
+                             <h2 className="text-3xl lg:text-4xl font-display font-black tracking-tighter text-text-main italic leading-none">
                                 {searchTerm ? `Resultados: "${searchTerm}"` : (activeCategory !== 'Tudo' ? activeCategory : 'O Nosso Diretório')}
                             </h2>
                          </div>
-                        <span className="bg-primary/5 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shrink-0 w-fit">
+                        <span className="bg-primary/5 text-primary border border-primary/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shrink-0 w-fit">
                             {filteredRestaurants.length} Locais
                         </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                         {filteredRestaurants.map(rest => (
                             <div key={rest.id} className="restaurant-card-grid">
                                 <RestaurantCard 

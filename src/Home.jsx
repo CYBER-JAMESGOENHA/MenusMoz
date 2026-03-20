@@ -60,7 +60,7 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-44 overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
@@ -68,12 +68,12 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                     <div className="flex gap-2">
-                        <div className="bg-white/95 backdrop-blur-xl px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-primary shadow-sm">
+                        <div className="bg-white/95 backdrop-blur-xl px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] text-primary shadow-sm">
                             {restaurant.cuisine}
                         </div>
-                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] backdrop-blur-xl shadow-sm ${checkIsOpen(restaurant.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
+                        <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.15em] backdrop-blur-xl shadow-sm ${checkIsOpen(restaurant.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
                             {checkIsOpen(restaurant.hours) ? t.open_now : t.closed}
                         </div>
                     </div>
@@ -81,44 +81,44 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
 
                 <button
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(restaurant.id); }}
-                    className={`absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
+                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
                 >
-                    <Heart size={22} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
+                    <Heart size={18} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
                 </button>
                 
-                <div className="absolute bottom-6 left-6 right-6 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                     <p className="text-white text-xs font-medium line-clamp-2 italic">"{restaurant.description}"</p>
+                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                     <p className="text-white text-[10px] font-medium line-clamp-2 italic">"{restaurant.description}"</p>
                 </div>
             </div>
 
-            <div className="px-5 pb-5 pt-3 md:px-6 md:pb-6 md:pt-4">
-                <div className="flex flex-col gap-1.5 mb-4 md:mb-5">
-                    <h3 className="text-xl font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
+            <div className="p-4 md:p-5">
+                <div className="flex flex-col gap-1 mb-3">
+                    <h3 className="text-lg font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
                     {restaurant.rating && (
-                        <div className="flex items-center">
+                        <div className="flex items-center scale-90 origin-left">
                             <StarRating rating={restaurant.rating} />
                         </div>
                     )}
                 </div>
 
-                <div className="mb-5">
-                    <div className="flex items-center gap-2 mb-2">
+                <div className="mb-4">
+                    <div className="flex items-center gap-2 mb-1.5">
                         <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary/80">{lang === 'pt' ? 'Assinatura do Chef' : 'Chef\'s Signature'}</span>
+                        <span className="text-[7.5px] font-black uppercase tracking-[0.25em] text-primary/80">{lang === 'pt' ? 'Assinatura do Chef' : 'Chef\'s Signature'}</span>
                     </div>
-                    <div className="flex flex-col gap-1.5">
-                        <div className="flex justify-between items-baseline gap-3">
-                           <span className="text-base font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory.items[0].name}</span>
-                           <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-2 relative top-[-4px]" />
-                           <span className="font-mono text-text-main font-black text-[12px] whitespace-nowrap">{previewCategory.items[0].price}</span>
+                    <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-baseline gap-2">
+                           <span className="text-sm font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory.items[0].name}</span>
+                           <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-1 relative top-[-4px]" />
+                           <span className="font-mono text-text-main font-black text-[10px] whitespace-nowrap">{previewCategory.items[0].price}</span>
                         </div>
-                        <p className="text-[10px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
+                        <p className="text-[9px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
                     </div>
                 </div>
 
                 <Link
                     to={`/restaurante/${restaurant.slug}`}
-                    className="w-full bg-text-main text-surface py-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+                    className="w-full bg-text-main text-surface py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
                 >
                     {t.view_full_menu} <ChevronRight size={18} />
                 </Link>
@@ -129,7 +129,7 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
 
 export const DishCard = ({ dish }) => {
     return (
-        <Link to={`/restaurante/${dish.slug}`} className="group relative bg-surface border border-border-subtle rounded-[2rem] p-6 flex flex-col h-[380px] w-[300px] hover:border-primary hover:shadow-premium transition-all duration-500 overflow-hidden">
+        <Link to={`/restaurante/${dish.slug}`} className="group relative bg-surface border border-border-subtle rounded-[1.5rem] p-5 flex flex-col h-[320px] w-[280px] hover:border-primary hover:shadow-premium transition-all duration-500 overflow-hidden">
             
             {/* The dramatic background image of the restaurant, very faded to act as texture */}
             <div className="absolute inset-0 z-0 pointer-events-none">
@@ -154,13 +154,13 @@ export const DishCard = ({ dish }) => {
                     </p>
                 </div>
                 
-                <div className="mt-8 border-t border-black/10 pt-5 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-md shrink-0">
+                <div className="mt-6 border-t border-black/10 pt-4 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-surface shadow-md shrink-0">
                         <img src={dish.image} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-[9px] uppercase tracking-widest font-black text-primary mb-0.5">Disponível no</p>
-                        <p className="text-base font-bold text-text-main truncate group-hover:text-primary transition-colors">{dish.name}</p>
+                        <p className="text-[8px] uppercase tracking-widest font-black text-primary mb-0.5">Disponível no</p>
+                        <p className="text-sm font-bold text-text-main truncate group-hover:text-primary transition-colors">{dish.name}</p>
                     </div>
                     <div className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all duration-300">
                         <ArrowUpRight size={18} />
@@ -476,11 +476,11 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     <ChevronRight size={28} />
                 </button>
 
-                <div ref={gridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
+                <div ref={gridRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
                     {filteredRestaurants.length === 0 && showOnlyFavorites
                         ? <div className="w-full shrink-0"><EmptyFavorites lang={lang} /></div>
                         : filteredRestaurants.map(rest => (
-                            <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[320px] lg:w-[270px] xl:w-[290px] snap-start">
+                            <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start">
                                 <RestaurantCard
                                     restaurant={rest}
                                     isFavorite={favorites.includes(rest.id)}
@@ -492,10 +492,10 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     }
                     {/* View All Card */}
                     {filteredRestaurants.length > 0 && !showOnlyFavorites && (
-                        <div className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[320px] lg:w-[270px] xl:w-[290px] snap-start flex items-center justify-center">
-                            <Link to="/restaurantes" className="flex flex-col items-center justify-center gap-4 w-full h-full min-h-[420px] bg-surface rounded-custom-lg border border-border-subtle card-hover hover:border-primary/50 group/viewall transition-all duration-300">
-                                <div className="w-20 h-20 rounded-[2rem] bg-primary/10 text-primary flex items-center justify-center group-hover/viewall:bg-primary group-hover/viewall:text-white group-hover/viewall:shadow-primary-glow transition-all duration-500 group-hover/viewall:scale-110">
-                                    <ChevronRight size={40} className="group-hover/viewall:translate-x-1 transition-transform" />
+                        <div className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start flex items-center justify-center">
+                            <Link to="/restaurantes" className="flex flex-col items-center justify-center gap-4 w-full h-full min-h-[350px] bg-surface rounded-custom-lg border border-border-subtle card-hover hover:border-primary/50 group/viewall transition-all duration-300">
+                                <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover/viewall:bg-primary group-hover/viewall:text-white group-hover/viewall:shadow-primary-glow transition-all duration-500 group-hover/viewall:scale-110">
+                                    <ChevronRight size={32} className="group-hover/viewall:translate-x-1 transition-transform" />
                                 </div>
                                 <h3 className="font-display text-3xl font-black italic text-text-main group-hover/viewall:text-primary transition-colors">{lang === 'pt' ? 'Ver Todos' : 'View All'}</h3>
                                 <p className="text-xs font-bold text-text-dim uppercase tracking-widest">{lang === 'pt' ? 'Explorar' : 'Explore'}</p>
@@ -529,7 +529,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         <ChevronRight size={28} />
                     </button>
 
-                    <div ref={dishGridRef} className="flex overflow-x-auto gap-6 lg:gap-8 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
+                    <div ref={dishGridRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
                         {topDishes.map((dish, idx) => (
                             <div key={`dish-${idx}`} className="restaurant-card opacity-0 translate-y-8 shrink-0 snap-start">
                                 <DishCard dish={dish} />
