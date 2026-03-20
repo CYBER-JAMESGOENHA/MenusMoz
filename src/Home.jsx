@@ -8,7 +8,7 @@ import { RESTAURANTS, CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const StarRating = ({ rating }) => {
+export const StarRating = ({ rating }) => {
     const full = Math.floor(rating);
     const half = rating % 1 >= 0.5;
     return (
@@ -44,7 +44,7 @@ const EmptyFavorites = ({ lang }) => {
     );
 };
 
-const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
+export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
     const t = translations[lang].home;

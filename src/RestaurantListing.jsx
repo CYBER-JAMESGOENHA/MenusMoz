@@ -1,134 +1,169 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { ChevronRight, ArrowUpRight, Star } from 'lucide-react';
-import { RESTAURANTS, checkIsOpen } from './data';
-import TopBarFilters from './TopBarFilters';
+import { useSearchParams } from 'react-router-dom';
+import { Search, Filter, X } from 'lucide-react';
+import { RESTAURANTS, CATEGORIES } from './data';
+import { RestaurantCard } from './Home';
 import { translations } from './translations';
 import { gsap } from 'gsap';
 
 export default function RestaurantListing({ lang, favorites, toggleFavorite }) {
-    const [searchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get('q') || '';
-    const category = searchParams.get('category') || '';
+    
+    // States for filters
+    const [searchTerm, setSearchTerm] = useState(query);
+    const [activeCategory, setActiveCategory] = useState('Tudo');
+    const [minRating, setMinRating] = useState(0);
+    const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
     const t = translations[lang];
 
-    // Simple filtering based on query for now 
-    // (Full filter logic usually lives here, integrating TopBarFilters)
+    // Filter logic
     const filteredRestaurants = RESTAURANTS.filter(r => {
         let match = true;
-        if (query) {
-            match = r.name.toLowerCase().includes(query.toLowerCase()) || 
-                    r.cuisine.toLowerCase().includes(query.toLowerCase());
+        if (searchTerm) {
+            match = r.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                    r.cuisine.toLowerCase().includes(searchTerm.toLowerCase());
         }
-        if (category && match) {
-            match = r.cuisine.toLowerCase().includes(category.toLowerCase());
+        if (activeCategory !== 'Tudo' && match) {
+            match = r.cuisine.toLowerCase() === activeCategory.toLowerCase();
+        }
+        if (minRating > 0 && match) {
+            match = (r.rating || 0) >= minRating;
         }
         return match;
     });
 
     useEffect(() => {
-        gsap.fromTo('.stagger-row', 
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out' }
-        );
+        if (filteredRestaurants.length > 0) {
+            gsap.fromTo('.restaurant-card-grid', 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out' }
+            );
+        }
     }, [filteredRestaurants]);
 
+    // Update URL when search changes via input
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        setSearchParams(searchTerm ? { q: searchTerm } : {});
+    };
+
     return (
-        <div className="min-h-screen bg-bg pt-20 flex flex-col">
-            
-            {/* The Command Bar / Top Bar */}
-            <div className="sticky top-[64px] z-40 bg-bg w-full">
-                <TopBarFilters lang={lang} />
-            </div>
-
-            <div className="max-w-screen-2xl mx-auto w-full px-4 md:px-8 py-8 flex-1">
+        <div className="min-h-screen bg-bg pt-28 pb-20">
+            <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-col md:flex-row gap-8 relative">
                 
-                {/* Header Context */}
-                <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-black/10 pb-6">
-                    <div>
-                        <h2 className="text-4xl md:text-6xl font-display font-black italic tracking-tighter text-text-main">
-                            {query ? `Pesquisa: "${query}"` : 'Diretório'}
-                        </h2>
-                        <p className="mt-2 text-text-dim text-sm max-w-md font-medium uppercase tracking-widest">
-                            Mostrando {filteredRestaurants.length} resultados premium
-                        </p>
-                    </div>
-                </div>
+                {/* Mobile Filter Toggle */}
+                <button 
+                    className="md:hidden flex items-center justify-center gap-2 w-full bg-surface border border-border-subtle py-3 rounded-2xl font-black text-text-main shadow-sm"
+                    onClick={() => setIsMobileFiltersOpen(true)}
+                >
+                    <Filter size={18} /> Filtrar Resultados
+                </button>
 
-                {/* Directory List Layout (Non-Generic wide rows) */}
-                <div className="flex flex-col border-t border-black/10">
-                    {filteredRestaurants.length > 0 ? (
-                        filteredRestaurants.map((rest) => (
-                            <Link 
-                                to={`/restaurante/${rest.slug}`} 
-                                key={rest.id}
-                                className="stagger-row group relative py-6 md:py-8 border-b border-black/10 flex flex-col md:flex-row items-center gap-6 hover:bg-black/[0.02] transition-colors"
-                            >
-                                {/* Subtle hover indicator line */}
-                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary scale-y-0 group-hover:scale-y-100 transition-transform origin-center duration-500"></div>
+                {/* Sidebar Filters */}
+                <aside className={`fixed inset-0 z-[2000] md:static md:z-auto bg-surface/95 backdrop-blur-3xl md:bg-transparent md:backdrop-blur-none w-full md:w-64 max-h-screen overflow-y-auto shrink-0 transition-transform duration-500 ${isMobileFiltersOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+                    <div className="p-6 md:p-0 flex flex-col gap-8 h-full"> 
+                        <div className="flex md:hidden items-center justify-between mb-2">
+                            <h3 className="font-display font-black text-xl text-text-main italic">Filtros</h3>
+                            <button onClick={() => setIsMobileFiltersOpen(false)} className="w-10 h-10 rounded-full glass flex items-center justify-center border-none shadow-sm">
+                                <X size={20} className="text-text-main" />
+                            </button>
+                        </div>
 
-                                {/* Image Column */}
-                                <div className="w-full md:w-48 h-32 shrink-0 rounded-2xl overflow-hidden relative">
-                                    <img src={rest.image} alt={rest.name} className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-                                    {/* Open Badge */}
-                                    <div className={`absolute top-2 left-2 px-2 py-1 rounded-md text-[8px] font-black uppercase tracking-[0.2em] backdrop-blur-md ${checkIsOpen(rest.hours) ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
-                                        {checkIsOpen(rest.hours) ? 'Open' : 'Closed'}
-                                    </div>
-                                </div>
+                        {/* Search Input */}
+                        <form onSubmit={handleSearchSubmit} className="relative">
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3">Pesquisa</h4>
+                            <div className="flex items-center bg-surface border border-border-subtle rounded-2xl px-4 py-3 shadow-sm focus-within:border-primary transition-colors">
+                                <Search size={16} className="text-text-dim shrink-0" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Procurar locais..." 
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="bg-transparent border-none outline-none text-sm font-bold text-text-main w-full ml-2 placeholder:text-text-dim/50"
+                                />
+                            </div>
+                        </form>
 
-                                {/* Content Column */}
-                                <div className="flex-1 min-w-0 pr-4">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <h3 className="text-2xl font-display font-black text-text-main group-hover:text-primary transition-colors">{rest.name}</h3>
-                                        <div className="flex items-center gap-1 bg-black/5 px-2 py-1 rounded text-[10px] font-bold">
-                                            <Star size={10} className="text-accent fill-accent" />
-                                            {rest.rating?.toFixed(1) || '4.5'}
-                                        </div>
-                                    </div>
-                                    
-                                    <p className="text-sm text-text-dim mb-4 line-clamp-2 max-w-3xl leading-relaxed italic">
-                                        "{rest.description}"
-                                    </p>
-
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                        <span className="text-[10px] bg-black/5 border border-black/10 text-black/70 px-3 py-1 rounded-full uppercase tracking-widest font-black">
-                                            {rest.cuisine}
-                                        </span>
-                                        {/* Mock tags representing vibes/highlights that matched */}
-                                        <span className="text-[10px] text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full uppercase tracking-widest font-bold">
-                                            Best Wine Selection
-                                        </span>
-                                        <span className="text-[10px] text-orange-600 bg-orange-100 border border-orange-200 px-3 py-1 rounded-full uppercase tracking-widest font-bold">
-                                            Romantic
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Action/Price Column */}
-                                <div className="shrink-0 flex md:flex-col items-center justify-between md:items-end md:justify-center gap-4 w-full md:w-auto mt-4 md:mt-0 px-4 md:px-0">
-                                    <div className="text-right">
-                                        <div className="text-[10px] uppercase font-bold tracking-widest text-black/40">Average Cost</div>
-                                        <div className="font-mono text-lg font-black text-text-main">
-                                            {/* Mock price derived from somewhere, normally in data */}
-                                            {Math.floor(Math.random() * 1000) + 500} MZN
-                                        </div>
-                                    </div>
-                                    
-                                    <button className="w-12 h-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all shadow-sm">
-                                        <ArrowUpRight size={20} className="group-hover:rotate-45 transition-transform" />
+                        {/* Categories */}
+                        <div>
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3">Categorias</h4>
+                            <div className="flex flex-col gap-2">
+                                {CATEGORIES.map(cat => (
+                                    <button 
+                                        key={cat}
+                                        onClick={() => { setActiveCategory(cat); setIsMobileFiltersOpen(false); }}
+                                        className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${activeCategory === cat ? 'bg-primary text-white shadow-primary-glow scale-105' : 'bg-surface border border-border-subtle text-text-main hover:border-primary/50'}`}
+                                    >
+                                        {cat}
                                     </button>
-                                </div>
-                            </Link>
-                        ))
-                    ) : (
-                        <div className="py-24 text-center border-b border-black/10">
-                            <h3 className="text-3xl font-display font-black italic text-text-main/50 mb-2">Sem Resultados</h3>
-                            <p className="text-text-dim/60 font-bold uppercase tracking-widest text-xs">Ajuste os filtros de pesquisa</p>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Ratings */}
+                        <div>
+                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3">Avaliação Mínima</h4>
+                            <div className="flex flex-col gap-2">
+                                {[4.5, 4.0, 3.5].map(rating => (
+                                    <button 
+                                        key={rating}
+                                        onClick={() => { setMinRating(minRating === rating ? 0 : rating); setIsMobileFiltersOpen(false); }}
+                                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${minRating === rating ? 'bg-text-main text-surface shadow-md' : 'bg-surface border border-border-subtle text-text-main hover:border-text-main/50'}`}
+                                    >
+                                        ⭐ {rating} & Acima
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        
+                        <button 
+                            onClick={() => { setSearchTerm(''); setActiveCategory('Tudo'); setMinRating(0); setSearchParams({}); setIsMobileFiltersOpen(false); }}
+                            className="bg-red-500/10 text-red-600 border border-red-500/20 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all mt-auto md:mt-2"
+                        >
+                            Limpar Filtros
+                        </button>
+                    </div>
+                </aside>
+
+                {/* Main Grid */}
+                <main className="flex-1 min-w-0">
+                    <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between border-b border-border-subtle pb-4 gap-4">
+                         <div>
+                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block mb-2">Explorar</span>
+                             <h2 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-text-main italic leading-none">
+                                {searchTerm ? `Resultados: "${searchTerm}"` : (activeCategory !== 'Tudo' ? activeCategory : 'O Nosso Diretório')}
+                            </h2>
+                         </div>
+                        <span className="bg-primary/5 text-primary border border-primary/20 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shrink-0 w-fit">
+                            {filteredRestaurants.length} Locais
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                        {filteredRestaurants.map(rest => (
+                            <div key={rest.id} className="restaurant-card-grid">
+                                <RestaurantCard 
+                                    restaurant={rest} 
+                                    isFavorite={favorites.includes(rest.id)} 
+                                    toggleFavorite={toggleFavorite} 
+                                    lang={lang} 
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    {filteredRestaurants.length === 0 && (
+                        <div className="py-32 text-center glass rounded-custom-lg border border-border-subtle shadow-premium mt-8">
+                             <div className="w-24 h-24 bg-primary/10 text-primary rounded-[2rem] flex items-center justify-center mx-auto mb-6">
+                                <Search size={40} />
+                             </div>
+                             <h3 className="text-3xl font-display font-black text-text-main italic tracking-tighter mb-4">Nenhum resultado</h3>
+                             <p className="text-text-dim font-bold text-sm max-w-sm mx-auto leading-relaxed">Não encontrámos nenhum espaço que corresponda à sua pesquisa. Tente ajustar as categorias ou limpar os filtros.</p>
                         </div>
                     )}
-                </div>
-
+                </main>
             </div>
         </div>
     );
