@@ -5,6 +5,19 @@ import { supabase } from '../lib/supabase'
  * Implementa a ponte entre o Supabase e os componentes do MenusMoz.
  */
 
+const mapRestaurant = (r) => ({
+  ...r,
+  image: r.image_url,
+  reviewCount: r.review_count,
+  menuCategories: (r.menu_categories || []).map(cat => ({
+    ...cat,
+    items: (cat.menu_items || []).map(item => ({
+      ...item,
+      desc: item.description
+    }))
+  }))
+});
+
 export const restaurantService = {
   // 🔍 BUSCA - Todos os restaurantes ativos
   async getAll() {
@@ -24,7 +37,7 @@ export const restaurantService = {
       console.error('Erro ao buscar restaurantes:', error)
       return []
     }
-    return data
+    return data.map(mapRestaurant)
   },
 
   // 📝 BUSCA - Por slug específico para a página de Detalhes
@@ -45,7 +58,7 @@ export const restaurantService = {
       console.error(`Erro ao buscar restaurante ${slug}:`, error)
       return null
     }
-    return data
+    return mapRestaurant(data)
   },
 
   // ⭐ FAVORITOS - Adicionar ou Remover

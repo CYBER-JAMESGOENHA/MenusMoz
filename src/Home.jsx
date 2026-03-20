@@ -211,8 +211,8 @@ const HomeSearch = ({ lang, restaurants = [] }) => {
 
             const filteredDishes = [];
             restaurants.forEach(r => {
-                r.menu_categories?.forEach(cat => {
-                    cat.menu_items?.forEach(item => {
+                r.menuCategories?.forEach(cat => {
+                    cat.items?.forEach(item => {
                         if (item.name.toLowerCase().includes(query.toLowerCase())) {
                             filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug });
                         }
