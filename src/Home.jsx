@@ -60,7 +60,7 @@ export const RestaurantCard = ({ restaurant, isFavorite, toggleFavorite, lang })
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="relative h-44 overflow-hidden">
+            <div className="relative h-24 overflow-hidden">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
@@ -455,9 +455,9 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Restaurant Carousel Title */}
             {!showOnlyFavorites && (
-                <div className="max-w-7xl mx-auto px-4 mt-12 mb-6">
-                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">Locais Mais Visitados</h2>
-                    <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">Descubra os espaços favoritos da cidade</p>
+                <div className="max-w-7xl mx-auto px-4 mt-6 mb-4">
+                    <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-text-main italic">Locais Mais Visitados</h2>
+                    <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest mt-1 border-l-2 border-primary pl-2 ml-1">Descubra os nossos favoritos</p>
                 </div>
             )}
 
