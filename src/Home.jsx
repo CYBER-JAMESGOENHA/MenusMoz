@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import { RESTAURANTS, CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
+import TopBarFilters from './TopBarFilters';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -369,6 +370,9 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {!showOnlyFavorites && <HomeSearch lang={lang} />}
+
+            {/* Top Bar Showcase */}
+            {!showOnlyFavorites && <div className="my-8"><TopBarFilters lang={lang} /></div>}
 
             {/* Categories — tactile pills */}
             {!showOnlyFavorites && (
