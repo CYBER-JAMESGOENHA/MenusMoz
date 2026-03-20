@@ -261,14 +261,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                             className="text-4xl md:text-6xl font-black tracking-tight text-text-main leading-none"
                                             style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
                                         >
-                                            {currentCategory.name}
+                                            {currentCategory?.name || 'Menu'}
                                         </h2>
                                         <OrnamentalDivider />
                                     </div>
 
                                     {/* Menu Items */}
                                     <div className="space-y-10">
-                                        {currentCategory.items.map((item, i) => (
+                                        {currentCategory?.items?.map((item, i) => (
                                             <div key={i} className="group">
                                                 <div className="flex justify-between items-baseline gap-4 mb-1.5">
                                                     <h4
@@ -351,10 +351,10 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                     </div>
                                     <span className="font-black text-xs uppercase tracking-[0.2em] text-moz-green">Sugestão do Chef</span>
                                 </div>
-                                <h4 className="text-2xl font-display italic text-text-main mb-3">O Nosso Famoso {currentCategory.items[0].name}</h4>
-                                <p className="text-text-dim text-sm leading-relaxed mb-6 italic">"{currentCategory.items[0].desc}"</p>
+                                <h4 className="text-2xl font-display italic text-text-main mb-3">O Nosso Famoso {currentCategory?.items?.[0]?.name || 'Prato'}</h4>
+                                <p className="text-text-dim text-sm leading-relaxed mb-6 italic">"{currentCategory?.items?.[0]?.desc || 'A nossa especialidade do dia.'}"</p>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-2xl font-black text-moz-green">{currentCategory.items[0].price}</span>
+                                    <span className="text-2xl font-black text-moz-green">{currentCategory?.items?.[0]?.price || ''}</span>
                                     <button className="bg-white text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-moz-green hover:text-white transition-all">
                                         <ChevronRight size={20} />
                                     </button>

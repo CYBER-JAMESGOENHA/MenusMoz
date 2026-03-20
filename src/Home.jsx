@@ -122,11 +122,11 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                     </div>
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-baseline gap-2">
-                           <span className="text-sm font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory.items[0].name}</span>
+                           <span className="text-sm font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory?.items?.[0]?.name || ''}</span>
                            <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-1 relative top-[-4px]" />
-                           <span className="font-mono text-text-main font-black text-[10px] whitespace-nowrap">{previewCategory.items[0].price}</span>
+                           <span className="font-mono text-text-main font-black text-[10px] whitespace-nowrap">{previewCategory?.items?.[0]?.price || ''}</span>
                         </div>
-                        <p className="text-[9px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory.items[0].desc}"</p>
+                        <p className="text-[9px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory?.items?.[0]?.desc || ''}"</p>
                     </div>
                 </div>
 
@@ -326,7 +326,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
 
     const topDishes = filteredRestaurants.map(rest => {
-        const dish = rest.menuCategories[0]?.items[0] || {};
+        const dish = rest.menuCategories[0]?.items?.[0] || {};
         return {
             ...rest,
             dishName: dish.name || 'Prato Especial',
