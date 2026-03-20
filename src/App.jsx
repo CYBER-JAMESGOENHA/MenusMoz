@@ -10,6 +10,7 @@ import ForOwners from './ForOwners';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
 import RestaurantListing from './RestaurantListing';
+import MobileBottomNav from './MobileBottomNav';
 import { translations } from './translations';
 
 const NavbarSearch = ({ lang }) => {
@@ -260,7 +261,7 @@ const Footer = ({ lang }) => {
   const tn = translations[lang].nav;
 
   return (
-    <footer className="bg-surface pt-32 pb-16 rounded-t-custom-lg transition-colors duration-300 relative overflow-hidden">
+    <footer className="bg-surface pt-32 pb-24 md:pb-16 rounded-t-custom-lg transition-colors duration-300 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-moz-green via-moz-yellow to-moz-red opacity-30" />
       
       <div className="max-w-7xl mx-auto px-4">
@@ -378,6 +379,10 @@ export default function App() {
               setLang={setLang}
               favoritesCount={favorites.length}
               onLoginOpen={() => setIsLoginOpen(true)}
+            />
+            <MobileBottomNav 
+              favoritesCount={favorites.length} 
+              onLoginOpen={() => setIsLoginOpen(true)} 
             />
             <Routes>
               <Route path="/" element={<Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
