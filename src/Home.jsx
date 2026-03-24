@@ -523,8 +523,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     }
                     {/* View All Card */}
                     {filteredRestaurants.length > 0 && !showOnlyFavorites && (
-                        <div className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start flex items-center justify-center">
-                            <Link to="/restaurantes" className="flex flex-col items-center justify-center gap-4 w-full h-full min-h-[350px] bg-surface rounded-custom-lg border border-border-subtle card-hover hover:border-primary/50 group/viewall transition-all duration-300">
+                        <div className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start flex items-stretch justify-center">
+                            <Link to="/restaurantes" className="flex flex-col items-center justify-center gap-4 w-full h-full bg-surface rounded-custom-lg border border-border-subtle card-hover hover:border-primary/50 group/viewall transition-all duration-300 py-8 min-h-[240px]">
                                 <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover/viewall:bg-primary group-hover/viewall:text-white group-hover/viewall:shadow-primary-glow transition-all duration-500 group-hover/viewall:scale-110">
                                     <ChevronRight size={32} className="group-hover/viewall:translate-x-1 transition-transform" />
                                 </div>
