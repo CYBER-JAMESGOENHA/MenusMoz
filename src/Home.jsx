@@ -493,7 +493,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             )}
 
             {/* Restaurant Carousel */}
-            <section className="max-w-7xl mx-auto px-4 pb-8 md:pb-12 relative group/carousel">
+            <section className="max-w-7xl mx-auto px-4 pb-6 md:pb-8 relative group/carousel">
                 <button 
                   onClick={(e) => { e.preventDefault(); scrollCarousel('left', gridRef); }}
                   className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
