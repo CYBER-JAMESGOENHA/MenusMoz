@@ -27,7 +27,9 @@ export const translations = {
             step2_title: "Escolha",
             step2_desc: "Consulte o menu digital completo e atualizado.",
             step3_title: "Visite",
-            step3_desc: "Vá até ao local ou encomende o sabor da tradição."
+            step3_desc: "Vá até ao local ou encomende o sabor da tradição.",
+            recommended_title: "Mais Recomendados",
+            top_picks: "Top picks para si"
         },
         detail: {
             quick_res: "Reserva Rápida",
@@ -70,7 +72,9 @@ export const translations = {
             step2_title: "Choose",
             step2_desc: "Check the full and updated digital menu.",
             step3_title: "Visit",
-            step3_desc: "Go to the location or order the flavor of tradition."
+            step3_desc: "Go to the location or order the flavor of tradition.",
+            recommended_title: "Most Recommended",
+            top_picks: "Top picks for you"
         },
         detail: {
             quick_res: "Quick Booking",

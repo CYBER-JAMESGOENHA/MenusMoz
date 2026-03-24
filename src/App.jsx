@@ -342,22 +342,30 @@ export default function App() {
   });
   
   const [restaurants, setRestaurants] = useState([]);
-  const [isLoadingRestaurants, setIsLoadingRestaurants] = useState(true);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [isLoadingContent, setIsLoadingContent] = useState(true);
 
-  // Carregar restaurantes do Supabase
+  // Carregar dados dinâmicos do Supabase (Restaurantes, Hero, Blog)
   useEffect(() => {
-    const loadRestaurants = async () => {
+    const loadAllContent = async () => {
       try {
-        const data = await restaurantService.getAll();
-        setRestaurants(data);
+        const [resData, heroData, blogData] = await Promise.all([
+          restaurantService.getAll(),
+          restaurantService.getHeroSlides(lang),
+          restaurantService.getBlogPosts(lang)
+        ]);
+        setRestaurants(resData);
+        setHeroSlides(heroData);
+        setBlogPosts(blogData);
       } catch (err) {
-        console.error('Failed to load restaurants:', err);
+        console.error('Failed to load content:', err);
       } finally {
-        setIsLoadingRestaurants(false);
+        setIsLoadingContent(false);
       }
     };
-    loadRestaurants();
-  }, []);
+    loadAllContent();
+  }, [lang]);
 
   useEffect(() => {
     localStorage.setItem('menusmoz-favorites', JSON.stringify(favorites));
@@ -417,18 +425,22 @@ export default function App() {
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 <Route path="/" element={
-                  isLoadingRestaurants 
+                  isLoadingContent 
                     ? <LoadingSpinner /> 
-                    : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />
+                    : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} heroSlides={heroSlides} blogPosts={blogPosts} />
                 } />
                 <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
                 <Route path="/sobre" element={<About lang={lang} />} />
-                <Route path="/blog" element={<Blog lang={lang} />} />
+                <Route path="/blog" element={
+                  isLoadingContent 
+                    ? <LoadingSpinner /> 
+                    : <Blog lang={lang} posts={blogPosts} />
+                } />
                 <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
                 <Route path="/favoritos" element={
-                   isLoadingRestaurants 
+                   isLoadingContent 
                    ? <LoadingSpinner />
-                   : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} />
+                   : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} heroSlides={heroSlides} />
                 } />
                 <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
               </Routes>

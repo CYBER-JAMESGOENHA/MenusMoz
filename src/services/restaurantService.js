@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { RESTAURANTS, checkIsOpen } from '../data'
+import { RESTAURANTS, checkIsOpen, FEATURED_DISHES } from '../data'
 
 /**
  * SERVIÇO DE RESTAURANTES
@@ -77,6 +77,58 @@ export const restaurantService = {
       return RESTAURANTS.find(r => r.slug === slug) || null
     }
     return mapRestaurant(data)
+  },
+
+  // 🖼️ CMS - Slides do Hero
+  async getHeroSlides(lang = 'pt') {
+    if (!isSupabaseConfigured) return FEATURED_DISHES
+    
+    const { data, error } = await supabase
+      .from('hero_slides')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+
+    if (error) {
+      console.error('Erro ao buscar slides, fallback para local:', error)
+      return FEATURED_DISHES
+    }
+
+    return data.map(s => ({
+      id: s.id,
+      name: s[`title_${lang}`] || s.title_pt,
+      tagline: s[`tagline_${lang}`] || s.tagline_pt,
+      desc: s[`description_${lang}`] || s.description_pt,
+      image: s.image_url,
+      link: s.button_link || '/'
+    }))
+  },
+
+  // ✍️ CMS - Posts do Blog
+  async getBlogPosts(lang = 'pt') {
+    const { BLOG_POSTS } = await import('../data')
+    if (!isSupabaseConfigured) return BLOG_POSTS
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+
+    if (error) {
+      console.error('Erro ao buscar blog, fallback para local:', error)
+      return BLOG_POSTS
+    }
+
+    return data.map(p => ({
+      id: p.id,
+      title: p[`title_${lang}`] || p.title_pt,
+      excerpt: p[`excerpt_${lang}`] || p.excerpt_pt,
+      image: p.image_url,
+      author: p.author,
+      date: new Date(p.published_at).toLocaleDateString(lang === 'pt' ? 'pt-MZ' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+      slug: p.slug
+    }))
   },
 
   // ⭐ FAVORITOS - Adicionar ou Remover

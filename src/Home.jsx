@@ -118,7 +118,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 <div className="mb-4">
                     <div className="flex items-center gap-2 mb-1.5">
                         <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        <span className="text-[7.5px] font-black uppercase tracking-[0.25em] text-primary/80">{lang === 'pt' ? 'Assinatura do Chef' : 'Chef\'s Signature'}</span>
+                        <span className="text-[7.5px] font-black uppercase tracking-[0.25em] text-primary/80">{translations[lang].home.top_picks}</span>
                     </div>
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-baseline gap-2">
@@ -289,14 +289,19 @@ const HomeSearch = ({ lang, restaurants = [] }) => {
     );
 };
 
-export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [] }) {
+export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [], heroSlides = [], blogPosts = [] }) {
     const t = translations[lang];
     const th = t.home;
     const [activeCategory, setActiveCategory] = useState("Tudo");
     const [currentSlide, setCurrentSlide] = useState(0);
     const gridRef = useRef(null);
+    const recommendedGridRef = useRef(null);
     const dishGridRef = useRef(null);
     const slideshowRef = useRef(null);
+
+    // Usar os slides dinâmicos ou fallback
+    const slides = heroSlides.length > 0 ? heroSlides : FEATURED_DISHES;
+    const posts = blogPosts.length > 0 ? blogPosts : [];
 
     const scrollCarousel = (direction, ref) => {
         if (ref.current) {
@@ -337,10 +342,10 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentSlide(prev => (prev + 1) % FEATURED_DISHES.length);
+            setCurrentSlide(prev => (prev + 1) % slides.length);
         }, 2500);
         return () => clearInterval(timer);
-    }, []);
+    }, [slides.length]);
 
     useEffect(() => {
         if (slideshowRef.current) {
@@ -365,6 +370,18 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 ease: "power3.out",
                 scrollTrigger: {
                     trigger: gridRef.current,
+                    start: "top 85%",
+                }
+            });
+            
+            gsap.to(".recommended-card", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: recommendedGridRef.current,
                     start: "top 85%",
                 }
             });
@@ -396,8 +413,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         <div className="hero-parallax-bg absolute inset-0 z-0 h-[115%] w-full -top-[7.5%]">
                             <img
                                 key={`img-${currentSlide}`}
-                                src={FEATURED_DISHES[currentSlide].image}
-                                alt={FEATURED_DISHES[currentSlide].name}
+                                src={slides[currentSlide].image}
+                                alt={slides[currentSlide].name}
                                 className="slide-image w-full h-full object-cover rounded-3xl md:rounded-custom-lg opacity-100 scale-100 transition-all duration-1000"
                             />
                             {/* Even lighter adaptive overlay for maximum image "light" */}
@@ -408,18 +425,18 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         <div className="relative z-10 w-full max-w-lg p-6 sm:p-5 md:p-6 slide-content" key={`content-${currentSlide}`}>
                             <div className="flex flex-col gap-1.5 md:gap-2 mb-3 md:mb-4">
                                 <span className="text-accent font-black uppercase tracking-[0.4em] text-[8px] md:text-[10px]">
-                                    {FEATURED_DISHES[currentSlide].tagline}
+                                    {slides[currentSlide].tagline}
                                 </span>
                             </div>
                             <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl mb-3 md:mb-4 leading-tight tracking-tighter italic font-display text-white drop-shadow-xl">
-                                {FEATURED_DISHES[currentSlide].name}
+                                {slides[currentSlide].name}
                             </h2>
                             <p className="text-xs sm:text-sm md:text-base text-white/95 mb-5 md:mb-6 font-medium leading-relaxed max-w-[240px] sm:max-w-xs drop-shadow-lg">
-                                {FEATURED_DISHES[currentSlide].desc}
+                                {slides[currentSlide].desc}
                             </p>
                             <div className="flex flex-wrap items-center gap-4 md:gap-6">
                                 <Link
-                                    to={FEATURED_DISHES[currentSlide].link}
+                                    to={slides[currentSlide].link}
                                     className="bg-white text-black px-8 py-3.5 md:py-3 rounded-xl font-black hover:bg-primary hover:text-white transition-all text-xs md:text-sm shadow-xl flex items-center gap-2 group/btn min-h-[44px]"
                                 >
                                     {th.view_restaurant} <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
@@ -431,7 +448,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
                         {/* Classic Horizontal Pagination — Numbers Removed for Premium Vibe */}
                         <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-8 md:bottom-12 md:left-16 z-20 flex items-center gap-3 sm:gap-4">
-                             {FEATURED_DISHES.map((dish, i) => (
+                             {slides.map((dish, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
@@ -519,34 +536,39 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </div>
             </section>
 
-            {/* Dish Carousel Title */}
+            {/* Recommended Carousel Title */}
             {!showOnlyFavorites && (
                 <div className="max-w-7xl mx-auto px-4 mt-8 mb-6">
-                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">Os Mais Pedidos</h2>
-                    <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">Criações irresistíveis dos nossos melhores restaurantes</p>
+                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">{th.recommended_title}</h2>
+                    <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">{th.top_picks}</p>
                 </div>
             )}
 
-            {/* Dish Carousel */}
+            {/* Recommended Carousel */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-16 md:pb-20 relative group/dishcarousel">
+                <section className="max-w-7xl mx-auto px-4 pb-16 md:pb-20 relative group/recommendedcarousel">
                     <button 
-                      onClick={(e) => { e.preventDefault(); scrollCarousel('left', dishGridRef); }}
+                      onClick={(e) => { e.preventDefault(); scrollCarousel('left', recommendedGridRef); }}
                       className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
                     >
                         <ChevronLeft size={28} />
                     </button>
                     <button 
-                      onClick={(e) => { e.preventDefault(); scrollCarousel('right', dishGridRef); }}
+                      onClick={(e) => { e.preventDefault(); scrollCarousel('right', recommendedGridRef); }}
                       className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-100 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary animate-pulse hover:animate-none"
                     >
                         <ChevronRight size={28} />
                     </button>
 
-                    <div ref={dishGridRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
-                        {topDishes.map((dish, idx) => (
-                            <div key={`dish-${idx}`} className="restaurant-card opacity-0 translate-y-8 shrink-0 snap-start">
-                                <DishCard dish={dish} />
+                    <div ref={recommendedGridRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
+                        {filteredRestaurants.map((rest, idx) => (
+                            <div key={`rec-${rest.id}-${idx}`} className="recommended-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start">
+                                <RestaurantCard
+                                    restaurant={rest}
+                                    isFavorite={favorites.includes(rest.id)}
+                                    toggleFavorite={toggleFavorite}
+                                    lang={lang}
+                                />
                             </div>
                         ))}
                     </div>
