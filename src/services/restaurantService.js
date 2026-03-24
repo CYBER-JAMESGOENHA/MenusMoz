@@ -32,7 +32,6 @@ export const restaurantService = {
   // 🔍 BUSCA - Todos os restaurantes ativos usando a VIEW inteligente
   async getAll() {
     if (!isSupabaseConfigured) {
-      console.info('📦 A usar dados locais (data.js)...')
       return RESTAURANTS
     }
 
@@ -48,7 +47,6 @@ export const restaurantService = {
       .order('rating', { ascending: false })
 
     if (error) {
-      console.error('Erro ao buscar restaurantes, fallback para dados locais:', error)
       return RESTAURANTS
     }
     return data.map(mapRestaurant)
@@ -73,7 +71,6 @@ export const restaurantService = {
       .single()
 
     if (error) {
-      console.error(`Erro ao buscar restaurante ${slug}, fallback:`, error)
       return RESTAURANTS.find(r => r.slug === slug) || null
     }
     return mapRestaurant(data)
@@ -90,7 +87,6 @@ export const restaurantService = {
       .order('sort_order', { ascending: true })
 
     if (error) {
-      console.error('Erro ao buscar slides, fallback para local:', error)
       return FEATURED_DISHES
     }
 
@@ -116,7 +112,6 @@ export const restaurantService = {
       .order('published_at', { ascending: false })
 
     if (error) {
-      console.error('Erro ao buscar blog, fallback para local:', error)
       return BLOG_POSTS
     }
 

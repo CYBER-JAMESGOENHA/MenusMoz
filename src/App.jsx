@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag } from 'lucide-react';
+import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
 import MobileBottomNav from './MobileBottomNav';
 import { translations } from './translations';
 import { restaurantService } from './services/restaurantService';
+import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Home = lazy(() => import('./Home'));
 const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
@@ -14,6 +16,8 @@ const About = lazy(() => import('./About'));
 const Blog = lazy(() => import('./Blog'));
 const ForOwners = lazy(() => import('./ForOwners'));
 const RestaurantListing = lazy(() => import('./RestaurantListing'));
+const PrivacyPolicy = lazy(() => import('./PrivacyPolicy'));
+const TermsOfUse = lazy(() => import('./TermsOfUse'));
 
 export const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen bg-bg">
@@ -115,15 +119,15 @@ const NavbarSearch = ({ lang }) => {
   );
 };
 
-const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen, isScrolled }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = translations[lang].nav;
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // This useEffect is now handled by the parent App component
+    // const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    // window.addEventListener('scroll', handleScroll);
+    // return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -264,6 +268,84 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
   );
 };
 
+const NewsletterForm = ({ lang }) => {
+  const [email, setEmail] = useState('');
+  const [state, setState] = useState('idle'); // 'idle'|'loading'|'success'|'error'|'duplicate'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setState('error');
+      return;
+    }
+    setState('loading');
+    try {
+      if (isSupabaseConfigured) {
+        const { error } = await supabase
+          .from('newsletter_subscribers')
+          .insert([{ email: email.trim().toLowerCase() }]);
+        if (error) {
+          if (error.code === '23505') { setState('duplicate'); return; }
+          throw error;
+        }
+      } else {
+        await new Promise(r => setTimeout(r, 600));
+      }
+      setState('success');
+      setEmail('');
+    } catch {
+      setState('error');
+    }
+  };
+
+  if (state === 'success') {
+    return (
+      <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/20 rounded-2xl px-5 py-4">
+        <CheckCircle size={20} className="text-green-500 shrink-0" />
+        <p className="text-sm font-bold text-green-600">
+          {lang === 'pt' ? 'Subscrito! Até breve 🎉' : 'Subscribed! See you soon 🎉'}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      {state === 'duplicate' && (
+        <p className="text-xs font-bold text-amber-500 mb-2 flex items-center gap-1">
+          <AlertCircle size={12} />
+          {lang === 'pt' ? 'Este email já está subscrito.' : 'Email already subscribed.'}
+        </p>
+      )}
+      {state === 'error' && (
+        <p className="text-xs font-bold text-red-500 mb-2 flex items-center gap-1">
+          <AlertCircle size={12} />
+          {lang === 'pt' ? 'Email inválido ou erro.' : 'Invalid email or error.'}
+        </p>
+      )}
+      <div className="relative group">
+        <input
+          type="email"
+          value={email}
+          onChange={e => { setEmail(e.target.value); if (state !== 'idle') setState('idle'); }}
+          placeholder={lang === 'pt' ? 'Seu melhor email...' : 'Your best email...'}
+          maxLength={200}
+          className="w-full h-16 pl-6 pr-32 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/40 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium"
+          disabled={state === 'loading'}
+          aria-label={lang === 'pt' ? 'Subscrever newsletter' : 'Subscribe newsletter'}
+        />
+        <button
+          type="submit"
+          disabled={state === 'loading'}
+          className="absolute right-2 top-2 bottom-2 bg-primary text-white px-5 rounded-xl font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-primary-glow disabled:opacity-70 flex items-center gap-2"
+        >
+          {state === 'loading' ? <Loader2 size={16} className="animate-spin" /> : 'OK'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
 const Footer = ({ lang }) => {
   const t = translations[lang].footer;
   const tn = translations[lang].nav;
@@ -287,9 +369,20 @@ const Footer = ({ lang }) => {
             </p>
             
             <div className="flex gap-4 mt-10">
-                {['Instagram', 'Facebook', 'Twitter', 'LinkedIn'].map(social => (
-                    <a key={social} href="#" className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-primary hover:text-white transition-all transform hover:-translate-y-2">
-                        <span className="sr-only">{social}</span>
+                {[
+                  { name: 'Instagram', href: 'https://instagram.com' },
+                  { name: 'Facebook', href: 'https://facebook.com' },
+                  { name: 'Twitter', href: 'https://twitter.com' },
+                ].map(social => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.name}
+                      className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-primary hover:text-white transition-all transform hover:-translate-y-2"
+                    >
+                        <span className="sr-only">{social.name}</span>
                         <div className="w-5 h-5 bg-current opacity-20" />
                     </a>
                 ))}
@@ -307,26 +400,17 @@ const Footer = ({ lang }) => {
 
           <div className="md:col-span-4">
              <h5 className="font-black mb-8 text-xs uppercase tracking-[0.3em] text-primary">Sabor na Caixa</h5>
-             <p className="text-text-dim mb-8 font-medium">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
-             <div className="relative group">
-                <input
-                  type="email"
-                  placeholder="Seu melhor email..."
-                  className="w-full h-16 pl-6 pr-32 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/40 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium"
-                />
-                <button className="absolute right-2 top-2 bottom-2 bg-primary text-white px-6 rounded-xl font-black text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-primary-glow">
-                  OK
-                </button>
-             </div>
+             <p className="text-text-dim mb-6 font-medium">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
+             <NewsletterForm lang={lang} />
           </div>
         </div>
 
         <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-xs font-black uppercase tracking-widest">
           <p>© 2026 Locais de Moz — Moçambique Digital.</p>
           <div className="flex gap-10">
-            <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-primary transition-colors">Termos</a>
-            <a href="#" className="hover:text-primary transition-colors">Contactos</a>
+            <Link to="/privacidade" className="hover:text-primary transition-colors">Privacidade</Link>
+            <Link to="/termos" className="hover:text-primary transition-colors">Termos</Link>
+            <a href="mailto:contacto@locaisdemoz.co.mz" className="hover:text-primary transition-colors">Contactos</a>
           </div>
         </div>
       </div>
@@ -345,6 +429,8 @@ export default function App() {
   const [heroSlides, setHeroSlides] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
   const [isLoadingContent, setIsLoadingContent] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+
 
   // Carregar dados dinâmicos do Supabase (Restaurantes, Hero, Blog)
   useEffect(() => {
@@ -388,8 +474,10 @@ export default function App() {
   }, [darkMode]);
 
   useEffect(() => {
-    localStorage.setItem('menusmoz-favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleFavorite = (id) => {
     setFavorites(prev =>
@@ -398,56 +486,81 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
-        <CustomCursor />
+    <HelmetProvider>
+      <Router>
+        <Helmet>
+          <title>MenusMoz — O Sabor Digital de Moçambique</title>
+          <meta name="description" content="Explore os melhores menus de Maputo, Matola e Beira. Do curry mais picante aos mariscos frescos da nossa costa." />
+        </Helmet>
         
-        {/* Global Ambient Background */}
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/[0.03] rounded-full blur-[120px] animate-pulse" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.01] mix-blend-overlay" />
-        </div>
+        <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
+          <CustomCursor />
+          
+          {/* Global Ambient Background */}
+          <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+              <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/[0.03] rounded-full blur-[120px] animate-pulse" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.01] mix-blend-overlay" />
+          </div>
 
-        <div className="relative z-10">
-            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
-            <Navbar
-              darkMode={darkMode}
-              toggleDarkMode={() => setDarkMode(!darkMode)}
-              lang={lang}
-              setLang={setLang}
-              favoritesCount={favorites.length}
-              onLoginOpen={() => setIsLoginOpen(true)}
-            />
-            <MobileBottomNav 
-              favoritesCount={favorites.length} 
-              onLoginOpen={() => setIsLoginOpen(true)} 
-            />
-            <Suspense fallback={<LoadingSpinner />}>
-              <Routes>
-                <Route path="/" element={
-                  isLoadingContent 
-                    ? <LoadingSpinner /> 
-                    : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} heroSlides={heroSlides} blogPosts={blogPosts} />
-                } />
-                <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} />} />
-                <Route path="/sobre" element={<About lang={lang} />} />
-                <Route path="/blog" element={
-                  isLoadingContent 
-                    ? <LoadingSpinner /> 
-                    : <Blog lang={lang} posts={blogPosts} />
-                } />
-                <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
-                <Route path="/favoritos" element={
-                   isLoadingContent 
-                   ? <LoadingSpinner />
-                   : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} heroSlides={heroSlides} />
-                } />
-                <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
-              </Routes>
-            </Suspense>
-            <Footer lang={lang} />
+          <div className="relative z-10 flex flex-col min-h-screen">
+              <Navbar
+                darkMode={darkMode}
+                toggleDarkMode={() => setDarkMode(!darkMode)}
+                lang={lang}
+                setLang={setLang}
+                favoritesCount={favorites.length}
+                onLoginOpen={() => setIsLoginOpen(true)}
+                isScrolled={isScrolled}
+              />
+              
+              <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
+              <MobileBottomNav favoritesCount={favorites.length} onLoginOpen={() => setIsLoginOpen(true)} />
+
+              <main className="flex-grow">
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Routes>
+                    <Route path="/" element={
+                      isLoadingContent 
+                        ? <LoadingSpinner /> 
+                        : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} heroSlides={heroSlides} blogPosts={blogPosts} />
+                    } />
+                    <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showLogin={() => setIsLoginOpen(true)} />} />
+                    <Route path="/sobre" element={<About lang={lang} />} />
+                    <Route path="/blog" element={
+                      isLoadingContent 
+                        ? <LoadingSpinner /> 
+                        : <Blog lang={lang} posts={blogPosts} />
+                    } />
+                    <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
+                    <Route path="/privacidade" element={<PrivacyPolicy lang={lang} />} />
+                    <Route path="/termos" element={<TermsOfUse lang={lang} />} />
+                    <Route path="/favoritos" element={
+                       isLoadingContent 
+                       ? <LoadingSpinner />
+                       : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} heroSlides={heroSlides} />
+                    } />
+                    <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
+                    
+                    {/* 404 catch-all */}
+                    <Route path="*" element={
+                      <div className="min-h-screen flex flex-col items-center justify-center gap-6 pt-32">
+                        <div className="w-32 h-32 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary text-6xl font-display font-black">404</div>
+                        <h1 className="text-4xl font-display font-black text-text-main tracking-tighter">Página não encontrada</h1>
+                        <p className="text-text-dim font-medium">O endereço que procura não existe.</p>
+                        <Link to="/" className="bg-primary text-white px-10 py-4 rounded-full font-black hover:brightness-110 transition-all shadow-primary-glow">
+                          Voltar ao Início
+                        </Link>
+                      </div>
+                    } />
+                  </Routes>
+                </Suspense>
+              </main>
+
+              <Footer lang={lang} />
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </HelmetProvider>
   );
 }
+

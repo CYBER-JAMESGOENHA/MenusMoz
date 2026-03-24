@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useNavigate } from 'react-router-dom';
 import { CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
+import { Helmet } from 'react-helmet-async';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,10 +66,22 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
     const handleMouseEnter = useCallback(() => setIsHovered(true), []);
     const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
-    // Imagem do avatar do chef (placeholder/fictício) e detalhes
-    const chefName = "Chef Rogério Cossa";
-    const chefImage = "https://images.unsplash.com/photo-1583394838336-aced97832516?q=80&w=200&auto=format&fit=crop";
-    const chefQuote = "Uma explosão de sabores em cada colher, com um toque de paprika e sal da terra.";
+    // Gerar dados do Chef baseados na culinária e nome do restaurante
+    const getChefData = (cuisine, name) => {
+        const chefs = [
+            { name: "Chef Rogério Cossa", quote: "Uma explosão de sabores em cada colher, com um toque de paprika e sal da terra." },
+            { name: "Chef Amélia Macuácua", quote: "A tradição moçambicana servida com o requinte que o seu paladar merece." },
+            { name: "Chef Issufo Aly", quote: "Especiarias frescas e técnicas ancestrais: o segredo de um prato inesquecível." },
+            { name: "Chef Sarah Mondlane", quote: "Cozinhar é contar a história das nossas raízes através dos melhores ingredientes." }
+        ];
+        // Gerar um índice consistente baseado no nome do restaurante
+        const index = name.length % chefs.length;
+        return chefs[index];
+    };
+
+    const chef = getChefData(restaurant.cuisine, restaurant.name);
+    const chefImage = `https://images.unsplash.com/photo-1583394838336-aced97832516?q=80&w=200&auto=format&fit=crop&sig=${restaurant.id}`;
+
 
     return (
         <Link
@@ -112,13 +125,19 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
                 </div>
 
                 {/* Avatar do Chef Centralizado */}
-                <div className="w-16 h-16 rounded-full overflow-hidden border-[3px] border-surface shadow-md shrink-0 -mt-12 relative z-10 bg-surface mx-auto">
-                    <img src={chefImage} alt={chefName} loading="lazy" className="w-full h-full object-cover" />
-                </div>
-                
-                <div className="flex flex-col flex-1 pb-1 mt-3 w-full text-center">
-                    <h3 className="text-lg font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors line-clamp-1">{chefName}</h3>
-                    <p className="text-xs text-text-dim font-medium italic mt-2 leading-relaxed px-2">"{chefQuote}"</p>
+                <div className="flex-1 flex flex-col items-center justify-center -mt-8 relative z-10 px-4">
+                    <div className="w-16 h-16 rounded-2xl overflow-hidden border-4 border-surface shadow-premium mb-3 bg-bg">
+                        <img src={chefImage} alt={chef.name} className="w-full h-full object-cover" />
+                    </div>
+                    <h3 className="font-display text-2xl font-black italic text-text-main group-hover:text-primary transition-colors leading-none mb-1">{restaurant.name}</h3>
+                    <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest mb-4 opacity-70 italic">"{chef.name}"</p>
+                    
+                    <div className="bg-primary/5 p-4 rounded-2xl border border-primary/10 relative">
+                        <span className="absolute -top-2 -left-1 text-3xl text-primary font-serif opacity-30">“</span>
+                        <p className="text-sm font-medium text-text-dim leading-relaxed italic text-center">
+                            {chef.quote}
+                        </p>
+                    </div>
                 </div>
 
                 {/* Prato Recomendado em uma caixa esteticamente compacta na base */}
@@ -488,6 +507,16 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     return (
         <div className="relative overflow-hidden selection:bg-primary/20">
+            <Helmet>
+                <title>{showOnlyFavorites 
+                    ? (lang === 'pt' ? 'Os Meus Favoritos — MenusMoz' : 'My Favorites — MenusMoz')
+                    : (lang === 'pt' ? 'MenusMoz — O Sabor Digital de Moçambique' : 'MenusMoz — Mozambique\'s Digital Flavor')}
+                </title>
+                <meta name="description" content={lang === 'pt' 
+                    ? 'Explore os melhores menus de Moçambique. Maputo, Matola e Beira ao seu alcance.' 
+                    : 'Explore the best menus in Mozambique. Maputo, Matola and Beira at your fingertips.'} />
+            </Helmet>
+            
             {/* Favorites Mini Header — only when showOnlyFavorites */}
             {showOnlyFavorites && (
                 <section className="pt-40 pb-12 px-4 text-center">
