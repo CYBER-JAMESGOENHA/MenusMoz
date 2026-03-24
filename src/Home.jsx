@@ -44,6 +44,99 @@ const EmptyFavorites = ({ lang }) => {
     );
 };
 
+export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
+    const cardRef = useRef(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const t = translations[lang].home;
+
+    const previewCategory = useMemo(() => {
+        return restaurant.menuCategories.length > 1
+            ? restaurant.menuCategories[1]
+            : restaurant.menuCategories[0];
+    }, [restaurant.menuCategories]);
+
+    const handleToggleFavorite = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFavorite(restaurant.id);
+    }, [restaurant.id, toggleFavorite]);
+
+    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+
+    // Imagem do avatar do chef (placeholder/fictício) e detalhes
+    const chefName = "Chef Rogério Cossa";
+    const chefImage = "https://images.unsplash.com/photo-1583394838336-aced97832516?q=80&w=200&auto=format&fit=crop";
+    const chefQuote = "Uma explosão de sabores em cada colher, com um toque de paprika e sal da terra.";
+
+    return (
+        <Link
+            to={`/restaurante/${restaurant.slug}`}
+            ref={cardRef}
+            className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle flex flex-col block h-full text-center"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
+                <img
+                    src={restaurant.image}
+                    alt={restaurant.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                
+                <div className="absolute top-4 left-4 flex flex-col gap-1.5">
+                    <div className="flex gap-2">
+                        {/* Logo / Tag do Restaurante sem imagem */}
+                        <div className="bg-primary/95 text-white backdrop-blur-xl px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] shadow-sm flex items-center gap-1.5">
+                            <Utensils size={10} /> {restaurant.name}
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    onClick={handleToggleFavorite}
+                    aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 z-10 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
+                >
+                    <Heart size={18} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
+                </button>
+            </div>
+
+            <div className="p-4 md:p-5 flex-1 flex flex-col bg-surface relative items-center text-center">
+                <div className="absolute -top-5 right-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20">
+                    <ArrowUpRight size={20} />
+                </div>
+
+                {/* Avatar do Chef Centralizado */}
+                <div className="w-16 h-16 rounded-full overflow-hidden border-[3px] border-surface shadow-md shrink-0 -mt-12 relative z-10 bg-surface mx-auto">
+                    <img src={chefImage} alt={chefName} loading="lazy" className="w-full h-full object-cover" />
+                </div>
+                
+                <div className="flex flex-col flex-1 pb-1 mt-3 w-full text-center">
+                    <h3 className="text-lg font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors line-clamp-1">{chefName}</h3>
+                    <p className="text-xs text-text-dim font-medium italic mt-2 leading-relaxed px-2">"{chefQuote}"</p>
+                </div>
+
+                {/* Prato Recomendado em uma caixa esteticamente compacta na base */}
+                <div className="mt-auto pt-4 w-full">
+                    <div className="bg-surface border border-border-subtle rounded-xl p-3 shadow-sm group-hover:border-primary/30 transition-colors w-full">
+                        <div className="flex flex-col gap-1">
+                            <div className="flex justify-between items-baseline gap-2">
+                               <span className="text-xs font-display font-bold text-text-main leading-none line-clamp-1 group-hover:text-primary transition-colors text-left">{previewCategory?.items?.[0]?.name || ''}</span>
+                               <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-1 relative top-[-4px]" />
+                               <span className="font-mono text-primary font-black text-[11px] whitespace-nowrap">{previewCategory?.items?.[0]?.price || ''}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Link>
+    );
+});
+
 export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -128,15 +221,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                     </div>
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-border-subtle/50">
-                    <div className="flex flex-col gap-1">
-                        <div className="flex justify-between items-baseline gap-2">
-                           <span className="text-[11px] font-display font-bold text-text-main leading-none line-clamp-1 group-hover:text-primary transition-colors">{previewCategory?.items?.[0]?.name || ''}</span>
-                           <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-1 relative top-[-4px]" />
-                           <span className="font-mono text-primary font-black text-[10px] whitespace-nowrap">{previewCategory?.items?.[0]?.price || ''}</span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </Link>
     );
@@ -488,8 +573,8 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             {/* Restaurant Carousel Title */}
             {!showOnlyFavorites && (
                 <div className="max-w-7xl mx-auto px-4 mt-6 mb-2">
-                    <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-text-main italic">Locais Mais Visitados</h2>
-                    <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest mt-1 border-l-2 border-primary pl-2 ml-1">Descubra os nossos favoritos</p>
+                    <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-text-main italic">Sugestão do Chef</h2>
+                    <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest mt-1 border-l-2 border-primary pl-2 ml-1">As criações exclusivas das nossas cozinhas</p>
                 </div>
             )}
 
@@ -513,7 +598,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         ? <div className="w-full shrink-0"><EmptyFavorites lang={lang} /></div>
                         : filteredRestaurants.map(rest => (
                             <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[280px] lg:w-[250px] xl:w-[270px] snap-start">
-                                <RestaurantCard
+                                <ChefSuggestionCard
                                     restaurant={rest}
                                     isFavorite={favorites.includes(rest.id)}
                                     toggleFavorite={toggleFavorite}
