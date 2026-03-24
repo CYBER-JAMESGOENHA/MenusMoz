@@ -546,7 +546,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* Recommended Carousel */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-16 md:pb-20 relative group/recommendedcarousel">
+                <section className="max-w-7xl mx-auto px-4 pb-4 md:pb-10 relative group/recommendedcarousel">
                     <button 
                       onClick={(e) => { e.preventDefault(); scrollCarousel('left', recommendedGridRef); }}
                       className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
