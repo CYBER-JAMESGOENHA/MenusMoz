@@ -1,3 +1,4 @@
+// Build trigger: 2024-03-24 15:33
 import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse, ArrowUpRight } from 'lucide-react';
 import { translations } from './translations';
