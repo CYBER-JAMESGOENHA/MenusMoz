@@ -539,7 +539,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             {/* Recommended Carousel Title */}
             {!showOnlyFavorites && (
                 <div className="max-w-7xl mx-auto px-4 mt-6 mb-4">
-                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic">{th.recommended_title}</h2>
+                    <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-text-main italic">{th.recommended_title}</h2>
                     <p className="text-xs md:text-sm font-bold text-text-dim uppercase tracking-widest mt-2 border-l-2 border-primary pl-3 ml-1">{th.top_picks}</p>
                 </div>
             )}
