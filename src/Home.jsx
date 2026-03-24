@@ -575,27 +575,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 </section>
             )}
 
-            {/* How it works — only on main page */}
-            {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-8 text-center mt-4">
-                    <h2 className="text-3xl md:text-4xl mb-4 md:mb-6 tracking-tighter italic">{th.how_it_works}</h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            { icon: Search, title: th.step1_title, desc: th.step1_desc, color: "icon-blue" },
-                            { icon: Utensils, title: th.step2_title, desc: th.step2_desc, color: "icon-orange" },
-                            { icon: MapPin, title: th.step3_title, desc: th.step3_desc, color: "icon-green" }
-                        ].map((item, i) => (
-                            <div key={i} className="flex flex-col items-center group">
-                                <div className={`w-24 h-24 ${item.color} flex items-center justify-center rounded-[2rem] mb-3 transition-transform group-hover:scale-110 shadow-lg shadow-black/5`}>
-                                    <item.icon size={44} />
-                                </div>
-                                <h4 className="text-2xl mb-1 uppercase font-black text-text-main">{item.title}</h4>
-                                <p className="text-text-dim max-w-xs mx-auto md:max-w-[250px]">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
+
         </div>
     );
 }
