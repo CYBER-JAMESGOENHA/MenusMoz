@@ -65,13 +65,14 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
     const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
     return (
-        <div
+        <Link
+            to={`/restaurante/${restaurant.slug}`}
             ref={cardRef}
-            className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle"
+            className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle flex flex-col block h-full"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="relative h-24 overflow-hidden">
+            <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
                 <img
                     src={restaurant.image}
                     alt={restaurant.name}
@@ -79,7 +80,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                     decoding="async"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 
                 <div className="absolute top-4 left-4 flex flex-col gap-1.5">
                     <div className="flex gap-2">
@@ -95,7 +96,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 <button
                     onClick={handleToggleFavorite}
                     aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
+                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 z-10 ${isFavorite ? 'bg-primary text-white scale-110 shadow-primary-glow' : 'bg-white/90 glass text-black hover:bg-white'}`}
                 >
                     <Heart size={18} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? "animate-pulse" : ""} />
                 </button>
@@ -105,39 +106,39 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 </div>
             </div>
 
-            <div className="p-4 md:p-5">
-                <div className="flex flex-col gap-1 mb-3">
-                    <h3 className="text-lg font-display leading-tight text-text-main group-hover:text-primary transition-colors">{restaurant.name}</h3>
-                    {restaurant.rating && (
-                        <div className="flex items-center scale-90 origin-left">
-                            <StarRating rating={restaurant.rating} />
-                        </div>
-                    )}
+            <div className="p-4 md:p-5 flex-1 flex flex-col bg-surface relative">
+                <div className="absolute -top-5 right-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20">
+                    <ArrowUpRight size={20} />
                 </div>
 
-                <div className="mb-4">
-                    <div className="flex items-center gap-2 mb-1.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        <span className="text-[7.5px] font-black uppercase tracking-[0.25em] text-primary/80">{translations[lang].home.top_picks}</span>
+                <div className="flex items-start gap-3 mb-auto">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border-[3px] border-surface shadow-md shrink-0 -mt-8 relative z-10 bg-surface">
+                        <img src={restaurant.image} alt={restaurant.name} loading="lazy" className="w-full h-full object-cover" />
                     </div>
+                    
+                    <div className="flex flex-col flex-1 pb-1">
+                        <h3 className="text-lg font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors line-clamp-1">{restaurant.name}</h3>
+                        {restaurant.rating && (
+                            <div className="flex items-center gap-1 mt-0.5">
+                                <Star size={12} className="text-accent" fill="currentColor" />
+                                <span className="text-xs font-bold text-text-dim">{restaurant.rating.toFixed(1)}</span>
+                                <span className="text-[10px] text-text-dim/60 font-medium">({restaurant.reviewCount || 0})</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="mt-3 pt-3 border-t border-border-subtle/50">
                     <div className="flex flex-col gap-1">
                         <div className="flex justify-between items-baseline gap-2">
-                           <span className="text-sm font-display font-bold text-text-main leading-none line-clamp-1">{previewCategory?.items?.[0]?.name || ''}</span>
+                           <span className="text-[11px] font-display font-bold text-text-main leading-none line-clamp-1 group-hover:text-primary transition-colors">{previewCategory?.items?.[0]?.name || ''}</span>
                            <div className="flex-1 border-b border-dotted border-border-subtle/50 mx-1 relative top-[-4px]" />
-                           <span className="font-mono text-text-main font-black text-[10px] whitespace-nowrap">{previewCategory?.items?.[0]?.price || ''}</span>
+                           <span className="font-mono text-primary font-black text-[10px] whitespace-nowrap">{previewCategory?.items?.[0]?.price || ''}</span>
                         </div>
-                        <p className="text-[9px] text-text-dim/80 line-clamp-2 leading-relaxed italic">"{previewCategory?.items?.[0]?.desc || ''}"</p>
                     </div>
                 </div>
-
-                <Link
-                    to={`/restaurante/${restaurant.slug}`}
-                    className="w-full bg-text-main text-surface py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-2 hover:bg-primary transition-all duration-300 group-hover:shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-                >
-                    {t.view_full_menu} <ChevronRight size={18} />
-                </Link>
             </div>
-        </div>
+        </Link>
     );
 });
 
