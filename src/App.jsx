@@ -8,7 +8,6 @@ import MobileBottomNav from './MobileBottomNav';
 import { translations } from './translations';
 import { restaurantService } from './services/restaurantService';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Home = lazy(() => import('./Home'));
 const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
@@ -16,8 +15,6 @@ const About = lazy(() => import('./About'));
 const Blog = lazy(() => import('./Blog'));
 const ForOwners = lazy(() => import('./ForOwners'));
 const RestaurantListing = lazy(() => import('./RestaurantListing'));
-const PrivacyPolicy = lazy(() => import('./PrivacyPolicy'));
-const TermsOfUse = lazy(() => import('./TermsOfUse'));
 
 export const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen bg-bg">
@@ -486,81 +483,72 @@ export default function App() {
   };
 
   return (
-    <HelmetProvider>
-      <Router>
-        <Helmet>
-          <title>MenusMoz — O Sabor Digital de Moçambique</title>
-          <meta name="description" content="Explore os melhores menus de Maputo, Matola e Beira. Do curry mais picante aos mariscos frescos da nossa costa." />
-        </Helmet>
+    <Router>
+      <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
+        <CustomCursor />
         
-        <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
-          <CustomCursor />
-          
-          {/* Global Ambient Background */}
-          <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-              <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/[0.03] rounded-full blur-[120px] animate-pulse" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.01] mix-blend-overlay" />
-          </div>
-
-          <div className="relative z-10 flex flex-col min-h-screen">
-              <Navbar
-                darkMode={darkMode}
-                toggleDarkMode={() => setDarkMode(!darkMode)}
-                lang={lang}
-                setLang={setLang}
-                favoritesCount={favorites.length}
-                onLoginOpen={() => setIsLoginOpen(true)}
-                isScrolled={isScrolled}
-              />
-              
-              <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
-              <MobileBottomNav favoritesCount={favorites.length} onLoginOpen={() => setIsLoginOpen(true)} />
-
-              <main className="flex-grow">
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Routes>
-                    <Route path="/" element={
-                      isLoadingContent 
-                        ? <LoadingSpinner /> 
-                        : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} heroSlides={heroSlides} blogPosts={blogPosts} />
-                    } />
-                    <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showLogin={() => setIsLoginOpen(true)} />} />
-                    <Route path="/sobre" element={<About lang={lang} />} />
-                    <Route path="/blog" element={
-                      isLoadingContent 
-                        ? <LoadingSpinner /> 
-                        : <Blog lang={lang} posts={blogPosts} />
-                    } />
-                    <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
-                    <Route path="/privacidade" element={<PrivacyPolicy lang={lang} />} />
-                    <Route path="/termos" element={<TermsOfUse lang={lang} />} />
-                    <Route path="/favoritos" element={
-                       isLoadingContent 
-                       ? <LoadingSpinner />
-                       : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} heroSlides={heroSlides} />
-                    } />
-                    <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
-                    
-                    {/* 404 catch-all */}
-                    <Route path="*" element={
-                      <div className="min-h-screen flex flex-col items-center justify-center gap-6 pt-32">
-                        <div className="w-32 h-32 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary text-6xl font-display font-black">404</div>
-                        <h1 className="text-4xl font-display font-black text-text-main tracking-tighter">Página não encontrada</h1>
-                        <p className="text-text-dim font-medium">O endereço que procura não existe.</p>
-                        <Link to="/" className="bg-primary text-white px-10 py-4 rounded-full font-black hover:brightness-110 transition-all shadow-primary-glow">
-                          Voltar ao Início
-                        </Link>
-                      </div>
-                    } />
-                  </Routes>
-                </Suspense>
-              </main>
-
-              <Footer lang={lang} />
-          </div>
+        {/* Global Ambient Background */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/[0.03] rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full noise-overlay opacity-[0.01] mix-blend-overlay" />
         </div>
-      </Router>
-    </HelmetProvider>
+
+        <div className="relative z-10 flex flex-col min-h-screen">
+            <Navbar
+              darkMode={darkMode}
+              toggleDarkMode={() => setDarkMode(!darkMode)}
+              lang={lang}
+              setLang={setLang}
+              favoritesCount={favorites.length}
+              onLoginOpen={() => setIsLoginOpen(true)}
+              isScrolled={isScrolled}
+            />
+            
+            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
+            <MobileBottomNav favoritesCount={favorites.length} onLoginOpen={() => setIsLoginOpen(true)} />
+
+            <main className="flex-grow">
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route path="/" element={
+                    isLoadingContent 
+                      ? <LoadingSpinner /> 
+                      : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} heroSlides={heroSlides} blogPosts={blogPosts} />
+                  } />
+                  <Route path="/restaurante/:slug" element={<RestaurantDetail lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showLogin={() => setIsLoginOpen(true)} />} />
+                  <Route path="/sobre" element={<About lang={lang} />} />
+                  <Route path="/blog" element={
+                    isLoadingContent 
+                      ? <LoadingSpinner /> 
+                      : <Blog lang={lang} posts={blogPosts} />
+                  } />
+                  <Route path="/proprietarios" element={<ForOwners lang={lang} />} />
+                  <Route path="/favoritos" element={
+                     isLoadingContent 
+                     ? <LoadingSpinner />
+                     : <Home lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} showOnlyFavorites={true} restaurants={restaurants} heroSlides={heroSlides} />
+                  } />
+                  <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
+                  
+                  {/* 404 catch-all */}
+                  <Route path="*" element={
+                    <div className="min-h-screen flex flex-col items-center justify-center gap-6 pt-32">
+                      <div className="w-32 h-32 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary text-6xl font-display font-black">404</div>
+                      <h1 className="text-4xl font-display font-black text-text-main tracking-tighter">Página não encontrada</h1>
+                      <p className="text-text-dim font-medium">O endereço que procura não existe.</p>
+                      <Link to="/" className="bg-primary text-white px-10 py-4 rounded-full font-black hover:brightness-110 transition-all shadow-primary-glow">
+                        Voltar ao Início
+                      </Link>
+                    </div>
+                  } />
+                </Routes>
+              </Suspense>
+            </main>
+
+            <Footer lang={lang} />
+        </div>
+      </div>
+    </Router>
   );
 }
 
