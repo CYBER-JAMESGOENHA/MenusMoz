@@ -158,6 +158,12 @@ export default function App() {
 
         <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar
+              darkMode={darkMode}
+              toggleDarkMode={() => setDarkMode(!darkMode)}
+              lang={lang}
+              setLang={setLang}
+              favoritesCount={favorites.length}
+              onLoginOpen={() => setIsLoginOpen(true)}
               isScrolled={isScrolled}
               onPanelOpen={() => setIsUserPanelOpen(true)}
               user={user}
