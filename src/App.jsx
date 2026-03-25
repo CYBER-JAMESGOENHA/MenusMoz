@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Menu, X, Search, ChevronRight, ShoppingBag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Sun, Moon, Globe, Heart, Search, ChevronRight, ShoppingBag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
@@ -117,40 +117,22 @@ const NavbarSearch = ({ lang }) => {
 };
 
 const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen, isScrolled }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = translations[lang].nav;
 
-  useEffect(() => {
-    // This useEffect is now handled by the parent App component
-    // const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    // window.addEventListener('scroll', handleScroll);
-    // return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled || isMenuOpen ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'}`}>
-      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-1 md:py-1.5 ${isScrolled || isMenuOpen ? 'glass shadow-premium' : 'bg-transparent'}`}>
-        <div className="flex items-center gap-4 z-[1001]">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden w-12 h-12 flex items-center justify-center rounded-2xl bg-primary text-white shadow-primary-glow"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+    <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'}`}>
+      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-1 md:py-1.5 ${isScrolled ? 'glass shadow-premium' : 'bg-transparent'}`}>
 
-          <Link to="/" className="hidden lg:flex items-center gap-3 group" onClick={() => setIsMenuOpen(false)}>
-            <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
-            <div className="flex flex-col -gap-1">
-                <span className="font-black text-2xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
-            </div>
-          </Link>
-        </div>
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
+          <div className="hidden lg:flex flex-col -gap-1">
+            <span className="font-black text-2xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
+          </div>
+        </Link>
 
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden font-display italic font-black text-2xl tracking-tighter text-text-main z-[1000] pointer-events-none">
-          Locais de Moz
-        </div>
-
+        {/* Desktop nav links */}
         <div className="hidden lg:flex items-center gap-10 font-black text-sm uppercase tracking-widest text-text-main/70">
           <Link to="/" className="hover:text-primary transition-colors focus:text-primary outline-none">Home</Link>
           <Link to="/blog" className="hover:text-primary transition-colors focus:text-primary outline-none">Sabor</Link>
@@ -158,106 +140,38 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
           <Link to="/proprietarios" className="hover:text-primary transition-colors focus:text-primary outline-none">Negócios</Link>
         </div>
 
+        {/* Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-3">
-             <button
-              onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
-            >
-              <Globe size={18} />
-              <span className="ml-1 text-[10px] font-black uppercase">{lang}</span>
-            </button>
+          <button
+            onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
+            className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
+          >
+            <Globe size={18} />
+            <span className="ml-1 text-[10px] font-black uppercase">{lang}</span>
+          </button>
 
-            <Link to="/favoritos" className="relative w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none">
-              <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
-              {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-primary-glow">
-                  {favoritesCount}
-                </span>
-              )}
-            </Link>
+          <Link to="/favoritos" className="relative w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none">
+            <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
+            {favoritesCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-primary-glow">
+                {favoritesCount}
+              </span>
+            )}
+          </Link>
 
-            <button
-              onClick={toggleDarkMode}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-primary border-none"
-            >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-          </div>
+          <button
+            onClick={toggleDarkMode}
+            className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-primary border-none"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
 
           <button
             onClick={onLoginOpen}
-            className="login-moz-btn hidden lg:flex scale-110 ml-4"
+            className="login-moz-btn hidden lg:flex scale-110 ml-2"
           >
             <span className="login-moz-lens">🇲🇿</span>
             <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
-          </button>
-
-        </div>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-surface/98 backdrop-blur-3xl z-[900] transition-all duration-700 lg:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="flex flex-col items-center justify-center h-full gap-4 p-8 overflow-y-auto no-scrollbar">
-          <div className="flex flex-col items-center gap-6 mb-2 text-center">
-            {[
-              { to: "/", label: t.home },
-              { to: "/blog", label: t.sabor },
-              { to: "/sobre", label: t.about },
-              { to: "/proprietarios", label: t.owners },
-              { to: "/favoritos", label: `Favoritos (${favoritesCount})` }
-            ].map((link, i) => (
-              <Link
-                key={i}
-                to={link.to}
-                onClick={() => setIsMenuOpen(false)}
-                className="text-3xl sm:text-4xl font-black tracking-tighter text-text-main hover:text-primary transition-all duration-500"
-                style={{
-                  opacity: isMenuOpen ? 1 : 0,
-                  transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
-                  transitionDelay: isMenuOpen ? `${i * 80}ms` : '0ms'
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          <div
-            className="flex gap-6"
-            style={{
-              opacity: isMenuOpen ? 1 : 0,
-              transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.5s ease',
-              transitionDelay: isMenuOpen ? '480ms' : '0ms'
-            }}
-          >
-            <button
-              onClick={() => { setLang(lang === 'pt' ? 'en' : 'pt'); setIsMenuOpen(false); }}
-              className="w-14 h-14 rounded-2xl glass font-black text-text-main flex items-center justify-center border-none shadow-premium"
-            >
-              <Globe size={24} />
-            </button>
-            <button
-              onClick={() => { toggleDarkMode(); setIsMenuOpen(false); }}
-              className="w-14 h-14 rounded-2xl glass font-black text-primary flex items-center justify-center border-none shadow-premium"
-            >
-              {darkMode ? <Sun size={24} /> : <Moon size={24} />}
-            </button>
-          </div>
-
-          <button
-            onClick={() => { onLoginOpen(); setIsMenuOpen(false); }}
-            className="login-moz-btn w-full max-w-xs mt-2"
-            style={{
-              opacity: isMenuOpen ? 1 : 0,
-              transform: isMenuOpen ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.5s ease',
-              transitionDelay: isMenuOpen ? '560ms' : '0ms'
-            }}
-          >
-            <span className="login-moz-lens">🇲🇿</span>
-            <span className="login-moz-label font-black uppercase text-xs tracking-[0.2em]">{t.login}</span>
           </button>
         </div>
       </div>
@@ -551,4 +465,3 @@ export default function App() {
     </Router>
   );
 }
-
