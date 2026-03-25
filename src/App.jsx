@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Search, ChevronRight, ShoppingBag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Bell, Search, ChevronRight, ShoppingBag, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { RESTAURANTS } from './data';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
+import UserPanel from './UserPanel';
 import MobileBottomNav from './MobileBottomNav';
 import { translations } from './translations';
 import { restaurantService } from './services/restaurantService';
@@ -116,14 +117,12 @@ const NavbarSearch = ({ lang }) => {
   );
 };
 
-const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen, isScrolled }) => {
-  const t = translations[lang].nav;
-
+const Navbar = ({ isScrolled, onPanelOpen }) => {
   return (
     <nav className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'}`}>
       <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2rem] px-5 sm:px-8 py-1 md:py-1.5 ${isScrolled ? 'glass shadow-premium' : 'bg-transparent'}`}>
 
-        {/* Logo */}
+        {/* Logo → Home */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform">L</div>
           <div className="hidden lg:flex flex-col -gap-1">
@@ -140,40 +139,14 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
           <Link to="/proprietarios" className="hover:text-primary transition-colors focus:text-primary outline-none">Negócios</Link>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setLang(lang === 'pt' ? 'en' : 'pt')}
-            className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
-          >
-            <Globe size={18} />
-            <span className="ml-1 text-[10px] font-black uppercase">{lang}</span>
-          </button>
-
-          <Link to="/favoritos" className="relative w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none">
-            <Heart size={18} fill={favoritesCount > 0 ? "currentColor" : "none"} className={favoritesCount > 0 ? "text-primary" : ""} />
-            {favoritesCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-primary-glow">
-                {favoritesCount}
-              </span>
-            )}
-          </Link>
-
-          <button
-            onClick={toggleDarkMode}
-            className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-primary border-none"
-          >
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
-          <button
-            onClick={onLoginOpen}
-            className="login-moz-btn hidden lg:flex scale-110 ml-2"
-          >
-            <span className="login-moz-lens">🇲🇿</span>
-            <span className="login-moz-label font-black uppercase text-[10px] tracking-widest">{t.login}</span>
-          </button>
-        </div>
+        {/* Notifications button */}
+        <button
+          onClick={onPanelOpen}
+          className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none"
+          aria-label="Abrir painel"
+        >
+          <Bell size={18} />
+        </button>
       </div>
     </nav>
   );
@@ -374,6 +347,8 @@ export default function App() {
   });
 
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (darkMode) {
@@ -409,17 +384,29 @@ export default function App() {
 
         <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar
-              darkMode={darkMode}
-              toggleDarkMode={() => setDarkMode(!darkMode)}
+              isScrolled={isScrolled}
+              onPanelOpen={() => setIsUserPanelOpen(true)}
+            />
+
+            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
+
+            <UserPanel
+              isOpen={isUserPanelOpen}
+              onClose={() => setIsUserPanelOpen(false)}
               lang={lang}
               setLang={setLang}
+              darkMode={darkMode}
+              toggleDarkMode={() => setDarkMode(!darkMode)}
               favoritesCount={favorites.length}
-              onLoginOpen={() => setIsLoginOpen(true)}
-              isScrolled={isScrolled}
+              user={user}
+              onLoginOpen={() => { setIsUserPanelOpen(false); setIsLoginOpen(true); }}
+              onLogout={() => setUser(null)}
             />
-            
-            <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
-            <MobileBottomNav favoritesCount={favorites.length} onLoginOpen={() => setIsLoginOpen(true)} />
+
+            <MobileBottomNav
+              favoritesCount={favorites.length}
+              onPanelOpen={() => setIsUserPanelOpen(true)}
+            />
 
             <main className="flex-grow">
               <Suspense fallback={<LoadingSpinner />}>
