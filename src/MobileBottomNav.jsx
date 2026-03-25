@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Home, Heart, Search, ShoppingBag, User } from 'lucide-react';
 
-export default function MobileBottomNav({ favoritesCount, onLoginOpen }) {
+export default function MobileBottomNav({ favoritesCount, onPanelOpen }) {
     const location = useLocation();
 
     return (
@@ -52,7 +52,7 @@ export default function MobileBottomNav({ favoritesCount, onLoginOpen }) {
 
                 {/* Profile / Account */}
                 <button 
-                    onClick={onLoginOpen}
+                    onClick={onPanelOpen}
                     className="flex flex-col items-center gap-1 text-text-dim hover:text-text-main transition-colors"
                 >
                     <User size={22} />
