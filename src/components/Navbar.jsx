@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, Globe, Heart, Menu, X } from 'lucide-react';
+import { Sun, Moon, Globe, Heart, Menu, X, Bell, User } from 'lucide-react';
 import { translations } from '../translations';
 import NavbarSearch from './NavbarSearch';
 
-const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen, isScrolled, user }) => {
+const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLoginOpen, onPanelOpen, isScrolled, user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const t = translations[lang].nav;
 
@@ -27,7 +27,7 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
 
           <Link to="/" className="hidden lg:flex items-center gap-3 group" onClick={() => setIsMenuOpen(false)}>
             <div className="w-12 h-12 bg-primary shrink-0 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-primary-glow group-hover:scale-110 transition-transform" aria-hidden="true">L</div>
-            <div className="flex flex-col -gap-1">
+            <div className="hidden lg:flex flex-col -gap-1">
                 <span className="font-black text-2xl tracking-tighter text-text-main leading-none">Locais de Moz</span>
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Moçambique</span>
             </div>
@@ -79,13 +79,21 @@ const Navbar = ({ darkMode, toggleDarkMode, lang, setLang, favoritesCount, onLog
             </button>
           </div>
 
-          {user ? (
-            <div className="hidden lg:flex items-center gap-2 ml-4">
-              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-black text-sm">
-                {user.email?.[0]?.toUpperCase() || '?'}
+          <button
+            onClick={onPanelOpen}
+            className="w-11 h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main border-none relative group"
+            aria-label="Abrir painel de utilizador"
+          >
+            {user ? (
+               <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xs shadow-primary-glow group-hover:scale-110 transition-transform">
+                {user.email?.[0]?.toUpperCase() || <User size={16} />}
               </div>
-            </div>
-          ) : (
+            ) : (
+              <Bell size={18} aria-hidden="true" className="group-hover:rotate-12 transition-transform" />
+            )}
+          </button>
+
+          {!user && (
             <button
               onClick={onLoginOpen}
               className="login-moz-btn hidden lg:flex scale-110 ml-4"

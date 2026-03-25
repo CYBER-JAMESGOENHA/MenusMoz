@@ -4,6 +4,7 @@ import { restaurantService } from './services/restaurantService';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import CustomCursor from './CustomCursor';
 import LoginModal from './LoginModal';
+import UserPanel from './UserPanel';
 import MobileBottomNav from './MobileBottomNav';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -133,9 +134,10 @@ export default function App() {
     localStorage.setItem('menusmoz-dark-mode', darkMode);
   }, [darkMode]);
 
-  // ── SCROLL ────────────────────────────────────────────────────────────────
+  // ── SCROLL & PANELS ───────────────────────────────────────────────────────
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -156,18 +158,30 @@ export default function App() {
 
         <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar
-              darkMode={darkMode}
-              toggleDarkMode={() => setDarkMode(!darkMode)}
-              lang={lang}
-              setLang={setLang}
-              favoritesCount={favorites.length}
-              onLoginOpen={() => setIsLoginOpen(true)}
               isScrolled={isScrolled}
+              onPanelOpen={() => setIsUserPanelOpen(true)}
               user={user}
             />
             
             <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} lang={lang} />
-            <MobileBottomNav favoritesCount={favorites.length} onLoginOpen={() => setIsLoginOpen(true)} />
+            
+            <UserPanel
+              isOpen={isUserPanelOpen}
+              onClose={() => setIsUserPanelOpen(false)}
+              lang={lang}
+              setLang={setLang}
+              darkMode={darkMode}
+              toggleDarkMode={() => setDarkMode(!darkMode)}
+              favoritesCount={favorites.length}
+              user={user}
+              onLoginOpen={() => { setIsUserPanelOpen(false); setIsLoginOpen(true); }}
+              onLogout={() => { supabase.auth.signOut(); setIsUserPanelOpen(false); }}
+            />
+
+            <MobileBottomNav 
+              favoritesCount={favorites.length} 
+              onPanelOpen={() => setIsUserPanelOpen(true)} 
+            />
 
             <main className="flex-grow">
               <Suspense fallback={<LoadingSpinner />}>

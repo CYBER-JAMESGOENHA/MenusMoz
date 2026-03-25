@@ -59,6 +59,7 @@ export default function LoginModal({ isOpen, onClose, lang }) {
         success_register: 'Conta criada! Verifica o teu email para confirmar.',
         success_login: 'Login efectuado com sucesso!',
         supabase_missing: 'Serviço de autenticação não disponível.',
+        attempts_left: 'tentativas restantes',
     } : {
         title_login: 'Welcome back',
         title_register: 'Create Identity',
@@ -82,14 +83,17 @@ export default function LoginModal({ isOpen, onClose, lang }) {
         success_register: 'Account created! Check your email to confirm.',
         success_login: 'Logged in successfully!',
         supabase_missing: 'Authentication service unavailable.',
+        attempts_left: 'attempts left',
     };
 
     useEffect(() => {
-        setError('');
-        setSuccess('');
-        setEmail('');
-        setPassword('');
-        setMode('login');
+        if (!isOpen) {
+            setError('');
+            setSuccess('');
+            setEmail('');
+            setPassword('');
+            setMode('login');
+        }
     }, [isOpen]);
 
     useEffect(() => {
@@ -176,7 +180,7 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                 );
             } else {
                 setError(
-                    `${getErrorMessage(err)} (${MAX_ATTEMPTS - newAttempts} ${lang === 'pt' ? 'tentativas restantes' : 'attempts left'})`
+                    `${getErrorMessage(err)} (${MAX_ATTEMPTS - newAttempts} ${t.attempts_left})`
                 );
             }
         } finally {
@@ -212,46 +216,46 @@ export default function LoginModal({ isOpen, onClose, lang }) {
         >
             <div
                 ref={contentRef}
-                className="relative w-full max-w-lg bg-surface/90 backdrop-blur-3xl p-8 sm:p-10 md:p-14 rounded-[2.5rem] md:rounded-[4rem] border border-white/20 shadow-premium overflow-hidden"
+                className="relative w-full max-w-md bg-surface/90 backdrop-blur-3xl p-6 sm:p-8 rounded-[2rem] border border-white/20 shadow-premium overflow-hidden"
                 onClick={e => e.stopPropagation()}
             >
-                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl -mr-20 -mt-20" />
-                <div className="absolute bottom-0 left-0 w-40 h-40 bg-moz-green/5 rounded-full blur-3xl -ml-20 -mb-20" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-moz-green/5 rounded-full blur-3xl -ml-16 -mb-16" />
 
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 text-text-main transition-all z-10"
+                    className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-xl glass hover:bg-primary/10 text-text-main transition-all z-10"
                     aria-label="Fechar"
                 >
-                    <X size={22} />
+                    <X size={18} />
                 </button>
 
-                <div className="text-center mb-8 login-reveal">
-                    <div className="w-16 h-16 bg-primary rounded-[1.2rem] flex items-center justify-center text-white mx-auto mb-6 shadow-primary-glow">
-                        {mode === 'login' ? <LogIn size={30} /> : <UserPlus size={30} />}
+                <div className="text-center mb-5 login-reveal">
+                    <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white mx-auto mb-3 shadow-primary-glow">
+                        {mode === 'login' ? <LogIn size={20} /> : <UserPlus size={20} />}
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-display italic text-text-main mb-2 tracking-tighter">
+                    <h2 className="text-2xl font-display italic text-text-main mb-1 tracking-tighter">
                         {mode === 'login' ? t.title_login : t.title_register}
                     </h2>
-                    <p className="text-base text-text-dim font-medium italic opacity-70">
+                    <p className="text-sm text-text-dim font-medium italic opacity-70">
                         {mode === 'login' ? t.subtitle_login : t.subtitle_register}
                     </p>
                 </div>
 
-                <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+                <form className="space-y-3" onSubmit={handleSubmit} noValidate>
                     {/* Email */}
-                    <div className="space-y-2 login-reveal">
-                        <label htmlFor="modal-email" className="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim/60 px-2 block">
+                    <div className="space-y-1 login-reveal">
+                        <label htmlFor="modal-email" className="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim/60 px-1 block">
                             {t.email}
                         </label>
                         <div className="relative group">
-                            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={18} />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={16} />
                             <input
                                 id="modal-email"
                                 type="email"
                                 value={email}
                                 onChange={e => { setEmail(e.target.value); setError(''); }}
-                                className="w-full h-16 pl-14 pr-5 rounded-2xl glass border-border-subtle focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-medium text-sm"
+                                className="w-full h-12 pl-11 pr-4 rounded-xl glass border-border-subtle focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-medium text-sm"
                                 placeholder="oseu@email.com"
                                 autoComplete="email"
                                 required
@@ -260,18 +264,18 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                     </div>
 
                     {/* Password */}
-                    <div className="space-y-2 login-reveal">
-                        <label htmlFor="modal-pass" className="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim/60 px-2 block">
+                    <div className="space-y-1 login-reveal">
+                        <label htmlFor="modal-pass" className="text-[10px] font-black uppercase tracking-[0.3em] text-text-dim/60 px-1 block">
                             {t.pass}
                         </label>
                         <div className="relative group">
-                            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={18} />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={16} />
                             <input
                                 id="modal-pass"
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={e => { setPassword(e.target.value); setError(''); }}
-                                className="w-full h-16 pl-14 pr-14 rounded-2xl glass border-border-subtle focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-medium text-sm"
+                                className="w-full h-12 pl-11 pr-11 rounded-xl glass border-border-subtle focus:ring-2 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-medium text-sm"
                                 placeholder="••••••••"
                                 autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                                 required
@@ -279,25 +283,25 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(v => !v)}
-                                className="absolute right-5 top-1/2 -translate-y-1/2 text-text-dim hover:text-primary transition-colors"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-text-dim hover:text-primary transition-colors"
                                 aria-label={showPassword ? 'Ocultar palavra-passe' : 'Mostrar palavra-passe'}
                             >
-                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
                         </div>
                     </div>
 
                     {/* Error / Success */}
                     {error && (
-                        <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-3 login-reveal">
-                            <AlertCircle size={18} className="text-red-500 shrink-0" />
-                            <p className="text-sm font-bold text-red-600">{error}</p>
+                        <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2 login-reveal">
+                            <AlertCircle size={15} className="text-red-500 shrink-0" />
+                            <p className="text-xs font-bold text-red-600">{error}</p>
                         </div>
                     )}
                     {success && (
-                        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/20 rounded-2xl px-4 py-3 login-reveal">
-                            <CheckCircle size={18} className="text-green-500 shrink-0" />
-                            <p className="text-sm font-bold text-green-600">{success}</p>
+                        <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-xl px-3 py-2 login-reveal">
+                            <CheckCircle size={15} className="text-green-500 shrink-0" />
+                            <p className="text-xs font-bold text-green-600">{success}</p>
                         </div>
                     )}
 
@@ -319,21 +323,21 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                 </form>
 
                 {/* Divider */}
-                <div className="my-6 flex items-center gap-5 text-text-dim/30 login-reveal">
+                <div className="my-4 flex items-center gap-4 text-text-dim/30 login-reveal">
                     <div className="h-px bg-current flex-1" />
                     <span className="text-[10px] font-black uppercase tracking-[0.4em] shrink-0">{t.or}</span>
                     <div className="h-px bg-current flex-1" />
                 </div>
 
                 {/* OAuth buttons */}
-                <div className="grid grid-cols-2 gap-4 login-reveal">
+                <div className="grid grid-cols-2 gap-3 login-reveal">
                     <button
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
-                        className="h-14 rounded-2xl glass flex items-center justify-center gap-2.5 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-widest text-text-main disabled:opacity-60"
+                        className="h-10 rounded-xl glass flex items-center justify-center gap-2 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-widest text-text-main disabled:opacity-60"
                         aria-label="Login com Google"
                     >
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24">
                             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
@@ -344,16 +348,16 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                     <button
                         onClick={handleGithubLogin}
                         disabled={isLoading}
-                        className="h-14 rounded-2xl glass flex items-center justify-center gap-2.5 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-widest text-text-main disabled:opacity-60"
+                        className="h-10 rounded-xl glass flex items-center justify-center gap-2 hover:bg-white/10 transition-all font-black uppercase text-[10px] tracking-widest text-text-main disabled:opacity-60"
                         aria-label="Login com GitHub"
                     >
-                        <Github size={20} />
+                        <Github size={16} />
                         GitHub
                     </button>
                 </div>
 
                 {/* Mode toggle */}
-                <p className="mt-8 text-center text-xs font-bold text-text-dim login-reveal">
+                <p className="mt-4 text-center text-xs font-bold text-text-dim login-reveal">
                     {mode === 'login' ? t.noAccount : t.hasAccount}{' '}
                     <button
                         type="button"
