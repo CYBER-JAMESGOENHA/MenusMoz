@@ -59,6 +59,7 @@ export const restaurantService = {
       .order('rating', { ascending: false })
 
     if (error) {
+      console.error('Supabase error [getAll]:', error)
       return RESTAURANTS
     }
     return data.map(mapRestaurant)
@@ -87,6 +88,7 @@ export const restaurantService = {
       .single()
 
     if (error) {
+      console.error('Supabase error [getBySlug]:', error)
       return RESTAURANTS.find(r => r.slug === slug) || null
     }
     return mapRestaurant(data)
@@ -103,6 +105,7 @@ export const restaurantService = {
       .order('sort_order', { ascending: true })
 
     if (error) {
+      console.error('Supabase error [getHeroSlides]:', error)
       return FEATURED_DISHES
     }
 
@@ -128,6 +131,7 @@ export const restaurantService = {
       .order('published_at', { ascending: false })
 
     if (error) {
+      console.error('Supabase error [getBlogPosts]:', error)
       return BLOG_POSTS
     }
 
@@ -153,12 +157,18 @@ export const restaurantService = {
         .from('favorites')
         .delete()
         .match({ user_id: userId, restaurant_id: restaurantId })
-      if (error) throw error
+      if (error) {
+        console.error('Supabase error [removeFavorite]:', error)
+        throw error
+      }
     } else {
       const { error } = await supabase
         .from('favorites')
         .insert([{ user_id: userId, restaurant_id: restaurantId }])
-      if (error) throw error
+      if (error) {
+        console.error('Supabase error [addFavorite]:', error)
+        throw error
+      }
     }
   }
 }

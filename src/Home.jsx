@@ -133,7 +133,7 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
 
 export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
-    const t = translations[lang].home;
+    const t = translations[lang]?.home ?? translations.pt.home;
 
     const handleToggleFavorite = useCallback((e) => {
         e.preventDefault();
@@ -258,7 +258,7 @@ const HomeSearch = ({ lang, restaurants = [] }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
     const searchRef = useRef(null);
-    const t = translations[lang];
+    const t = translations[lang] ?? translations.pt;
     const navigate = useNavigate();
 
     const handleKeyDown = (e) => {

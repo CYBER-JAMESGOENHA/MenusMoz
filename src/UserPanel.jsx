@@ -45,20 +45,29 @@ export default function UserPanel({ isOpen, onClose, lang, setLang, darkMode, to
         view_all_favs: 'View all',
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-            gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-            gsap.fromTo(panelRef.current, { x: '100%' }, { x: '0%', duration: 0.45, ease: 'power3.out' });
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-    }, [isOpen]);
-
     const handleClose = () => {
         gsap.to(panelRef.current, { x: '100%', duration: 0.35, ease: 'power3.in' });
         gsap.to(overlayRef.current, { opacity: 0, duration: 0.3, onComplete: onClose });
     };
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                handleClose();
+            }
+        };
+
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            window.addEventListener('keydown', handleKeyDown);
+            gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+            gsap.fromTo(panelRef.current, { x: '100%' }, { x: '0%', duration: 0.45, ease: 'power3.out' });
+        } else {
+            document.body.style.overflow = 'auto';
+            window.removeEventListener('keydown', handleKeyDown);
+        }
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen]);
 
     if (!isOpen) return null;
 

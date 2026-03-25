@@ -97,8 +97,15 @@ export default function LoginModal({ isOpen, onClose, lang }) {
     }, [isOpen]);
 
     useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                onClose();
+            }
+        };
+
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            window.addEventListener('keydown', handleKeyDown);
             const ctx = gsap.context(() => {
                 gsap.fromTo(modalRef.current, { opacity: 0 }, { opacity: 1, duration: 0.4 });
                 gsap.fromTo(contentRef.current,
@@ -109,11 +116,15 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                     y: 20, opacity: 0, duration: 0.5, stagger: 0.05, delay: 0.2, ease: 'power2.out'
                 });
             });
-            return () => ctx.revert();
+            return () => {
+                ctx.revert();
+                window.removeEventListener('keydown', handleKeyDown);
+            };
         } else {
             document.body.style.overflow = 'auto';
+            window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [isOpen, mode]);
+    }, [isOpen, mode, onClose]);
 
     if (!isOpen) return null;
 
