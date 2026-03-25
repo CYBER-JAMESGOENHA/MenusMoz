@@ -299,7 +299,9 @@ export const BLOG_POSTS = [
     excerpt: "Descubra os segredos deste prato icónico moçambicano e os lugares onde a tradição é sagrada.",
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop",
     date: "24 Fev, 2026",
-    author: "Equipa MenusMOZ"
+    author: "Equipa MenusMOZ",
+    category: "Cultura",
+    content: "A Matapa é um dos pratos mais emblemáticos de Moçambique, feita a partir de folhas de mandioca piladas, coco e amendoim. Em Maputo, a busca pela matapa perfeita pode levá-lo de mercados populares a restaurantes de alta gastronomia.\n\nRestaurantes como o Cantinho do Gato preservam a receita tradicional com o sabor autêntico do litoral. Já outros espaços modernos começam a experimentar com novas apresentações, mantendo sempre a base rica e cremosa que todos adoramos.\n\nNão deixe de provar as versões com camarão ou caranguejo, que elevam este prato a um nível de sofisticação único. O segredo está no tempo de refogado das folhas e na cremosidade do leite de coco fresco."
   },
   {
     id: 2,
@@ -307,7 +309,9 @@ export const BLOG_POSTS = [
     excerpt: "Uma volta pelos restaurantes que servem o camarão e a lagosta mais frescos da capital.",
     image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=800&auto=format&fit=crop",
     date: "20 Fev, 2026",
-    author: "Sofia Mucavele"
+    author: "Sofia Mucavele",
+    category: "Notícias",
+    content: "A Avenida Marginal em Maputo continua a ser o epicentro para os amantes de marisco. Com a brisa do mar como acompanhamento, diversos estabelecimentos oferecem o que há de mais fresco no Oceano Índico.\n\nFomos visitar o Sabor do Mar, onde o camarão tigre é grelhado no momento com o ponto perfeito de sal e alho. Outros espaços como o Baía Lounge oferecem tábuas de marisco que são um verdadeiro festim para os sentidos, combinando lagosta, lulas e amêijoas.\n\nO segredo destes espaços reside na relação direta com os pescadores locais, garantindo que o produto chega à mesa poucas horas depois de sair das águas moçambicanas."
   },
   {
     id: 3,
@@ -315,6 +319,8 @@ export const BLOG_POSTS = [
     excerpt: "Fomos provar os burgers de picanha e os cocktails que estão a dar que falar em Maputo.",
     image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop",
     date: "15 Fev, 2026",
-    author: "Carlos Langa"
+    author: "Carlos Langa",
+    category: "Reviews",
+    content: "O Mercado 28 não é apenas um local para comer; é uma experiência urbana no coração de Maputo. Este moderno pátio de street food reuniu alguns dos conceitos gastronómicos mais inovadores da cidade num ambiente cosmopolita.\n\nO destaque vai para o Brasa Viva, onde os burgers de picanha redefinem o conceito de hambúrguer gourmet. Carne suculenta, queijo derretido e pão brioche artesanal fazem desta uma das melhores opções de almoço rápido na capital.\n\nPara acompanhar, a carta de cocktails é vasta e criativa, usando frutas locais como o maphilwa e a litchi. É o ponto de encontro perfeito para um sunset com amigos ao som de boa música moçambicana."
   }
 ];

@@ -64,11 +64,10 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
 
     const handleMouseEnter = useCallback(() => setIsHovered(true), []);
     const handleMouseLeave = useCallback(() => setIsHovered(false), []);
-
     // Imagem do avatar do chef (placeholder/fictício) e detalhes
-    const chefName = "Chef Rogério Cossa";
-    const chefImage = "https://images.unsplash.com/photo-1583394838336-aced97832516?q=80&w=200&auto=format&fit=crop";
-    const chefQuote = "Uma explosão de sabores em cada colher, com um toque de paprika e sal da terra.";
+    const chefName = restaurant.chefName || "MenusMoz";
+    const chefImage = restaurant.chefImage || "/favicon.svg"; 
+    const chefQuote = restaurant.chefQuote || "Uma seleção exclusiva da Equipa MenusMoz. Experimente agora.";
 
 
     return (
@@ -113,13 +112,12 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
                 </div>
 
                 {/* Avatar do Chef Centralizado */}
-                {/* Avatar do Chef Centralizado */}
                 <div className="w-16 h-16 rounded-full overflow-hidden border-[3px] border-surface shadow-md shrink-0 -mt-12 relative z-10 bg-surface mx-auto">
                     <img src={chefImage} alt={chefName} loading="lazy" className="w-full h-full object-cover" />
                 </div>
                 
                 <div className="flex flex-col flex-1 pb-1 mt-3 w-full text-center">
-                    <h3 className="text-lg font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors line-clamp-1">{chefName}</h3>
+                    <h3 className="text-lg font-display font-black leading-tight text-text-main group-hover:text-primary transition-colors line-clamp-1">{restaurant.chefName ? chefName : (lang === 'pt' ? 'Sugestão MenusMoz' : 'MenusMoz Pick')}</h3>
                     <p className="text-xs text-text-dim font-medium italic mt-2 leading-relaxed px-2">"{chefQuote}"</p>
                 </div>
 
@@ -285,7 +283,7 @@ const HomeSearch = ({ lang, restaurants = [] }) => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && searchQuery.trim()) {
             setSuggestions([]);
-            navigate(`/restaurantes?q=${encodeURIComponent(searchQuery.trim())}`);
+            navigate(`/restaurantes?q=${encodeURIComponent(searchQuery.trim())}&autoFocus=true`);
         }
     };
 

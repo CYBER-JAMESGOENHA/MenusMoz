@@ -11,7 +11,8 @@ export default function CustomCursor() {
         const follower = followerRef.current;
         const spotlight = spotlightRef.current;
 
-        if (!cursor || !follower || !spotlight) return;
+        const isMouse = window.matchMedia('(pointer: fine)').matches;
+        if (!isMouse || !cursor || !follower || !spotlight) return;
 
         const onMouseMove = (e) => {
             const { clientX: x, clientY: y } = e;

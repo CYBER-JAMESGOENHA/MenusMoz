@@ -41,19 +41,10 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen }) {
                     <Search size={26} className="text-white" />
                 </NavLink>
 
-                {/* Cart / Orders */}
-                <NavLink 
-                    to="/cart" // Add the corresponding route when ready
-                    className={({ isActive }) => `flex flex-col items-center gap-1 transition-colors ${isActive ? 'text-primary' : 'text-text-dim hover:text-text-main'} ml-8`}
-                >
-                    <ShoppingBag size={22} className={location.pathname === '/cart' ? 'fill-primary/20' : ''} />
-                    <span className="text-[9px] font-black uppercase tracking-widest hidden sm:block">Cesto</span>
-                </NavLink>
-
                 {/* Profile / Account */}
                 <button 
                     onClick={onPanelOpen}
-                    className="flex flex-col items-center gap-1 text-text-dim hover:text-text-main transition-colors"
+                    className="flex flex-col items-center gap-1 text-text-dim hover:text-text-main transition-colors mr-2"
                 >
                     <User size={22} />
                     <span className="text-[9px] font-black uppercase tracking-widest hidden sm:block">Perfil</span>

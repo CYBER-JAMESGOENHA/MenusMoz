@@ -70,11 +70,21 @@ export default function BlogPost({ lang, posts = [] }) {
                 </p>
 
                 <div className="mt-16 pt-8 border-t border-border-subtle blog-post-reveal">
-                    <p className="text-text-dim text-sm font-medium italic">
-                        {lang === 'pt'
-                            ? 'Conteúdo completo disponível em breve. Subscreve a newsletter para seres o primeiro a saber.'
-                            : 'Full content coming soon. Subscribe to our newsletter to be the first to know.'}
-                    </p>
+                    {post.content ? (
+                        <div className="prose prose-lg dark:prose-invert max-w-none">
+                            {post.content.split('\n\n').map((para, i) => (
+                                <p key={i} className="text-text-main text-lg leading-relaxed mb-6 font-medium">
+                                    {para}
+                                </p>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-text-dim text-sm font-medium italic">
+                            {lang === 'pt'
+                                ? 'Conteúdo completo disponível em breve. Subscreve a newsletter para seres o primeiro a saber.'
+                                : 'Full content coming soon. Subscribe to our newsletter to be the first to know.'}
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

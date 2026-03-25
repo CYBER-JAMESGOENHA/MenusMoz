@@ -202,7 +202,7 @@ export default function UserPanel({ isOpen, onClose, lang, setLang, darkMode, to
                 {/* Footer */}
                 <div className="px-6 pb-8 pt-4 border-t border-border-subtle">
                     <p className="text-center text-[10px] font-black uppercase tracking-widest text-text-dim/30">
-                        Locais de Moz © 2026
+                        Locais de Moz © {new Date().getFullYear()}
                     </p>
                 </div>
             </div>

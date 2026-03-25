@@ -381,29 +381,29 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                             </div>
 
                             {/* Review Box */}
-                            <div className="bg-surface border border-border-subtle p-8 rounded-[3rem] shadow-xl relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8" />
-                                <div className="flex items-center gap-2 mb-4 text-accent relative z-10">
-                                    {[1, 2, 3, 4, 5].map(i => (
-                                        <Star
-                                            key={i}
-                                            size={20}
-                                            fill={i <= Math.round(restaurant.rating ?? 5) ? 'currentColor' : 'none'}
-                                            className={i <= Math.round(restaurant.rating ?? 5) ? 'text-accent' : 'text-text-dim/20'}
-                                        />
-                                    ))}
-                                    {restaurant.rating && (
-                                        <span className="ml-2 font-black text-lg text-text-main">{restaurant.rating.toFixed(1)}</span>
-                                    )}
+                            {restaurant.reviews && restaurant.reviews.length > 0 && (
+                                <div className="bg-surface border border-border-subtle p-8 rounded-[3rem] shadow-xl relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8" />
+                                    <div className="flex items-center gap-2 mb-4 text-accent relative z-10">
+                                        {[1, 2, 3, 4, 5].map(i => (
+                                            <Star
+                                                key={i}
+                                                size={20}
+                                                fill={i <= Math.round(restaurant.reviews[0].rating ?? 5) ? 'currentColor' : 'none'}
+                                                className={i <= Math.round(restaurant.reviews[0].rating ?? 5) ? 'text-accent' : 'text-text-dim/20'}
+                                            />
+                                        ))}
+                                        <span className="ml-2 font-black text-lg text-text-main">{restaurant.reviews[0].rating.toFixed(1)}</span>
+                                    </div>
+                                    <p
+                                        className="italic text-lg mb-6 text-text-main relative z-10 leading-relaxed"
+                                        style={{ fontFamily: "'Playfair Display', serif" }}
+                                    >
+                                        "{restaurant.reviews[0].comment}"
+                                    </p>
+                                    <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— {restaurant.reviews[0].userName}, {lang === 'pt' ? 'Cliente Verificado' : 'Verified Customer'}</p>
                                 </div>
-                                <p
-                                    className="italic text-lg mb-6 text-text-main relative z-10 leading-relaxed"
-                                    style={{ fontFamily: "'Playfair Display', serif" }}
-                                >
-                                    "Simplesmente o melhor da cidade. O atendimento é impecável e os sabores são autênticos. Recomendo vivamente a qualquer pessoa que queira o verdadeiro sabor de Moz."
-                                </p>
-                                <p className="font-bold uppercase text-xs tracking-[0.2em] text-text-dim/40 relative z-10">— Cliente Verificado, Locais de Moz</p>
-                            </div>
+                            )}
 
                             {/* Scroll hint on mobile */}
                             <div className="flex flex-col items-center gap-2 text-text-dim/30 lg:hidden py-12">

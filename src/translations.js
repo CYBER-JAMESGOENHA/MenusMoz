@@ -42,6 +42,35 @@ export const translations = {
         footer: {
             desc: "A maior rede de menus digitais de Moçambique. O sabor da nossa terra na palma da sua mão.",
             platform: "Plataforma"
+        },
+        about: {
+            manifesto: "O Nosso Manifesto",
+            title: "Digitalizando o sabor de",
+            subtitle: "Locais de Moz nasceu da paixão pela gastronomia e da vontade de colocar a alma culinária do país na palma da mão de todos.",
+            mission: "A Nossa Missão",
+            mission_desc: "Democratizamos o acesso à informação gastronómica de qualidade em Moçambique, capacitando restauradores locais com ferramentas digitais de elite e guiando clientes a descobertas autênticas.",
+            future: "O Futuro",
+            future_desc: "Queremos ser a maior rede de curadoria gastronómica de África Austral, celebrando a diversidade da nossa Pérola do Índico."
+        },
+        forOwners: {
+            title: "Traga o seu restaurante para a era digital",
+            subtitle: "Junte-se a centenas de proprietários que estão a transformar o seu negócio com menus digitais premium.",
+            form_title: "Candidatura",
+            name: "Nome do Estabelecimento",
+            email: "Email de Contacto",
+            phone: "Telemóvel",
+            submit: "Enviar Candidatura"
+        },
+        blog: {
+            tag: "Diário Gastronómico",
+            title: "O Sabor de",
+            subtitle: "Curiosidades, receitas ancestrais e histórias por trás dos pratos que definem a nossa identidade.",
+            read_more: "Ler Detalhes",
+            all: "Tudo",
+            culture: "Cultura",
+            reviews: "Reviews",
+            recipes: "Receitas",
+            news: "Notícias"
         }
     },
     en: {
@@ -87,6 +116,35 @@ export const translations = {
         footer: {
             desc: "Mozambique's largest digital menu network. The flavor of our land in the palm of your hand.",
             platform: "Platform"
+        },
+        about: {
+            manifesto: "Our Manifesto",
+            title: "Digitalizing the flavor of",
+            subtitle: "Locais de Moz was born from a passion for gastronomy and the desire to put the country's culinary soul in everyone's palm.",
+            mission: "Our Mission",
+            mission_desc: "We democratize access to quality gastronomic information in Mozambique, empowering local restaurateurs with elite digital tools and guiding customers to authentic discoveries.",
+            future: "The Future",
+            future_desc: "We want to be the largest gastronomic curation network in Southern Africa, celebrating the diversity of our Pearl of the Indian Ocean."
+        },
+        forOwners: {
+            title: "Bring your restaurant to the digital era",
+            subtitle: "Join hundreds of owners who are transforming their business with premium digital menus.",
+            form_title: "Application",
+            name: "Establishment Name",
+            email: "Contact Email",
+            phone: "Mobile",
+            submit: "Send Application"
+        },
+        blog: {
+            tag: "Foodie Blog",
+            title: "The Flavor of",
+            subtitle: "Curiosity, ancestral recipes, and stories behind the dishes that define our identity.",
+            read_more: "Read Details",
+            all: "All",
+            culture: "Culture",
+            reviews: "Reviews",
+            recipes: "Recipes",
+            news: "News"
         }
     }
 };

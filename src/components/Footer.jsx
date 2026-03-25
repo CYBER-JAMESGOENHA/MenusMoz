@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
 import { translations } from '../translations';
 import NewsletterForm from './NewsletterForm';
 
@@ -26,20 +27,19 @@ const Footer = ({ lang }) => {
             
             <div className="flex gap-4 mt-10">
                 {[
-                  { name: 'Instagram', href: 'https://instagram.com' },
-                  { name: 'Facebook', href: 'https://facebook.com' },
-                  { name: 'Twitter', href: 'https://twitter.com' },
+                  { name: 'Instagram', href: 'https://instagram.com/locaisdemoz', icon: Instagram },
+                  { name: 'Facebook', href: 'https://facebook.com/locaisdemoz', icon: Facebook },
+                  { name: 'X', href: 'https://twitter.com/locaisdemoz', icon: Twitter },
                 ].map(social => (
                     <a
                       key={social.name}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Visitar ${social.name}`}
+                      aria-label={lang === 'pt' ? `Visitar ${social.name}` : `Visit ${social.name}`}
                       className="w-12 h-12 rounded-2xl glass flex items-center justify-center hover:bg-primary hover:text-white transition-all transform hover:-translate-y-2"
                     >
-                        <span className="sr-only">{social.name}</span>
-                        <div className="w-5 h-5 bg-current opacity-20" aria-hidden="true" />
+                        <social.icon size={20} />
                     </a>
                 ))}
             </div>
@@ -57,19 +57,19 @@ const Footer = ({ lang }) => {
           </div>
 
           <div className="md:col-span-4">
-             <h5 className="font-black mb-8 text-xs uppercase tracking-[0.3em] text-primary">Sabor na Caixa</h5>
-             <p className="text-text-dim mb-6 font-medium">Receba as melhores ofertas e novidades dos restaurantes de Moçambique.</p>
+             <h5 className="font-black mb-8 text-xs uppercase tracking-[0.3em] text-primary">{lang === 'pt' ? 'Sabor na Caixa' : 'Flavor in a Box'}</h5>
+             <p className="text-text-dim mb-6 font-medium">{lang === 'pt' ? 'Receba as melhores ofertas e novidades dos restaurantes de Moçambique.' : 'Get the best offers and news from Mozambique\'s restaurants.'}</p>
              <NewsletterForm lang={lang} />
           </div>
         </div>
 
         <div className="border-t border-border-subtle pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-text-dim text-xs font-black uppercase tracking-widest">
-          <p>© 2026 Locais de Moz — Moçambique Digital.</p>
+          <p>© {new Date().getFullYear()} Locais de Moz — Moçambique Digital.</p>
           <nav aria-label="Links legais">
             <div className="flex gap-10">
-              <Link to="/privacidade" className="hover:text-primary transition-colors">Privacidade</Link>
-              <Link to="/termos" className="hover:text-primary transition-colors">Termos</Link>
-              <a href="mailto:contacto@locaisdemoz.co.mz" className="hover:text-primary transition-colors">Contactos</a>
+              <Link to="/privacidade" className="hover:text-primary transition-colors">{lang === 'pt' ? 'Privacidade' : 'Privacy'}</Link>
+              <Link to="/termos" className="hover:text-primary transition-colors">{lang === 'pt' ? 'Termos' : 'Terms'}</Link>
+              <a href="mailto:contacto@locaisdemoz.co.mz" className="hover:text-primary transition-colors">{lang === 'pt' ? 'Contactos' : 'Contacts'}</a>
             </div>
           </nav>
         </div>

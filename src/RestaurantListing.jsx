@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, X } from 'lucide-react';
 import { CATEGORIES } from './data';
@@ -9,6 +9,8 @@ import { gsap } from 'gsap';
 export default function RestaurantListing({ lang, favorites, toggleFavorite, restaurants = [] }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get('q') || '';
+    const shouldAutoFocus = searchParams.get('autoFocus') === 'true';
+    const searchInputRef = React.useRef(null);
     
     // States for filters
     const [searchTerm, setSearchTerm] = useState(query);
@@ -16,29 +18,37 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     const [minRating, setMinRating] = useState(0);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
+    useEffect(() => {
+        if (shouldAutoFocus && searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, [shouldAutoFocus]);
+
     const t = translations[lang];
 
-    // Filter logic
-    const filteredRestaurants = restaurants.filter(r => {
-        let match = true;
-        if (searchTerm) {
-            match = r.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                    r.cuisine.toLowerCase().includes(searchTerm.toLowerCase());
-        }
-        if (activeCategory !== 'Tudo' && match) {
-            match = r.cuisine.toLowerCase() === activeCategory.toLowerCase();
-        }
-        if (minRating > 0 && match) {
-            match = (r.rating || 0) >= minRating;
-        }
-        return match;
-    });
+    // Filter logic - memoized (fix M9)
+    const filteredRestaurants = useMemo(() => {
+        return restaurants.filter(r => {
+            let match = true;
+            if (searchTerm) {
+                match = r.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                        r.cuisine.toLowerCase().includes(searchTerm.toLowerCase());
+            }
+            if (activeCategory !== 'Tudo' && match) {
+                match = r.cuisine.toLowerCase() === activeCategory.toLowerCase();
+            }
+            if (minRating > 0 && match) {
+                match = (r.rating || 0) >= minRating;
+            }
+            return match;
+        });
+    }, [restaurants, searchTerm, activeCategory, minRating]);
 
     useEffect(() => {
         if (filteredRestaurants.length > 0) {
             gsap.fromTo('.restaurant-card-grid', 
                 { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out' }
+                { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' }
             );
         }
     }, [filteredRestaurants]);
@@ -77,6 +87,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                             <div className="flex items-center bg-surface border border-border-subtle rounded-2xl px-4 py-3 shadow-sm focus-within:border-primary transition-colors">
                                 <Search size={16} className="text-text-dim shrink-0" />
                                 <input 
+                                    ref={searchInputRef}
                                     type="text" 
                                     placeholder="Procurar locais..." 
                                     value={searchTerm}

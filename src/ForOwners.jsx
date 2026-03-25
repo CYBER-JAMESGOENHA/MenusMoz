@@ -2,20 +2,37 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { TrendingUp, Globe, ShieldCheck, Rocket, CheckCircle, AlertCircle, Loader2, Mail, Phone, Building2 } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { translations } from './translations';
 
-const BENEFITS = [
-    { icon: TrendingUp, title: "Visibilidade Orgânica", desc: "Apareça com destaque nos resultados de busca por culinária.", color: "primary" },
-    { icon: Globe, title: "Identidade Digital", desc: "Um showcase interativo e elegante para o seu menu.", color: "accent" },
-    { icon: ShieldCheck, title: "Infraestrutura Premium", desc: "Tecnologia robusta desenhada para performance real.", color: "moz-green" }
-];
-
-export default function ForOwners() {
+export default function ForOwners({ lang }) {
     const containerRef = useRef(null);
     const [formData, setFormData] = useState({ business_name: '', email: '', whatsapp: '' });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [submitState, setSubmitState] = useState('idle'); // 'idle' | 'success' | 'error'
     const [errorMsg, setErrorMsg] = useState('');
+    const t = translations[lang].forOwners;
+
+    const BENEFITS = [
+        { 
+            icon: TrendingUp, 
+            title: lang === 'pt' ? "Visibilidade Orgânica" : "Organic Visibility", 
+            desc: lang === 'pt' ? "Apareça com destaque nos resultados de busca por culinária." : "Stand out in culinary search results.", 
+            color: "primary" 
+        },
+        { 
+            icon: Globe, 
+            title: lang === 'pt' ? "Identidade Digital" : "Digital Identity", 
+            desc: lang === 'pt' ? "Um showcase interativo e elegante para o seu menu." : "An interactive and elegant showcase for your menu.", 
+            color: "accent" 
+        },
+        { 
+            icon: ShieldCheck, 
+            title: lang === 'pt' ? "Infraestrutura Premium" : "Premium Infrastructure", 
+            desc: lang === 'pt' ? "Tecnologia robusta desenhada para performance real." : "Robust technology designed for real performance.", 
+            color: "moz-green" 
+        }
+    ];
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -29,16 +46,18 @@ export default function ForOwners() {
 
     const validate = () => {
         const newErrors = {};
-        if (!formData.business_name.trim()) newErrors.business_name = 'Nome do estabelecimento obrigatório.';
+        if (!formData.business_name.trim()) {
+            newErrors.business_name = lang === 'pt' ? 'Nome do estabelecimento obrigatório.' : 'Business name required.';
+        }
         if (!formData.email.trim()) {
-            newErrors.email = 'Email obrigatório.';
+            newErrors.email = lang === 'pt' ? 'Email obrigatório.' : 'Email required.';
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = 'Email inválido.';
+            newErrors.email = lang === 'pt' ? 'Email inválido.' : 'Invalid email.';
         }
         if (!formData.whatsapp.trim()) {
-            newErrors.whatsapp = 'WhatsApp obrigatório.';
+            newErrors.whatsapp = lang === 'pt' ? 'WhatsApp obrigatório.' : 'WhatsApp required.';
         } else if (!/^[\+\d\s\-\(\)]{8,20}$/.test(formData.whatsapp)) {
-            newErrors.whatsapp = 'Número inválido. Ex: +258 84 000 0000';
+            newErrors.whatsapp = lang === 'pt' ? 'Número inválido. Ex: +258 84 000 0000' : 'Invalid number. Ex: +258 84 000 0000';
         }
         return newErrors;
     };
@@ -73,13 +92,13 @@ export default function ForOwners() {
             } else {
                 // Fallback: simular envio + log para debug em desenvolvimento
                 await new Promise(r => setTimeout(r, 800));
-                console.info('Candidatura (modo local):', formData);
+                if (import.meta.env.DEV) console.info('Candidatura (modo local):', formData);
             }
             setSubmitState('success');
             setFormData({ business_name: '', email: '', whatsapp: '' });
         } catch (err) {
             if (import.meta.env.DEV) console.error('Erro ao submeter candidatura:', err);
-            setErrorMsg('Erro ao enviar. Tenta novamente ou contacta-nos via WhatsApp.');
+            setErrorMsg(lang === 'pt' ? 'Erro ao enviar. Tenta novamente ou contacta-nos via WhatsApp.' : 'Error sending. Try again or contact us via WhatsApp.');
             setSubmitState('error');
         } finally {
             setIsLoading(false);
@@ -96,10 +115,10 @@ export default function ForOwners() {
                             Business Solutions
                         </span>
                         <h1 className="text-6xl md:text-9xl mb-10 tracking-tighter text-text-main font-display italic leading-[0.85]">
-                            Evolua o seu <br /><span className="text-primary italic">Negócio</span>
+                            {lang === 'pt' ? 'Evolua o seu' : 'Evolve your'} <br /><span className="text-primary italic">{lang === 'pt' ? 'Negócio' : 'Business'}</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-text-dim mb-16 font-medium leading-relaxed italic">
-                            "Junte-se à plataforma de elite para a gastronomia moçambicana e transforme cliques em clientes fiéis."
+                            "{t.subtitle}"
                         </p>
 
                         <div className="space-y-12">
@@ -131,29 +150,29 @@ export default function ForOwners() {
                                         <CheckCircle size={48} />
                                     </div>
                                     <h3 className="text-3xl font-display font-black text-text-main mb-4 tracking-tight">
-                                        Candidatura Recebida!
+                                        {lang === 'pt' ? 'Candidatura Recebida!' : 'Application Received!'}
                                     </h3>
                                     <p className="text-text-dim font-medium leading-relaxed mb-8">
-                                        A nossa equipa irá analisar o seu pedido e entrar em contacto em até 48 horas.
+                                        {lang === 'pt' ? 'A nossa equipa irá analisar o seu pedido e entrar em contacto em até 48 horas.' : 'Our team will review your request and get in touch within 48 hours.'}
                                     </p>
                                     <button
                                         onClick={() => setSubmitState('idle')}
                                         className="text-primary font-black text-sm uppercase tracking-widest hover:underline"
                                     >
-                                        Submeter nova candidatura →
+                                        {lang === 'pt' ? 'Submeter nova candidatura →' : 'Submit new application →'}
                                     </button>
                                 </div>
                             ) : (
                                 <>
                                     <h3 className="text-4xl md:text-5xl mb-10 text-text-main font-display tracking-tight">
-                                        Candidatar-se à Rede
+                                        {t.form_title}
                                     </h3>
 
                                     <form className="space-y-6" onSubmit={handleSubmit} noValidate>
                                         {/* Business Name */}
                                         <div className="space-y-2">
                                             <label htmlFor="fo-business" className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block px-1">
-                                                Nome do Estabelecimento
+                                                {t.name}
                                             </label>
                                             <div className="relative">
                                                 <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim" size={18} />
@@ -163,7 +182,7 @@ export default function ForOwners() {
                                                     value={formData.business_name}
                                                     onChange={handleChange('business_name')}
                                                     className={`w-full h-16 pl-14 pr-5 glass border-border-subtle rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-medium text-sm placeholder:text-text-dim/30 ${errors.business_name ? 'border-red-500/50 bg-red-500/5' : ''}`}
-                                                    placeholder="Ex: Baía Lounge"
+                                                    placeholder={lang === 'pt' ? "Ex: Baía Lounge" : "Ex: Bay Lounge"}
                                                     maxLength={100}
                                                 />
                                             </div>
@@ -177,7 +196,7 @@ export default function ForOwners() {
                                         {/* Email */}
                                         <div className="space-y-2">
                                             <label htmlFor="fo-email" className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block px-1">
-                                                Email Corporativo
+                                                {t.email}
                                             </label>
                                             <div className="relative">
                                                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim" size={18} />
@@ -202,7 +221,7 @@ export default function ForOwners() {
                                         {/* WhatsApp */}
                                         <div className="space-y-2">
                                             <label htmlFor="fo-phone" className="text-[10px] font-black uppercase tracking-[0.3em] text-primary block px-1">
-                                                WhatsApp de Contacto
+                                                {t.phone}
                                             </label>
                                             <div className="relative">
                                                 <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-text-dim" size={18} />
@@ -238,11 +257,11 @@ export default function ForOwners() {
                                             className="w-full bg-text-main text-surface py-5 rounded-2xl font-black text-lg hover:bg-primary hover:text-white hover:shadow-primary-glow transition-all flex items-center justify-center gap-3 mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
                                             {isLoading ? <Loader2 size={24} className="animate-spin" /> : <Rocket size={24} />}
-                                            {isLoading ? 'A enviar...' : 'Enviar Solicitação'}
+                                            {isLoading ? (lang === 'pt' ? 'A enviar...' : 'Sending...') : t.submit}
                                         </button>
 
                                         <p className="text-center text-[10px] font-black uppercase tracking-widest text-text-dim">
-                                            A nossa equipa entrará em contacto em até 48h.
+                                            {lang === 'pt' ? 'A nossa equipa entrará em contacto em até 48h.' : 'Our team will contact you within 48h.'}
                                         </p>
                                     </form>
                                 </>

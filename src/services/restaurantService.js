@@ -12,6 +12,9 @@ const mapRestaurant = (r) => ({
   // Usar coordenadas decimais se disponíveis, senão o fallback JSONB
   lat: r.latitude || (r.coords?.lat),
   lng: r.longitude || (r.coords?.lng),
+  chefName: r.chef_name,
+  chefImage: r.chef_image,
+  chefQuote: r.chef_quote,
   reviewCount: r.review_count,
   // A View já nos dá as tags normalizadas e o estado is_open calculado no servidor
   cuisines: r.tags || [{ name: r.cuisine, slug: r.cuisine?.toLowerCase() }],
@@ -25,6 +28,11 @@ const mapRestaurant = (r) => ({
       priceValue: item.price_value,
       desc: item.description
     }))
+  })),
+  reviews: (r.reviews || []).map(rev => ({
+    ...rev,
+    userName: rev.profiles?.full_name || 'Utilizador',
+    avatar: rev.profiles?.avatar_url
   }))
 });
 
@@ -42,6 +50,10 @@ export const restaurantService = {
         menu_categories (
           *,
           menu_items (*)
+        ),
+        reviews (
+          *,
+          profiles (full_name, avatar_url)
         )
       `)
       .order('rating', { ascending: false })
@@ -65,6 +77,10 @@ export const restaurantService = {
         menu_categories (
           *,
           menu_items (*)
+        ),
+        reviews (
+          *,
+          profiles (full_name, avatar_url)
         )
       `)
       .eq('slug', slug)
@@ -122,7 +138,9 @@ export const restaurantService = {
       image: p.image_url,
       author: p.author,
       date: new Date(p.published_at).toLocaleDateString(lang === 'pt' ? 'pt-MZ' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
-      slug: p.slug
+      slug: p.slug,
+      category: p.category,
+      content: p[`content_${lang}`] || p.content_pt
     }))
   },
 
