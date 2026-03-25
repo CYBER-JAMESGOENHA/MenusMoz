@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, X } from 'lucide-react';
 import { CATEGORIES } from './data';
 import { RestaurantCard } from './Home';
-import { translations } from './translations';
 import { gsap } from 'gsap';
 
 export default function RestaurantListing({ lang, favorites, toggleFavorite, restaurants = [] }) {
@@ -11,6 +10,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     const query = searchParams.get('q') || '';
     const shouldAutoFocus = searchParams.get('autoFocus') === 'true';
     const searchInputRef = React.useRef(null);
+    const gridContainerRef = React.useRef(null);
     
     // States for filters
     const [searchTerm, setSearchTerm] = useState(query);
@@ -23,8 +23,6 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
             searchInputRef.current.focus();
         }
     }, [shouldAutoFocus]);
-
-    const t = translations[lang];
 
     // Filter logic - memoized (fix M9)
     const filteredRestaurants = useMemo(() => {
@@ -45,12 +43,16 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     }, [restaurants, searchTerm, activeCategory, minRating]);
 
     useEffect(() => {
-        if (filteredRestaurants.length > 0) {
-            gsap.fromTo('.restaurant-card-grid', 
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' }
-            );
-        }
+        if (!gridContainerRef.current) return;
+        const ctx = gsap.context(() => {
+            if (filteredRestaurants.length > 0) {
+                gsap.fromTo('.restaurant-card-grid',
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' }
+                );
+            }
+        }, gridContainerRef.current);
+        return () => ctx.revert();
     }, [filteredRestaurants]);
 
     // Update URL when search changes via input
@@ -152,7 +154,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                         </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                    <div ref={gridContainerRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                         {filteredRestaurants.map(rest => (
                             <div key={rest.id} className="restaurant-card-grid">
                                 <RestaurantCard 

@@ -4,8 +4,9 @@ import { translations } from '../translations';
 import NewsletterForm from './NewsletterForm';
 
 const Footer = ({ lang }) => {
-  const t = translations[lang].footer;
-  const tn = translations[lang].nav;
+  const safe = translations[lang] ?? translations.pt;
+  const t = safe.footer;
+  const tn = safe.nav;
 
   return (
     <footer className="bg-surface pt-32 pb-16 md:pb-8 rounded-t-custom-lg transition-colors duration-300 relative overflow-hidden">

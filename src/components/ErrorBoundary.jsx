@@ -1,5 +1,4 @@
 import React from 'react';
-import { translations } from '../translations';
 
 class GlobalErrorBoundary extends React.Component {
     constructor(props) {

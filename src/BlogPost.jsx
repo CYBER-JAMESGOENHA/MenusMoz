@@ -12,6 +12,7 @@ export default function BlogPost({ lang, posts = [] }) {
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!post) return;
+        if (!containerRef.current) return;
         const ctx = gsap.context(() => {
             gsap.from('.blog-post-reveal', {
                 y: 40,
@@ -20,7 +21,7 @@ export default function BlogPost({ lang, posts = [] }) {
                 stagger: 0.12,
                 ease: 'power4.out'
             });
-        }, containerRef);
+        }, containerRef.current);
         return () => ctx.revert();
     }, [post]);
 

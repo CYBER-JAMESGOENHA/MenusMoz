@@ -295,6 +295,7 @@ export const FEATURED_DISHES = [
 export const BLOG_POSTS = [
   {
     id: 1,
+    slug: "matapa-maputo",
     title: "Onde encontrar a melhor Matapa em Maputo?",
     excerpt: "Descubra os segredos deste prato icónico moçambicano e os lugares onde a tradição é sagrada.",
     image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop",
@@ -305,6 +306,7 @@ export const BLOG_POSTS = [
   },
   {
     id: 2,
+    slug: "marisco-fresco-avenida-marginal",
     title: "Marisco Fresco: Do mar para o prato na Avenida Marginal",
     excerpt: "Uma volta pelos restaurantes que servem o camarão e a lagosta mais frescos da capital.",
     image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=800&auto=format&fit=crop",
@@ -315,6 +317,7 @@ export const BLOG_POSTS = [
   },
   {
     id: 3,
+    slug: "mercado-28-street-food",
     title: "Review: Mercado 28 e a revolução da Street Food",
     excerpt: "Fomos provar os burgers de picanha e os cocktails que estão a dar que falar em Maputo.",
     image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop",

@@ -52,7 +52,12 @@ export default function App() {
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('menusmoz-favorites');
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      if (!Array.isArray(parsed)) return [];
+      // Normalize IDs to numbers so "includes" comparisons are stable.
+      return parsed
+        .map(id => Number(id))
+        .filter(id => !Number.isNaN(id));
     } catch (e) {
       if (import.meta.env.DEV) console.error('Failed to parse favorites:', e);
       return [];
@@ -71,7 +76,9 @@ export default function App() {
         .select('restaurant_id')
         .eq('user_id', user.id);
       if (!error && data) {
-        const dbIds = data.map(f => f.restaurant_id);
+        const dbIds = data
+          .map(f => Number(f.restaurant_id))
+          .filter(id => !Number.isNaN(id));
         setFavorites(prev => [...new Set([...prev, ...dbIds])]);
       }
     };
@@ -79,17 +86,19 @@ export default function App() {
   }, [user]);
 
   const toggleFavorite = async (id) => {
-    const isCurrentlyFavorite = favorites.includes(id);
+    const restaurantId = Number(id);
+    if (Number.isNaN(restaurantId)) return;
+    const isCurrentlyFavorite = favorites.includes(restaurantId);
     setFavorites(prev =>
-      isCurrentlyFavorite ? prev.filter(f => f !== id) : [...prev, id]
+      isCurrentlyFavorite ? prev.filter(f => f !== restaurantId) : [...prev, restaurantId]
     );
     if (user && isSupabaseConfigured) {
       try {
-        await restaurantService.toggleFavorite(user.id, id, isCurrentlyFavorite);
+        await restaurantService.toggleFavorite(user.id, restaurantId, isCurrentlyFavorite);
       } catch (err) {
         if (import.meta.env.DEV) console.error('Favorite sync error:', err);
         setFavorites(prev =>
-          isCurrentlyFavorite ? [...prev, id] : prev.filter(f => f !== id)
+          isCurrentlyFavorite ? [...prev, restaurantId] : prev.filter(f => f !== restaurantId)
         );
       }
     }

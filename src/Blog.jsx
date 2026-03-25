@@ -8,7 +8,7 @@ import { translations } from './translations';
 export default function Blog({ lang, posts = [] }) {
     const containerRef = useRef(null);
     const [activeCategory, setActiveCategory] = useState('Tudo');
-    const t = translations[lang].blog;
+    const t = translations[lang]?.blog ?? translations.pt.blog;
     
     // Use dynamic posts if available, fallback to static data
     const allPosts = posts.length > 0 ? posts : BLOG_POSTS;
@@ -35,19 +35,23 @@ export default function Blog({ lang, posts = [] }) {
                 stagger: 0.15,
                 ease: "power4.out"
             });
-        }, containerRef);
+        }, containerRef.current);
         return () => ctx.revert();
     }, []);
 
     // Animate posts when filter changes
     useEffect(() => {
-        gsap.from(".post-card", {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power3.out"
-        });
+        if (!containerRef.current) return;
+        const ctx = gsap.context(() => {
+            gsap.from(".post-card", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out"
+            });
+        }, containerRef.current);
+        return () => ctx.revert();
     }, [activeCategory]);
 
     return (
@@ -83,7 +87,7 @@ export default function Blog({ lang, posts = [] }) {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-                    {filteredPosts.map((post, i) => (
+                    {filteredPosts.map((post) => (
                         <article key={post.id} className="group cursor-pointer post-card">
                             <Link to={post.slug ? `/blog/${post.slug}` : '#'} className="block">
                             <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden mb-10 border border-border-subtle shadow-lg group-hover:shadow-premium transition-all duration-700">

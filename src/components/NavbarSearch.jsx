@@ -8,7 +8,7 @@ const NavbarSearch = ({ lang }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const searchRef = useRef(null);
-  const t = translations[lang];
+  const t = translations[lang] ?? translations.pt;
   const navigate = useNavigate();
 
   const handleSearch = (e) => {

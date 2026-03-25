@@ -5,7 +5,7 @@ import { translations } from './translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useNavigate } from 'react-router-dom';
-import { CATEGORIES, checkIsOpen, FEATURED_DISHES } from './data';
+import { CATEGORIES, FEATURED_DISHES } from './data';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -47,8 +47,6 @@ const EmptyFavorites = ({ lang }) => {
 
 export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
-    const [isHovered, setIsHovered] = useState(false);
-    const t = translations[lang].home;
 
     const previewCategory = useMemo(() => {
         return restaurant.menuCategories.length > 1
@@ -61,9 +59,6 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
         e.stopPropagation();
         toggleFavorite(restaurant.id);
     }, [restaurant.id, toggleFavorite]);
-
-    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
     // Imagem do avatar do chef (placeholder/fictício) e detalhes
     const chefName = restaurant.chefName || "MenusMoz";
     const chefImage = restaurant.chefImage || "/favicon.svg"; 
@@ -75,8 +70,6 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
             to={`/restaurante/${restaurant.slug}`}
             ref={cardRef}
             className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle flex flex-col block h-full text-center"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
         >
             <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
                 <img
@@ -140,14 +133,7 @@ export const ChefSuggestionCard = memo(({ restaurant, isFavorite, toggleFavorite
 
 export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }) => {
     const cardRef = useRef(null);
-    const [isHovered, setIsHovered] = useState(false);
     const t = translations[lang].home;
-
-    const previewCategory = useMemo(() => {
-        return restaurant.menuCategories.length > 1
-            ? restaurant.menuCategories[1]
-            : restaurant.menuCategories[0];
-    }, [restaurant.menuCategories]);
 
     const handleToggleFavorite = useCallback((e) => {
         e.preventDefault();
@@ -155,16 +141,11 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         toggleFavorite(restaurant.id);
     }, [restaurant.id, toggleFavorite]);
 
-    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
-
     return (
         <Link
             to={`/restaurante/${restaurant.slug}`}
             ref={cardRef}
             className="group relative bg-surface rounded-custom-lg overflow-hidden card-hover border border-border-subtle flex flex-col block h-full"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
         >
             <div className="relative h-48 sm:h-56 overflow-hidden shrink-0">
                 <img
@@ -376,11 +357,12 @@ const HomeSearch = ({ lang, restaurants = [] }) => {
     );
 };
 
-export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [], heroSlides = [], blogPosts = [] }) {
-    const t = translations[lang];
+export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [], heroSlides = [] }) {
+    const t = translations[lang] ?? translations.pt;
     const th = t.home;
     const [activeCategory, setActiveCategory] = useState("Tudo");
     const [currentSlide, setCurrentSlide] = useState(0);
+    const rootRef = useRef(null);
     const gridRef = useRef(null);
     const recommendedGridRef = useRef(null);
     const dishGridRef = useRef(null);
@@ -388,7 +370,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
     // Usar os slides dinâmicos ou fallback
     const slides = heroSlides.length > 0 ? heroSlides : FEATURED_DISHES;
-    const posts = blogPosts.length > 0 ? blogPosts : [];
 
     const scrollCarousel = (direction, ref) => {
         if (ref.current) {
@@ -399,33 +380,27 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
 
     useEffect(() => {
-        if (slideshowRef.current) {
+        if (!slideshowRef.current) return;
+        if (!rootRef.current) return;
+        const triggerEl = slideshowRef.current;
+        const ctx = gsap.context(() => {
             // Efeito de parallax no scroll (puxando ligeiramente na direção oposta ao dar o scroll real)
             gsap.to(".hero-parallax-bg", {
                 y: "15%",
                 ease: "none",
                 scrollTrigger: {
-                    trigger: slideshowRef.current,
+                    trigger: triggerEl,
                     start: "top top",
                     end: "bottom top",
                     scrub: true
                 }
             });
-        }
+        }, rootRef.current);
+        return () => ctx.revert();
     }, []);
 
     const filteredRestaurants = (activeCategory === "Tudo" ? restaurants : restaurants.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === "Moçambicana" && r.cuisine.includes("Matapa"))))
         .filter(r => !showOnlyFavorites || favorites.includes(r.id));
-
-    const topDishes = filteredRestaurants.map(rest => {
-        const dish = rest.menuCategories[0]?.items?.[0] || {};
-        return {
-            ...rest,
-            dishName: dish.name || 'Prato Especial',
-            dishPrice: dish.price || 'Sob Consulta',
-            dishDesc: dish.desc || 'Receita exclusiva do chef, preparada com ingredientes frescos da mais alta qualidade.'
-        };
-    });
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -435,59 +410,66 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
     }, [slides.length]);
 
     useEffect(() => {
-        if (slideshowRef.current) {
-            gsap.fromTo(".slide-content",
-                { opacity: 0, x: 20 },
-                { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
-            );
-            gsap.fromTo(".slide-image",
-                { opacity: 0, scale: 1.05, filter: "brightness(0.8)" },
-                { opacity: 1, scale: 1, filter: "brightness(1)", duration: 2, ease: "power2.out" }
-            );
-        }
+        const ctx = gsap.context(() => {
+            if (slideshowRef.current) {
+                gsap.fromTo(".slide-content",
+                    { opacity: 0, x: 20 },
+                    { opacity: 1, x: 0, duration: 0.8, ease: "power2.out" }
+                );
+                gsap.fromTo(".slide-image",
+                    { opacity: 0, scale: 1.05, filter: "brightness(0.8)" },
+                    { opacity: 1, scale: 1, filter: "brightness(1)", duration: 2, ease: "power2.out" }
+                );
+            }
+        }, rootRef.current);
+        return () => ctx.revert();
     }, [currentSlide]);
 
     useEffect(() => {
-        if (filteredRestaurants.length > 0) {
-            gsap.to(".restaurant-card", {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: gridRef.current,
-                    start: "top 85%",
-                }
-            });
-            
-            gsap.to(".recommended-card", {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: recommendedGridRef.current,
-                    start: "top 85%",
-                }
-            });
-            gsap.to(".dish-card-anim", {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: dishGridRef.current,
-                    start: "top 85%",
-                }
-            });
-        }
+        if (!rootRef.current) return;
+        const ctx = gsap.context(() => {
+            if (filteredRestaurants.length > 0) {
+                gsap.to(".restaurant-card", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: gridRef.current,
+                        start: "top 85%",
+                    }
+                });
+                
+                gsap.to(".recommended-card", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: recommendedGridRef.current,
+                        start: "top 85%",
+                    }
+                });
+                gsap.to(".dish-card-anim", {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: dishGridRef.current,
+                        start: "top 85%",
+                    }
+                });
+            }
+        }, rootRef.current);
+        return () => ctx.revert();
     }, [filteredRestaurants, activeCategory]);
 
     return (
-        <div className="relative overflow-hidden selection:bg-primary/20">
+        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
             {/* Favorites Mini Header — only when showOnlyFavorites */}
 
             {showOnlyFavorites && (

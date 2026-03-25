@@ -44,8 +44,8 @@ const OrnamentalDivider = () => (
 );
 
 export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
-    const t = translations[lang].detail;
-    const th = translations[lang].home;
+    const t = translations[lang]?.detail ?? translations.pt.detail;
+    const th = translations[lang]?.home ?? translations.pt.home;
     const { slug } = useParams();
     const [restaurant, setRestaurant] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +66,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (!containerRef.current) return;
         const ctx = gsap.context(() => {
             gsap.from(".reveal", {
                 y: 40,
@@ -74,7 +75,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                 stagger: 0.1,
                 ease: "power3.out"
             });
-        }, containerRef);
+        }, containerRef.current);
         return () => ctx.revert();
     }, [slug]);
 
@@ -393,7 +394,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                                 className={i <= Math.round(restaurant.reviews[0].rating ?? 5) ? 'text-accent' : 'text-text-dim/20'}
                                             />
                                         ))}
-                                        <span className="ml-2 font-black text-lg text-text-main">{restaurant.reviews[0].rating.toFixed(1)}</span>
+                                        <span className="ml-2 font-black text-lg text-text-main">{(restaurant.reviews[0].rating ?? 5).toFixed(1)}</span>
                                     </div>
                                     <p
                                         className="italic text-lg mb-6 text-text-main relative z-10 leading-relaxed"

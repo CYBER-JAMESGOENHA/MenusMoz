@@ -9,6 +9,7 @@ export default function About({ lang = 'pt' }) {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (!containerRef.current) return;
         const ctx = gsap.context(() => {
             gsap.from(".reveal", {
                 y: 60,
@@ -17,7 +18,7 @@ export default function About({ lang = 'pt' }) {
                 stagger: 0.2,
                 ease: "power4.out"
             });
-        }, containerRef);
+        }, containerRef.current);
         return () => ctx.revert();
     }, []);
 

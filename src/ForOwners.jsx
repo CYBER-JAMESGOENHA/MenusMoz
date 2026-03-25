@@ -11,7 +11,8 @@ export default function ForOwners({ lang }) {
     const [isLoading, setIsLoading] = useState(false);
     const [submitState, setSubmitState] = useState('idle'); // 'idle' | 'success' | 'error'
     const [errorMsg, setErrorMsg] = useState('');
-    const t = translations[lang].forOwners;
+    const t =
+        translations[lang]?.forOwners ?? translations.pt.forOwners;
 
     const BENEFITS = [
         { 
@@ -36,11 +37,12 @@ export default function ForOwners({ lang }) {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        if (!containerRef.current) return;
         const ctx = gsap.context(() => {
             gsap.from('.reveal', {
                 y: 60, opacity: 0, duration: 1.2, stagger: 0.2, ease: 'power4.out'
             });
-        }, containerRef);
+        }, containerRef.current);
         return () => ctx.revert();
     }, []);
 
@@ -56,7 +58,7 @@ export default function ForOwners({ lang }) {
         }
         if (!formData.whatsapp.trim()) {
             newErrors.whatsapp = lang === 'pt' ? 'WhatsApp obrigatório.' : 'WhatsApp required.';
-        } else if (!/^[\+\d\s\-\(\)]{8,20}$/.test(formData.whatsapp)) {
+        } else if (!/^[+\d\s\-()]{8,20}$/.test(formData.whatsapp)) {
             newErrors.whatsapp = lang === 'pt' ? 'Número inválido. Ex: +258 84 000 0000' : 'Invalid number. Ex: +258 84 000 0000';
         }
         return newErrors;
