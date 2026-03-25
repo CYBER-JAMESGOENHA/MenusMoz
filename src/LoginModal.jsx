@@ -14,6 +14,28 @@ export default function LoginModal({ isOpen, onClose, lang }) {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
+    // ── Brute Force Protection (fix S3) ──────────────────────────────
+    const [failedAttempts, setFailedAttempts] = useState(0);
+    const [lockoutUntil, setLockoutUntil] = useState(null);
+    const [lockoutCountdown, setLockoutCountdown] = useState(0);
+    const MAX_ATTEMPTS = 5;
+    const LOCKOUT_SECONDS = 30;
+
+    useEffect(() => {
+        if (!lockoutUntil) return;
+        const interval = setInterval(() => {
+            const remaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
+            if (remaining <= 0) {
+                setLockoutUntil(null);
+                setLockoutCountdown(0);
+                setFailedAttempts(0);
+            } else {
+                setLockoutCountdown(remaining);
+            }
+        }, 500);
+        return () => clearInterval(interval);
+    }, [lockoutUntil]);
+
     const t = lang === 'pt' ? {
         title_login: 'Bem-vindo de volta',
         title_register: 'Criar Identidade',
@@ -104,6 +126,16 @@ export default function LoginModal({ isOpen, onClose, lang }) {
         setError('');
         setSuccess('');
 
+        // Brute force check
+        if (lockoutUntil && Date.now() < lockoutUntil) {
+            setError(
+                lang === 'pt'
+                    ? `Demasiadas tentativas. Aguarda ${lockoutCountdown}s.`
+                    : `Too many attempts. Wait ${lockoutCountdown}s.`
+            );
+            return;
+        }
+
         if (!isSupabaseConfigured) {
             setError(t.supabase_missing);
             return;
@@ -122,6 +154,7 @@ export default function LoginModal({ isOpen, onClose, lang }) {
             if (mode === 'login') {
                 const { error: err } = await supabase.auth.signInWithPassword({ email, password });
                 if (err) throw err;
+                setFailedAttempts(0);
                 setSuccess(t.success_login);
                 setTimeout(() => onClose(), 1200);
             } else {
@@ -130,7 +163,22 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                 setSuccess(t.success_register);
             }
         } catch (err) {
-            setError(getErrorMessage(err));
+            const newAttempts = failedAttempts + 1;
+            setFailedAttempts(newAttempts);
+            if (newAttempts >= MAX_ATTEMPTS) {
+                const until = Date.now() + LOCKOUT_SECONDS * 1000;
+                setLockoutUntil(until);
+                setLockoutCountdown(LOCKOUT_SECONDS);
+                setError(
+                    lang === 'pt'
+                        ? `Conta temporariamente bloqueada. Aguarda ${LOCKOUT_SECONDS}s.`
+                        : `Account temporarily locked. Wait ${LOCKOUT_SECONDS}s.`
+                );
+            } else {
+                setError(
+                    `${getErrorMessage(err)} (${MAX_ATTEMPTS - newAttempts} ${lang === 'pt' ? 'tentativas restantes' : 'attempts left'})`
+                );
+            }
         } finally {
             setIsLoading(false);
         }
@@ -257,11 +305,15 @@ export default function LoginModal({ isOpen, onClose, lang }) {
                     <div className="login-reveal pt-1">
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || (lockoutUntil && Date.now() < lockoutUntil)}
                             className="w-full bg-text-main text-surface h-16 rounded-2xl font-black text-base hover:bg-primary hover:text-white transition-all shadow-premium hover:shadow-primary-glow disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                            aria-busy={isLoading}
                         >
-                            {isLoading ? <Loader2 size={22} className="animate-spin" /> : null}
-                            {mode === 'login' ? t.login : t.register}
+                            {isLoading ? <Loader2 size={22} className="animate-spin" aria-hidden="true" /> : null}
+                            {lockoutUntil && Date.now() < lockoutUntil
+                                ? `${lockoutCountdown}s`
+                                : mode === 'login' ? t.login : t.register
+                            }
                         </button>
                     </div>
                 </form>

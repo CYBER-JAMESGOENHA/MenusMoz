@@ -78,7 +78,7 @@ export default function ForOwners() {
             setSubmitState('success');
             setFormData({ business_name: '', email: '', whatsapp: '' });
         } catch (err) {
-            console.error('Erro ao submeter candidatura:', err);
+            if (import.meta.env.DEV) console.error('Erro ao submeter candidatura:', err);
             setErrorMsg('Erro ao enviar. Tenta novamente ou contacta-nos via WhatsApp.');
             setSubmitState('error');
         } finally {

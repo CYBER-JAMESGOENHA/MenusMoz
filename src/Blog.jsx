@@ -2,9 +2,12 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight, Calendar, User } from 'lucide-react';
 import { BLOG_POSTS } from './data';
+import { Link } from 'react-router-dom';
 
-export default function Blog() {
+export default function Blog({ lang, posts = [] }) {
     const containerRef = useRef(null);
+    // Use dynamic posts if available, fallback to static data
+    const displayPosts = posts.length > 0 ? posts : BLOG_POSTS;
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -45,8 +48,9 @@ export default function Blog() {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 reveal">
-                    {BLOG_POSTS.map((post, i) => (
+                    {displayPosts.map((post, i) => (
                         <article key={post.id} className="group cursor-pointer">
+                            <Link to={post.slug ? `/blog/${post.slug}` : '#'} className="block">
                             <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden mb-10 border border-border-subtle shadow-lg group-hover:shadow-premium transition-all duration-700">
                                 <img 
                                     src={post.image} 
@@ -68,8 +72,8 @@ export default function Blog() {
                             
                             <div className="px-4">
                                 <div className="flex items-center gap-6 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/50">
-                                    <div className="flex items-center gap-2"><Calendar size={14} className="text-primary" /> {post.date}</div>
-                                    <div className="flex items-center gap-2 bg-primary/5 px-2 py-1 rounded-md text-primary"><User size={14} /> {post.author}</div>
+                                    <div className="flex items-center gap-2"><Calendar size={14} className="text-primary" aria-hidden="true" /> {post.date}</div>
+                                    <div className="flex items-center gap-2 bg-primary/5 px-2 py-1 rounded-md text-primary"><User size={14} aria-hidden="true" /> {post.author}</div>
                                 </div>
                                 <h3 className="text-4xl mb-6 text-text-main font-display leading-[1.1] group-hover:text-primary transition-colors tracking-tight">
                                     {post.title}
@@ -78,6 +82,7 @@ export default function Blog() {
                                     "{post.excerpt}"
                                 </p>
                             </div>
+                            </Link>
                         </article>
                     ))}
                 </div>
