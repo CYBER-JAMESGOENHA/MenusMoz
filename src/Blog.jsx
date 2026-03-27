@@ -55,17 +55,17 @@ export default function Blog({ lang, posts = [] }) {
     }, [activeCategory]);
 
     return (
-        <div ref={containerRef} className="pt-48 pb-40 px-4">
+        <div ref={containerRef} className="pt-32 pb-24 px-4 md:px-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-32 reveal">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20 reveal">
                     <div className="max-w-3xl">
                          <span className="bg-primary/10 text-primary px-8 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.4em] mb-10 inline-block">
                             {t.tag}
                         </span>
-                        <h1 className="text-6xl md:text-9xl mb-8 tracking-tighter text-text-main font-display italic leading-[0.85]">
+                        <h1 className="text-5xl md:text-7xl mb-6 tracking-tighter text-text-main font-display italic leading-tight">
                             {t.title} <span className="text-primary italic">Moz</span>
                         </h1>
-                        <p className="text-xl md:text-3xl text-text-dim font-medium leading-relaxed italic">
+                        <p className="text-lg md:text-xl text-text-dim font-medium leading-relaxed italic">
                             {t.subtitle}
                         </p>
                     </div>
@@ -86,11 +86,11 @@ export default function Blog({ lang, posts = [] }) {
                     </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
                     {filteredPosts.map((post) => (
                         <article key={post.id} className="group cursor-pointer post-card">
-                            <Link to={post.slug ? `/blog/${post.slug}` : '#'} className="block">
-                            <div className="relative aspect-[4/5] rounded-[3.5rem] overflow-hidden mb-10 border border-border-subtle shadow-lg group-hover:shadow-premium transition-all duration-700">
+                            <Link to={post.slug ? `/blog/${post.slug}` : '#'} className="block h-full flex flex-col">
+                            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden mb-6 border border-border-subtle shadow-lg group-hover:shadow-premium transition-all duration-700">
                                 <img 
                                     src={post.image} 
                                     alt={post.title} 
@@ -109,12 +109,12 @@ export default function Blog({ lang, posts = [] }) {
                                 </div>
                             </div>
                             
-                            <div className="px-4">
-                                <div className="flex items-center gap-6 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/50">
+                            <div className="px-2 flex flex-col flex-grow">
+                                <div className="flex items-center gap-4 mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/50">
                                     <div className="flex items-center gap-2"><Calendar size={14} className="text-primary" aria-hidden="true" /> {post.date}</div>
                                     <div className="flex items-center gap-2 bg-primary/5 px-2 py-1 rounded-md text-primary"><User size={14} aria-hidden="true" /> {post.author}</div>
                                 </div>
-                                <h3 className="text-4xl mb-6 text-text-main font-display leading-[1.1] group-hover:text-primary transition-colors tracking-tight">
+                                <h3 className="text-2xl md:text-3xl mb-4 text-text-main font-display leading-tight group-hover:text-primary transition-colors tracking-tight">
                                     {post.title}
                                 </h3>
                                 <p className="text-text-dim text-lg mb-8 line-clamp-2 leading-relaxed font-medium italic">

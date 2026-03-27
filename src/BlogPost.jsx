@@ -39,16 +39,16 @@ export default function BlogPost({ lang, posts = [] }) {
     }
 
     return (
-        <div ref={containerRef} className="pt-40 pb-32 px-4">
+        <div ref={containerRef} className="pt-28 pb-24 px-4 md:px-8">
             <div className="max-w-3xl mx-auto">
                 <Link
                     to="/blog"
-                    className="inline-flex items-center gap-2 text-text-dim hover:text-primary transition-colors font-black text-xs uppercase tracking-widest mb-12 blog-post-reveal"
+                    className="inline-flex items-center gap-2 text-text-dim hover:text-primary transition-colors font-black text-xs uppercase tracking-widest mb-8 blog-post-reveal"
                 >
                     <ArrowLeft size={16} aria-hidden="true" /> Voltar ao Blog
                 </Link>
 
-                <div className="relative aspect-[16/9] rounded-[2.5rem] overflow-hidden mb-12 shadow-premium border border-border-subtle blog-post-reveal">
+                <div className="relative aspect-[16/9] rounded-[1.5rem] overflow-hidden mb-8 shadow-premium border border-border-subtle blog-post-reveal">
                     <img
                         src={post.image}
                         alt={post.title}
@@ -57,16 +57,16 @@ export default function BlogPost({ lang, posts = [] }) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" aria-hidden="true" />
                 </div>
 
-                <div className="flex items-center gap-6 mb-8 text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/50 blog-post-reveal">
+                <div className="flex items-center gap-6 mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/50 blog-post-reveal">
                     <div className="flex items-center gap-2"><Calendar size={14} className="text-primary" aria-hidden="true" /> {post.date}</div>
                     <div className="flex items-center gap-2 bg-primary/5 px-3 py-1.5 rounded-lg text-primary"><User size={14} aria-hidden="true" /> {post.author}</div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl font-display font-black tracking-tighter text-text-main mb-8 leading-[1.0] blog-post-reveal">
+                <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight text-text-main mb-6 leading-tight blog-post-reveal">
                     {post.title}
                 </h1>
 
-                <p className="text-xl text-text-dim font-medium leading-relaxed italic blog-post-reveal">
+                <p className="text-lg md:text-xl text-text-dim font-medium leading-relaxed italic blog-post-reveal">
                     "{post.excerpt}"
                 </p>
 
