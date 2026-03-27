@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter } from 'lucide-react';
-import { translations } from '../translations';
-import NewsletterForm from './NewsletterForm';
+import { translations } from '../../translations';
+import NewsletterForm from '../ui/NewsletterForm';
 
 const Footer = ({ lang }) => {
   const safe = translations[lang] ?? translations.pt;

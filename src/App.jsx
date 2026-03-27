@@ -2,23 +2,23 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { restaurantService } from './services/restaurantService';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
-import CustomCursor from './CustomCursor';
-import LoginModal from './LoginModal';
-import UserPanel from './UserPanel';
-import MobileBottomNav from './MobileBottomNav';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import GlobalErrorBoundary from './components/ErrorBoundary';
+import CustomCursor from './components/ui/CustomCursor';
+import LoginModal from './components/ui/LoginModal';
+import UserPanel from './components/layout/UserPanel';
+import MobileBottomNav from './components/layout/MobileBottomNav';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import GlobalErrorBoundary from './components/ui/ErrorBoundary';
 
-const Home = lazy(() => import('./Home'));
-const RestaurantDetail = lazy(() => import('./RestaurantDetail'));
-const About = lazy(() => import('./About'));
-const Blog = lazy(() => import('./Blog'));
-const BlogPost = lazy(() => import('./BlogPost'));
-const ForOwners = lazy(() => import('./ForOwners'));
-const RestaurantListing = lazy(() => import('./RestaurantListing'));
-const Privacy = lazy(() => import('./Privacy'));
-const Terms = lazy(() => import('./Terms'));
+const Home = lazy(() => import('./pages/Home'));
+const RestaurantDetail = lazy(() => import('./pages/RestaurantDetail'));
+const About = lazy(() => import('./pages/About'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const ForOwners = lazy(() => import('./pages/ForOwners'));
+const RestaurantListing = lazy(() => import('./pages/RestaurantListing'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
 
 export const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen bg-bg">

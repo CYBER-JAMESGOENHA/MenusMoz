@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
 const NewsletterForm = ({ lang }) => {
   const [email, setEmail] = useState('');

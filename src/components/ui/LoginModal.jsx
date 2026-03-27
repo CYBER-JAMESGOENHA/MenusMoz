@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { X, Mail, Lock, LogIn, Github, Eye, EyeOff, Loader2, CheckCircle, AlertCircle, UserPlus } from 'lucide-react';
 import { gsap } from 'gsap';
-import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
 export default function LoginModal({ isOpen, onClose, lang }) {
     const modalRef = useRef(null);

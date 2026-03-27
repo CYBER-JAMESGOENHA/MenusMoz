@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Users, Target, Rocket } from 'lucide-react';
-import { translations } from './translations';
+import { translations } from '../translations';
 
 export default function About({ lang = 'pt' }) {
     const containerRef = useRef(null);

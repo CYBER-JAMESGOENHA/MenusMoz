@@ -1,0 +1,51 @@
+﻿
+> menusmoz@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 51 modules transformed.
+node.exe : [31mΓ£ù[39m 
+Build failed in 3.19s
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([31mΓ£  
+  ù[39m Build failed in 3   
+ .19s:String) [], RemoteE    
+xception
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[31merror during build:
+[31mCould not resolve 
+"../translations" from "src/c
+omponents/layout/Footer.jsx"
+[31m
+file: [36mC:/Users/Dilma Goe
+nha/MenusMoz/src/components/l
+ayout/Footer.jsx[31m
+    at getRollupError (file:/
+//C:/Users/Dilma%20Goenha/Men
+usMoz/node_modules/rollup/dis
+t/es/shared/parseAst.js:402:4
+1)
+    at error (file:///C:/User
+s/Dilma%20Goenha/MenusMoz/nod
+e_modules/rollup/dist/es/shar
+ed/parseAst.js:398:42)
+    at ModuleLoader.handleInv
+alidResolvedId (file:///C:/Us
+ers/Dilma%20Goenha/MenusMoz/n
+ode_modules/rollup/dist/es/sh
+ared/node-entry.js:21710:24)
+    at file:///C:/Users/Dilma
+%20Goenha/MenusMoz/node_modul
+es/rollup/dist/es/shared/node
+-entry.js:21670:26[39m

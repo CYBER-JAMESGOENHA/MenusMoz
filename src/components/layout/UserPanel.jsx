@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { X, Heart, Globe, Moon, Sun, LogIn, LogOut, User, ChevronRight, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
@@ -45,10 +45,10 @@ export default function UserPanel({ isOpen, onClose, lang, setLang, darkMode, to
         view_all_favs: 'View all',
     };
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         gsap.to(panelRef.current, { x: '100%', duration: 0.35, ease: 'power3.in' });
         gsap.to(overlayRef.current, { opacity: 0, duration: 0.3, onComplete: onClose });
-    };
+    }, [onClose]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -67,7 +67,7 @@ export default function UserPanel({ isOpen, onClose, lang, setLang, darkMode, to
             window.removeEventListener('keydown', handleKeyDown);
         }
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen]);
+    }, [isOpen, handleClose]);
 
     if (!isOpen) return null;
 

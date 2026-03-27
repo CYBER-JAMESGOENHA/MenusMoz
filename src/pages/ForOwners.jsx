@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { TrendingUp, Globe, ShieldCheck, Rocket, CheckCircle, AlertCircle, Loader2, Mail, Phone, Building2 } from 'lucide-react';
-import { supabase, isSupabaseConfigured } from './lib/supabase';
-import { translations } from './translations';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { translations } from '../translations';
 
 export default function ForOwners({ lang }) {
     const containerRef = useRef(null);

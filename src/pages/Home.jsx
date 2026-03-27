@@ -1,11 +1,11 @@
 // Build trigger: 2024-03-24 15:33
-import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { MapPin, Utensils, Heart, Tag, Star, Search, ChevronRight, ChevronLeft, Mouse, ArrowUpRight } from 'lucide-react';
-import { translations } from './translations';
+import { translations } from '../translations';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link, useNavigate } from 'react-router-dom';
-import { CATEGORIES, FEATURED_DISHES } from './data';
+import { CATEGORIES, FEATURED_DISHES } from '../data';
 
 gsap.registerPlugin(ScrollTrigger);
 

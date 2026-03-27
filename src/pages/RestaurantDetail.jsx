@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, MapPin, Clock, Phone, Share2, Star, MessageCircle, ChevronRight, ChevronDown } from 'lucide-react';
 import { gsap } from 'gsap';
-import { checkIsOpen } from './data';
-import { restaurantService } from './services/restaurantService';
-import { translations } from './translations';
+import { checkIsOpen } from '../data';
+import { restaurantService } from '../services/restaurantService';
+import { translations } from '../translations';
 import { Heart } from 'lucide-react';
 
 const StarRating = ({ rating, reviewCount }) => {

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight, Calendar, User } from 'lucide-react';
-import { BLOG_POSTS } from './data';
+import { BLOG_POSTS } from '../data';
 import { Link } from 'react-router-dom';
-import { translations } from './translations';
+import { translations } from '../translations';
 
 export default function Blog({ lang, posts = [] }) {
     const containerRef = useRef(null);

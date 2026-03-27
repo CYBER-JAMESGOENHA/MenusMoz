@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, X } from 'lucide-react';
-import { CATEGORIES } from './data';
+import { CATEGORIES } from '../data';
 import { RestaurantCard } from './Home';
 import { gsap } from 'gsap';
 
