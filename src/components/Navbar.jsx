@@ -40,9 +40,11 @@ const Navbar = ({ isScrolled, onPanelOpen, user, onLoginOpen }) => {
             <div className="hidden md:block">
               <button
                 onClick={onLoginOpen}
-                className="px-5 py-2 lg:px-6 lg:py-2.5 rounded-full text-xs lg:text-sm font-bold tracking-widest uppercase transition-all glass hover:bg-primary hover:text-white text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="login-moz-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label="Entrar ou criar conta"
               >
-                Entrar
+                <div className="login-moz-lens" aria-hidden="true">🇲🇿</div>
+                <span className="login-moz-label">Entrar</span>
               </button>
             </div>
           )}
