@@ -362,24 +362,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
                                 </div>
                             </div>
 
-                            {/* Featured Dish Spotlight */}
-                            <div className="bg-moz-green/5 border border-moz-green/10 p-8 rounded-[3rem] relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-moz-green/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-moz-green/20 transition-all" />
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 bg-moz-green/20 rounded-xl flex items-center justify-center text-moz-green">
-                                        <Star size={20} fill="currentColor" />
-                                    </div>
-                                    <span className="font-black text-xs uppercase tracking-[0.2em] text-moz-green">Sugestão do Chef</span>
-                                </div>
-                                <h4 className="text-2xl font-display italic text-text-main mb-3">O Nosso Famoso {currentCategory?.items?.[0]?.name || 'Prato'}</h4>
-                                <p className="text-text-dim text-sm leading-relaxed mb-6 italic">"{currentCategory?.items?.[0]?.desc || 'A nossa especialidade do dia.'}"</p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-2xl font-black text-moz-green">{currentCategory?.items?.[0]?.price || ''}</span>
-                                    <button className="bg-white text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-moz-green hover:text-white transition-all">
-                                        <ChevronRight size={20} />
-                                    </button>
-                                </div>
-                            </div>
 
                             {/* Review Box */}
                             {restaurant.reviews && restaurant.reviews.length > 0 && (
