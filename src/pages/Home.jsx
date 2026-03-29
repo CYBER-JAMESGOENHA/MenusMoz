@@ -68,7 +68,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                         {filteredRestaurants.length === 0
                             ? <EmptyFavorites lang={lang} />
                             : filteredRestaurants.map(rest => (
-                                <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 h-full min-h-[460px]">
+                                <div key={rest.id} className="restaurant-card opacity-0 translate-y-8 h-full min-h-[440px]">
                                     <RestaurantCard
                                         restaurant={rest}
                                         isFavorite={favorites.includes(rest.id)}

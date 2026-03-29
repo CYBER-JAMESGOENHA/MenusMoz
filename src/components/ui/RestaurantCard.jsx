@@ -17,7 +17,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         <Link
             to={`/restaurante/${restaurant.slug}`}
             ref={cardRef}
-            className="group relative bg-[#121212] rounded-2xl overflow-hidden card-hover border border-white/10 flex flex-col block h-[420px] sm:h-[460px] shadow-xl"
+            className="group relative bg-[#121212] rounded-2xl overflow-hidden card-hover border border-white/10 flex flex-col block h-[420px] sm:h-[440px] shadow-xl"
         >
             <div className="relative flex-1 overflow-hidden shrink-0">
                 <img
