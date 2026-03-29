@@ -32,42 +32,58 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 {/* Subtle overlay for contrast */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
-                {/* Top Left Badges */}
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
-                    {/* Featured Badge */}
-                    {(restaurant.is_featured || restaurant.isFeatured) && (
-                        <div className="bg-primary text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
-                            DESTAQUE
-                        </div>
-                    )}
-                    {/* New Badge */}
-                    {(restaurant.is_new || restaurant.isNew) && (
-                        <div className="bg-green-600 text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
-                            Novo
-                        </div>
-                    )}
+                {/* Top Left Badges and Dietary Info */}
+                <div className="absolute top-3 left-3 flex flex-col items-start gap-1.5 z-10">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                        {/* Featured Badge */}
+                        {(restaurant.is_featured || restaurant.isFeatured) && (
+                            <div className="bg-primary/90 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1">
+                                DESTAQUE
+                            </div>
+                        )}
+                        {/* New Badge */}
+                        {(restaurant.is_new || restaurant.isNew) && (
+                            <div className="bg-emerald-600/90 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-black uppercase tracking-widest shadow-sm flex items-center gap-1">
+                                Novo
+                            </div>
+                        )}
+                    </div>
+                    {/* Dietary Tags */}
+                    <div className="flex flex-wrap items-center gap-1.5">
+                        {(restaurant.is_halal || restaurant.isHalal || restaurant.name?.toLowerCase().includes('halal') || restaurant.category === 'Indiana' || restaurant.category === 'Médio Oriente') && (
+                            <div className="bg-white/95 dark:bg-black/80 backdrop-blur-md text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded text-[9px] font-extrabold tracking-wider uppercase shadow-sm flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_4px_#10b981]"></span> Halal
+                            </div>
+                        )}
+                        {(restaurant.is_vegetarian || restaurant.isVegetarian || restaurant.category === 'Saudável' || restaurant.category === 'Vegetariana') && (
+                            <div className="bg-white/95 dark:bg-black/80 backdrop-blur-md text-green-700 dark:text-green-400 border border-green-500/30 px-1.5 py-0.5 rounded text-[9px] font-extrabold tracking-wider uppercase shadow-sm flex items-center gap-1">
+                                🌱 Veggie
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Favorite Button */}
                 <button
                     onClick={handleToggleFavorite}
                     aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-transform hover:scale-110 shadow-sm z-10 text-text-main"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 dark:bg-black/60 dark:hover:bg-black/80 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm z-10 text-white border border-white/10"
                 >
-                    <Heart size={16} className={isFavorite ? "fill-primary text-primary" : "text-gray-700 dark:text-gray-300"} />
+                    <Heart size={16} className={isFavorite ? "fill-primary text-primary" : "text-white"} />
                 </button>
 
-                {/* ETA Pill (Floating Bottom Left on Image) */}
-                <div className="absolute bottom-3 left-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md text-text-main px-2.5 py-1 rounded-full text-[11px] font-bold shadow-lg border border-white/20 dark:border-white/10 flex items-center gap-1.5">
-                    <span className={`h-1.5 w-1.5 rounded-full ${(restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-500' : 'bg-green-500'}`}></span>
-                    <Clock size={12} className="text-gray-600 dark:text-gray-400" />
-                    <span>{restaurant.eta_min || restaurant.eta || "25-40 min"}</span>
+                {/* Conversational & Digital Info Pills */}
+                <div className="absolute bottom-3 left-3 flex flex-col gap-1.5 z-10">
+                    <div className="bg-black/70 backdrop-blur-md text-white/90 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium shadow-lg border border-white/10 flex items-center gap-1.5 group-hover:bg-primary/90 group-hover:text-white transition-all duration-300">
+                        <span className={`h-1.5 w-1.5 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)] ${(restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-400' : 'bg-green-400'} animate-pulse`}></span>
+                        <span className="tracking-tight">{(restaurant.is_busy || restaurant.isBusy) ? 'Alta procura:' : 'Chega em'} <strong className="font-bold">{restaurant.eta_min || restaurant.eta || "25-40"} min</strong></span>
+                    </div>
                 </div>
 
-                {/* Distance Pill (Floating Bottom Right on Image) */}
-                <div className="absolute bottom-3 right-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md text-text-main px-2.5 py-1 rounded-full text-[11px] font-bold shadow-lg border border-white/20 dark:border-white/10 flex items-center gap-1.5">
-                    <MapPin size={12} className="text-gray-600 dark:text-gray-400" />
-                    <span>{restaurant.distance_km || restaurant.distance || "2.8"} km</span>
+                {/* Distance Pill */}
+                <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white/90 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium shadow-lg border border-white/10 flex items-center gap-1.5 hover:bg-black/90 transition-colors z-10">
+                    <MapPin size={10} className="text-white/70" />
+                    <span className="tracking-tight">A <strong className="font-bold">{restaurant.distance_km || restaurant.distance || "2.8"}km</strong> de si</span>
                 </div>
             </div>
 
@@ -129,27 +145,26 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                     )}
                 </div>
 
-                {/* Card footer */}
-                <div className="mt-auto flex items-center justify-between border-t border-border-subtle pt-3">
-                    <div className="flex items-center gap-3">
+                {/* Card footer - "Digital" and Communicative */}
+                <div className="mt-auto flex items-center justify-between border-t border-border-subtle/60 pt-3">
+                    <div className="flex items-center gap-2">
                         <div className="flex flex-col">
-                            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-text-dim">Entrega</span>
-                            <span className="text-[11px] sm:text-xs font-semibold text-text-main">{restaurant.delivery_fee_mt !== undefined ? `${restaurant.delivery_fee_mt} MT` : '150 MT'}</span>
-                        </div>
-                        <div className="w-px h-6 bg-border-subtle"></div>
-                        <div className="flex flex-col">
-                            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-text-dim">Pedido Mín.</span>
-                            <span className="text-[11px] sm:text-xs font-semibold text-text-main">{restaurant.avg_order_mt !== undefined ? `${restaurant.avg_order_mt} MT` : '620 MT'}</span>
+                            <span className="text-[9px] sm:text-[10px] uppercase tracking-widest font-extrabold text-text-dim/80">
+                                Consumo Médio
+                            </span>
+                            <span className="text-[12px] sm:text-[13px] font-black text-text-main font-mono tracking-tighter mt-0.5">
+                                {restaurant.avg_consumption_mt || restaurant.avg_order_mt || '850'} <span className="text-[10px] text-text-dim font-sans font-bold uppercase">MT / Pessoa</span>
+                            </span>
                         </div>
                     </div>
                     
-                    <div className="flex items-center gap-1.5 px-2 py-1 bg-gray-50 dark:bg-white/5 rounded-lg border border-border-subtle shadow-sm shrink-0">
+                    <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border shadow-sm shrink-0 backdrop-blur-sm transition-colors ${restaurant.isOpen === false ? 'bg-gray-50/50 border-gray-200 dark:bg-gray-800/30 dark:border-gray-700/50' : (restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-50/50 border-amber-200/60 dark:bg-amber-900/10 dark:border-amber-700/30' : 'bg-green-50/50 border-green-200/60 dark:bg-green-900/10 dark:border-green-700/30'}`}>
                         <span className="relative flex h-2 w-2">
-                            {restaurant.isOpen !== false && !(restaurant.is_busy || restaurant.isBusy) && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>}
-                            <span className={`relative inline-flex rounded-full h-2 w-2 ${restaurant.isOpen === false ? 'bg-gray-400' : (restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-500' : 'bg-green-500'}`}></span>
+                            {restaurant.isOpen !== false && <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${(restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-400' : 'bg-green-400'}`}></span>}
+                            <span className={`relative inline-flex rounded-full h-2 w-2 ${restaurant.isOpen === false ? 'bg-gray-400' : (restaurant.is_busy || restaurant.isBusy) ? 'bg-amber-500' : 'bg-green-500 z-10'}`}></span>
                         </span>
-                        <span className={`font-bold text-[9px] sm:text-[10px] uppercase tracking-wide ${restaurant.isOpen === false ? 'text-gray-500' : (restaurant.is_busy || restaurant.isBusy) ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'}`}>
-                            {restaurant.isOpen === false ? t.closed : (restaurant.is_busy || restaurant.isBusy) ? 'Movimentado' : 'Aberto'}
+                        <span className={`font-bold text-[9px] sm:text-[10px] uppercase tracking-wide ${restaurant.isOpen === false ? 'text-gray-500' : (restaurant.is_busy || restaurant.isBusy) ? 'text-amber-700 dark:text-amber-400' : 'text-green-700 dark:text-green-400'}`}>
+                            {restaurant.isOpen === false ? 'Encerrado' : (restaurant.is_busy || restaurant.isBusy) ? 'Muitos pedidos' : 'Pronto a Servir'}
                         </span>
                     </div>
                 </div>
