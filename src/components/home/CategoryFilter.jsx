@@ -1,5 +1,6 @@
 import React from 'react';
-import { CATEGORIES } from '../../data';
+
+const CATEGORIES = ['Todos', 'Mariscos', 'Grelhados', 'Pastelaria', 'Street Food', 'Pizzas'];
 
 export const CategoryFilter = ({ activeCategory, setActiveCategory }) => {
     return (
