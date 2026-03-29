@@ -46,7 +46,7 @@ export const HorizontalCarousel = ({
 
     return (
         <div>
-            <div className="max-w-7xl mx-auto px-4 mt-6 mb-2">
+            <div className="max-w-7xl mx-auto px-4 mt-2 mb-1">
                 <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-text-main italic">{title}</h2>
                 {subtitle && (
                     <p className="text-[10px] font-bold text-text-dim uppercase tracking-widest mt-1 border-l-2 border-primary pl-2 ml-1">{subtitle}</p>

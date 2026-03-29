@@ -82,7 +82,7 @@ export const CategoryFilter = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-20 w-full mt-12 relative group/cat">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-8 w-full mt-6 relative group/cat">
             <div className="flex items-end justify-between mb-8 pl-2">
                  <div>
                     <h2 className="font-display font-black text-3xl md:text-4xl text-text-main italic tracking-tight relative inline-block">
