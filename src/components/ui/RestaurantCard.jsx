@@ -17,7 +17,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         <Link
             to={`/restaurante/${restaurant.slug}`}
             ref={cardRef}
-            className="group relative bg-[#121212] rounded-2xl overflow-hidden card-hover border border-white/10 flex flex-col block h-[420px] sm:h-[440px] shadow-xl"
+            className="group relative bg-[#121212] rounded-2xl overflow-hidden card-hover border border-white/10 flex flex-col block h-[380px] shadow-xl"
         >
             <div className="relative flex-1 overflow-hidden shrink-0">
                 <img
@@ -51,22 +51,22 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
 
             {/* Bottom Section */}
             <div className="bg-[#121212] p-4 sm:p-5 relative flex flex-col shrink-0 min-h-[140px] z-20 border-t border-white/5">
-                {/* Floating Logo */}
-                <div className="absolute -top-10 left-4 sm:-top-12 sm:left-5 w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-[#121212] overflow-hidden bg-white shadow-lg pointer-events-none">
+                {/* Floating Logo - Shrunk by more than half */}
+                <div className="absolute -top-6 left-4 sm:-top-7 sm:left-5 w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#121212] overflow-hidden bg-white shadow-md pointer-events-none">
                     <img src={restaurant.image} alt={`${restaurant.name} Logo`} loading="lazy" className="w-full h-full object-cover" />
                 </div>
 
-                {/* Title & Rating */}
-                <div className="ml-[88px] sm:ml-[108px] flex flex-col justify-start">
-                    <h3 className="text-xl sm:text-2xl font-bold leading-tight text-white line-clamp-1">{restaurant.name}</h3>
+                {/* Title & Rating - Reduced font and margin */}
+                <div className="ml-12 sm:ml-14 flex flex-col justify-start">
+                    <h3 className="text-sm sm:text-base font-bold leading-tight text-white line-clamp-1 truncate">{restaurant.name}</h3>
                     {restaurant.rating && (
-                        <div className="flex items-center gap-1 mt-1">
-                            {/* Rendering 5 stars directly for layout matching */}
+                        <div className="flex items-center gap-1 mt-0.5">
+                            {/* Rendering 5 stars smaller */}
                             {[...Array(5)].map((_, i) => (
-                                <Star key={i} size={14} className={i < Math.floor(restaurant.rating) ? "text-[#FFC107]" : (i < restaurant.rating ? "text-[#FFC107] opacity-60" : "text-white/20")} fill="currentColor" />
+                                <Star key={i} size={10} className={i < Math.floor(restaurant.rating) ? "text-[#FFC107]" : (i < restaurant.rating ? "text-[#FFC107] opacity-60" : "text-white/20")} fill="currentColor" />
                             ))}
-                            <span className="text-[11px] sm:text-xs font-medium text-white ml-2">
-                                {restaurant.rating.toFixed(1)} <span className="opacity-80">({restaurant.reviewCount || 0} Reviews)</span>
+                            <span className="text-[9px] sm:text-[10px] font-medium text-white/90 ml-1">
+                                {restaurant.rating.toFixed(1)} <span className="opacity-60">({restaurant.reviewCount || 0})</span>
                             </span>
                         </div>
                     )}
