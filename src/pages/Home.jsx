@@ -40,11 +40,6 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
             {/* ── Search Bar ────────────────────────────────────────────── */}
             {!showOnlyFavorites && <HomeSearch lang={lang} restaurants={restaurants} />}
 
-            {/* ── Category Filter Pills ──────────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <CategoryFilter />
-            )}
-
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
                 <HorizontalCarousel
@@ -57,6 +52,11 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                     animationClass="dish-card-anim"
                     rootRef={rootRef}
                 />
+            )}
+
+            {/* ── Category Filter Pills ──────────────────────────────────── */}
+            {!showOnlyFavorites && (
+                <CategoryFilter />
             )}
 
             {/* ── Favorites Grid ────────────────────────────────────────── */}
