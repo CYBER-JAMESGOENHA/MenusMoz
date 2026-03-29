@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ArrowRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +43,13 @@ const CATEGORY_DATA = [
         shadow: 'hover:shadow-orange-600/50',
         img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop'
     },
+    {
+        name: 'Ver Todas',
+        gradient: 'bg-gradient-to-br from-zinc-800 to-black',
+        shadow: 'hover:shadow-zinc-700/50',
+        img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop',
+        isSeeAll: true
+    }
 ];
 
 export const CategoryFilter = () => {
@@ -113,7 +120,7 @@ export const CategoryFilter = () => {
                 {CATEGORY_DATA.map((cat, i) => (
                     <Link
                         key={cat.name}
-                        to={`/restaurantes?category=${encodeURIComponent(cat.name)}`}
+                        to={cat.isSeeAll ? '/restaurantes' : `/restaurantes?category=${encodeURIComponent(cat.name)}`}
                         className={`category-pill opacity-0 translate-y-16 scale-95 shrink-0 snap-center relative overflow-hidden flex flex-col items-center justify-center p-4 w-[140px] h-[140px] md:w-[170px] md:h-[170px] rounded-full transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl group ${cat.shadow}`}
                     >
                         {/* Background Image inside the circle */}
@@ -128,18 +135,30 @@ export const CategoryFilter = () => {
                         <div className={`absolute inset-0 opacity-60 mix-blend-hard-light transition-opacity duration-500 group-hover:opacity-80 ${cat.gradient}`} />
                         
                         {/* Dark Vignette to ensure text readability */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 transition-opacity duration-300 group-hover:opacity-90" />
+                        <div className={`absolute inset-0 ${cat.isSeeAll ? 'bg-black/40 group-hover:bg-black/60' : 'bg-gradient-to-t from-black/80 via-black/30 to-black/10'} transition-all duration-300 group-hover:opacity-90`} />
                         
                         {/* Blob Texture Effect for additional depth */}
                         <div className="absolute -top-10 -right-10 w-24 h-24 bg-white opacity-20 blur-[30px] rounded-full pointer-events-none group-hover:scale-150 transition-transform duration-1000" />
                         
-                        {/* Text */}
-                        <span className="relative z-10 font-black text-xl md:text-2xl text-white text-center leading-tight tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                            {cat.name}
-                        </span>
-                        
-                        {/* Animated decorative line indicator under text */}
-                        <div className="w-0 h-[3px] bg-white rounded-full mt-2 transition-all duration-500 group-hover:w-10 relative z-10" />
+                        {/* Text and Icon */}
+                        <div className="relative z-10 flex flex-col items-center justify-center">
+                            {cat.isSeeAll ? (
+                                <>
+                                    <span className="font-black text-xl md:text-2xl text-white text-center leading-tight tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-1">
+                                        {cat.name}
+                                    </span>
+                                    <ArrowRight className="text-white w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
+                                </>
+                            ) : (
+                                <>
+                                    <span className="font-black text-xl md:text-2xl text-white text-center leading-tight tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                                        {cat.name}
+                                    </span>
+                                    {/* Animated decorative line indicator under text */}
+                                    <div className="w-0 h-[3px] bg-white rounded-full mt-2 transition-all duration-500 group-hover:w-10" />
+                                </>
+                            )}
+                        </div>
                     </Link>
                 ))}
             </div>
