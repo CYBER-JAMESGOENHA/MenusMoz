@@ -11,13 +11,11 @@ import { RestaurantCard } from '../components/ui/RestaurantCard';
 export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorites, restaurants = [], heroSlides = [] }) {
     const t = translations[lang] ?? translations.pt;
     const th = t.home;
-    const [activeCategory, setActiveCategory] = useState('Tudo');
     const rootRef = useRef(null);
 
-    const filteredRestaurants = (activeCategory === 'Tudo'
-        ? restaurants
-        : restaurants.filter(r => r.cuisine.includes(activeCategory) || (activeCategory === 'Moçambicana' && r.cuisine.includes('Matapa')))
-    ).filter(r => !showOnlyFavorites || favorites.includes(r.id));
+    const filteredRestaurants = restaurants.filter(
+        r => !showOnlyFavorites || favorites.includes(r.id)
+    );
 
     return (
         <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
@@ -44,7 +42,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
 
             {/* ── Category Filter Pills ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <CategoryFilter activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+                <CategoryFilter />
             )}
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}

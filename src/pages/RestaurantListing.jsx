@@ -14,7 +14,14 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     
     // States for filters
     const [searchTerm, setSearchTerm] = useState(query);
-    const [activeCategory, setActiveCategory] = useState('Tudo');
+    const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || 'Tudo');
+
+    useEffect(() => {
+        const cat = searchParams.get('category');
+        if (cat) {
+            setActiveCategory(cat);
+        }
+    }, [searchParams]);
     const [minRating, setMinRating] = useState(0);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
