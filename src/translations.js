@@ -12,7 +12,9 @@ export const translations = {
             title_part1: "O sabor digital de",
             title_part2: "Moçambique",
             subtitle: "Explore os melhores menus, do curry mais picante aos mariscos frescos da nossa costa.",
-            search_placeholder: "Pesquisar restaurante ou prato..."
+            search_placeholder: "Pesquisar restaurante ou prato...",
+            location_btn: "Usar localização",
+            location_tooltip: "Encontrar perto de mim"
         },
         home: {
             featured_tag: "Destaque do Dia",
@@ -86,7 +88,9 @@ export const translations = {
             title_part1: "The digital flavor of",
             title_part2: "Mozambique",
             subtitle: "Explore the best menus, from the spiciest curry to fresh seafood from our coast.",
-            search_placeholder: "Search for restaurant or dish..."
+            search_placeholder: "Search for restaurant or dish...",
+            location_btn: "Use location",
+            location_tooltip: "Find near me"
         },
         home: {
             featured_tag: "Dish of the Day",

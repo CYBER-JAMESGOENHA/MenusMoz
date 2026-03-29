@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ChevronRight, Utensils, Heart } from 'lucide-react';
+import { Search, ChevronRight, Utensils, Heart, MapPin } from 'lucide-react';
 import { translations } from '../../translations';
 
 export const HomeSearch = ({ lang, restaurants = [] }) => {
@@ -72,6 +72,14 @@ export const HomeSearch = ({ lang, restaurants = [] }) => {
                         onKeyDown={handleKeyDown}
                         className="bg-transparent border-none outline-none text-lg md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
                     />
+                    <button
+                        type="button"
+                        onClick={() => alert('Buscando localização...')}
+                        title={t.hero?.location_tooltip}
+                        className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-[2rem] bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-500 hover:rotate-12 hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] group/loc shrink-0"
+                    >
+                        <MapPin size={24} className="transition-transform group-hover/loc:animate-bounce" />
+                    </button>
                 </div>
 
                 {suggestions.length > 0 && (

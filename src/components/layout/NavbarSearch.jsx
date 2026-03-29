@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, MapPin } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RESTAURANTS } from '../data';
 import { translations } from '../translations';
@@ -55,7 +55,7 @@ const NavbarSearch = ({ lang }) => {
 
   return (
     <div ref={searchRef} className="relative hidden lg:block">
-      <div className="flex items-center gap-3 glass border border-border-subtle rounded-3xl px-6 py-2.5 w-64 xl:w-96 group focus-within:w-[450px] transition-all duration-500 bg-white/10">
+      <div className="flex items-center gap-3 glass border border-border-subtle rounded-3xl pl-6 pr-2 py-2 w-64 xl:w-96 group focus-within:w-[450px] transition-all duration-500 bg-white/10">
         <Search size={18} className="text-primary shrink-0 transition-transform group-focus-within:scale-125" aria-hidden="true" />
         <input
           type="text"
@@ -66,6 +66,13 @@ const NavbarSearch = ({ lang }) => {
           aria-label={lang === 'pt' ? 'Pesquisar restaurantes' : 'Search restaurants'}
           className="bg-transparent border-none outline-none text-sm font-bold text-text-main placeholder:text-text-dim/30 w-full"
         />
+        <button
+          onClick={() => alert('Buscando localização...')}
+          title={t.hero?.location_tooltip}
+          className="flex items-center justify-center w-9 h-9 rounded-2xl bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-300 hover:rotate-12 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] group/loc shrink-0"
+        >
+          <MapPin size={16} className="transition-transform group-hover/loc:animate-bounce" />
+        </button>
       </div>
       {suggestions.length > 0 && (
         <div
