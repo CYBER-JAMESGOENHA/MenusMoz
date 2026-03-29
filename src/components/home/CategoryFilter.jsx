@@ -9,33 +9,39 @@ gsap.registerPlugin(ScrollTrigger);
 const CATEGORY_DATA = [
     { 
         name: 'Mariscos', 
-        gradient: 'bg-gradient-to-br from-cyan-400 to-blue-600', 
-        shadow: 'hover:shadow-blue-500/40'
+        gradient: 'bg-gradient-to-br from-cyan-400 to-blue-700', 
+        shadow: 'hover:shadow-blue-500/50',
+        img: 'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=400&h=400&fit=crop'
     },
     { 
         name: 'Portuguesa', 
-        gradient: 'bg-gradient-to-br from-emerald-400 to-green-600', 
-        shadow: 'hover:shadow-green-500/40'
+        gradient: 'bg-gradient-to-br from-emerald-400 to-green-700', 
+        shadow: 'hover:shadow-green-500/50',
+        img: 'https://images.unsplash.com/photo-1534080564583-6be75777b700?w=400&h=400&fit=crop'
     },
     { 
         name: 'Pastelaria', 
-        gradient: 'bg-gradient-to-br from-amber-300 to-orange-500', 
-        shadow: 'hover:shadow-orange-500/40'
+        gradient: 'bg-gradient-to-br from-amber-400 to-orange-600', 
+        shadow: 'hover:shadow-orange-500/50',
+        img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=400&fit=crop'
     },
     { 
         name: 'Street Food', 
-        gradient: 'bg-gradient-to-br from-rose-400 to-red-600', 
-        shadow: 'hover:shadow-red-500/40'
+        gradient: 'bg-gradient-to-br from-rose-400 to-red-700', 
+        shadow: 'hover:shadow-red-500/50',
+        img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=400&fit=crop'
     },
     { 
         name: 'Moçambicana', 
-        gradient: 'bg-gradient-to-br from-violet-500 to-purple-600', 
-        shadow: 'hover:shadow-purple-500/40'
+        gradient: 'bg-gradient-to-br from-purple-500 to-indigo-800', 
+        shadow: 'hover:shadow-indigo-500/50',
+        img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&h=400&fit=crop'
     },
     { 
         name: 'Grelhados', 
-        gradient: 'bg-gradient-to-br from-orange-500 to-red-700', 
-        shadow: 'hover:shadow-orange-600/40'
+        gradient: 'bg-gradient-to-br from-orange-500 to-red-800', 
+        shadow: 'hover:shadow-orange-600/50',
+        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop'
     },
 ];
 
@@ -100,7 +106,7 @@ export const CategoryFilter = () => {
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-6 pb-12 pt-4 no-scrollbar snap-x snap-mandatory px-2 md:px-4"
+                className="flex overflow-x-auto gap-4 md:gap-6 pb-12 pt-4 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
                 <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
@@ -108,25 +114,32 @@ export const CategoryFilter = () => {
                     <Link
                         key={cat.name}
                         to={`/restaurantes?category=${encodeURIComponent(cat.name)}`}
-                        className={`category-pill opacity-0 translate-y-16 scale-95 shrink-0 snap-center relative overflow-hidden flex flex-col justify-end p-6 w-[150px] h-[220px] md:w-[180px] md:h-[260px] rounded-[3rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl group text-white ${cat.gradient} ${cat.shadow}`}
+                        className={`category-pill opacity-0 translate-y-16 scale-95 shrink-0 snap-center relative overflow-hidden flex flex-col items-center justify-center p-4 w-[140px] h-[140px] md:w-[170px] md:h-[170px] rounded-full transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl group ${cat.shadow}`}
                     >
-                        {/* Decorative Giant Background Letter */}
-                        <span className="absolute -top-6 -right-2 text-[10rem] md:text-[12rem] font-black italic opacity-[0.08] pointer-events-none group-hover:scale-110 group-hover:-translate-x-4 group-hover:translate-y-2 transition-transform duration-700 select-none leading-none">
-                            {cat.name.charAt(0)}
+                        {/* Background Image inside the circle */}
+                        <img 
+                            src={cat.img} 
+                            alt={cat.name} 
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-3" 
+                        />
+                        
+                        {/* Vibrant Gradient Overlay interacting with image */}
+                        <div className={`absolute inset-0 opacity-60 mix-blend-hard-light transition-opacity duration-500 group-hover:opacity-80 ${cat.gradient}`} />
+                        
+                        {/* Dark Vignette to ensure text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 transition-opacity duration-300 group-hover:opacity-90" />
+                        
+                        {/* Blob Texture Effect for additional depth */}
+                        <div className="absolute -top-10 -right-10 w-24 h-24 bg-white opacity-20 blur-[30px] rounded-full pointer-events-none group-hover:scale-150 transition-transform duration-1000" />
+                        
+                        {/* Text */}
+                        <span className="relative z-10 font-black text-xl md:text-2xl text-white text-center leading-tight tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                            {cat.name}
                         </span>
                         
-                        {/* Blob Texture Effect for Glassmorphism depth */}
-                        <div className="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-20 blur-[50px] rounded-full pointer-events-none group-hover:scale-150 transition-transform duration-1000" />
-                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-black opacity-10 blur-[40px] rounded-full pointer-events-none" />
-                        
-                        <div className="relative z-10 flex flex-col items-center">
-                            <span className="font-black text-xl md:text-2xl text-center leading-tight tracking-tight drop-shadow-md">
-                                {cat.name}
-                            </span>
-                            
-                            {/* Animated line */}
-                            <div className="w-6 h-1 bg-white/60 rounded-full mt-3 mx-auto transition-all duration-500 group-hover:w-12 group-hover:bg-white" />
-                        </div>
+                        {/* Animated decorative line indicator under text */}
+                        <div className="w-0 h-[3px] bg-white rounded-full mt-2 transition-all duration-500 group-hover:w-10 relative z-10" />
                     </Link>
                 ))}
             </div>
