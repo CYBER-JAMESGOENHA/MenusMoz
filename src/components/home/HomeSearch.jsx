@@ -74,8 +74,17 @@ export const HomeSearch = ({ lang, restaurants = [] }) => {
                     />
                     <button
                         type="button"
-                        onClick={() => alert('Buscando localização...')}
-                        title={t.hero?.location_tooltip}
+                        onClick={() => {
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(
+                                    (pos) => navigate(`/restaurantes?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`),
+                                    (err) => alert('Não foi possível obter a sua localização. Verifique as permissões do navegador.')
+                                );
+                            } else {
+                                alert('O seu navegador não suporta geolocalização.');
+                            }
+                        }}
+                        title={t.hero?.location_tooltip || 'Usar a minha localização'}
                         className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-[2rem] bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-500 hover:rotate-12 hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] group/loc shrink-0"
                     >
                         <MapPin size={24} className="transition-transform group-hover/loc:animate-bounce" />

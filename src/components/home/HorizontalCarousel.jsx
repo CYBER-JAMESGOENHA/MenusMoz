@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { RestaurantCard } from '../ui/RestaurantCard';
+import { CarouselSkeleton } from '../ui/CarouselSkeleton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,16 +71,20 @@ export const HorizontalCarousel = ({
                 </button>
 
                 <div ref={scrollRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
-                    {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[260px] lg:w-[280px] snap-start h-auto`}>
-                            <RestaurantCard
-                                restaurant={rest}
-                                isFavorite={favorites.includes(rest.id)}
-                                toggleFavorite={toggleFavorite}
-                                lang={lang}
-                            />
-                        </div>
-                    ))}
+                    {restaurants.length === 0 ? (
+                        <CarouselSkeleton count={5} />
+                    ) : (
+                        restaurants.map((rest, idx) => (
+                            <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[260px] lg:w-[280px] snap-start h-auto`}>
+                                <RestaurantCard
+                                    restaurant={rest}
+                                    isFavorite={favorites.includes(rest.id)}
+                                    toggleFavorite={toggleFavorite}
+                                    lang={lang}
+                                />
+                            </div>
+                        ))
+                    )}
                 </div>
             </section>
         </div>

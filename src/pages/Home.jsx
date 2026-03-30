@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
 import { HeroSlideshow } from '../components/home/HeroSlideshow';
 import { HomeSearch } from '../components/home/HomeSearch';
@@ -17,8 +17,15 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
         r => !showOnlyFavorites || favorites.includes(r.id)
     );
 
+    const mostOrdered = [...restaurants].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0));
+    const recommended = [...restaurants].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
     return (
         <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
+            <Helmet>
+                <title>{t.meta.title}</title>
+                <meta name="description" content={t.meta.description} />
+            </Helmet>
 
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
@@ -50,7 +57,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 <HorizontalCarousel
                     title="Os Mais Pedidos"
                     subtitle="Os clássicos que nunca falham"
-                    restaurants={filteredRestaurants}
+                    restaurants={mostOrdered}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}
                     lang={lang}
@@ -85,7 +92,7 @@ export default function Home({ lang, favorites, toggleFavorite, showOnlyFavorite
                 <HorizontalCarousel
                     title={th.recommended_title}
                     subtitle={th.top_picks}
-                    restaurants={filteredRestaurants}
+                    restaurants={recommended}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}
                     lang={lang}

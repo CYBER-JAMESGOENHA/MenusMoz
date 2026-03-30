@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { restaurantService } from './services/restaurantService';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import CustomCursor from './components/ui/CustomCursor';
@@ -19,6 +20,7 @@ const ForOwners = lazy(() => import('./pages/ForOwners'));
 const RestaurantListing = lazy(() => import('./pages/RestaurantListing'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
+const Profile = lazy(() => import('./pages/Profile'));
 
 export const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen bg-bg">
@@ -158,6 +160,7 @@ export default function App() {
   }, []);
 
   return (
+    <HelmetProvider>
     <Router>
       <GlobalErrorBoundary lang={lang}>
         <div className="min-h-screen relative bg-bg transition-colors duration-300 overflow-x-hidden">
@@ -233,6 +236,7 @@ export default function App() {
                     <Route path="/restaurantes" element={<RestaurantListing lang={lang} favorites={favorites} toggleFavorite={toggleFavorite} restaurants={restaurants} />} />
                     <Route path="/privacidade" element={<Privacy lang={lang} />} />
                     <Route path="/termos" element={<Terms lang={lang} />} />
+                    <Route path="/perfil" element={<Profile lang={lang} />} />
                     
                     <Route path="*" element={
                       <div className="min-h-screen flex flex-col items-center justify-center gap-6 pt-32">
@@ -253,5 +257,6 @@ export default function App() {
         </div>
       </GlobalErrorBoundary>
     </Router>
+    </HelmetProvider>
   );
 }

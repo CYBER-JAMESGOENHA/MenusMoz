@@ -119,13 +119,23 @@ export default function UserPanel({ isOpen, onClose, lang, setLang, darkMode, to
                             </div>
                         </div>
                         {user ? (
-                            <button
-                                onClick={() => { onLogout(); handleClose(); }}
-                                className="w-full h-10 rounded-xl glass flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest text-text-dim hover:text-red-500 hover:bg-red-500/10 transition-all"
-                            >
-                                <LogOut size={15} />
-                                {t.logout}
-                            </button>
+                            <div className="space-y-2">
+                                <Link
+                                    to="/perfil"
+                                    onClick={handleClose}
+                                    className="w-full h-10 rounded-xl bg-primary text-white flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-primary-glow"
+                                >
+                                    <User size={15} />
+                                    {lang === 'pt' ? 'Ver Perfil' : 'View Profile'}
+                                </Link>
+                                <button
+                                    onClick={() => { onLogout(); handleClose(); }}
+                                    className="w-full h-10 rounded-xl glass flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest text-text-dim hover:text-red-500 hover:bg-red-500/10 transition-all"
+                                >
+                                    <LogOut size={15} />
+                                    {t.logout}
+                                </button>
+                            </div>
                         ) : (
                             <button
                                 onClick={() => { onLoginOpen(); handleClose(); }}

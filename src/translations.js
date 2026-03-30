@@ -1,5 +1,9 @@
 export const translations = {
     pt: {
+        meta: {
+            title: "MenusMoz — O Melhor da Gastronomia de Moçambique",
+            description: "Descubra os melhores restaurantes de Maputo, Matola e Beira. Navega menus digitais, faz reservas e poupa tempo."
+        },
         nav: {
             home: "Início",
             sabor: "O Sabor",
@@ -39,7 +43,14 @@ export const translations = {
             whatsapp_res: "Reservar via WhatsApp",
             total_est: "Total Estimado",
             back: "Voltar",
-            share: "Partilhar"
+            share: "Partilhar",
+            reviews_title: "O que dizem os clientes",
+            write_review: "Escrever Avaliação",
+            review_placeholder: "Partilhe a sua experiência...",
+            review_submit: "Publicar Avaliação",
+            review_login: "Inicie sessão para avaliar",
+            review_thanks: "Obrigado pela sua avaliação!",
+            review_error: "Erro ao publicar. Tente novamente."
         },
         footer: {
             desc: "A maior rede de menus digitais de Moçambique. O sabor da nossa terra na palma da sua mão.",
@@ -76,6 +87,10 @@ export const translations = {
         }
     },
     en: {
+        meta: {
+            title: "MenusMoz — The Best of Mozambican Gastronomy",
+            description: "Discover the best restaurants in Maputo, Matola and Beira. Browse digital menus, make reservations and save time."
+        },
         nav: {
             home: "Home",
             sabor: "The Flavor",
@@ -115,7 +130,14 @@ export const translations = {
             whatsapp_res: "Book via WhatsApp",
             total_est: "Estimated Total",
             back: "Back",
-            share: "Share"
+            share: "Share",
+            reviews_title: "What customers say",
+            write_review: "Write a Review",
+            review_placeholder: "Share your experience...",
+            review_submit: "Post Review",
+            review_login: "Log in to leave a review",
+            review_thanks: "Thank you for your review!",
+            review_error: "Error posting. Please try again."
         },
         footer: {
             desc: "Mozambique's largest digital menu network. The flavor of our land in the palm of your hand.",

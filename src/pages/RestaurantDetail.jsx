@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ChevronLeft, MapPin, Clock, Share2, Heart } from 'lucide-react';
 import { gsap } from 'gsap';
 import { checkIsOpen } from '../data';
@@ -8,13 +9,15 @@ import { translations } from '../translations';
 import { DetailStarRating } from '../components/restaurant/DetailShared';
 import { MenuBook } from '../components/restaurant/MenuBook';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
+import { ReviewSection } from '../components/restaurant/ReviewSection';
 
-export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
+export default function RestaurantDetail({ lang, favorites, toggleFavorite, showLogin }) {
     const t = translations[lang]?.detail ?? translations.pt.detail;
     const th = translations[lang]?.home ?? translations.pt.home;
     const { slug } = useParams();
     const [restaurant, setRestaurant] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState(null);
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -23,6 +26,18 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
             setIsLoading(false);
         });
     }, [slug]);
+
+    // Read current user from supabase if available
+    useEffect(() => {
+        let sub;
+        import('../lib/supabase').then(({ supabase, isSupabaseConfigured }) => {
+            if (!isSupabaseConfigured) return;
+            supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null));
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((_, sess) => setUser(sess?.user ?? null));
+            sub = subscription;
+        });
+        return () => sub?.unsubscribe();
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -52,6 +67,15 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
     return (
         <div ref={containerRef} className="pb-40 lg:pb-32 bg-bg transition-colors duration-500">
+
+            {/* SEO */}
+            <Helmet>
+                <title>{restaurant.name} — {restaurant.cuisine} em {restaurant.location?.split(',')[1]?.trim() || 'Maputo'} | MenusMoz</title>
+                <meta name="description" content={restaurant.description} />
+                <meta property="og:title" content={restaurant.name} />
+                <meta property="og:description" content={restaurant.description} />
+                {restaurant.image && <meta property="og:image" content={restaurant.image} />}
+            </Helmet>
 
             {/* ── Hero Image ─────────────────────────────────── */}
             <div className="relative h-[45vh] md:h-[60vh] overflow-hidden">
@@ -103,7 +127,17 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite }) {
 
                     {/* ── Cardápio + Sidebar ─────────────────── */}
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-                        <MenuBook menuCategories={restaurant.menuCategories} />
+                        <div className="lg:col-span-2">
+                            <MenuBook menuCategories={restaurant.menuCategories} />
+                            {/* ── Reviews ──────────────────────── */}
+                            <ReviewSection
+                                restaurant={restaurant}
+                                user={user}
+                                lang={lang}
+                                t={t}
+                                onLoginOpen={showLogin}
+                            />
+                        </div>
                         <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
                     </div>
                 </div>

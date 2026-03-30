@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, Filter, X } from 'lucide-react';
 import { CATEGORIES } from '../data';
-import { RestaurantCard } from './Home';
+import { RestaurantCard } from '../components/ui/RestaurantCard';
 import { gsap } from 'gsap';
 
 export default function RestaurantListing({ lang, favorites, toggleFavorite, restaurants = [] }) {
