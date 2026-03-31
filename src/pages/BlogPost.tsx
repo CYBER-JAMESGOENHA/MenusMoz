@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ArrowLeft, Calendar, User, Share2 } from 'lucide-react';
 
 interface BlogPostType {
-    id: string;
+    id: string | number;
     title: string;
     slug: string;
     image: string;

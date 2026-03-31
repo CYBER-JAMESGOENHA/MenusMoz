@@ -8,7 +8,6 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error?: any; data?: any }>;
   updatePassword: (newPassword: string) => Promise<{ error?: any; data?: any }>;
-  deleteAccount: () => Promise<{ success: boolean }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,20 +57,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return await supabase.auth.updateUser({ password: newPassword });
   };
 
-  const deleteAccount = async () => {
-    // Note: In real production, this would call specialized Edge Function or Management API.
-    // Here we simulate successful deletion by signing out.
-    await signOut();
-    return { success: true };
-  };
-
   const value: AuthContextType = {
     user,
     loading,
     signOut,
     resetPassword,
     updatePassword,
-    deleteAccount,
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
 import { HeroSlideshow } from '../components/home/HeroSlideshow';
@@ -8,15 +8,17 @@ import { HorizontalCarousel } from '../components/home/HorizontalCarousel';
 import { EmptyFavorites } from '../components/home/EmptyFavorites';
 import { RestaurantCard } from '../components/ui/RestaurantCard';
 import { RestaurantCardSkeleton } from '../components/ui/Skeleton';
+import { Restaurant } from '../services/restaurantService';
+import { HeroSlide, BlogPost } from '../hooks/useContent';
 
 interface HomeProps {
     lang: string;
     favorites: number[];
-    toggleFavorite: (id: any) => Promise<void>;
+    toggleFavorite: (id: string | number) => Promise<void>;
     showOnlyFavorites?: boolean;
-    restaurants?: any[];
-    heroSlides?: any[];
-    blogPosts?: any[];
+    restaurants?: Restaurant[];
+    heroSlides?: HeroSlide[];
+    blogPosts?: BlogPost[];
     isLoading?: boolean;
 }
 
@@ -33,12 +35,20 @@ export default function Home({
     const th = t.home;
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const filteredRestaurants = restaurants.filter(
-        r => !showOnlyFavorites || favorites.includes(r.id)
+    const filteredRestaurants = useMemo(() => 
+        restaurants.filter(r => !showOnlyFavorites || favorites.includes(Number(r.id))),
+        [restaurants, showOnlyFavorites, favorites]
     );
 
-    const mostOrdered: any[] = [...restaurants].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0));
-    const recommended: any[] = [...restaurants].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    const mostOrdered = useMemo(() => 
+        [...restaurants].sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0)),
+        [restaurants]
+    );
+
+    const recommended = useMemo(() => 
+        [...restaurants].sort((a, b) => (b.rating || 0) - (a.rating || 0)),
+        [restaurants]
+    );
 
     if (isLoading) {
         return (
@@ -111,7 +121,7 @@ export default function Home({
                                 <div key={rest.id} className="restaurant-card h-full min-h-[380px]">
                                     <RestaurantCard
                                         restaurant={rest}
-                                        isFavorite={favorites.includes(rest.id)}
+                                        isFavorite={favorites.includes(Number(rest.id))}
                                         toggleFavorite={toggleFavorite}
                                         lang={lang}
                                     />

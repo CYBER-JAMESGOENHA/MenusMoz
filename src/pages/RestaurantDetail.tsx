@@ -31,10 +31,18 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
     useEffect(() => {
         if (slug) {
-            restaurantService.getBySlug(slug).then(data => {
-                setRestaurant(data);
-                setIsLoading(false);
-            });
+            setIsLoading(true);
+            restaurantService.getBySlug(slug)
+                .then(data => {
+                    setRestaurant(data);
+                })
+                .catch(err => {
+                    console.error('Error fetching restaurant:', err);
+                    setRestaurant(null);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
     }, [slug]);
 

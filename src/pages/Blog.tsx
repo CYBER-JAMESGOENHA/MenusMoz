@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { translations } from '../translations';
 
 interface BlogPost {
-    id: string;
+    id: string | number;
     title: string;
     slug: string;
     image: string;

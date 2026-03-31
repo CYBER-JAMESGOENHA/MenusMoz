@@ -3,7 +3,7 @@ import { RESTAURANTS, FEATURED_DISHES } from '../data/mockData'
 import { checkIsOpen } from '../utils/timeUtils'
 
 export interface Restaurant {
-  id: any;
+  id: string | number;
   name: string;
   slug: string;
   image: string;
@@ -21,15 +21,43 @@ export interface Restaurant {
   chefName?: string;
   chefImage?: string;
   chefQuote?: string;
-  cuisines?: any[];
-  menuCategories?: any[];
-  reviews?: any[];
+  cuisines?: { name: string; slug: string }[];
+  menuCategories?: MenuCategory[];
+  reviews?: Review[];
   latitude?: number;
   longitude?: number;
+  lat?: number;
+  lng?: number;
   avg_consumption?: string;
   tags?: string[];
   features?: string[];
   logo?: string;
+}
+
+export interface MenuItem {
+  id?: string | number;
+  name: string;
+  description?: string;
+  desc?: string;
+  price: string;
+  priceValue?: number;
+  image_url?: string;
+  is_available?: boolean;
+}
+
+export interface MenuCategory {
+  id?: string | number;
+  name: string;
+  items: MenuItem[];
+}
+
+export interface Review {
+  id: string | number;
+  rating: number;
+  comment: string;
+  created_at: string;
+  userName: string;
+  avatar?: string;
 }
 
 /**
@@ -37,7 +65,19 @@ export interface Restaurant {
  * Usa Supabase se configurado, caso contrário usa dados locais como fallback.
  */
 
-const mapRestaurant = (r: any) => ({
+const BASE_RESTAURANT_QUERY = `
+  *,
+  menu_categories (
+    *,
+    menu_items (*)
+  ),
+  reviews (
+    *,
+    profiles (full_name, avatar_url)
+  )
+`;
+
+const mapRestaurant = (r: any): Restaurant => ({
   ...r,
   image: r.image_url,
   lat: r.latitude || (r.coords?.lat),
@@ -65,57 +105,37 @@ const mapRestaurant = (r: any) => ({
 });
 
 export const restaurantService = {
-  async getAll() {
+  async getAll(): Promise<Restaurant[]> {
     if (!isSupabaseConfigured || !supabase) {
-      return RESTAURANTS
+      return RESTAURANTS as Restaurant[]
     }
 
     const { data, error } = await supabase
       .from('active_restaurants_view')
-      .select(`
-        *,
-        menu_categories (
-          *,
-          menu_items (*)
-        ),
-        reviews (
-          *,
-          profiles (full_name, avatar_url)
-        )
-      `)
+      .select(BASE_RESTAURANT_QUERY)
       .order('rating', { ascending: false })
 
     if (error) {
       console.error('Supabase error [getAll]:', error)
-      return RESTAURANTS
+      return RESTAURANTS as Restaurant[]
     }
     return data.map(mapRestaurant)
   },
 
-  async getBySlug(slug: string) {
+  async getBySlug(slug: string): Promise<Restaurant | null> {
     if (!isSupabaseConfigured || !supabase) {
-      return RESTAURANTS.find(r => r.slug === slug) || null
+      return (RESTAURANTS.find(r => r.slug === slug) as Restaurant) || null
     }
 
     const { data, error } = await supabase
       .from('active_restaurants_view')
-      .select(`
-        *,
-        menu_categories (
-          *,
-          menu_items (*)
-        ),
-        reviews (
-          *,
-          profiles (full_name, avatar_url)
-        )
-      `)
+      .select(BASE_RESTAURANT_QUERY)
       .eq('slug', slug)
       .single()
 
     if (error) {
       console.error('Supabase error [getBySlug]:', error)
-      return RESTAURANTS.find(r => r.slug === slug) || null
+      return (RESTAURANTS.find(r => r.slug === slug) as Restaurant) || null
     }
     return mapRestaurant(data)
   },
@@ -195,3 +215,4 @@ export const restaurantService = {
     }
   }
 }
+

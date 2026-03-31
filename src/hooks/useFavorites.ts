@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { restaurantService } from '../services/restaurantService';
 import toast from 'react-hot-toast';
 
-export const useFavorites = (user: any) => {
+export interface User {
+  id: string;
+  email?: string;
+}
+
+export const useFavorites = (user: User | null) => {
   const [favorites, setFavorites] = useState<number[]>(() => {
     try {
       const saved = localStorage.getItem('locais-moz-favorites');
@@ -21,29 +26,30 @@ export const useFavorites = (user: any) => {
     localStorage.setItem('locais-moz-favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  useEffect(() => {
-    if (!user || !isSupabaseConfigured) return;
-    const syncFavorites = async () => {
-      try {
-        if (!isSupabaseConfigured || !supabase) return;
-        const { data, error } = await supabase
-          .from('favorites')
-          .select('restaurant_id')
-          .eq('user_id', user.id);
-        if (!error && data) {
-          const dbIds = data
-            .map(f => Number(f.restaurant_id))
-            .filter(id => !Number.isNaN(id));
-          setFavorites(prev => [...new Set([...prev, ...dbIds])]);
-        }
-      } catch (err) {
-        console.error('Sync favorites error:', err);
+  const syncFavorites = useCallback(async () => {
+    if (!user || !isSupabaseConfigured || !supabase) return;
+    try {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('restaurant_id')
+        .eq('user_id', user.id);
+      
+      if (!error && data) {
+        const dbIds = data
+          .map(f => Number(f.restaurant_id))
+          .filter(id => !Number.isNaN(id));
+        setFavorites(prev => [...new Set([...prev, ...dbIds])]);
       }
-    };
-    syncFavorites();
+    } catch (err) {
+      console.error('Sync favorites error:', err);
+    }
   }, [user]);
 
-  const toggleFavorite = async (id: any) => {
+  useEffect(() => {
+    syncFavorites();
+  }, [syncFavorites]);
+
+  const toggleFavorite = async (id: string | number) => {
     const restaurantId = Number(id);
     if (Number.isNaN(restaurantId)) return;
     
