@@ -47,16 +47,15 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
 
                 {/* Center Floating + Button */}
                 <div className="relative flex-1 flex justify-center">
-                    {/* Outer ring */}
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-[72px] h-[72px] border-2 border-dashed border-primary/30 bg-transparent rounded-full flex items-center justify-center">
-                        {/* Inner button */}
-                        <NavLink 
-                            to="/restaurantes"
-                            className="w-[52px] h-[52px] bg-primary text-white rounded-full shadow-primary-glow flex items-center justify-center hover:scale-105 transition-all"
-                        >
-                            <Plus size={28} strokeWidth={2} className="text-white" />
-                        </NavLink>
-                    </div>
+                    {/* Outer ring - positioned above navbar */}
+                    <div className="absolute -top-[30px] left-1/2 -translate-x-1/2 w-[72px] h-[72px] border-2 border-dashed border-primary/30 rounded-full bg-transparent z-40" />
+                    {/* Inner button */}
+                    <NavLink 
+                        to="/restaurantes"
+                        className="absolute -top-[30px] left-1/2 -translate-x-1/2 w-[52px] h-[52px] bg-primary rounded-full shadow-primary-glow flex items-center justify-center hover:scale-105 transition-all z-50"
+                    >
+                        <Plus size={28} strokeWidth={2} className="text-white" />
+                    </NavLink>
                 </div>
 
                 {/* Cart */}
