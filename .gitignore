@@ -26,3 +26,12 @@ dist-ssr
 # Windows Copy Files
 * - Copy*
 * (Copy)*
+
+# Build and lint output
+build_err*.txt
+build_log*.txt
+build_home.txt
+lint*.txt
+lint_output*.txt
+.env.local
+.env.*.local

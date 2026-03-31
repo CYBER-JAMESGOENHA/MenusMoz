@@ -30,24 +30,24 @@
   --radius-custom: 1.5rem;
   --radius-custom-lg: 2.25rem;
 
-  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.1);
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.08);
   --shadow-primary-glow: 0 0 40px -10px rgba(220, 38, 38, 0.4);
 }
 
 :root {
   --bg-color: #FFFFFF;
   --surface-color: #FFFFFF;
-  --text-color: #1A1A1A;
+  --text-color: #0A0A0A;
   --text-dim-color: #4B5563;
-  --border-color: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.06);
 }
 
 .dark {
-  --bg-color: #0A0A0A;
-  --surface-color: #161616;
-  --text-color: #F9FDF9;
+  --bg-color: #050505;
+  --surface-color: #0F0F0F;
+  --text-color: #FDFDFD;
   --text-dim-color: #9CA3AF;
-  --border-color: rgba(255, 255, 255, 0.08);
+  --border-color: rgba(255, 255, 255, 0.06);
 }
 
 @layer base {
@@ -55,23 +55,26 @@
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-bg text-text-main antialiased font-body transition-colors duration-300;
+    @apply bg-bg text-text-main antialiased font-body transition-colors duration-500 selection:bg-primary/20 selection:text-primary;
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
     position: relative;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-heading font-bold;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-black italic tracking-tighter uppercase;
+    line-height: 0.9;
+  }
+
+  /* Improved accessibility outlines */
+  :focus-visible {
+    @apply outline-none ring-4 ring-primary/20 border-primary transition-all;
   }
 }
 
@@ -81,315 +84,56 @@
   }
 
   .glass {
-    @apply backdrop-blur-xl border border-border-subtle transition-all duration-500;
-    background-color: color-mix(in srgb, var(--surface-color), transparent 25%);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    @apply backdrop-blur-3xl border border-border-subtle transition-all duration-700;
+    background-color: color-mix(in srgb, var(--surface-color), transparent 15%);
   }
 
   .dark .glass {
-    background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.12);
+    background-color: color-mix(in srgb, var(--surface-color), transparent 40%);
   }
 
-  /* Premium Paper Texture */
-  .paper-texture {
-    position: relative;
-    background-color: #FFFFFF;
-    background-image: 
-      url("https://www.transparenttextures.com/patterns/handmade-paper.png");
-    box-shadow: 
-      inset 0 0 100px rgba(0, 0, 0, 0.02),
-      0 30px 60px -12px rgba(0, 0, 0, 0.25),
-      0 18px 36px -18px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+  /* High-Impact Brand Typography */
+  .title-reveal {
+    @apply font-display font-black italic tracking-tighter uppercase leading-[0.85];
   }
 
-  .dark .paper-texture {
-    background-color: #1a1714;
-    background-image: 
-      url("https://www.transparenttextures.com/patterns/dark-matter.png"),
-      radial-gradient(ellipse at 20% 50%, rgba(60, 50, 30, 0.4) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 50%, rgba(50, 40, 25, 0.3) 0%, transparent 60%);
-    box-shadow: 
-      inset 0 0 100px rgba(0, 0, 0, 0.2),
-      0 30px 60px -12px rgba(0, 0, 0, 0.5);
+  .label-brand {
+    @apply text-[10px] font-black uppercase tracking-[0.5em] italic;
   }
 
-  .paper-texture::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.05), transparent, rgba(0,0,0,0.05));
-    z-index: 5;
-    pointer-events: none;
+  .shadow-premium {
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.12), 0 18px 36px -18px rgba(0, 0, 0, 0.2);
   }
 
-  /* Menu Book Container */
-  .menu-book {
-    position: relative;
-    border-radius: 1rem;
-    overflow: hidden;
-    min-height: 600px;
-    perspective: 2000px;
-    box-shadow:
-      -4px 0 8px rgba(0, 0, 0, 0.08),
-      0 8px 32px rgba(0, 0, 0, 0.12),
-      0 32px 80px rgba(0, 0, 0, 0.08);
+  .dark .shadow-premium {
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 18px 36px -18px rgba(0, 0, 0, 0.4);
   }
 
-  .dark .menu-book {
-    box-shadow:
-      -4px 0 8px rgba(0, 0, 0, 0.3),
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 32px 80px rgba(0, 0, 0, 0.3);
-  }
-
-  .menu-book::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+  /* Modern Scrollbar */
+  ::-webkit-scrollbar {
     width: 6px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.12), transparent);
-    z-index: 10;
-    pointer-events: none;
   }
-
-  .menu-page {
-    @apply absolute inset-0 w-full h-full p-8 md:p-12 overflow-y-auto bg-surface transition-all duration-500;
-    backface-visibility: hidden;
-    transform-origin: left center;
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
   }
-
-  .menu-divider {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
+  ::-webkit-scrollbar-thumb {
+    @apply bg-text-dim/20 rounded-full hover:bg-primary/40 transition-colors;
   }
-
-  .menu-divider::before,
-  .menu-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(var(--color-primary), 0.3), transparent);
-    background: linear-gradient(to right, transparent, color-mix(in srgb, #FF6B35 40%, transparent), transparent);
-  }
-
-  .font-menu {
-    font-family: "Playfair Display", "Cormorant Garamond", serif;
-  }
-
-  .font-garamond {
-    font-family: "Cormorant Garamond", serif;
-  }
-
-  .card-hover {
-    @apply transition-all duration-700 hover:-translate-y-3;
-    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
-  }
-
-  .card-hover:hover {
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
-  }
-
-  .dark .card-hover:hover {
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6), 0 25px 50px -12px rgba(220, 38, 38, 0.15);
-  }
-
-  .prism-border {
-    position: relative;
-    z-index: 1;
-  }
-
-  .prism-border::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-    background-size: 400%;
-    filter: blur(5px);
-    z-index: -1;
-    animation: rainbow 20s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: inherit;
-  }
-
-  .prism-border:hover::before {
-    opacity: 0.6;
-  }
-
-  @keyframes rainbow {
-    0% {
-      background-position: 0 0;
-    }
-
-    50% {
-      background-position: 400% 0;
-    }
-
-    100% {
-      background-position: 0 0;
-    }
-  }
-
-  .icon-blue {
-    @apply text-blue-500 bg-blue-500/10;
-  }
-
-  .icon-green {
-    @apply text-green-500 bg-green-500/10;
-  }
-
-  .icon-orange {
-    @apply text-orange-500 bg-orange-500/10;
-  }
-
-  .icon-purple {
-    @apply text-purple-500 bg-purple-500/10;
-  }
-
-  /* ── Botão Login — Bandeira de Moçambique ──────────────────────────────── */
-  .login-moz-btn {
-    position: relative;
-    overflow: hidden;
-    height: 48px;
-    padding: 0 24px 0 12px;
-    border-radius: 999px;
-    border: none;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    color: #fff;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.22s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.22s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1.5px rgba(255, 255, 255, 0.12);
-  }
-
-  /* Faixas horizontais da bandeira */
-  .login-moz-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom,
-        #009A44 0%, #009A44 33%,
-        #fff 33%, #fff 34.5%,
-        #1a1a1a 34.5%, #1a1a1a 65.5%,
-        #fff 65.5%, #fff 67%,
-        #FCE300 67%, #FCE300 100%);
-    z-index: 0;
-  }
-
-  /* Triângulo vermelho à esquerda */
-  .login-moz-btn::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 60px;
-    height: 100%;
-    background: #CE1126;
-    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
-    z-index: 1;
-  }
-
-  /* Círculo com efeito lupa / desfoque */
-  .login-moz-lens {
-    position: relative;
-    z-index: 3;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(8px) saturate(2);
-    -webkit-backdrop-filter: blur(8px) saturate(2);
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
-    box-shadow:
-      0 0 0 3px rgba(255, 255, 255, 0.08),
-      inset 0 1px 3px rgba(255, 255, 255, 0.35),
-      0 2px 8px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    animation: lensGlow 2.8s ease-in-out infinite;
-  }
-
-  @keyframes lensGlow {
-
-    0%,
-    100% {
-      box-shadow:
-        0 0 0 3px rgba(255, 255, 255, 0.08),
-        inset 0 1px 3px rgba(255, 255, 255, 0.35),
-        0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    50% {
-      box-shadow:
-        0 0 0 5px rgba(255, 255, 255, 0.18),
-        inset 0 1px 3px rgba(255, 255, 255, 0.5),
-        0 2px 12px rgba(255, 255, 255, 0.15);
-    }
-  }
-
-  .login-moz-label {
-    position: relative;
-    z-index: 3;
-  }
-
-  .login-moz-btn:hover {
-    transform: scale(1.06);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 0 1.5px rgba(255, 255, 255, 0.2);
-  }
-
-  .login-moz-btn:active {
-    transform: scale(0.97);
-  }
-
-  /* ─────────────────────────────────────────────────────────────────────────── */
 }
 
-.selection\:bg-accent *::selection {
-  background-color: var(--color-accent);
+/* Animations */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.03; transform: scale(1); }
+  50% { opacity: 0.08; transform: scale(1.05); }
 }
 
-.selection\:text-primary *::selection {
-  color: var(--color-primary);
+.animate-pulse-soft {
+  animation: pulse-soft 8s ease-in-out infinite;
 }
 
-.perspective-1000 {
-  perspective: 1000px;
+/* Global Transitions */
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 300ms;
 }
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.vertical-text {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(200%);
-  }
-}
+
