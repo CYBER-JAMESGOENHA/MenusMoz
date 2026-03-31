@@ -43,7 +43,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
 
     if (!post) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center gap-8 pt-40 px-6 text-center bg-bg">
+            <div className="min-h-screen flex flex-col items-center justify-center gap-6 pt-32 px-6 text-center bg-bg">
                 <div className="w-32 h-32 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary text-6xl font-display font-black shadow-primary-glow/10">404</div>
                 <h1 className="text-5xl md:text-7xl font-display font-black text-text-main tracking-tighter uppercase italic">Não Encontrado</h1>
                 <p className="text-text-dim text-xl font-bold uppercase italic opacity-60">O sabor que procura fugiu da cozinha.</p>
@@ -55,7 +55,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
     }
 
     return (
-        <div ref={containerRef} className="pt-48 pb-32 px-6 md:px-12 bg-bg selection:bg-primary/20 overflow-hidden">
+        <div ref={containerRef} className="pt-32 pb-16 px-6 md:px-12 bg-bg selection:bg-primary/20 overflow-hidden">
              {/* Artistic Background Backdrop */}
             <div className="absolute top-0 left-0 w-full h-[60vh] pointer-events-none -z-10 opacity-[0.03] dark:opacity-[0.07]">
                 <span className="absolute top-10 left-1/2 -translate-x-1/2 text-[15rem] font-black italic whitespace-nowrap uppercase tracking-tighter select-none rotate-6">
@@ -64,7 +64,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
             </div>
 
             <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-between mb-12 blog-post-reveal">
+                <div className="flex items-center justify-between mb-8 blog-post-reveal">
                     <Link
                         to="/blog"
                         className="group inline-flex items-center gap-3 text-text-dim hover:text-primary transition-all font-black text-[10px] uppercase tracking-[0.4em] italic"
@@ -80,7 +80,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
                     </button>
                 </div>
 
-                <div className="relative aspect-[16/9] rounded-[3.5rem] overflow-hidden mb-16 shadow-premium border border-border-subtle blog-post-reveal group">
+                <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-8 shadow-premium border border-border-subtle blog-post-reveal group">
                     <img
                         src={post.image}
                         alt={post.title}
@@ -101,15 +101,15 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
                     <div className="flex items-center gap-2.5 text-primary opacity-80"><User size={18} /> {post.author}</div>
                 </div>
 
-                <h1 className="text-6xl md:text-8xl font-display font-black tracking-tighter text-text-main mb-10 leading-[0.85] blog-post-reveal uppercase italic">
+                <h1 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-text-main mb-6 leading-[0.85] blog-post-reveal uppercase italic">
                     {post.title}
                 </h1>
 
-                <p className="text-2xl md:text-3xl text-text-dim font-bold leading-tight italic blog-post-reveal uppercase tracking-tight opacity-70 mb-20 border-l-4 border-primary pl-8">
+                <p className="text-xl md:text-2xl text-text-dim font-bold leading-tight italic blog-post-reveal uppercase tracking-tight opacity-70 mb-10 border-l-4 border-primary pl-6">
                     "{post.excerpt}"
                 </p>
 
-                <div className="mt-20 blog-post-reveal">
+                <div className="mt-10 blog-post-reveal">
                     {post.content ? (
                         <div className="max-w-none space-y-12">
                             {post.content.split('\n\n').map((para, i) => (
@@ -119,7 +119,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
                             ))}
                         </div>
                     ) : (
-                        <div className="bg-surface p-12 rounded-[3.5rem] border border-border-subtle shadow-premium text-center">
+                        <div className="bg-surface p-8 md:p-10 rounded-2xl border border-border-subtle shadow-premium text-center">
                             <p className="text-2xl font-display font-black text-text-dim italic uppercase tracking-tighter mb-8">
                                 {lang === 'pt'
                                     ? 'A mesa está a ser posta...'

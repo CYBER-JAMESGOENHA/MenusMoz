@@ -229,12 +229,12 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                     </div>
 
                     {filteredRestaurants.length === 0 && (
-                        <div className="py-24 text-center glass rounded-[3rem] border border-border-subtle shadow-premium mt-12 overflow-hidden relative">
+                        <div className="py-16 text-center glass rounded-2xl border border-border-subtle shadow-premium mt-8 overflow-hidden relative">
                              <div className="absolute inset-0 bg-primary/2 opacity-20 pointer-events-none" />
-                             <div className="w-32 h-32 bg-primary/10 text-primary rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-primary-glow/10 group-hover:rotate-12 transition-transform">
-                                <Search size={54} />
+                             <div className="w-20 h-20 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-primary-glow/10 group-hover:rotate-12 transition-transform">
+                                <Search size={32} />
                              </div>
-                             <h3 className="text-4xl lg:text-5xl font-display font-black text-text-main italic tracking-tighter mb-4 uppercase">
+                             <h3 className="text-3xl lg:text-4xl font-display font-black text-text-main italic tracking-tighter mb-4 uppercase">
                                 {lang === 'pt' ? 'Sem Resultados' : 'No Results'}
                              </h3>
                              <p className="text-text-dim font-bold text-lg max-w-md mx-auto leading-relaxed italic uppercase opacity-60 tracking-tight px-6">

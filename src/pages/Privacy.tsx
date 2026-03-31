@@ -73,7 +73,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
     const content = t[selectedLang] || t.pt;
 
     return (
-        <div className="pt-48 pb-32 px-6 bg-bg min-h-screen selection:bg-primary/20 overflow-hidden">
+        <div className="pt-32 pb-16 px-6 bg-bg min-h-screen selection:bg-primary/20 overflow-hidden">
              {/* Artistic Background Backdrop */}
             <div className="absolute top-0 left-0 w-full h-[60vh] pointer-events-none -z-10 opacity-[0.03] dark:opacity-[0.07]">
                 <span className="absolute top-10 left-1/2 -translate-x-1/2 text-[18rem] font-black italic whitespace-nowrap uppercase tracking-tighter select-none -rotate-3">
@@ -84,7 +84,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
             <div className="max-w-4xl mx-auto">
                  <Link
                     to="/"
-                    className="group inline-flex items-center gap-3 text-text-dim hover:text-primary transition-all font-black text-[10px] uppercase tracking-[0.4em] italic mb-16 blog-post-reveal"
+                    className="group inline-flex items-center gap-3 text-text-dim hover:text-primary transition-all font-black text-[10px] uppercase tracking-[0.4em] italic mb-8 blog-post-reveal"
                 >
                     <div className="w-10 h-10 rounded-xl glass border border-border-subtle flex items-center justify-center group-hover:border-primary group-hover:bg-primary group-hover:text-white transition-all">
                         <ArrowLeft size={18} />
@@ -92,15 +92,15 @@ const Privacy = ({ lang }: PrivacyProps) => {
                     {lang === 'pt' ? 'Voltar ao Início' : 'Back to Home'}
                 </Link>
 
-                <h1 className="text-6xl md:text-8xl font-display font-black tracking-tighter text-text-main mb-6 italic leading-none uppercase blog-post-reveal">
+                <h1 className="text-5xl md:text-6xl font-display font-black tracking-tighter text-text-main mb-6 italic leading-none uppercase blog-post-reveal">
                     {content.title}
                 </h1>
-                <p className="text-text-dim/40 text-[10px] font-black uppercase tracking-[0.5em] mb-16 italic blog-post-reveal">
+                <p className="text-text-dim/40 text-[10px] font-black uppercase tracking-[0.5em] mb-8 italic blog-post-reveal">
                     {content.updated}
                 </p>
                 
-                <div className="space-y-20 blog-post-reveal">
-                    <p className="text-2xl md:text-3xl text-text-dim font-bold leading-tight italic uppercase tracking-tighter opacity-70 mb-20 border-l-4 border-primary pl-10 py-2">
+                <div className="space-y-12 blog-post-reveal">
+                    <p className="text-xl md:text-2xl text-text-dim font-bold leading-tight italic uppercase tracking-tighter opacity-70 mb-12 border-l-4 border-primary pl-6 py-2">
                         "{content.intro}"
                     </p>
                     
@@ -124,7 +124,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
                         ))}
                     </div>
                     
-                    <div className="mt-32 p-12 md:p-16 rounded-[3.5rem] glass border border-primary/10 shadow-premium text-center relative overflow-hidden group">
+                    <div className="mt-16 p-8 md:p-10 rounded-2xl glass border border-primary/10 shadow-premium text-center relative overflow-hidden group">
                          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                          <div className="relative z-10">
                             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/60 mb-6 italic">Support & Security</p>
