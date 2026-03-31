@@ -106,7 +106,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ heroSlides = [], t
                         <button
                             key={i}
                             onClick={() => setCurrentSlide(i)}
-                            className="group py-2 sm:py-4 min-h-[44px] flex items-center"
+                            className="group min-h-[44px] flex items-center"
                             aria-label={`Slide ${i + 1}`}
                         >
                             <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-10 sm:w-12 bg-primary' : 'w-5 sm:w-6 bg-white/30 group-hover:bg-white/60'}`} />
