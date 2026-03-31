@@ -18,7 +18,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
     return (
         <div className="fixed bottom-0 left-0 right-0 z-[1000] md:hidden px-4 pb-4 pt-2 pointer-events-none">
             {/* The main bar */}
-            <div className="bg-surface/90 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-premium flex items-center justify-between px-2 py-2.5 relative pointer-events-auto pb-[calc(12px+env(safe-area-inset-bottom))]">
+            <div className="bg-surface/90 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-premium flex items-center justify-between px-2 py-4 relative pointer-events-auto min-h-[80px] pb-[calc(12px+env(safe-area-inset-bottom))]">
                 
                 {/* Home */}
                 <NavLink 
