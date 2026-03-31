@@ -123,7 +123,7 @@ export default function ForOwners({ lang }: ForOwnersProps) {
     };
 
     return (
-        <div ref={containerRef} className="pt-56 pb-40 px-6 bg-bg selection:bg-primary/20 overflow-hidden">
+        <div ref={containerRef} className="pt-32 pb-16 px-6 bg-bg selection:bg-primary/20 overflow-hidden">
              {/* Artistic Background Backdrop */}
             <div className="absolute top-0 left-0 w-full h-[60vh] pointer-events-none -z-10 opacity-[0.03] dark:opacity-[0.07]">
                 <span className="absolute top-10 left-1/2 -translate-x-1/2 text-[18rem] font-black italic whitespace-nowrap uppercase tracking-tighter select-none rotate-3">
@@ -132,31 +132,31 @@ export default function ForOwners({ lang }: ForOwnersProps) {
             </div>
 
             <div className="max-w-[1440px] mx-auto">
-                <div className="grid lg:grid-cols-2 gap-32 items-center mb-48">
+                <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
                     {/* Left: Benefits */}
                     <div className="reveal">
-                        <div className="flex items-center gap-3 mb-10">
+                        <div className="flex items-center gap-3 mb-6">
                             <Zap size={14} className="text-primary" />
-                            <span className="bg-primary/10 text-primary px-10 py-3 rounded-full font-black text-[10px] uppercase tracking-[0.5em] shadow-sm">
+                            <span className="bg-primary/10 text-primary px-8 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.5em] shadow-sm">
                                 Premium Partners
                             </span>
                         </div>
-                        <h1 className="text-8xl md:text-[10rem] mb-12 tracking-tighter text-text-main font-display font-black italic leading-[0.8] uppercase">
+                        <h1 className="text-5xl md:text-7xl mb-6 tracking-tighter text-text-main font-display font-black italic leading-[0.85] uppercase">
                             {selectedLang === 'pt' ? 'Eleve o seu' : 'Scale your'} <br /><span className="text-primary italic">Negócio</span>
                         </h1>
-                        <p className="text-2xl md:text-3xl text-text-dim/80 mb-20 font-black leading-tight italic uppercase tracking-tighter max-w-2xl opacity-70">
+                        <p className="text-lg md:text-xl text-text-dim/80 mb-10 font-black leading-tight italic uppercase tracking-tighter max-w-2xl opacity-70">
                             "{t.subtitle}"
                         </p>
 
-                        <div className="space-y-16">
+                        <div className="space-y-8">
                             {BENEFITS.map((item, i) => (
-                                <div key={i} className="flex gap-10 group overflow-hidden">
-                                    <div className="w-20 h-20 bg-primary/5 rounded-[2rem] flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-sm border border-primary/10">
-                                        <item.icon size={36} strokeWidth={2.5} />
+                                <div key={i} className="flex gap-5 group overflow-hidden">
+                                    <div className="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-sm border border-primary/10">
+                                        <item.icon size={24} strokeWidth={2.5} />
                                     </div>
-                                    <div className="py-2">
-                                        <h4 className="font-black text-text-main uppercase text-sm tracking-[0.3em] mb-4 italic leading-none">{item.title}</h4>
-                                        <p className="text-text-dim text-xl font-bold italic uppercase tracking-tight opacity-60 group-hover:opacity-100 transition-opacity">{item.desc}</p>
+                                    <div className="py-1">
+                                        <h4 className="font-black text-text-main uppercase text-xs tracking-[0.2em] mb-2 italic leading-none">{item.title}</h4>
+                                        <p className="text-text-dim text-sm font-bold italic uppercase tracking-tight opacity-60 group-hover:opacity-100 transition-opacity">{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -169,18 +169,18 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                         <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-[120px] transition-all duration-[2000ms] animate-pulse" />
                         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-moz-green/5 rounded-full blur-[120px]" />
 
-                        <div className="relative bg-surface p-12 md:p-20 rounded-[4.5rem] border border-border-subtle shadow-premium overflow-hidden">
+                        <div className="relative bg-surface p-8 md:p-10 rounded-3xl border border-border-subtle shadow-premium overflow-hidden">
                              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
 
                             {submitState === 'success' ? (
-                                <div className="text-center py-10 animate-in fade-in zoom-in duration-700">
-                                    <div className="w-28 h-28 bg-primary/10 rounded-[3rem] flex items-center justify-center text-primary mx-auto mb-10 shadow-primary-glow/10">
-                                        <CheckCircle size={54} strokeWidth={2.5} />
+                                <div className="text-center py-6 animate-in fade-in zoom-in duration-700">
+                                    <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6 shadow-primary-glow/10">
+                                        <CheckCircle size={32} strokeWidth={2.5} />
                                     </div>
-                                    <h3 className="text-5xl font-display font-black text-text-main mb-6 tracking-tighter italic uppercase leading-none">
+                                    <h3 className="text-3xl font-display font-black text-text-main mb-4 tracking-tighter italic uppercase leading-none">
                                         {selectedLang === 'pt' ? 'Mesa Reservada!' : 'Table Reserved!'}
                                     </h3>
-                                    <p className="text-text-dim text-xl font-bold italic uppercase tracking-tight opacity-70 mb-12 leading-relaxed px-6">
+                                    <p className="text-text-dim text-sm font-bold italic uppercase tracking-tight opacity-70 mb-8 leading-relaxed px-4">
                                         {selectedLang === 'pt' ? 'A nossa equipa irá analisar o seu perfil e entrar em contacto em até 48 horas.' : 'Our team will review your profile and get in touch within 48 hours.'}
                                     </p>
                                     <button
@@ -192,17 +192,17 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                                 </div>
                             ) : (
                                 <>
-                                    <div className="mb-14">
-                                        <div className="flex items-center gap-2 mb-3">
+                                    <div className="mb-8">
+                                        <div className="flex items-center gap-2 mb-2">
                                             <Layout size={14} className="text-primary" />
                                             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">{selectedLang === 'pt' ? 'Formulário de Acesso' : 'Access Form'}</span>
                                         </div>
-                                        <h3 className="text-5xl md:text-6xl mb-4 text-text-main font-display font-black tracking-tighter italic uppercase leading-none">
+                                        <h3 className="text-3xl md:text-4xl mb-3 text-text-main font-display font-black tracking-tighter italic uppercase leading-none">
                                             {t.form_title}
                                         </h3>
                                     </div>
 
-                                    <form className="space-y-8" onSubmit={handleSubmit} noValidate>
+                                    <form className="space-y-6" onSubmit={handleSubmit} noValidate>
                                         {/* Business Name */}
                                         <div className="space-y-3">
                                             <label htmlFor="fo-business" className="text-[10px] font-black uppercase tracking-[0.5em] text-text-dim/60 block px-1 ml-0.5 italic">
@@ -210,13 +210,13 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                                             </label>
                                             <div className="relative group">
                                                 <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                                                <Building2 className="absolute left-6 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={20} />
+                                                <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={18} />
                                                 <input
                                                     id="fo-business"
                                                     type="text"
                                                     value={formData.business_name}
                                                     onChange={handleChange('business_name')}
-                                                    className={`relative w-full h-16 pl-16 pr-6 glass border border-border-subtle rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 uppercase tracking-tight ${errors.business_name ? 'border-red-500/50 bg-red-500/5' : ''}`}
+                                                    className={`relative w-full h-12 pl-12 pr-6 glass border border-border-subtle rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 uppercase tracking-tight ${errors.business_name ? 'border-red-500/50 bg-red-500/5' : ''}`}
                                                     placeholder={selectedLang === 'pt' ? "EX: RESTAURANTE ZAMBEZE" : "EX: ZAMBEZE RESTAURANT"}
                                                     maxLength={100}
                                                 />
@@ -234,13 +234,13 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                                                 {t.email}
                                             </label>
                                             <div className="relative group">
-                                                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={20} />
+                                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={18} />
                                                 <input
                                                     id="fo-email"
                                                     type="email"
                                                     value={formData.email}
                                                     onChange={handleChange('email')}
-                                                    className={`relative w-full h-16 pl-16 pr-6 glass border border-border-subtle rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 tracking-tight ${errors.email ? 'border-red-500/50 bg-red-500/5' : ''}`}
+                                                    className={`relative w-full h-12 pl-12 pr-6 glass border border-border-subtle rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 tracking-tight ${errors.email ? 'border-red-500/50 bg-red-500/5' : ''}`}
                                                     placeholder="GESTAO@REST.MOZ"
                                                     maxLength={200}
                                                     autoComplete="email"
@@ -259,13 +259,13 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                                                 {t.phone} ({selectedLang === 'pt' ? 'WHATSAPP' : 'WHATSAPP'})
                                             </label>
                                             <div className="relative group">
-                                                <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={20} />
+                                                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim/40 group-focus-within:text-primary transition-colors" size={18} />
                                                 <input
                                                     id="fo-phone"
                                                     type="tel"
                                                     value={formData.whatsapp}
                                                     onChange={handleChange('whatsapp')}
-                                                    className={`relative w-full h-16 pl-16 pr-6 glass border border-border-subtle rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 tracking-tight ${errors.whatsapp ? 'border-red-500/50 bg-red-500/5' : ''}`}
+                                                    className={`relative w-full h-12 pl-12 pr-6 glass border border-border-subtle rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm placeholder:text-text-dim/20 tracking-tight ${errors.whatsapp ? 'border-red-500/50 bg-red-500/5' : ''}`}
                                                     placeholder="+258 84 000 0000"
                                                     maxLength={20}
                                                     autoComplete="tel"
@@ -289,9 +289,9 @@ export default function ForOwners({ lang }: ForOwnersProps) {
                                         <button
                                             type="submit"
                                             disabled={isLoading}
-                                            className="group relative w-full overflow-hidden bg-text-main text-surface h-20 rounded-[2rem] font-black text-sm uppercase tracking-[0.4em] hover:bg-primary hover:text-white transition-all shadow-premium hover:shadow-primary-glow flex items-center justify-center gap-4 active:scale-95 duration-500 italic"
+                                            className="group relative w-full overflow-hidden bg-text-main text-surface h-14 rounded-2xl font-black text-sm uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all shadow-premium hover:shadow-primary-glow flex items-center justify-center gap-3 active:scale-95 duration-500 italic"
                                         >
-                                            {isLoading ? <Loader2 size={28} className="animate-spin" /> : <Rocket size={28} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Rocket size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
                                             {isLoading ? (selectedLang === 'pt' ? 'A Processar...' : 'Processing...') : (
                                                 <span className="flex items-center gap-3">
                                                     {t.submit} <ArrowRight size={20} strokeWidth={3} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all" />
