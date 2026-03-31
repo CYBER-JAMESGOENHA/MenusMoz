@@ -109,6 +109,92 @@
     box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 18px 36px -18px rgba(0, 0, 0, 0.4);
   }
 
+  /* ── Botão Login — Bandeira de Moçambique ──────────────────────────────── */
+  .login-moz-btn {
+    position: relative;
+    overflow: hidden;
+    height: 48px;
+    padding: 0 24px 0 12px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-style: italic;
+    color: #fff;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1.5px rgba(255, 255, 255, 0.12);
+  }
+
+  .login-moz-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        #009A44 0%, #009A44 33%,
+        #fff 33%, #fff 34.5%,
+        #1a1a1a 34.5%, #1a1a1a 65.5%,
+        #fff 65.5%, #fff 67%,
+        #FCE300 67%, #FCE300 100%);
+    z-index: 0;
+  }
+
+  .login-moz-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 55px;
+    height: 100%;
+    background: #CE1126;
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+    z-index: 1;
+  }
+
+  .login-moz-lens {
+    position: relative;
+    z-index: 3;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px) saturate(2);
+    -webkit-backdrop-filter: blur(8px) saturate(2);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.3);
+    animation: lensPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes lensPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+  }
+
+  .login-moz-label {
+    position: relative;
+    z-index: 3;
+  }
+
+  .login-moz-btn:hover {
+    transform: scale(1.06) rotate(-1deg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+
+  .login-moz-btn:active {
+    transform: scale(0.95);
+  }
+
   /* Modern Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
