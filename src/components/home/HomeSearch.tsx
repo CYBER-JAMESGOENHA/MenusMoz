@@ -68,7 +68,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
     }, []);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-2 mb-2 relative z-[100]">
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 mt-2 mb-0 relative z-[100]">
             <div className={`group relative transform transition-all duration-700 ${isFocused ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}>
                 <div className={`absolute -inset-1 bg-gradient-to-r from-primary via-moz-yellow to-moz-green rounded-[3rem] blur-xl transition-all duration-1000 ${isFocused ? 'opacity-40 animate-pulse' : 'opacity-0 group-hover:opacity-20'}`}></div>
 

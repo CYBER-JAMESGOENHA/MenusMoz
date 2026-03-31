@@ -91,18 +91,9 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-8 w-full mt-6 relative group/cat">
-            <div className="flex items-end justify-between mb-8 pl-2">
-                 <div>
-                    <h2 className="font-display font-black text-3xl md:text-4xl text-text-main italic tracking-tight relative inline-block uppercase">
-                        Categorias 
-                        <span className="absolute -bottom-2 left-0 w-1/2 h-1 bg-primary rounded-full"></span>
-                    </h2>
-                    <p className="text-[10px] md:text-xs text-text-dim mt-4 font-black uppercase tracking-[0.2em] border-l-2 border-primary pl-2 ml-1">
-                        Explora Novos Sabores
-                    </p>
-                 </div>
-                 <div className="hidden sm:flex items-center gap-3 pr-2">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-4 w-full mt-1 relative group/cat">
+            <div className="flex items-end justify-between mb-4 pl-2">
+                  <div className="hidden sm:flex items-center gap-3 pr-2">
                      <button
                         onClick={() => scrollCarousel('left')}
                         className="w-12 h-12 rounded-full glass bg-surface/80 text-text-main flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-80 hover:opacity-100 hover:scale-110"
@@ -122,7 +113,7 @@ export const CategoryFilter: React.FC = () => {
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-6 pb-12 pt-4 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
+                className="flex overflow-x-auto gap-4 md:gap-6 pb-4 pt-4 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
             >
                 {CATEGORY_DATA.map((cat) => (
                     <Link
