@@ -91,8 +91,8 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-4 w-full mt-1 relative group/cat">
-            <div className="flex items-end justify-between mb-4 pl-2">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-2 w-full mt-0 relative group/cat">
+            <div className="flex items-end justify-between mb-2 pl-2">
                   <div className="hidden sm:flex items-center gap-3 pr-2">
                      <button
                         onClick={() => scrollCarousel('left')}
@@ -113,7 +113,7 @@ export const CategoryFilter: React.FC = () => {
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-6 pb-4 pt-4 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
+                className="flex overflow-x-auto gap-4 md:gap-6 pb-2 pt-2 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
             >
                 {CATEGORY_DATA.map((cat) => (
                     <Link
