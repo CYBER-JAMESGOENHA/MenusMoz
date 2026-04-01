@@ -90,55 +90,55 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </Helmet>
 
             {/* Hero Image */}
-            <div className="relative h-[45vh] md:h-[60vh] overflow-hidden">
+            <div className="relative h-[35vh] md:h-[40vh] overflow-hidden">
                 <img src={restaurant.image} alt={restaurant.name} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-black/40" />
-                <div className="absolute top-24 md:top-32 left-4 md:left-12 flex gap-3">
-                    <Link to="/" className="glass p-3 md:p-4 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all group border-none shadow-lg">
-                        <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-bold pr-1 text-sm md:text-base">{t.back}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-black/30" />
+                <div className="absolute top-20 md:top-24 left-4 md:left-8 flex gap-3">
+                    <Link to="/" className="glass p-2.5 md:p-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all group border-none shadow-lg">
+                        <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="font-bold pr-1 text-xs md:text-sm">{t.back}</span>
                     </Link>
-                    <button onClick={() => toggleFavorite(restaurant.id)} className={`glass p-3 md:p-4 rounded-full transition-all border-none shadow-lg ${isFavorite ? 'bg-primary text-white scale-110' : 'hover:bg-white text-text-main group'}`}>
-                        <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} className={isFavorite ? '' : 'group-hover:scale-110 group-hover:text-primary transition-all'} />
+                    <button onClick={() => toggleFavorite(restaurant.id)} className={`glass p-2.5 md:p-3 rounded-full transition-all border-none shadow-lg ${isFavorite ? 'bg-primary text-white scale-110' : 'hover:bg-white text-text-main group'}`}>
+                        <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} className={isFavorite ? '' : 'group-hover:scale-110 group-hover:text-primary transition-all'} />
                     </button>
-                    <button onClick={handleShare} className="glass p-3 md:p-4 rounded-full transition-all border-none shadow-lg text-text-main hover:bg-white group">
-                        <Share2 size={20} className="group-hover:scale-110 transition-all" />
+                    <button onClick={handleShare} className="glass p-2.5 md:p-3 rounded-full transition-all border-none shadow-lg text-text-main hover:bg-white group">
+                        <Share2 size={18} className="group-hover:scale-110 transition-all" />
                     </button>
                 </div>
             </div>
 
             {/* Info Card */}
-            <div className="max-w-7xl mx-auto px-4 -mt-20 md:-mt-32 relative z-10">
-                <div className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 shadow-2xl border border-border-subtle transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 -mt-12 md:-mt-16 relative z-10">
+                <div className="bg-surface rounded-2xl md:rounded-[2.5rem] p-5 md:p-10 shadow-2xl border border-border-subtle transition-colors duration-300">
 
                     {/* Restaurant Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
                         <div className="reveal">
-                            <div className="flex gap-3 mb-4">
-                                <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wider">{restaurant.category || restaurant.cuisine}</span>
-                                <span className={`px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wider ${checkIsOpen(restaurant.hours) ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                            <div className="flex gap-2 mb-3">
+                                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">{restaurant.category || restaurant.cuisine}</span>
+                                <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${checkIsOpen(restaurant.hours) ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
                                     {checkIsOpen(restaurant.hours) ? th.open_now : th.closed}
                                 </span>
                             </div>
-                            <h1 className="text-4xl md:text-7xl mb-3 md:mb-4 tracking-tighter text-text-main font-display font-black leading-[1.1] italic uppercase">{restaurant.name}</h1>
+                            <h1 className="text-3xl md:text-5xl mb-2 md:mb-3 tracking-tighter text-text-main font-display font-black leading-[1.1] italic uppercase">{restaurant.name}</h1>
                             {restaurant.rating && <DetailStarRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />}
-                            <p className="text-lg md:text-xl text-text-dim max-w-2xl font-medium leading-relaxed mt-4">{restaurant.description}</p>
+                            <p className="text-base md:text-lg text-text-dim max-w-2xl font-medium leading-relaxed mt-3">{restaurant.description}</p>
                         </div>
 
-                        <div className="grid grid-cols-2 md:flex md:flex-col gap-6 reveal shrink-0">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm border border-emerald-500/10"><MapPin size={24} /></div>
-                                <div><p className="text-xs font-black uppercase text-text-dim/40 tracking-widest">Localização</p><p className="font-black text-text-main">{restaurant.location || "Maputo"}</p></div>
+                        <div className="grid grid-cols-2 md:flex md:flex-col gap-4 reveal shrink-0">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-emerald-500 shadow-sm border border-emerald-500/10"><MapPin size={20} /></div>
+                                <div><p className="text-[10px] font-black uppercase text-text-dim/40 tracking-widest leading-none mb-1">Localização</p><p className="font-black text-text-main text-sm">{restaurant.location || "Maputo"}</p></div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10"><Clock size={24} /></div>
-                                <div><p className="text-xs font-black uppercase text-text-dim/40 tracking-widest">Horário</p><p className="font-black text-text-main">{restaurant.hours}</p></div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10"><Clock size={20} /></div>
+                                <div><p className="text-[10px] font-black uppercase text-text-dim/40 tracking-widest leading-none mb-1">Horário</p><p className="font-black text-text-main text-sm">{restaurant.hours}</p></div>
                             </div>
                         </div>
                     </div>
 
                     {/* Cardápio + Sidebar */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                         <div className="lg:col-span-2">
                             <MenuBook menuCategories={restaurant.menuCategories} />
                             <ReviewSection

@@ -74,12 +74,12 @@ export default function Home({
 
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="pt-40 pb-12 px-4 text-center">
+                <section className="pt-28 pb-10 px-4 text-center">
                     <div className="max-w-7xl mx-auto">
-                        <span className="inline-block bg-primary/10 text-primary px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-8">
+                        <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-6">
                             ❤️ {lang === 'pt' ? 'Os teus favoritos' : 'Your Favorites'}
                         </span>
-                        <h1 className="text-6xl md:text-8xl mb-6 leading-[0.9] tracking-tighter text-text-main font-display italic">
+                        <h1 className="text-4xl md:text-6xl mb-4 leading-[0.9] tracking-tighter text-text-main font-display italic">
                             {lang === 'pt' ? 'Os teus' : 'Your'} <span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
                         </h1>
                     </div>

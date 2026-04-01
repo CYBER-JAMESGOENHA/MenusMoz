@@ -86,26 +86,26 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories }) => {
                 <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-b from-black/5 to-transparent pointer-events-none z-20" />
                 <div className="absolute bottom-0 left-0 w-full h-3 bg-gradient-to-t from-black/5 to-transparent pointer-events-none z-20" />
 
-                <div ref={pageRef} className="flex-1 p-8 md:p-14 relative z-10 [transform-style:preserve-3d] will-change-[transform,opacity]">
-                    <div className="text-center mb-10">
-                        <p className="text-[10px] font-black uppercase tracking-[0.6em] text-primary/60 mb-3 ml-1">Locais de Moz — Menu Digital</p>
-                        <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-text-main leading-none font-display italic uppercase">
+                <div ref={pageRef} className="flex-1 p-6 md:p-10 relative z-10 [transform-style:preserve-3d] will-change-[transform,opacity]">
+                    <div className="text-center mb-8">
+                        <p className="text-[10px] font-black uppercase tracking-[0.6em] text-primary/60 mb-2 ml-1">Locais de Moz — Menu Digital</p>
+                        <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-text-main leading-none font-display italic uppercase">
                             {currentCategory?.name || 'Menu'}
                         </h2>
                         <OrnamentalDivider />
                     </div>
 
-                    <div className="space-y-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
                         {currentCategory?.items?.map((item, i) => (
                             <div key={i} className="group">
-                                <div className="flex justify-between items-baseline gap-4 mb-2">
-                                    <h4 className="text-xl md:text-2xl font-black text-text-main group-hover:text-primary transition-colors duration-300 font-display italic uppercase">
+                                <div className="flex justify-between items-baseline gap-3 mb-1.5">
+                                    <h4 className="text-lg md:text-xl font-black text-text-main group-hover:text-primary transition-colors duration-300 font-display italic uppercase">
                                         {item.name}
                                     </h4>
-                                    <div className="flex-1 border-b border-dotted border-text-dim/20 mx-2 mb-1 min-w-[10px]" />
-                                    <span className="font-black text-xl text-primary shrink-0 font-mono italic tracking-tighter">{item.price}</span>
+                                    <div className="flex-1 border-b border-dotted border-text-dim/20 mx-1.5 mb-1 min-w-[5px]" />
+                                    <span className="font-black text-lg text-primary shrink-0 font-mono italic tracking-tighter">{item.price}</span>
                                 </div>
-                                <p className="text-text-dim/80 leading-relaxed text-[15px] pl-0.5 font-medium">{item.desc}</p>
+                                <p className="text-text-dim/80 leading-relaxed text-[13px] md:text-sm pl-0.5 font-medium">{item.desc}</p>
                             </div>
                         ))}
                     </div>

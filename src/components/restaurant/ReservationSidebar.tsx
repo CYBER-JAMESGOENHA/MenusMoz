@@ -26,53 +26,53 @@ export const ReservationSidebar: React.FC<ReservationSidebarProps> = ({ restaura
     return (
         <div className="space-y-8 lg:sticky lg:top-32 h-fit">
             {/* Reservation Box — desktop */}
-            <div className="hidden lg:block bg-primary/5 p-10 rounded-[3.5rem] border border-primary/10 shadow-premium relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform duration-700 group-hover:scale-150" />
-                <h4 className="font-black text-2xl mb-6 uppercase tracking-tighter text-text-main relative z-10 italic">{t.quick_res}</h4>
-                <p className="text-sm text-text-dim mb-10 font-bold relative z-10 leading-relaxed uppercase tracking-wider">{t.res_desc}</p>
-                <div className="space-y-5 relative z-10">
+            <div className="hidden lg:block bg-primary/5 p-8 rounded-[2.5rem] border border-primary/10 shadow-premium relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform duration-700 group-hover:scale-150" />
+                <h4 className="font-black text-xl mb-4 uppercase tracking-tighter text-text-main relative z-10 italic">{t.quick_res}</h4>
+                <p className="text-[10px] text-text-dim mb-8 font-bold relative z-10 leading-relaxed uppercase tracking-wider">{t.res_desc}</p>
+                <div className="space-y-4 relative z-10">
                     <a
-                        href={whatsappLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="prism-border w-full bg-primary text-white py-6 rounded-3xl font-black text-xl hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 duration-300"
-                    >
-                        <MessageCircle size={28} /> {t.whatsapp_res}
+                         href={whatsappLink}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="prism-border w-full bg-primary text-white py-4 rounded-2xl font-black text-lg hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 duration-300"
+                     >
+                        <MessageCircle size={22} /> {t.whatsapp_res}
                     </a>
                     <a
                         href={`tel:${restaurant.whatsapp}`}
-                        className="w-full glass py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-primary/10 transition-all flex items-center justify-center gap-2 text-text-main border border-border-subtle shadow-sm active:scale-95"
+                        className="w-full glass py-3 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-primary/10 transition-all flex items-center justify-center gap-2 text-text-main border border-border-subtle shadow-sm active:scale-95"
                     >
-                        <Phone size={18} /> {t.ligar}
+                        <Phone size={16} /> {t.ligar}
                     </a>
                 </div>
             </div>
 
             {/* Review snippet */}
             {restaurant.reviews && restaurant.reviews.length > 0 && (
-                <div className="bg-surface border border-border-subtle p-10 rounded-[3.5rem] shadow-premium relative overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-accent/5 rounded-full -mr-10 -mt-10" />
-                    <div className="flex items-center gap-2 mb-6 text-accent relative z-10 bg-accent/5 w-fit px-3 py-1.5 rounded-xl border border-accent/10">
+                <div className="bg-surface border border-border-subtle p-8 rounded-[2.5rem] shadow-premium relative overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8" />
+                    <div className="flex items-center gap-2 mb-4 text-accent relative z-10 bg-accent/5 w-fit px-2.5 py-1 rounded-xl border border-accent/10">
                         <div className="flex items-center gap-0.5">
                             {[1, 2, 3, 4, 5].map(i => (
                                 <Star
                                     key={i}
-                                    size={16}
+                                    size={14}
                                     fill={i <= Math.round(restaurant.reviews![0].rating ?? 5) ? 'currentColor' : 'none'}
                                     className={i <= Math.round(restaurant.reviews![0].rating ?? 5) ? 'text-accent' : 'text-text-dim/20'}
                                 />
                             ))}
                         </div>
-                        <span className="ml-2 font-black text-lg text-text-main leading-none">{(restaurant.reviews[0].rating ?? 5).toFixed(1)}</span>
+                        <span className="ml-1.5 font-black text-base text-text-main leading-none">{(restaurant.reviews[0].rating ?? 5).toFixed(1)}</span>
                     </div>
-                    <p className="italic text-xl mb-8 text-text-main relative z-10 leading-relaxed font-display font-medium tracking-tight">
+                    <p className="italic text-lg mb-6 text-text-main relative z-10 leading-relaxed font-display font-medium tracking-tight">
                         "{restaurant.reviews[0].comment}"
                     </p>
-                    <div className="flex items-center gap-3 relative z-10 border-t border-border-subtle pt-6">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-black text-[10px] border border-primary/20 uppercase tracking-tighter">
+                    <div className="flex items-center gap-3 relative z-10 border-t border-border-subtle pt-5">
+                        <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-black text-[9px] border border-primary/20 uppercase tracking-tighter">
                             {restaurant.reviews[0].userName.substring(0, 2)}
                         </div>
-                        <p className="font-black uppercase text-[10px] tracking-[0.3em] text-text-dim/60">
+                        <p className="font-black uppercase text-[9px] tracking-[0.2em] text-text-dim/60">
                             {restaurant.reviews[0].userName} • {lang === 'pt' ? 'Verificado' : 'Verified'}
                         </p>
                     </div>
