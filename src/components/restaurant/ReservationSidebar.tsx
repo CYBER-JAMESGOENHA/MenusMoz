@@ -24,11 +24,11 @@ export const ReservationSidebar: React.FC<ReservationSidebarProps> = ({ restaura
     const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do Locais de Moz.`)}`;
 
     return (
-        <div className="space-y-8 h-full flex flex-col">
+        <div className="space-y-5 h-full flex flex-col">
             {/* Reservation Box — desktop */}
-            <div className="card-reserva hidden lg:flex lg:flex-1 bg-primary/5 p-10 rounded-[2.5rem] border border-primary/10 shadow-premium relative overflow-hidden group">
+            <div className="card-reserva hidden lg:flex lg:flex-col lg:flex-1 h-full bg-primary/5 p-10 rounded-[2.5rem] border border-primary/10 shadow-premium relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform duration-700 group-hover:scale-150" />
-                <div className="reservation-content relative z-10 flex flex-col justify-between w-full h-full">
+                <div className="reservation-content relative z-10 flex flex-col justify-between w-full h-full flex-1">
                     <div>
                         <h4 className="font-black text-xl mb-4 uppercase tracking-tighter text-text-main italic">{t.quick_res}</h4>
                         <p className="text-[10px] text-text-dim mb-8 font-bold leading-relaxed uppercase tracking-wider">{t.res_desc}</p>

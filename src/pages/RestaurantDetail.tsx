@@ -138,14 +138,15 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </div>
 
                     {/* Cardápio + Sidebar */}
-                    <div className="reveal">
+                    <nav className="reveal relative z-20 mb-8">
                         <MenuTabs 
                             menuCategories={restaurant.menuCategories} 
                             activePage={activeMenuPage} 
                             onPageChange={setActiveMenuPage} 
                         />
-                    </div>
-                    <div className="menu-reservation-container flex flex-col lg:flex-row gap-8 items-stretch">
+                    </nav>
+
+                    <div className="menu-reservation-container flex flex-col lg:flex-row gap-5 items-stretch">
                         <div className="menu-column lg:flex-[2]">
                             <MenuBook 
                                 menuCategories={restaurant.menuCategories} 
@@ -153,7 +154,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 onPageChange={setActiveMenuPage} 
                             />
                         </div>
-                        <div className="reservation-column lg:flex-1 h-full">
+                        <div className="reservation-column lg:flex-1 h-full flex flex-col">
                             <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
                         </div>
                     </div>
