@@ -16,13 +16,38 @@ interface MenuCategory {
 
 interface MenuBookProps {
     menuCategories: MenuCategory[];
+    activePage: number;
+    onPageChange: (index: number) => void;
 }
 
-export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories }) => {
-    const [activePage, setActivePage] = useState(0);
+interface MenuTabsProps {
+    menuCategories: MenuCategory[];
+    activePage: number;
+    onPageChange: (index: number) => void;
+}
+
+export const MenuTabs: React.FC<MenuTabsProps> = ({ menuCategories, activePage, onPageChange }) => {
+    return (
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-6">
+            {menuCategories.map((category, idx) => (
+                <button
+                    key={idx}
+                    onClick={() => onPageChange(idx)}
+                    className={`px-5 py-2.5 rounded-xl font-black text-sm tracking-widest transition-all whitespace-nowrap border-b-2 duration-300 font-display uppercase ${activePage === idx
+                        ? 'bg-primary text-white border-primary shadow-md shadow-primary/20 scale-105'
+                        : 'bg-surface/60 text-text-dim border-border-subtle hover:bg-primary/5 hover:text-primary hover:border-primary/30'
+                        }`}
+                >
+                    {category.name}
+                </button>
+            ))}
+        </div>
+    );
+};
+
+export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories, activePage, onPageChange }) => {
     const [isFlipping, setIsFlipping] = useState(false);
     const pageRef = useRef<HTMLDivElement>(null);
-    const tabsRef = useRef<HTMLDivElement>(null);
 
     const flipPage = (newPage: number) => {
         if (isFlipping || newPage === activePage || newPage < 0 || newPage >= menuCategories.length) return;
@@ -34,7 +59,7 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories }) => {
             duration: 0.3,
             ease: 'power2.in',
             onComplete: () => {
-                setActivePage(newPage);
+                onPageChange(newPage);
                 gsap.fromTo(
                     pageRef.current,
                     { rotateY: newPage > activePage ? 25 : -25, x: newPage > activePage ? 30 : -30, opacity: 0 },
@@ -42,34 +67,14 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories }) => {
                 );
             }
         });
-        if (tabsRef.current) {
-            const buttons = tabsRef.current.querySelectorAll('button');
-            if (buttons[newPage]) buttons[newPage].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
     };
 
     const currentCategory = menuCategories[activePage];
 
     return (
-        <div className="lg:col-span-2 space-y-6">
-            {/* Tab row */}
-            <div ref={tabsRef} className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-                {menuCategories.map((category, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => flipPage(idx)}
-                        className={`px-5 py-2.5 rounded-xl font-black text-sm tracking-widest transition-all whitespace-nowrap border-b-2 duration-300 font-display uppercase ${activePage === idx
-                            ? 'bg-primary text-white border-primary shadow-md shadow-primary/20 scale-105'
-                            : 'bg-surface/60 text-text-dim border-border-subtle hover:bg-primary/5 hover:text-primary hover:border-primary/30'
-                            }`}
-                    >
-                        {category.name}
-                    </button>
-                ))}
-            </div>
-
+        <div className="flex flex-col h-full">
             {/* Book */}
-            <div className="menu-book paper-texture [perspective:2000px] border border-border-subtle overflow-hidden">
+            <div className="menu-book paper-texture [perspective:2000px] border border-border-subtle overflow-hidden flex-1">
                 <style>{`
                     .menu-book {
                         background: var(--bg);
@@ -96,7 +101,7 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories }) => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                        {currentCategory?.items?.map((item, i) => (
+                        {currentCategory?.items?.map((item: MenuItem, i: number) => (
                             <div key={i} className="group">
                                 <div className="flex justify-between items-baseline gap-3 mb-1.5">
                                     <h4 className="text-lg md:text-xl font-black text-text-main group-hover:text-primary transition-colors duration-300 font-display italic uppercase">

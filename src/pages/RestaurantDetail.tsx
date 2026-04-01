@@ -7,7 +7,7 @@ import { checkIsOpen } from '../utils/timeUtils';
 import { restaurantService } from '../services/restaurantService';
 import { translations } from '../translations';
 import { DetailStarRating } from '../components/restaurant/DetailShared';
-import { MenuBook } from '../components/restaurant/MenuBook';
+import { MenuBook, MenuTabs } from '../components/restaurant/MenuBook';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
@@ -26,6 +26,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeMenuPage, setActiveMenuPage] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -137,11 +138,22 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </div>
 
                     {/* Cardápio + Sidebar */}
+                    <div className="reveal">
+                        <MenuTabs 
+                            menuCategories={restaurant.menuCategories} 
+                            activePage={activeMenuPage} 
+                            onPageChange={setActiveMenuPage} 
+                        />
+                    </div>
                     <div className="menu-reservation-container flex flex-col lg:flex-row gap-8 items-stretch">
                         <div className="menu-column lg:flex-[2]">
-                            <MenuBook menuCategories={restaurant.menuCategories} />
+                            <MenuBook 
+                                menuCategories={restaurant.menuCategories} 
+                                activePage={activeMenuPage} 
+                                onPageChange={setActiveMenuPage} 
+                            />
                         </div>
-                        <div className="reservation-column lg:flex-1">
+                        <div className="reservation-column lg:flex-1 h-full">
                             <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
                         </div>
                     </div>
