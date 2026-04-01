@@ -118,9 +118,6 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                             <div className="flex items-center gap-1 bg-[#fff8e6] dark:bg-yellow-900/20 shrink-0 rounded-full px-2 py-0.5 border border-[#ffe082] dark:border-yellow-900/50 shadow-sm drop-shadow-sm">
                                 <Star size={10} className="text-[#FFC107] fill-[#FFC107]" />
                                 <span className="text-[11px] font-bold text-amber-900 dark:text-amber-400">{typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating}</span>
-                                {restaurant.review_count !== undefined && (
-                                    <span className="text-[9px] text-amber-700/70 dark:text-amber-500/70 ml-0.5">· {restaurant.review_count || restaurant.reviewCount || '0'}</span>
-                                )}
                             </div>
                         )}
                     </div>
