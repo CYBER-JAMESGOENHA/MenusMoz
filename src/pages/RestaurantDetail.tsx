@@ -9,7 +9,6 @@ import { translations } from '../translations';
 import { DetailStarRating } from '../components/restaurant/DetailShared';
 import { MenuBook } from '../components/restaurant/MenuBook';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
-import { ReviewSection } from '../components/restaurant/ReviewSection';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -121,7 +120,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 </span>
                             </div>
                             <h1 className="text-3xl md:text-5xl mb-2 md:mb-3 tracking-tighter text-text-main font-display font-black leading-[1.1] italic uppercase">{restaurant.name}</h1>
-                            {restaurant.rating && <DetailStarRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />}
+                            {restaurant.rating && <DetailStarRating rating={restaurant.rating} />}
                             <p className="text-base md:text-lg text-text-dim max-w-2xl font-medium leading-relaxed mt-3">{restaurant.description}</p>
                         </div>
 
@@ -141,13 +140,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                         <div className="lg:col-span-2">
                             <MenuBook menuCategories={restaurant.menuCategories} />
-                            <ReviewSection
-                                restaurant={restaurant}
-                                user={user}
-                                lang={lang}
-                                t={t}
-                                onLoginOpen={showLogin}
-                            />
                         </div>
                         <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
                     </div>
