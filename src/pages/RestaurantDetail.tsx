@@ -137,11 +137,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </div>
 
                     {/* Cardápio + Sidebar */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                        <div className="lg:col-span-2">
+                    <div className="menu-reservation-container flex flex-col lg:flex-row gap-8 items-stretch">
+                        <div className="menu-column lg:flex-[2]">
                             <MenuBook menuCategories={restaurant.menuCategories} />
                         </div>
-                        <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
+                        <div className="reservation-column lg:flex-1">
+                            <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
+                        </div>
                     </div>
                 </div>
             </div>
