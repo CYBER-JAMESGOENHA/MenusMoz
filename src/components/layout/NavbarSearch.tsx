@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ChevronRight, MapPin } from 'lucide-react';
+import { Search, ChevronRight, MapPin, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RESTAURANTS } from '../../data/mockData';
 import { translations } from '../../translations';
@@ -19,6 +19,7 @@ interface NavbarSearchProps {
 const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [location, setLocation] = useState('Maxaquene');
   const searchRef = useRef<HTMLDivElement>(null);
   const t = (translations[lang as keyof typeof translations] as any) ?? translations.pt;
   const navigate = useNavigate();
@@ -69,83 +70,93 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         () => {
-          // In a real app, we'd update context with coords
-          alert('Localização obtida com sucesso!');
+          // In a real app, update with real address
+          setLocation('Minha Localização');
         },
         () => {
-          alert('Permita o acesso à localização no seu navegador.');
+          alert('Permita o acesso à localização.');
         }
       );
-    } else {
-      alert('Geolocalização não suportada neste navegador.');
     }
   };
 
   return (
-    <div ref={searchRef} className="relative hidden lg:block">
-      <div className="flex items-center gap-4 glass border border-border-subtle rounded-[2.5rem] pl-8 pr-3 py-3 w-80 xl:w-[480px] group focus-within:w-[540px] transition-all duration-700 bg-surface/5 hover:bg-surface/10 hover:shadow-premium ring-primary/5 focus-within:ring-4">
-        <Search size={18} className="text-primary shrink-0 transition-transform group-focus-within:scale-125" aria-hidden="true" />
-        <input
-          type="text"
-          placeholder={t.hero?.search_placeholder || 'Ouse descobrir...'}
-          value={searchQuery}
-          onChange={handleSearch}
-          onKeyDown={handleKeyDown}
-          aria-label={lang === 'pt' ? 'Pesquisar restaurantes' : 'Search restaurants'}
-          className="bg-transparent border-none outline-none text-sm font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
-        />
+    <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12">
+      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:shadow-premium-lg ring-primary/5 focus-within:ring-2 focus-within:border-primary/30 h-14">
+        
+        {/* Location Selector (Left) */}
         <button
           onClick={handleLocationRequest}
-          title="Adicionar localização"
-          className="flex items-center justify-center gap-3 h-11 px-5 rounded-[1.75rem] bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-500 hover:shadow-primary-glow group/loc shrink-0 whitespace-nowrap overflow-hidden relative"
+          className="flex items-center gap-2 h-full px-6 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
         >
-          <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover/loc:translate-x-[100%] transition-transform duration-700" />
-          <MapPin size={16} className="transition-transform group-hover/loc:animate-bounce relative z-10" />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] relative z-10">
-            {lang === 'pt' ? 'Localização' : 'Location'}
-          </span>
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
+            <MapPin size={16} />
+          </div>
+          <div className="flex flex-col items-start leading-none">
+            <span className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-black text-text-main truncate max-w-[80px] uppercase italic">{location}</span>
+              <ChevronDown size={12} className="text-primary" />
+            </div>
+          </div>
         </button>
+
+        {/* Search Field (Rest) */}
+        <div className="flex-1 flex items-center px-4 relative">
+          <Search size={18} className="text-text-dim/40 mr-3" />
+          <input
+            type="text"
+            placeholder={t.hero?.search_placeholder || 'Procure por pratos ou restaurantes'}
+            value={searchQuery}
+            onChange={handleSearch}
+            onKeyDown={handleKeyDown}
+            className="bg-transparent border-none outline-none text-sm font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
+          />
+          
+          {/* Magnifying Glass Indicator or Button */}
+          {searchQuery && (
+            <button 
+              onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
+              className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2"
+            >
+              <Search size={16} strokeWidth={3} />
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* Suggestions Dropdown */}
       {suggestions.length > 0 && (
         <div
-          className="absolute top-full left-0 right-0 mt-6 bg-surface/90 backdrop-blur-3xl border border-border-subtle rounded-[3rem] shadow-premium overflow-hidden z-[2000] text-left w-[500px] animate-in fade-in slide-in-from-top-6 duration-700"
+          className="absolute top-full left-0 right-0 mt-4 bg-surface/90 backdrop-blur-3xl border border-border-subtle rounded-[2rem] shadow-premium-lg overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-500"
           role="listbox"
           aria-label="Sugestões de pesquisa"
         >
-          <div className="px-8 py-5 bg-primary/5 border-b border-border-subtle flex items-center justify-between">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary italic">Sugestões em Destaque</span>
-            <div className="w-2 h-2 rounded-full bg-moz-green animate-pulse" />
+          <div className="px-6 py-4 bg-primary/5 border-b border-border-subtle flex items-center justify-between">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary italic">Resultados para você</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-moz-green animate-pulse" />
           </div>
-          <div className="max-h-[60vh] overflow-y-auto no-scrollbar py-2">
+          <div className="max-h-[60vh] overflow-y-auto no-scrollbar py-1">
             {suggestions.map((s, i) => (
               <Link
                 key={i}
                 to={`/restaurante/${s.slug}`}
                 role="option"
                 onClick={() => { setSuggestions([]); setSearchQuery(''); }}
-                className="flex items-center gap-6 px-8 py-5 hover:bg-primary/5 transition-all group border-b border-border-subtle/50 last:border-0"
+                className="flex items-center gap-4 px-6 py-4 hover:bg-primary/5 transition-all group border-b border-border-subtle/50 last:border-0"
               >
-                <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 shadow-premium group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ring-primary/0 group-hover:ring-2">
+                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-premium group-hover:scale-105 transition-transform duration-500">
                   <img src={s.image} className="w-full h-full object-cover" alt={s.name} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-display font-black text-lg text-text-main group-hover:text-primary transition-colors italic uppercase leading-none tracking-tighter">{s.name}</p>
-                  <p className="text-[10px] text-text-dim/50 font-black uppercase tracking-[0.3em] mt-2 italic">
-                    {s.type === 'restaurant' ? (lang === 'pt' ? 'Restaurante' : 'Restaurant') : `${lang === 'pt' ? 'Especialidade em' : 'Specialty in'} ${s.restaurant}`}
+                  <p className="font-display font-black text-base text-text-main group-hover:text-primary transition-colors italic uppercase leading-tight tracking-tighter">{s.name}</p>
+                  <p className="text-[9px] text-text-dim/50 font-black uppercase tracking-widest italic mt-1">
+                    {s.type === 'restaurant' ? (lang === 'pt' ? 'Restaurante' : 'Restaurant') : `${lang === 'pt' ? 'Em' : 'In'} ${s.restaurant}`}
                   </p>
                 </div>
-                <ChevronRight size={20} className="text-primary opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500" aria-hidden="true" />
+                <ChevronRight size={16} className="text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
               </Link>
             ))}
-          </div>
-          <div className="p-6 bg-surface border-t border-border-subtle text-center">
-             <button 
-                onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-                className="text-[10px] font-black uppercase tracking-[0.4em] text-text-dim hover:text-primary transition-colors underline underline-offset-4"
-             >
-                {lang === 'pt' ? 'Ver todos os resultados' : 'View all results'}
-             </button>
           </div>
         </div>
       )}
