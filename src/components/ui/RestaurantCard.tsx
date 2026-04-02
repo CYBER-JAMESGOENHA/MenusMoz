@@ -1,7 +1,6 @@
 import React, { useRef, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Star } from 'lucide-react';
-import { translations } from '../../translations';
 
 interface RestaurantCardProps {
     restaurant: any;
@@ -18,6 +17,17 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         e.stopPropagation();
         toggleFavorite(restaurant.id);
     }, [restaurant.id, toggleFavorite]);
+
+    const handleLocationClick = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (restaurant.lat && restaurant.lng) {
+            window.open(`https://maps.google.com/?q=${restaurant.lat},${restaurant.lng}`, '_blank');
+        } else {
+            // Fallback if no lat/lng provided but maps link might work via address string.
+            window.open(`https://maps.google.com/?q=${encodeURIComponent(restaurant.name || 'restaurant')}`, '_blank');
+        }
+    }, [restaurant]);
 
     return (
         <Link
@@ -38,6 +48,15 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 {/* Elegant gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
+                {/* Distance Badge (Location Overlay) */}
+                <button
+                    onClick={handleLocationClick}
+                    className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[12px] font-bold z-10 hover:bg-black/60 transition-colors shadow-sm cursor-pointer"
+                >
+                    <span className="text-[13px] leading-none mb-[1px]">📍</span>
+                    <span>{restaurant.distance_km || restaurant.distance || "2.8"} km · 8 min</span>
+                </button>
+
                 {/* Favorite Button (Upgraded) */}
                 <button
                     onClick={handleToggleFavorite}
@@ -52,30 +71,49 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
             </div>
 
             {/* Content Section */}
-            <div className="p-5 flex flex-col gap-2.5">
-                {/* Name & Rating */}
-                <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-[18px] font-extrabold leading-tight text-text-main line-clamp-1 group-hover:text-primary transition-colors duration-300">
+            <div className="p-4 flex flex-col gap-2.5">
+                {/* 1. HEADER LINE */}
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden border border-border-subtle bg-gray-50 dark:bg-gray-800 flex items-center justify-center shadow-sm">
+                        <img 
+                            src={restaurant.logo || restaurant.image} 
+                            alt={`${restaurant.name} logo`} 
+                            className="w-full h-full object-cover" 
+                        />
+                    </div>
+                    
+                    <h3 className="text-[16px] flex-1 font-bold leading-tight text-text-main line-clamp-1 group-hover:text-primary transition-colors duration-300">
                         {restaurant.name}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-[13px] font-bold text-text-main bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 px-2 py-1 rounded-lg shrink-0 shadow-sm">
-                        <Star size={14} className="fill-amber-500 text-amber-500" />
-                        <span>{typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5'}</span>
+
+                    <div className="flex flex-col items-end gap-0.5 shrink-0">
+                        <div className="flex items-center gap-1 text-[13px] font-bold text-text-main">
+                            <span>{typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5'}</span>
+                            <Star size={12} className="fill-amber-500 text-amber-500" />
+                        </div>
+                        <span className="text-[11px] font-bold tracking-wide uppercase text-emerald-600 dark:text-emerald-400">
+                            {restaurant.isOpen !== false ? "Aberto agora" : "Fechado"}
+                        </span>
                     </div>
                 </div>
 
-                {/* Identity & Distance */}
-                <div className="flex items-end justify-between gap-4 mt-0.5">
-                    <p className="text-[14px] text-text-dim/60 font-medium line-clamp-2 leading-snug">
-                        {restaurant.identity_text || "Comida caseira, grelhados frescos, acompanhamentos"}
-                    </p>
-                    <div className="flex items-center gap-1 text-[13px] font-medium text-text-dim/80 shrink-0 whitespace-nowrap">
-                        <span className="text-[14px] mb-0.5">📍</span>
-                        <span>{restaurant.distance_km || restaurant.distance || "2.8"} km</span>
+                {/* 2. DESCRIPTION LINE (IDENTITY TEXT) */}
+                <p className="text-[13px] text-text-dim/80 font-medium line-clamp-1 leading-snug">
+                    {restaurant.identity_text || "Grelhados e pratos tradicionais servidos diariamente"}
+                </p>
+
+                {/* 3. ACTION BUTTONS */}
+                <div className="flex items-center gap-2 mt-1">
+                    <div className="flex-1 bg-primary text-white text-[13px] font-bold py-2 px-4 rounded-[12px] flex items-center justify-center transition-colors group-hover:bg-primary/90">
+                        Fazer Pedido
+                    </div>
+                    <div className="flex-1 bg-surface text-text-main border border-border-subtle text-[13px] font-bold py-2 px-4 rounded-[12px] flex items-center justify-center transition-colors group-hover:bg-gray-50 dark:group-hover:bg-white/5">
+                        Ver Restaurante
                     </div>
                 </div>
             </div>
         </Link>
     );
 });
+
 
