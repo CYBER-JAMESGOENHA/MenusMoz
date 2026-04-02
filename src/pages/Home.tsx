@@ -90,14 +90,7 @@ export default function Home({
             {!showOnlyFavorites && <HeroSlideshow heroSlides={heroSlides} th={th} rootRef={rootRef} />}
 
             {/* ── Marquee Banner ────────────────────────────────────────── */}
-            {/* ── Zoom Reveal Transition ────────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <section id="transicao-cena" style={{ '--name': '--transicao-s' } as React.CSSProperties}>
-                    <div className="container-zoom">
-                        <h2 className="texto-reveal">Descobre a Tua Cena...</h2>
-                    </div>
-                </section>
-            )}
+            {!showOnlyFavorites && <MarqueeBanner />}
 
             {/* ── Category Filter Pills ──────────────────────────────────── */}
             {!showOnlyFavorites && (
