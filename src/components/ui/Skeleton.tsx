@@ -12,13 +12,35 @@ export const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
 };
 
 export const RestaurantCardSkeleton: React.FC = () => (
-  <div className="bg-surface rounded-3xl overflow-hidden shadow-premium aspect-[4/5] relative animate-pulse group">
-    <div className="w-full h-full bg-gray-200 dark:bg-gray-800" />
-    <div className="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/20 via-transparent to-transparent">
-      <div className="h-10 bg-white/10 w-3/4 rounded-xl mb-3" />
-      <div className="h-5 bg-white/5 w-1/2 rounded-lg" />
+    <div className="bg-surface rounded-[20px] overflow-hidden border border-border-subtle h-fit animate-pulse flex flex-col">
+        {/* Image Placeholder */}
+        <div className="aspect-[16/9] w-full bg-gray-200 dark:bg-gray-800" />
+        
+        {/* Content Placeholder */}
+        <div className="p-4 sm:p-5 flex flex-col gap-3">
+            {/* Title */}
+            <div className="h-5 bg-gray-200 dark:bg-gray-800 w-3/4 rounded-md" />
+            
+            {/* Meta Row (Rating/Category) */}
+            <div className="flex gap-2 items-center">
+                <div className="h-4 bg-gray-200 dark:bg-gray-800 w-12 rounded-md" />
+                <div className="h-1 w-1 bg-gray-200 dark:bg-gray-800 rounded-full" />
+                <div className="h-4 bg-gray-200 dark:bg-gray-800 w-24 rounded-md" />
+            </div>
+
+            {/* Logistics info (ETA/Dist) */}
+            <div className="flex gap-3 pt-1">
+                <div className="h-5 bg-gray-100 dark:bg-gray-800/50 w-20 rounded-md border border-gray-100 dark:border-gray-700/50" />
+                <div className="h-5 bg-gray-100 dark:bg-gray-800/50 w-20 rounded-md border border-gray-100 dark:border-gray-700/50" />
+            </div>
+
+            {/* Price Footer */}
+            <div className="mt-2.5 pt-2.5 border-t border-border-subtle/30 flex justify-between items-center">
+                <div className="h-5 bg-gray-200 dark:bg-gray-800 w-28 rounded-md" />
+                <div className="h-5 bg-gray-200 dark:bg-gray-800 w-5 rounded-md" />
+            </div>
+        </div>
     </div>
-  </div>
 );
 
 export const DetailSkeleton: React.FC = () => (

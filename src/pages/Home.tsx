@@ -112,11 +112,11 @@ export default function Home({
             {/* ── Favorites Grid ────────────────────────────────────────── */}
             {showOnlyFavorites && (
                 <section className="max-w-7xl mx-auto px-4 pb-section">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
                         {filteredRestaurants.length === 0
                             ? <EmptyFavorites lang={lang} />
                             : filteredRestaurants.map(rest => (
-                                <div key={rest.id} className="restaurant-card h-full min-h-[380px]">
+                                <div key={rest.id} className="restaurant-card h-fit">
                                     <RestaurantCard
                                         restaurant={rest}
                                         isFavorite={favorites.includes(Number(rest.id))}

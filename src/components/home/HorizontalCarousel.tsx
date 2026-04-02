@@ -82,7 +82,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
 
                 <div ref={scrollRef} className="flex overflow-x-auto gap-4 lg:gap-5 pb-4 pt-1 no-scrollbar snap-x snap-mandatory">
                     {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[80vw] sm:w-[260px] lg:w-[280px] snap-start h-auto`}>
+                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[82vw] sm:w-[280px] lg:w-[320px] snap-start h-auto`}>
                             <RestaurantCard
                                 restaurant={rest}
                                 isFavorite={favorites.includes(rest.id)}
