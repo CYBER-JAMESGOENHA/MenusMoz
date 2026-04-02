@@ -132,7 +132,7 @@ export default function ForOwners({ lang }: ForOwnersProps) {
             </div>
 
             <div className="max-w-[1440px] mx-auto">
-                <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div className="grid lg:grid-cols-2 gap-12 items-center mb-section">
                     {/* Left: Benefits */}
                     <div className="reveal">
                         <div className="flex items-center gap-3 mb-6">

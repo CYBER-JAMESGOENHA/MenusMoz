@@ -27,6 +27,7 @@
   --color-text-dim: var(--text-dim-color);
   --color-border-subtle: var(--border-color);
 
+  --spacing-section: 26px;
   --radius-custom: 1.5rem;
   --radius-custom-lg: 2.25rem;
 

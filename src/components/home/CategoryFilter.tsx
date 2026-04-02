@@ -91,8 +91,8 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-2 w-full mt-0 relative group/cat">
-            <div className="flex items-end justify-between mb-2 pl-2">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full mt-0 relative group/cat">
+            <div className="flex items-end justify-between pl-2">
                   <div className="hidden sm:flex items-center gap-3 pr-2">
                      <button
                         onClick={() => scrollCarousel('left')}

@@ -67,7 +67,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ heroSlides = [], t
     }, [currentSlide, rootRef]);
 
     return (
-        <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-20 md:pt-24 mb-0 reveal overflow-hidden">
+        <section ref={slideshowRef} className="max-w-[1440px] mx-auto px-4 pt-20 md:pt-24 mb-section reveal overflow-hidden">
             <div className="relative rounded-3xl md:rounded-custom-lg bg-black text-white overflow-hidden min-h-[240px] sm:min-h-[280px] md:min-h-[320px] border border-white/10 shadow-premium flex items-center">
 
                 <div className="hero-parallax-bg absolute inset-0 z-0 h-[115%] w-full -top-[7.5%]">

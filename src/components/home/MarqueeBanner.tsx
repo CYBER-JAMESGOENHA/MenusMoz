@@ -4,7 +4,7 @@ export const MarqueeBanner: React.FC = () => {
     const marqueeText = " AQUI ENCONTRAS TODA CENA! • RESTAURANTES • BOTTLE STORES • ENTRETENIMENTO • ";
     
     return (
-        <div className="marquee-container my-12 border-y border-black/10">
+        <div className="marquee-container mb-section border-y border-black/10">
             <div className="marquee-track">
                 {/* We repeat the text enough times to cover more than 100% of the width, 
                     and duplicate the entire set for the CSS translateX(-50%) trick. */}

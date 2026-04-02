@@ -74,7 +74,7 @@ export default function Home({
 
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="pt-28 pb-10 px-4 text-center">
+                <section className="pt-28 pb-section px-4 text-center">
                     <div className="max-w-7xl mx-auto">
                         <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-6">
                             ❤️ {lang === 'pt' ? 'Os teus favoritos' : 'Your Favorites'}
@@ -113,7 +113,7 @@ export default function Home({
 
             {/* ── Favorites Grid ────────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-20">
+                <section className="max-w-7xl mx-auto px-4 pb-section">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredRestaurants.length === 0
                             ? <EmptyFavorites lang={lang} />

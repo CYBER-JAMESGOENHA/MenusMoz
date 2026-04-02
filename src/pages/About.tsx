@@ -44,7 +44,7 @@ export default function About({ lang = 'pt' }: AboutProps) {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 md:px-12">
-                <div className="text-center mb-16 reveal">
+                <div className="text-center mb-section reveal">
                     <div className="flex items-center justify-center gap-3 mb-6">
                         <div className="h-px w-8 bg-primary/30" />
                         <span className="bg-primary text-white px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-[0.5em] shadow-primary-glow">
@@ -60,7 +60,7 @@ export default function About({ lang = 'pt' }: AboutProps) {
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 mb-16 reveal items-center">
+                <div className="grid lg:grid-cols-2 gap-12 mb-section reveal items-center">
                     <div className="relative group">
                         <div className="absolute -inset-6 bg-primary/5 rounded-2xl blur-3xl group-hover:bg-primary/10 transition-all duration-1000 opacity-60" />
                         <div className="relative bg-surface p-8 md:p-10 rounded-2xl border border-border-subtle shadow-premium overflow-hidden group">
