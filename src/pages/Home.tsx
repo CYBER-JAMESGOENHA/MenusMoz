@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
 import { HeroSlideshow } from '../components/home/HeroSlideshow';
 import { CategoryFilter } from '../components/home/CategoryFilter';
-import { MarqueeBanner } from '../components/home/MarqueeBanner';
 import { HorizontalCarousel } from '../components/home/HorizontalCarousel';
 import { EmptyFavorites } from '../components/home/EmptyFavorites';
 import { RestaurantCard } from '../components/ui/RestaurantCard';
@@ -90,7 +89,6 @@ export default function Home({
             {!showOnlyFavorites && <HeroSlideshow heroSlides={heroSlides} th={th} rootRef={rootRef} />}
 
             {/* ── Marquee Banner ────────────────────────────────────────── */}
-            {!showOnlyFavorites && <MarqueeBanner />}
 
             {/* ── Category Filter Pills ──────────────────────────────────── */}
             {!showOnlyFavorites && (

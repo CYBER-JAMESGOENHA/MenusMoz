@@ -259,50 +259,5 @@
     justify-content: space-between;
 }
 
-/* ── Continuous Infinite Marquee ────────────────────────────── */
-@keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.marquee-container {
-  width: 100%;
-  overflow: hidden;
-  background-color: #FFD700;
-  white-space: nowrap;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.marquee-track {
-  display: flex;
-  width: fit-content;
-  animation: marquee-scroll 30s linear infinite;
-  will-change: transform;
-}
-
-.marquee-item {
-     flex-shrink: 0;
-     padding: 1.5rem 0;
-     display: flex;
-     align-items: center;
-}
-
-.marquee-text {
-  color: #000000;
-  font-size: 1.25rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  padding: 0 1rem;
-}
-
-@media (min-width: 768px) {
-  .marquee-text {
-    font-size: 2.5rem;
-    letter-spacing: -0.05em;
-  }
-}
 
 

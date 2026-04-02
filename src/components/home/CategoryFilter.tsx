@@ -92,28 +92,25 @@ export const CategoryFilter: React.FC = () => {
 
     return (
         <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full mt-0 relative group/cat">
-            <div className="flex items-end justify-between pl-2">
-                  <div className="hidden sm:flex items-center gap-3 pr-2">
-                     <button
-                        onClick={() => scrollCarousel('left')}
-                        className="w-12 h-12 rounded-full glass bg-surface/80 text-text-main flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-80 hover:opacity-100 hover:scale-110"
-                        aria-label="Scroll left"
-                     >
-                          <ChevronLeft size={24} />
-                     </button>
-                     <button
-                        onClick={() => scrollCarousel('right')}
-                        className="w-12 h-12 rounded-full glass bg-surface/80 text-text-main flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-80 hover:opacity-100 hover:scale-110"
-                        aria-label="Scroll right"
-                     >
-                          <ChevronRight size={24} />
-                     </button>
-                 </div>
-            </div>
+            {/* Navigation Buttons - Repositioned to sides */}
+            <button
+                onClick={() => scrollCarousel('left')}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
+                aria-label="Scroll left"
+            >
+                <ChevronLeft size={24} />
+            </button>
+            <button
+                onClick={() => scrollCarousel('right')}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
+                aria-label="Scroll right"
+            >
+                <ChevronRight size={24} />
+            </button>
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-6 pb-2 pt-2 no-scrollbar snap-x snap-mandatory px-2 md:px-4 items-center"
+                className="flex overflow-x-auto gap-4 md:gap-8 pb-4 pt-4 no-scrollbar snap-x snap-mandatory px-4 md:px-12 items-center md:justify-center"
             >
                 {CATEGORY_DATA.map((cat) => (
                     <Link
