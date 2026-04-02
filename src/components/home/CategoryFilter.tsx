@@ -103,15 +103,15 @@ export const CategoryFilter: React.FC = () => {
             onTouchEnd={handleTouchEnd}
         >
             {/* Minimal Header */}
-            <div className="flex flex-col items-center mb-10">
-                <h2 className="category-section-title text-4xl md:text-5xl font-display italic text-text-main tracking-tight text-center">
-                    Explora Categorias
+            <div className="flex flex-col items-center mb-6">
+                <h2 className="category-section-title text-3xl md:text-5xl font-display italic text-text-main tracking-tight text-center uppercase">
+                    DESCUBRA A TUA CENA
                 </h2>
-                <div className="w-12 h-0.5 bg-primary mt-4 rounded-full opacity-30" />
+                <div className="w-12 h-0.5 bg-primary mt-2 rounded-full opacity-30" />
             </div>
 
             {/* Coverflow Container */}
-            <div className="relative h-[480px] md:h-[560px] flex items-center justify-center">
+            <div className="relative h-[380px] md:h-[480px] max-h-[60vh] flex items-center justify-center">
                 
                 {/* Navigation Controls - Premium Glassmorphism */}
                 <button 
@@ -134,18 +134,18 @@ export const CategoryFilter: React.FC = () => {
                                 className={`
                                     absolute transition-all duration-700 cubic-bezier(0.23, 1, 0.32, 1) cursor-pointer pointer-events-auto
                                     ${isHidden ? 'opacity-0 scale-50' : 'opacity-100'}
-                                    w-[280px] h-[400px] md:w-[360px] md:h-[500px] rounded-[2.5rem] overflow-hidden shadow-premium group/card
+                                    w-[240px] md:w-[480px] aspect-[4/5] md:aspect-[16/10] max-h-[45vh] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-premium group/card
                                 `}
                                 style={{
                                     transform: `
-                                        translateX(${position * 90}%) 
+                                        translateX(${position * 65}%) 
                                         scale(${isActive ? 1 : 0.75})
-                                        translateZ(${isActive ? '50px' : '0px'})
+                                        translateZ(${isActive ? '100px' : '0px'})
                                     `,
                                     zIndex: isActive ? 30 : (isSide ? 20 : 10),
-                                    opacity: isActive ? 1 : (isSide ? 0.5 : 0),
-                                    filter: isActive ? 'none' : 'grayscale(40%) blur(2px)',
-                                    perspective: '1000px'
+                                    opacity: isActive ? 1 : (isSide ? 0.4 : 0),
+                                    filter: isActive ? 'none' : 'grayscale(60%) blur(4px)',
+                                    perspective: '1500px'
                                 }}
                             >
                                 <img 
@@ -160,10 +160,10 @@ export const CategoryFilter: React.FC = () => {
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
                                 
                                 {/* Content */}
-                                <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
+                                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10">
                                     <h3 
                                         className={`
-                                            text-white font-display text-4xl md:text-5xl italic tracking-tight transition-all duration-700 delay-100
+                                            text-white font-display text-3xl md:text-4xl italic tracking-tight transition-all duration-700 delay-100 uppercase
                                             ${isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-90'}
                                         `}
                                     >
@@ -178,14 +178,14 @@ export const CategoryFilter: React.FC = () => {
                                                 Ver Opções
                                                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-white/50 transition-all duration-300 group-hover/link:w-full" />
                                             </span>
-                                            <ChevronRight size={16} className="group-hover/link:translate-x-2 transition-transform" />
+                                            <ChevronRight size={14} className="group-hover/link:translate-x-2 transition-transform" />
                                         </Link>
                                     )}
                                 </div>
 
                                 {/* Selection Glow */}
                                 {isActive && (
-                                    <div className="absolute inset-0 border-[3px] border-white/20 rounded-[2.5rem] pointer-events-none" />
+                                    <div className="absolute inset-0 border-[2px] border-white/30 rounded-[2rem] md:rounded-[3rem] pointer-events-none" />
                                 )}
                             </div>
                         );
