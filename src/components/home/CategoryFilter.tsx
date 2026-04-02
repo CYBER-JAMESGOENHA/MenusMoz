@@ -74,6 +74,19 @@ export const CategoryFilter: React.FC = () => {
     useEffect(() => {
         if (!containerRef.current) return;
         const ctx = gsap.context(() => {
+            // Animate Title
+            gsap.to('.category-title', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: 'top 85%',
+                }
+            });
+
+            // Animate Pills
             gsap.to('.category-pill', {
                 opacity: 1,
                 y: 0,
@@ -83,7 +96,7 @@ export const CategoryFilter: React.FC = () => {
                 ease: 'back.out(1.2)',
                 scrollTrigger: {
                     trigger: containerRef.current,
-                    start: 'top 85%',
+                    start: 'top 80%',
                 }
             });
         }, containerRef);
@@ -91,18 +104,25 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full mt-0 relative group/cat">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full pt-section relative group/cat">
+            {/* Section Title - Centralized with specific width */}
+            <div className="flex justify-center mb-section">
+                <h2 className="category-title opacity-0 translate-y-12 text-4xl md:text-5xl font-display font-black italic tracking-tighter text-text-main uppercase text-center w-full max-w-[428px] md:max-w-[526px] leading-[0.85]">
+                    Descubra A Tua Cena
+                </h2>
+            </div>
+
             {/* Navigation Buttons - Repositioned to sides */}
             <button
                 onClick={() => scrollCarousel('left')}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
+                className="absolute left-4 top-[60%] -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
                 aria-label="Scroll left"
             >
                 <ChevronLeft size={24} />
             </button>
             <button
                 onClick={() => scrollCarousel('right')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
+                className="absolute right-4 top-[60%] -translate-y-1/2 z-20 w-12 h-12 rounded-full glass bg-surface/80 text-text-main hidden md:flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 shadow-premium opacity-0 group-hover/cat:opacity-100 hover:scale-110 pointer-events-auto"
                 aria-label="Scroll right"
             >
                 <ChevronRight size={24} />
@@ -110,7 +130,7 @@ export const CategoryFilter: React.FC = () => {
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-8 pb-4 pt-4 no-scrollbar snap-x snap-mandatory px-4 md:px-12 items-center md:justify-center"
+                className="flex overflow-x-auto gap-4 md:gap-8 pb-4 no-scrollbar snap-x snap-mandatory px-4 md:px-12 items-center md:justify-center"
             >
                 {CATEGORY_DATA.map((cat) => (
                     <Link
