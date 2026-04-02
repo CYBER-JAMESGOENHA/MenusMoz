@@ -104,7 +104,7 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full pt-section relative group/cat">
+        <section ref={containerRef} className="max-w-7xl mx-auto px-4 mb-section w-full pt-0 relative group/cat">
             {/* Section Title - Centralized with specific width */}
             <div className="flex justify-center mb-section">
                 <h2 className="category-title opacity-0 translate-y-12 text-4xl md:text-5xl font-display font-black italic tracking-tighter text-text-main uppercase text-center w-full max-w-[428px] md:max-w-[526px] leading-[0.85]">
@@ -130,7 +130,7 @@ export const CategoryFilter: React.FC = () => {
 
             <div 
                 ref={scrollRef} 
-                className="flex overflow-x-auto gap-4 md:gap-8 pb-4 no-scrollbar snap-x snap-mandatory px-4 md:px-12 items-center md:justify-center"
+                className="flex overflow-x-auto gap-4 md:gap-8 pb-2 no-scrollbar snap-x snap-mandatory px-4 md:px-12 items-center md:justify-center"
             >
                 {CATEGORY_DATA.map((cat) => (
                     <Link
