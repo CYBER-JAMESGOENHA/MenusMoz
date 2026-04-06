@@ -64,6 +64,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [path, setPath] = useState<MenuCategory[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [detailItem, setDetailItem] = useState<{item: MenuItem, categoryName: string} | null>(null);
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -227,8 +228,15 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
               <div className="flex justify-between gap-4 relative z-10">
                 <div className="flex-1">
                   <h4 className="font-bold text-text-main text-lg mb-1">{item.name}</h4>
-                  {description && <p className="text-sm text-text-dim mb-3 line-clamp-2 md:line-clamp-3">{description}</p>}
-                  <span className="font-black text-primary text-xl bg-primary/5 px-3 py-1 rounded-lg inline-block">{item.price}</span>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="font-black text-primary text-xl bg-primary/5 px-3 py-1 rounded-lg inline-block">{item.price}</span>
+                    <button 
+                      onClick={() => setDetailItem({ item, categoryName })} 
+                      className="text-sm font-semibold text-text-dim hover:text-black hover:underline transition-colors focus:outline-none"
+                    >
+                      Ver Detalhes
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="flex flex-col items-end justify-between shrink-0">
@@ -359,6 +367,62 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
           </div>
         </>
       )}
+
+      {/* Detail Modal */}
+      {detailItem && (
+        <>
+          <div className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm transition-opacity" onClick={() => setDetailItem(null)} />
+          <div className="fixed top-auto bottom-0 left-0 right-0 max-h-[90vh] bg-surface rounded-t-[2rem] z-50 flex flex-col md:max-w-xl md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:bottom-auto md:rounded-3xl md:h-auto w-full shadow-2xl transition-transform animate-in fade-in slide-in-from-bottom-10 md:slide-in-from-bottom-0 md:zoom-in-95">
+            
+            {detailItem.item.image_url && (
+              <div className="w-full h-56 md:h-64 relative rounded-t-[2rem] md:rounded-t-3xl overflow-hidden bg-bg">
+                <img src={detailItem.item.image_url} alt={detailItem.item.name} className="w-full h-full object-cover" />
+                <button onClick={() => setDetailItem(null)} className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10 backdrop-blur-md">
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            
+            {!detailItem.item.image_url && (
+              <div className="flex justify-end p-4 pb-0 h-14">
+                <button onClick={() => setDetailItem(null)} className="p-2 bg-bg rounded-full hover:bg-black/10 transition-colors absolute right-4 top-4">
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+
+            <div className="p-6 md:p-8 overflow-y-auto flex-1 flex flex-col gap-4 pt-4">
+              <div className="flex justify-between items-start gap-4">
+                <h3 className="font-display font-black text-2xl md:text-3xl text-text-main leading-tight">{detailItem.item.name}</h3>
+                <span className="font-black text-primary text-2xl shrink-0">{detailItem.item.price}</span>
+              </div>
+              
+              <div className="bg-bg w-fit px-3 py-1 border border-border-subtle rounded-md">
+                 <span className="text-xs font-bold text-text-dim uppercase tracking-wider">{detailItem.categoryName}</span>
+              </div>
+
+              {(detailItem.item.desc || detailItem.item.description) && (
+                <div className="mt-2 text-text-dim text-base leading-relaxed">
+                  {detailItem.item.desc || detailItem.item.description}
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-border-subtle bg-surface md:rounded-b-3xl shrink-0">
+              <button 
+                onClick={() => {
+                  addToCart(detailItem.item, detailItem.categoryName);
+                  setDetailItem(null);
+                }}
+                className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-colors shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
+              >
+                <Plus size={20} /> Adicionar ao Pedido
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
     </div>
   );
 };
