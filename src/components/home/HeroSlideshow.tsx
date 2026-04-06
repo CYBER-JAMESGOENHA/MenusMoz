@@ -81,7 +81,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ heroSlides = [], t
                     <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent z-[1] hidden sm:block" />
                 </div>
 
-                <div className="relative z-10 w-full max-w-lg p-6 sm:p-5 md:p-6 slide-content" key={`content-${currentSlide}`}>
+                <div className="relative z-10 w-full max-w-lg p-6 pb-16 sm:p-8 sm:pb-8 md:p-12 md:pb-12 slide-content" key={`content-${currentSlide}`}>
                     <div className="flex flex-col gap-1.5 md:gap-2 mb-3 md:mb-4">
                         <span className="text-accent font-black uppercase tracking-[0.4em] text-[8px] md:text-[10px]">
                             {slides[currentSlide].tagline}
@@ -101,12 +101,12 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ heroSlides = [], t
                     </Link>
                 </div>
 
-                <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-8 md:bottom-12 md:left-16 z-20 flex justify-center gap-3 sm:gap-4">
+                <div className="absolute bottom-2 left-6 sm:bottom-8 sm:left-8 md:bottom-12 md:left-12 z-20 flex justify-center gap-3 sm:gap-4">
                     {slides.map((_, i) => (
                         <button
                             key={i}
                             onClick={() => setCurrentSlide(i)}
-                            className="group min-h-[44px] py-2 flex"
+                            className="group min-h-[44px] flex items-center"
                             aria-label={`Slide ${i + 1}`}
                         >
                             <div className={`h-1 rounded-full transition-all duration-700 ${currentSlide === i ? 'w-10 sm:w-12 bg-primary' : 'w-5 sm:w-6 bg-white/30 group-hover:bg-white/60'}`} />
