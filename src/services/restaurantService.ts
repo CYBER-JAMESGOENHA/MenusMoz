@@ -71,7 +71,10 @@ const BASE_RESTAURANT_QUERY = `
   *,
   menu_categories (
     *,
-    menu_items (*)
+    subcategories (
+      *,
+      menu_items (*)
+    )
   ),
   reviews (
     *,
@@ -92,18 +95,42 @@ const mapRestaurant = (r: any): Restaurant => ({
   reviewCount: r.review_count,
   cuisines: r.tags || [{ name: r.cuisine, slug: r.cuisine?.toLowerCase() }],
   isOpen: r.is_open !== undefined ? r.is_open : checkIsOpen(r.hours),
-  menuCategories: (r.menu_categories || []).map((cat: any) => ({
-    ...cat,
-    subcategories: cat.subcategories,
-    items: (cat.menu_items || cat.items || []).map((item: any) => ({
+  menuCategories: (r.menu_categories || []).map((cat: any) => {
+    // Primeiro mapeamos as subcategorias para que elas tenham os seus itens formatados
+    const mappedSubcategories = (cat.subcategories || []).map((sub: any) => ({
+      ...sub,
+      items: (sub.menu_items || []).map((item: any) => ({
+        ...item,
+        price: item.price_value
+          ? `${Number(item.price_value).toLocaleString('pt-MZ')} ${item.currency || 'MT'}`
+          : item.price,
+        priceValue: item.price_value ? Number(item.price_value) : undefined,
+        desc: item.description || item.desc
+      }))
+    }));
+
+    // Agora coletamos TODOS os itens (diretos da categoria + das subcategorias)
+    // para o array 'items' da categoria raiz
+    const directItems = (cat.menu_items || []).map((item: any) => ({
       ...item,
       price: item.price_value
         ? `${Number(item.price_value).toLocaleString('pt-MZ')} ${item.currency || 'MT'}`
         : item.price,
       priceValue: item.price_value ? Number(item.price_value) : undefined,
       desc: item.description || item.desc
-    }))
-  })),
+    }));
+
+    const allItems = [
+      ...directItems,
+      ...mappedSubcategories.flatMap((sub: any) => sub.items || [])
+    ];
+
+    return {
+      ...cat,
+      subcategories: mappedSubcategories,
+      items: allItems
+    };
+  }),
   reviews: (r.reviews || []).map((rev: any) => ({
     ...rev,
     userName: rev.profiles?.full_name || 'Utilizador',
