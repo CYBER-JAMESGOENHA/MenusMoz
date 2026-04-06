@@ -72,17 +72,17 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
             <div className={`group relative transform transition-all duration-700 ${isFocused ? 'scale-[1.02]' : 'hover:-translate-y-1'}`}>
                 <div className={`absolute -inset-1 bg-gradient-to-r from-primary via-moz-yellow to-moz-green rounded-[3rem] blur-xl transition-all duration-1000 ${isFocused ? 'opacity-40 animate-pulse' : 'opacity-0 group-hover:opacity-20'}`}></div>
 
-                <div className={`relative flex items-center bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-3xl md:rounded-[3rem] px-5 sm:px-8 py-3 md:py-4 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle shadow-xl'}`}>
-                    <Search size={22} className={`transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/50'}`} />
+                <div className={`relative flex items-center bg-[#111111]/80 md:bg-surface/80 backdrop-blur-2xl border transition-all duration-500 rounded-full md:rounded-[3rem] px-5 sm:px-8 py-2.5 md:py-4 ${isFocused ? 'border-primary shadow-premium shadow-primary/10' : 'border-border-subtle/30 md:border-border-subtle shadow-xl'}`}>
+                    <Search size={20} className={`ml-2 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/60'}`} />
                     <input
                         type="text"
-                        placeholder={t.hero?.search_placeholder || 'O que você quer comer hoje?'}
+                        placeholder="Pesquisar restaurante ou prato"
                         value={searchQuery}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => !suggestions.length && setIsFocused(false)}
                         onChange={handleSearch}
                         onKeyDown={handleKeyDown}
-                        className="bg-transparent border-none outline-none text-lg md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-display font-medium px-4"
+                        className="bg-transparent border-none outline-none text-base md:text-2xl text-text-main placeholder:text-text-dim/40 w-full font-body md:font-display px-4"
                     />
                     <button
                         type="button"
@@ -95,9 +95,9 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                             }
                         }}
                         title={t.hero?.location_tooltip || 'Usar a minha localização'}
-                        className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl md:rounded-[2rem] bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all duration-500 hover:rotate-12 hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] group/loc shrink-0"
+                        className="flex items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-full md:rounded-[2rem] bg-[#3a1616]/80 md:bg-primary/10 hover:bg-primary text-[#ef4444] md:text-primary hover:text-white transition-all duration-500 hover:rotate-12 hover:shadow-[0_0_30px_rgba(220,38,38,0.5)] group/loc shrink-0"
                     >
-                        <MapPin size={24} className="transition-transform group-hover/loc:animate-bounce" />
+                        <MapPin size={20} className="transition-transform group-hover/loc:animate-bounce" />
                     </button>
                 </div>
 

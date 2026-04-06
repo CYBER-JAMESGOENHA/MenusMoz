@@ -102,16 +102,40 @@ export const CategoryFilter: React.FC = () => {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
-            {/* Minimal Header */}
-            <div className="flex flex-col items-center mb-6">
+            {/* Minimal Header (Desktop only) */}
+            <div className="hidden md:flex flex-col items-center mb-6">
                 <h2 className="category-section-title text-3xl md:text-5xl font-display italic text-text-main tracking-tight text-center uppercase">
                     DESCUBRA A TUA CENA
                 </h2>
                 <div className="w-12 h-0.5 bg-primary mt-2 rounded-full opacity-30" />
             </div>
 
-            {/* Coverflow Container */}
-            <div className="relative h-[380px] md:h-[480px] max-h-[60vh] flex items-center justify-center">
+            {/* Mobile Native Scroll View (Circular Categories) */}
+            <div className="md:hidden flex overflow-x-auto gap-4 px-2 pb-4 pt-2 no-scrollbar snap-x snap-mandatory">
+                {CATEGORY_DATA.map((cat) => (
+                    <Link 
+                        key={cat.name}
+                        to={`/restaurantes?category=${encodeURIComponent(cat.name)}`}
+                        className="flex-shrink-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full relative overflow-hidden group snap-center border-2 border-border-subtle/20 shadow-xl"
+                    >
+                        <img 
+                            src={cat.img} 
+                            alt={cat.name} 
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40 transition-colors" />
+                        <div className="absolute inset-0 flex items-center justify-center p-2 text-center">
+                            <span className="text-white text-lg font-display italic tracking-tight uppercase" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                                {cat.name}
+                            </span>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+
+            {/* Coverflow Container (Desktop only) */}
+            <div className="hidden relative h-[380px] md:h-[480px] max-h-[60vh] md:flex items-center justify-center">
                 
                 {/* Navigation Controls - Premium Glassmorphism */}
                 <button 
@@ -129,7 +153,7 @@ export const CategoryFilter: React.FC = () => {
                         return (
                             <div
                                 key={cat.name}
-                                ref={(el) => (cardsRef.current[index] = el)}
+                                ref={(el: HTMLDivElement | null) => { cardsRef.current[index] = el; }}
                                 onClick={() => setActiveIndex(index)}
                                 className={`
                                     absolute transition-all duration-700 cubic-bezier(0.23, 1, 0.32, 1) cursor-pointer pointer-events-auto
@@ -201,8 +225,8 @@ export const CategoryFilter: React.FC = () => {
                 </button>
             </div>
 
-            {/* Pagination / Progress */}
-            <div className="flex justify-center gap-3 mt-4">
+            {/* Pagination / Progress (Desktop only) */}
+            <div className="hidden md:flex justify-center gap-3 mt-4">
                 {CATEGORY_DATA.map((_, i) => (
                     <button
                         key={i}
