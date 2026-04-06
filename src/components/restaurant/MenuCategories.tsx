@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
-import { ShoppingBag, Plus, Minus, X, ChevronRight } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, X, ChevronRight, ArrowLeft } from 'lucide-react';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface MenuItem {
@@ -15,6 +15,7 @@ interface MenuItem {
 interface MenuCategory {
   name: string;
   items?: MenuItem[];
+  subcategories?: MenuCategory[];
 }
 
 interface CartItem extends MenuItem {
@@ -31,23 +32,25 @@ interface MenuCategoriesProps {
 /* ─── Category metadata (icons + micro-descriptions) ─────────── */
 const CATEGORY_META: Record<string, { icon: string; desc: string }> = {
   'entradas':           { icon: '🥄', desc: 'Sabores para abrir o apetite' },
+  'entradas & tapas':   { icon: '🧆', desc: 'Para partilhar' },
   'pratos principais':  { icon: '🍽️', desc: 'O melhor da nossa cozinha' },
   'sobremesas':         { icon: '🍮', desc: 'O doce final perfeito' },
-  'bebidas':            { icon: '🥂', desc: 'Para acompanhar a refeição' },
+  'bebidas':            { icon: '🥂', desc: 'Para acompanhar' },
   'peixes':             { icon: '🐟', desc: 'Frescos do Índico' },
-  'mariscos':           { icon: '🦐', desc: 'Direto da nossa costa' },
-  'tradicionais':       { icon: '🫕', desc: 'Sabor autêntico moçambicano' },
+  'mariscos & peixes':  { icon: '🦐', desc: 'O melhor do mar' },
+  'sushi':              { icon: '🍣', desc: 'Rolos, frescos e tradicionais' },
+  'tradicionais':       { icon: '🫕', desc: 'Sabor moçambicano' },
   'acompanhamentos':    { icon: '🥗', desc: 'O complemento ideal' },
   'burgers':            { icon: '🍔', desc: 'Artesanais e suculentos' },
   'espetadas':          { icon: '🥩', desc: 'Grelhadas no carvão' },
-  'carnes':             { icon: '🥩', desc: 'Seleção premium na brasa' },
+  'carnes':             { icon: '🥩', desc: 'Premium na brasa' },
   'pastelaria':         { icon: '🥐', desc: 'Doçaria artesanal' },
   'cafés':              { icon: '☕', desc: 'Aromas selecionados' },
 };
 
 const getCategoryMeta = (name: string) => {
   const key = name.toLowerCase().trim();
-  return CATEGORY_META[key] || { icon: '📋', desc: `${name} do nosso menu` };
+  return CATEGORY_META[key] || { icon: '📋', desc: `Opções de ${name}` };
 };
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -58,11 +61,11 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   restaurantName,
   whatsapp,
 }) => {
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const [path, setPath] = useState<MenuCategory[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
-  const itemsSectionRef = useRef<HTMLDivElement>(null);
-  const categoryGridRef = useRef<HTMLDivElement>(null);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
 
   /* ─── Cart helpers ──────────────────────────────────────────── */
   const addToCart = useCallback((item: MenuItem, categoryName: string) => {
@@ -99,54 +102,42 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
 
   const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
 
-  /* ─── Category click handler ────────────────────────────────── */
-  const handleCategoryClick = (idx: number) => {
-    if (activeCategory === idx) {
-      // Collapse: animate out then set null
-      if (itemsSectionRef.current) {
-        gsap.to(itemsSectionRef.current, {
-          opacity: 0,
-          y: -20,
-          duration: 0.3,
-          ease: 'power2.in',
-          onComplete: () => setActiveCategory(null),
-        });
-      } else {
-        setActiveCategory(null);
-      }
-      return;
-    }
+  /* ─── Navigation Handlers ───────────────────────────────────── */
+  const currentCategory = path.length > 0 ? path[path.length - 1] : null;
 
-    setActiveCategory(idx);
+  const navigateForward = (cat: MenuCategory) => {
+    if (containerRef.current) {
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        y: 10,
+        duration: 0.2,
+        onComplete: () => {
+          setPath([...path, cat]);
+          gsap.fromTo(containerRef.current, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3 });
+        }
+      });
+    } else {
+      setPath([...path, cat]);
+    }
   };
 
-  /* ─── Animate items in when category changes ────────────────── */
-  useEffect(() => {
-    if (activeCategory === null || !itemsSectionRef.current) return;
+  const navigateBack = () => {
+    if (containerRef.current) {
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        y: -10,
+        duration: 0.2,
+        onComplete: () => {
+          setPath(path.slice(0, -1));
+          gsap.fromTo(containerRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 });
+        }
+      });
+    } else {
+      setPath(path.slice(0, -1));
+    }
+  };
 
-    // Smooth scroll to items
-    const yOffset = -100;
-    const element = itemsSectionRef.current;
-    const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-
-    // Animate items
-    gsap.fromTo(
-      itemsSectionRef.current,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
-    );
-
-    // Stagger individual items
-    const items = itemsSectionRef.current.querySelectorAll('.menu-item-card');
-    gsap.fromTo(
-      items,
-      { opacity: 0, y: 20, scale: 0.97 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.06, ease: 'power3.out', delay: 0.15 }
-    );
-  }, [activeCategory]);
-
-  /* ─── Send to WhatsApp ──────────────────────────────────────── */
+  /* ─── WhatsApp ──────────────────────────────────────────────── */
   const sendToWhatsApp = () => {
     if (!whatsapp || cart.length === 0) return;
     const lines = cart.map(c => `• ${c.qty}x ${c.name} (${c.price})`);
@@ -154,184 +145,216 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  const currentCategory = activeCategory !== null ? menuCategories[activeCategory] : null;
+  /* ─── Render functions ──────────────────────────────────────── */
 
-  return (
-    <div className="menu-categories-root">
-      {/* ─── Section Title ──────────────────────────────────────── */}
-      <div className="menu-section-header">
-        <span className="menu-section-label">Cardápio Digital</span>
-        <h2 className="menu-section-title">Explore o Menu</h2>
-        <p className="menu-section-subtitle">
-          Escolha uma categoria para ver os pratos disponíveis
-        </p>
+  const renderBreadcrumb = () => {
+    if (path.length === 0) return null;
+    return (
+      <div className="flex items-center gap-2 mb-6 text-sm text-text-dim px-2">
+        <button onClick={navigateBack} className="p-2 -ml-2 hover:bg-black/5 rounded-full transition-colors flex items-center justify-center">
+          <ArrowLeft size={18} />
+        </button>
+        <div className="flex items-center gap-2 font-medium">
+          <button onClick={() => setPath([])} className="hover:text-primary transition-colors">Menu</button>
+          {path.map((p, i) => (
+            <React.Fragment key={p.name}>
+              <ChevronRight size={14} className="opacity-50" />
+              <button 
+                onClick={() => setPath(path.slice(0, i + 1))} 
+                className={`transition-colors ${i === path.length - 1 ? 'text-primary font-bold' : 'hover:text-primary'}`}
+              >
+                {p.name}
+              </button>
+            </React.Fragment>
+          ))}
+        </div>
       </div>
+    );
+  };
 
-      {/* ─── Category Grid ──────────────────────────────────────── */}
-      <div ref={categoryGridRef} className="category-grid">
-        {menuCategories.map((cat, idx) => {
+  // State 1 & 2: Categories or Subcategories Grid
+  const renderCategoriesGrid = (categories: MenuCategory[]) => {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {categories.map((cat, idx) => {
           const meta = getCategoryMeta(cat.name);
-          const isActive = activeCategory === idx;
-          const itemCount = cat.items?.length || 0;
+          const hasSubs = cat.subcategories && cat.subcategories.length > 0;
+          const itemCount = hasSubs ? `${cat.subcategories!.length} seções` : `${cat.items?.length || 0} itens`;
 
           return (
             <button
               key={idx}
-              onClick={() => handleCategoryClick(idx)}
-              className={`category-card ${isActive ? 'category-card--active' : ''}`}
-              aria-expanded={isActive}
+              onClick={() => navigateForward(cat)}
+              className="text-left bg-white border border-border-subtle p-5 rounded-2xl hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all group flex items-center justify-between"
             >
-              <div className="category-card__icon">{meta.icon}</div>
-              <div className="category-card__content">
-                <h3 className="category-card__name">{cat.name}</h3>
-                <p className="category-card__desc">{meta.desc}</p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-bg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                  {meta.icon}
+                </div>
+                <div>
+                  <h3 className="font-bold text-text-main text-lg mb-0.5">{cat.name}</h3>
+                  <p className="text-sm text-text-dim truncate max-w-[200px]">{meta.desc}</p>
+                </div>
               </div>
-              <div className="category-card__meta">
-                <span className="category-card__count">{itemCount} {itemCount === 1 ? 'item' : 'itens'}</span>
-                <ChevronRight
-                  size={16}
-                  className={`category-card__chevron ${isActive ? 'category-card__chevron--open' : ''}`}
-                />
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-xs font-bold text-text-dim/60 bg-bg px-2 py-1 rounded-md uppercase tracking-wider">{itemCount}</span>
+                <div className="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                  <ChevronRight size={16} />
+                </div>
               </div>
-              {/* Active indicator bar */}
-              <div className={`category-card__indicator ${isActive ? 'category-card__indicator--active' : ''}`} />
             </button>
           );
         })}
       </div>
+    );
+  };
 
-      {/* ─── Items Section (expands below categories) ───────────── */}
-      {currentCategory && (
-        <div ref={itemsSectionRef} className="items-section" id="menu-items">
-          {/* Items header */}
-          <div className="items-section__header">
-            <div className="items-section__header-left">
-              <span className="items-section__icon">{getCategoryMeta(currentCategory.name).icon}</span>
-              <div>
-                <h3 className="items-section__title">{currentCategory.name}</h3>
-                <p className="items-section__count">{currentCategory.items?.length || 0} pratos disponíveis</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setActiveCategory(null)}
-              className="items-section__close"
-              aria-label="Fechar categoria"
-            >
-              <X size={18} />
-            </button>
-          </div>
+  // State 3: Items Grid
+  const renderItemsList = (items: MenuItem[], categoryName: string) => {
+    if (!items || items.length === 0) {
+      return <div className="p-8 text-center text-text-dim bg-bg rounded-2xl">Nenhum item nesta categoria.</div>;
+    }
 
-          {/* Items grid */}
-          <div className="items-grid">
-            {currentCategory.items?.map((item, i) => {
-              const qty = getItemQty(item.name, currentCategory.name);
-              const description = item.desc || item.description || '';
+    return (
+      <div className="flex flex-col gap-4">
+        {items.map((item, i) => {
+          const qty = getItemQty(item.name, categoryName);
+          const description = item.desc || item.description || '';
 
-              return (
-                <div key={i} className="menu-item-card">
-                  <div className="menu-item-card__body">
-                    <div className="menu-item-card__info">
-                      <h4 className="menu-item-card__name">{item.name}</h4>
-                      {description && (
-                        <p className="menu-item-card__desc">{description}</p>
-                      )}
-                    </div>
-                    <div className="menu-item-card__action">
-                      <span className="menu-item-card__price">{item.price}</span>
-                      {qty === 0 ? (
-                        <button
-                          onClick={() => addToCart(item, currentCategory.name)}
-                          className="menu-item-card__add-btn"
-                          aria-label={`Adicionar ${item.name}`}
-                        >
-                          <Plus size={16} />
-                          <span>Adicionar</span>
-                        </button>
-                      ) : (
-                        <div className="menu-item-card__qty-control">
-                          <button
-                            onClick={() => removeFromCart(item.name, currentCategory.name)}
-                            className="qty-btn qty-btn--minus"
-                            aria-label="Remover"
-                          >
-                            <Minus size={14} />
-                          </button>
-                          <span className="qty-display">{qty}</span>
-                          <button
-                            onClick={() => addToCart(item, currentCategory.name)}
-                            className="qty-btn qty-btn--plus"
-                            aria-label="Adicionar mais"
-                          >
-                            <Plus size={14} />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  {/* Progress bar subtle accent */}
-                  {qty > 0 && <div className="menu-item-card__selected-bar" />}
+          return (
+            <div key={i} className={`bg-white border rounded-2xl p-5 transition-all overflow-hidden relative ${qty > 0 ? 'border-primary/50 shadow-md' : 'border-border-subtle hover:border-black/10'}`}>
+              
+              <div className="flex justify-between gap-4 relative z-10">
+                <div className="flex-1">
+                  <h4 className="font-bold text-text-main text-lg mb-1">{item.name}</h4>
+                  {description && <p className="text-sm text-text-dim mb-3 line-clamp-2 md:line-clamp-3">{description}</p>}
+                  <span className="font-black text-primary text-xl bg-primary/5 px-3 py-1 rounded-lg inline-block">{item.price}</span>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+                
+                <div className="flex flex-col items-end justify-between shrink-0">
+                  {qty === 0 ? (
+                    <button
+                      onClick={() => addToCart(item, categoryName)}
+                      className="bg-bg hover:bg-black hover:text-white transition-colors text-text-main font-bold rounded-xl px-4 py-2 flex items-center gap-2 h-10 mt-auto"
+                    >
+                      <Plus size={16} />
+                      <span className="text-sm">Adicionar</span>
+                    </button>
+                  ) : (
+                    <div className="bg-primary text-white rounded-xl flex items-center h-10 mt-auto pl-1 pr-1 overflow-hidden">
+                      <button
+                        onClick={() => removeFromCart(item.name, categoryName)}
+                        className="w-10 h-full flex items-center justify-center hover:bg-black/20 transition-colors"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="w-8 text-center font-bold text-sm">{qty}</span>
+                      <button
+                        onClick={() => addToCart(item, categoryName)}
+                        className="w-10 h-full flex items-center justify-center hover:bg-black/20 transition-colors"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
-      {/* ─── Floating Cart Button ────────────────────────────────── */}
+  const hasSubcategories = currentCategory?.subcategories && currentCategory.subcategories.length > 0;
+
+  return (
+    <div className="menu-categories-root w-full max-w-4xl mx-auto">
+      
+      {/* View Container */}
+      <div className="bg-surface rounded-3xl p-2 md:p-4 min-h-[60vh] flex flex-col relative top-0 w-full" ref={containerRef}>
+        
+        {/* Header / Breadcrumb area */}
+        {renderBreadcrumb()}
+        
+        {path.length === 0 && (
+          <div className="mb-6 px-2">
+            <h2 className="text-2xl md:text-3xl font-display font-black text-text-main mb-2">Explore o Menu</h2>
+            <p className="text-text-dim">Escolha uma categoria para continuar</p>
+          </div>
+        )}
+
+        {/* Content Area */}
+        <div className="flex-1 w-full pb-20">
+          {path.length === 0 && renderCategoriesGrid(menuCategories)}
+          {path.length > 0 && hasSubcategories && currentCategory && renderCategoriesGrid(currentCategory.subcategories!)}
+          {path.length > 0 && !hasSubcategories && currentCategory && renderItemsList(currentCategory.items || [], currentCategory.name)}
+        </div>
+
+      </div>
+
+      {/* Floating Cart Button */}
       {totalItems > 0 && (
-        <div className="floating-cart-wrapper">
+        <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
           <button
             onClick={() => setShowCart(!showCart)}
-            className="floating-cart-btn"
+            className="pointer-events-auto bg-black text-white px-6 py-4 rounded-full flex items-center gap-4 shadow-2xl hover:scale-105 transition-transform font-bold w-full max-w-md"
           >
+            <div className="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
+              <span className="text-sm">{totalItems}</span>
+            </div>
+            <span className="flex-1 text-center">Ver o seu pedido</span>
             <ShoppingBag size={20} />
-            <span className="floating-cart-btn__text">
-              Ver pedido ({totalItems} {totalItems === 1 ? 'item' : 'itens'})
-            </span>
-            <span className="floating-cart-btn__badge">{totalItems}</span>
           </button>
         </div>
       )}
 
-      {/* ─── Cart Drawer ─────────────────────────────────────────── */}
+      {/* Cart Drawer */}
       {showCart && totalItems > 0 && (
         <>
-          <div className="cart-overlay" onClick={() => setShowCart(false)} />
-          <div className="cart-drawer">
-            <div className="cart-drawer__header">
-              <h3 className="cart-drawer__title">O Seu Pedido</h3>
-              <button onClick={() => setShowCart(false)} className="cart-drawer__close">
+          <div className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onClick={() => setShowCart(false)} />
+          <div className="fixed top-auto bottom-0 left-0 right-0 max-h-[85vh] bg-surface rounded-t-[2rem] z-50 flex flex-col md:max-w-md md:left-auto md:top-0 md:rounded-l-[2rem] md:rounded-tr-none md:h-screen w-full transition-transform">
+            <div className="p-6 border-b border-border-subtle flex items-center justify-between">
+              <h3 className="font-display font-black text-2xl">O Seu Pedido</h3>
+              <button onClick={() => setShowCart(false)} className="p-2 bg-bg rounded-full hover:bg-black/10 transition-colors">
                 <X size={20} />
               </button>
             </div>
 
-            <div className="cart-drawer__items">
+            <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
               {cart.map((item, i) => (
-                <div key={i} className="cart-item">
-                  <div className="cart-item__info">
-                    <span className="cart-item__name">{item.name}</span>
-                    <span className="cart-item__cat">{item.categoryName}</span>
+                <div key={i} className="flex flex-col gap-3 pb-4 border-b border-border-subtle last:border-0 relative">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <span className="font-bold text-text-main block">{item.name}</span>
+                      <span className="text-xs text-text-dim bg-bg px-2 py-0.5 rounded uppercase mt-1 inline-block">
+                        {item.categoryName}
+                      </span>
+                    </div>
+                    <span className="font-black text-primary">{item.price}</span>
                   </div>
-                  <div className="cart-item__right">
-                    <div className="cart-item__qty-control">
-                      <button onClick={() => removeFromCart(item.name, item.categoryName)} className="qty-btn qty-btn--small">
-                        <Minus size={12} />
+                  <div className="flex items-center gap-3">
+                    <div className="bg-bg rounded-xl flex items-center h-10 w-fit">
+                      <button onClick={() => removeFromCart(item.name, item.categoryName)} className="w-10 h-full flex items-center justify-center hover:bg-black/10 transition-colors rounded-l-xl">
+                        <Minus size={14} />
                       </button>
-                      <span className="qty-display--small">{item.qty}</span>
-                      <button onClick={() => addToCart(item, item.categoryName)} className="qty-btn qty-btn--small">
-                        <Plus size={12} />
+                      <span className="w-8 text-center font-bold text-sm">{item.qty}</span>
+                      <button onClick={() => addToCart(item, item.categoryName)} className="w-10 h-full flex items-center justify-center hover:bg-black/10 transition-colors rounded-r-xl">
+                        <Plus size={14} />
                       </button>
                     </div>
-                    <span className="cart-item__price">{item.price}</span>
                   </div>
                 </div>
               ))}
             </div>
 
             {whatsapp && (
-              <button onClick={sendToWhatsApp} className="cart-drawer__submit">
-                Enviar pedido via WhatsApp
-              </button>
+              <div className="p-6 border-t border-border-subtle bg-bg/50">
+                <button onClick={sendToWhatsApp} className="w-full bg-primary text-white py-4 rounded-xl font-black text-lg hover:bg-black transition-colors shadow-xl shadow-primary/30">
+                  Pedir via WhatsApp
+                </button>
+              </div>
             )}
           </div>
         </>

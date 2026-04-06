@@ -15,7 +15,38 @@ export const RESTAURANTS = [
     offer: "15% OFF em Lagostas (Qua)",
     menuCategories: [
       {
-        name: "Entradas",
+        name: "Sushi",
+        subcategories: [
+          {
+            name: "Makis",
+            items: [
+              { name: "Maki de Salmão", price: "400 MT", desc: "Rolo de salmão fresco (8 peças)." },
+              { name: "Spicy Tuna Maki", price: "450 MT", desc: "Rolo de atum com maionese picante (8 peças)." }
+            ]
+          },
+          {
+            name: "Nigiri",
+            items: [
+              { name: "Nigiri de Salmão", price: "250 MT", desc: "2 peças de salmão sobre arroz." },
+              { name: "Nigiri de Atum", price: "260 MT", desc: "2 peças de atum sobre arroz." }
+            ]
+          },
+          {
+            name: "Sashimi",
+            items: [
+              { name: "Sashimi Misto", price: "950 MT", desc: "12 peças variadas do chef." }
+            ]
+          },
+          {
+            name: "Hot Rolls",
+            items: [
+              { name: "Hot Philadelphia", price: "550 MT", desc: "Rolo frito com salmão e cream cheese (10 peças)." }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Entradas & Tapas",
         items: [
           { name: "Casquinha de Siri", price: "350 MT", desc: "Carne de siri temperada e gratinada com queijo da ilha." },
           { name: "Lulas Salteadas", price: "450 MT", desc: "Lulas frescas com alho, salsa e um toque de piri-piri." },
@@ -24,7 +55,7 @@ export const RESTAURANTS = [
         ]
       },
       {
-        name: "Pratos Principais",
+        name: "Mariscos & Peixes",
         items: [
           { name: "Lagosta Grelhada", price: "2.400 MT", desc: "Lagosta inteira com manteiga de limão e batata frita." },
           { name: "Camarão Tigre Grelhado", price: "1.850 MT", desc: "Camarão gigante com molho piri-piri da casa." },

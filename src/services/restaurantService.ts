@@ -49,7 +49,8 @@ export interface MenuItem {
 export interface MenuCategory {
   id?: string | number;
   name: string;
-  items: MenuItem[];
+  items?: MenuItem[];
+  subcategories?: MenuCategory[];
 }
 
 export interface Review {
@@ -93,13 +94,14 @@ const mapRestaurant = (r: any): Restaurant => ({
   isOpen: r.is_open !== undefined ? r.is_open : checkIsOpen(r.hours),
   menuCategories: (r.menu_categories || []).map((cat: any) => ({
     ...cat,
-    items: (cat.menu_items || []).map((item: any) => ({
+    subcategories: cat.subcategories,
+    items: (cat.menu_items || cat.items || []).map((item: any) => ({
       ...item,
       price: item.price_value
         ? `${Number(item.price_value).toLocaleString('pt-MZ')} ${item.currency || 'MT'}`
         : item.price,
       priceValue: item.price_value ? Number(item.price_value) : undefined,
-      desc: item.description
+      desc: item.description || item.desc
     }))
   })),
   reviews: (r.reviews || []).map((rev: any) => ({
