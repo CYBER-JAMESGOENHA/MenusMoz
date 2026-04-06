@@ -32,6 +32,7 @@ export interface Restaurant {
   tags?: string[];
   features?: string[];
   logo?: string;
+  identity_text?: string;
 }
 
 export interface MenuItem {
@@ -80,6 +81,8 @@ const BASE_RESTAURANT_QUERY = `
 const mapRestaurant = (r: any): Restaurant => ({
   ...r,
   image: r.image_url,
+  logo: r.logo || null,
+  identity_text: r.identity_text || null,
   lat: r.latitude || (r.coords?.lat),
   lng: r.longitude || (r.coords?.lng),
   chefName: r.chef_name,
@@ -92,8 +95,10 @@ const mapRestaurant = (r: any): Restaurant => ({
     ...cat,
     items: (cat.menu_items || []).map((item: any) => ({
       ...item,
-      price: item.price_value ? `${item.price_value} ${item.currency || 'MT'}` : item.price,
-      priceValue: item.price_value,
+      price: item.price_value
+        ? `${Number(item.price_value).toLocaleString('pt-MZ')} ${item.currency || 'MT'}`
+        : item.price,
+      priceValue: item.price_value ? Number(item.price_value) : undefined,
       desc: item.description
     }))
   })),

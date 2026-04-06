@@ -99,7 +99,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
 
                 {/* 2. DESCRIPTION LINE (IDENTITY TEXT) */}
                 <p className="text-[13px] text-text-dim/80 font-medium line-clamp-1 leading-snug">
-                    {restaurant.identity_text || "Grelhados e pratos tradicionais servidos diariamente"}
+                    {restaurant.identity_text || restaurant.description || restaurant.cuisine}
                 </p>
 
                 {/* 3. ACTION BUTTONS */}

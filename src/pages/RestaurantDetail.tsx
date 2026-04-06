@@ -7,7 +7,8 @@ import { checkIsOpen } from '../utils/timeUtils';
 import { restaurantService } from '../services/restaurantService';
 import { translations } from '../translations';
 import { DetailStarRating } from '../components/restaurant/DetailShared';
-import { MenuBook, MenuTabs } from '../components/restaurant/MenuBook';
+import { MenuCategories } from '../components/restaurant/MenuCategories';
+import '../components/restaurant/MenuCategories.css';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
@@ -26,7 +27,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeMenuPage, setActiveMenuPage] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 <div className="bg-surface rounded-2xl md:rounded-[2.5rem] p-5 md:p-10 shadow-2xl border border-border-subtle transition-colors duration-300">
 
                     {/* Restaurant Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
                         <div className="reveal">
                             <div className="flex gap-2 mb-3">
                                 <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">{restaurant.category || restaurant.cuisine}</span>
@@ -137,24 +137,19 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         </div>
                     </div>
 
-                    {/* Cardápio + Sidebar */}
-                    <nav className="reveal relative z-20 mb-8">
-                        <MenuTabs 
-                            menuCategories={restaurant.menuCategories} 
-                            activePage={activeMenuPage} 
-                            onPageChange={setActiveMenuPage} 
-                        />
-                    </nav>
-
-                    <div className="menu-reservation-container flex flex-col lg:flex-row gap-5 items-stretch">
-                        <div className="menu-column lg:flex-[2]">
-                            <MenuBook 
-                                menuCategories={restaurant.menuCategories} 
-                                activePage={activeMenuPage} 
-                                onPageChange={setActiveMenuPage} 
+                    {/* ═══ NEW MENU SECTION ═══ */}
+                    <div className="menu-reservation-container flex flex-col lg:flex-row gap-8 items-start reveal">
+                        {/* Menu — Category-first approach */}
+                        <div className="menu-column lg:flex-[2.5] w-full">
+                            <MenuCategories
+                                menuCategories={restaurant.menuCategories || []}
+                                restaurantName={restaurant.name}
+                                whatsapp={restaurant.whatsapp}
                             />
                         </div>
-                        <div className="reservation-column lg:flex-1 h-full flex flex-col">
+
+                        {/* Sidebar — Reservation + Review */}
+                        <div className="reservation-column lg:flex-1 lg:sticky lg:top-28 w-full">
                             <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
                         </div>
                     </div>
