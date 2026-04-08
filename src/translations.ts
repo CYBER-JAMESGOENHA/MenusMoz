@@ -9,6 +9,7 @@ export interface TranslationSchema {
     about: { manifesto: string; title: string; subtitle: string; mission: string; mission_desc: string; future: string; future_desc: string };
     forOwners: { title: string; subtitle: string; form_title: string; name: string; email: string; phone: string; submit: string };
     blog: { tag: string; title: string; subtitle: string; read_more: string; all: string; culture: string; reviews: string; recipes: string; news: string };
+    profile: { title: string; favorites: string; reviews: string; settings: string; personal_info: string; security: string; joined: string; logout: string };
 }
 
 export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
@@ -105,6 +106,16 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             reviews: "Reviews",
             recipes: "Receitas",
             news: "Notícias"
+        },
+        profile: {
+            title: "Meu Perfil",
+            favorites: "Favoritos",
+            reviews: "Avaliações",
+            settings: "Definições",
+            personal_info: "Info Pessoal",
+            security: "Segurança",
+            joined: "Membro desde",
+            logout: "Sair"
         }
     },
     en: {
@@ -200,6 +211,16 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             reviews: "Reviews",
             recipes: "Recipes",
             news: "News"
+        },
+        profile: {
+            title: "My Profile",
+            favorites: "Favorites",
+            reviews: "Reviews",
+            settings: "Settings",
+            personal_info: "Personal Info",
+            security: "Security",
+            joined: "Member since",
+            logout: "Logout"
         }
     }
 };

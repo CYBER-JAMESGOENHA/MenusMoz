@@ -38,7 +38,8 @@ export const useFavorites = (user: User | null) => {
         const dbIds = data
           .map(f => Number(f.restaurant_id))
           .filter(id => !Number.isNaN(id));
-        setFavorites(prev => [...new Set([...prev, ...dbIds])]);
+        // When logged in, Supabase is the source of truth
+        setFavorites(dbIds);
       }
     } catch (err) {
       console.error('Sync favorites error:', err);

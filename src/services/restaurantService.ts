@@ -71,6 +71,7 @@ const BASE_RESTAURANT_QUERY = `
   *,
   menu_categories (
     *,
+    menu_items (*),
     subcategories (
       *,
       menu_items (*)

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ChevronLeft, MapPin, Clock, Share2, Heart } from 'lucide-react';
+import { ChevronLeft, MapPin, Clock, Share2, Heart, MessageCircle } from 'lucide-react';
 import { gsap } from 'gsap';
 import { checkIsOpen } from '../utils/timeUtils';
 import { restaurantService } from '../services/restaurantService';
@@ -134,6 +134,17 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10"><Clock size={20} /></div>
                                 <div><p className="text-[10px] font-black uppercase text-text-dim/40 tracking-widest leading-none mb-1">Horário</p><p className="font-black text-text-main text-sm">{restaurant.hours}</p></div>
                             </div>
+                            {restaurant.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, vi o ${restaurant.name} no Locais de Moz e gostaria de saber mais!`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-3 bg-[#25D366]/10 hover:bg-[#25D366] hover:text-white text-[#25D366] px-5 py-3 rounded-2xl font-black text-sm transition-all shadow-sm border border-[#25D366]/20 hover:shadow-lg hover:scale-[1.02] active:scale-95 duration-300 group"
+                                >
+                                    <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
+                                    <span className="uppercase tracking-wider text-xs">WhatsApp</span>
+                                </a>
+                            )}
                         </div>
                     </div>
 

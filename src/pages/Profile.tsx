@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { User as UserIcon, Mail, Calendar, Heart, MessageSquare, Settings, LogOut, ChevronRight, Shield, Award, Camera, MapPin } from 'lucide-react';
+import { User as UserIcon, Mail, Calendar, Heart, MessageSquare, Settings, LogOut, ChevronRight, Shield, Award, Camera, MapPin, Lock, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { translations } from '../translations';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from '@supabase/supabase-js';
+import { useAuth } from '../context/AuthContext';
 
 interface ProfileProps {
     lang: string;
@@ -22,11 +23,20 @@ interface Stats {
 }
 
 export default function Profile({ lang }: ProfileProps) {
+    const { user: authUser, updatePassword } = useAuth();
     const [user, setUser] = useState<User | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [stats, setStats] = useState<Stats>({ favorites: 0, reviews: 0 });
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    // ── Password Reset Flow ──────────────────────────────────────
+    const isResetMode = searchParams.get('reset') === 'true';
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [resetStatus, setResetStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [resetError, setResetError] = useState('');
     
     const selectedLang = (lang === 'en' || lang === 'pt' ? lang : 'pt') as 'en' | 'pt';
     const t = (translations[selectedLang]?.profile || translations.pt.profile) as any;
@@ -40,7 +50,12 @@ export default function Profile({ lang }: ProfileProps) {
         const fetchUserData = async () => {
             const { data: { session } } = await supabase!.auth.getSession();
             if (!session) {
-                navigate('/');
+                // If in reset mode, Supabase may still be processing the token.
+                // Wait briefly for onAuthStateChange to fire.
+                if (!isResetMode) {
+                    navigate('/');
+                }
+                setLoading(false);
                 return;
             }
             setUser(session.user);
@@ -67,7 +82,45 @@ export default function Profile({ lang }: ProfileProps) {
         };
 
         fetchUserData();
-    }, [navigate]);
+    }, [navigate, isResetMode]);
+
+    // Use authUser as fallback when user state hasn't been set yet
+    useEffect(() => {
+        if (authUser && !user) {
+            setUser(authUser);
+        }
+    }, [authUser, user]);
+
+    const handlePasswordReset = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setResetError('');
+
+        if (newPassword.length < 6) {
+            setResetError(selectedLang === 'pt' ? 'A palavra-passe deve ter pelo menos 6 caracteres.' : 'Password must be at least 6 characters.');
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            setResetError(selectedLang === 'pt' ? 'As palavras-passe não coincidem.' : 'Passwords do not match.');
+            return;
+        }
+
+        setResetStatus('submitting');
+        try {
+            const result = await updatePassword(newPassword);
+            if (result.error) {
+                setResetError(typeof result.error === 'string' ? result.error : result.error.message || (selectedLang === 'pt' ? 'Erro ao atualizar.' : 'Update failed.'));
+                setResetStatus('error');
+            } else {
+                setResetStatus('success');
+                setTimeout(() => {
+                    navigate('/perfil', { replace: true });
+                }, 2000);
+            }
+        } catch (err: any) {
+            setResetError(err?.message || (selectedLang === 'pt' ? 'Erro inesperado.' : 'Unexpected error.'));
+            setResetStatus('error');
+        }
+    };
 
     if (loading) {
         return (
@@ -75,6 +128,108 @@ export default function Profile({ lang }: ProfileProps) {
                 <div className="relative w-16 h-16">
                      <div className="absolute inset-0 border-4 border-primary/20 rounded-full" />
                      <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+            </div>
+        );
+    }
+
+    // ── Password Reset UI ────────────────────────────────────────
+    if (isResetMode) {
+        return (
+            <div className="min-h-screen bg-bg pt-40 pb-24 selection:bg-primary/20">
+                <Helmet>
+                    <title>{selectedLang === 'pt' ? 'Nova Palavra-passe' : 'New Password'} | Locais de Moz</title>
+                </Helmet>
+
+                <div className="max-w-md mx-auto px-6">
+                    <div className="bg-surface rounded-[3.5rem] p-10 md:p-14 border border-border-subtle shadow-premium relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-60 h-60 bg-primary/5 rounded-full blur-[80px] -mr-30 -mt-30" />
+
+                        <div className="text-center mb-8 relative z-10">
+                            <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-primary-glow">
+                                <Lock size={26} />
+                            </div>
+                            <h1 className="text-3xl font-display font-black italic text-text-main mb-2 tracking-tighter uppercase">
+                                {selectedLang === 'pt' ? 'Nova Palavra-passe' : 'New Password'}
+                            </h1>
+                            <p className="text-xs text-text-dim font-bold italic opacity-70 uppercase tracking-widest">
+                                {selectedLang === 'pt' ? 'Defina a sua nova palavra-passe' : 'Set your new password'}
+                            </p>
+                        </div>
+
+                        {resetStatus === 'success' ? (
+                            <div className="flex flex-col items-center gap-4 relative z-10">
+                                <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center">
+                                    <CheckCircle size={32} className="text-green-500" />
+                                </div>
+                                <p className="text-sm font-black text-green-600 uppercase tracking-tight text-center">
+                                    {selectedLang === 'pt' ? 'Palavra-passe actualizada com sucesso!' : 'Password updated successfully!'}
+                                </p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handlePasswordReset} className="space-y-5 relative z-10">
+                                <div className="space-y-1.5">
+                                    <label htmlFor="new-password" className="text-[10px] font-black uppercase tracking-[0.4em] text-text-dim/60 px-1 ml-0.5 block">
+                                        {selectedLang === 'pt' ? 'Nova Palavra-passe' : 'New Password'}
+                                    </label>
+                                    <div className="relative group">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={18} />
+                                        <input
+                                            id="new-password"
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={e => setNewPassword(e.target.value)}
+                                            className="w-full h-14 pl-12 pr-4 rounded-xl glass border border-border-subtle focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm"
+                                            placeholder="••••••••"
+                                            autoComplete="new-password"
+                                            required
+                                            minLength={6}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label htmlFor="confirm-password" className="text-[10px] font-black uppercase tracking-[0.4em] text-text-dim/60 px-1 ml-0.5 block">
+                                        {selectedLang === 'pt' ? 'Confirmar Palavra-passe' : 'Confirm Password'}
+                                    </label>
+                                    <div className="relative group">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim group-focus-within:text-primary transition-colors" size={18} />
+                                        <input
+                                            id="confirm-password"
+                                            type="password"
+                                            value={confirmPassword}
+                                            onChange={e => setConfirmPassword(e.target.value)}
+                                            className="w-full h-14 pl-12 pr-4 rounded-xl glass border border-border-subtle focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-text-main font-bold text-sm"
+                                            placeholder="••••••••"
+                                            autoComplete="new-password"
+                                            required
+                                            minLength={6}
+                                        />
+                                    </div>
+                                </div>
+
+                                {resetError && (
+                                    <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                                        <AlertCircle size={16} className="text-red-500 shrink-0" />
+                                        <p className="text-[11px] font-black uppercase tracking-tighter text-red-600 leading-tight">{resetError}</p>
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={resetStatus === 'submitting'}
+                                    className="w-full bg-text-main text-surface h-16 rounded-2xl font-black text-sm uppercase tracking-[0.3em] hover:bg-primary hover:text-white transition-all shadow-premium hover:shadow-primary-glow disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 active:scale-95 duration-300"
+                                >
+                                    {resetStatus === 'submitting' ? (
+                                        <div className="w-5 h-5 border-2 border-surface/30 border-t-surface rounded-full animate-spin" />
+                                    ) : (
+                                        <Lock size={18} />
+                                    )}
+                                    {selectedLang === 'pt' ? 'Actualizar Palavra-passe' : 'Update Password'}
+                                </button>
+                            </form>
+                        )}
+                    </div>
                 </div>
             </div>
         );
