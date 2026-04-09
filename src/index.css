@@ -218,12 +218,6 @@
   animation: pulse-soft 8s ease-in-out infinite;
 }
 
-/* Global Transitions */
-* {
-    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-    transition-duration: 300ms;
-}
-
 /* Menu and Reservation Alignment */
 .menu-reservation-container {
     display: flex;

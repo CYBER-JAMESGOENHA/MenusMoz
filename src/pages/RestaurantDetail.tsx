@@ -92,7 +92,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             {/* Hero Image */}
             <div className="relative h-[35vh] md:h-[40vh] overflow-hidden">
                 <img src={restaurant.image} alt={restaurant.name} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/10 to-black/30" />
                 <div className="absolute top-20 md:top-24 left-4 md:left-8 flex gap-3">
                     <Link to="/" className="glass p-2.5 md:p-3 rounded-full flex items-center gap-2 hover:bg-primary hover:text-white transition-all group border-none shadow-lg">
                         <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
