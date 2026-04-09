@@ -70,13 +70,7 @@ export default function App() {
                 }}
             />
             <CustomCursor />
-            
-            {/* Ambient Background Layers */}
-            <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-                <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] bg-primary/[0.04] rounded-full blur-[150px] animate-pulse" />
-                <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] bg-moz-green/[0.03] rounded-full blur-[150px]" />
-            </div>
-
+             
             <div className="relative z-10 flex flex-col min-h-screen">
                 <Navbar
                   darkMode={darkMode}
