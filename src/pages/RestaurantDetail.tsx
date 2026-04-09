@@ -9,7 +9,7 @@ import { translations } from '../translations';
 import { DetailStarRating } from '../components/restaurant/DetailShared';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import '../components/restaurant/MenuCategories.css';
-import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
+import { ReservationSidebar } from '../components/restaurant/ReservationSidebar';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -166,9 +166,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </div>
                 </div>
             </div>
-
-            {/* Mobile WhatsApp Bar */}
-            <MobileReservationBar restaurant={restaurant} t={t} />
 
         </div>
     );
