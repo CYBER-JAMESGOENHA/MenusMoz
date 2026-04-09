@@ -1,6 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
+import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle } from 'lucide-react';
 import { gsap } from 'gsap';
-import { ShoppingBag, Plus, Minus, X, ChevronRight, ArrowLeft } from 'lucide-react';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface MenuItem {
@@ -29,29 +32,117 @@ interface MenuCategoriesProps {
   whatsapp?: string;
 }
 
-/* ─── Category metadata (icons + micro-descriptions) ─────────── */
-const CATEGORY_META: Record<string, { icon: string; desc: string }> = {
-  'entradas':           { icon: '🥄', desc: 'Sabores para abrir o apetite' },
-  'entradas & tapas':   { icon: '🧆', desc: 'Para partilhar' },
-  'pratos principais':  { icon: '🍽️', desc: 'O melhor da nossa cozinha' },
-  'sobremesas':         { icon: '🍮', desc: 'O doce final perfeito' },
-  'bebidas':            { icon: '🥂', desc: 'Para acompanhar' },
-  'peixes':             { icon: '🐟', desc: 'Frescos do Índico' },
-  'mariscos & peixes':  { icon: '🦐', desc: 'O melhor do mar' },
-  'sushi':              { icon: '🍣', desc: 'Rolos, frescos e tradicionais' },
-  'tradicionais':       { icon: '🫕', desc: 'Sabor moçambicano' },
-  'acompanhamentos':    { icon: '🥗', desc: 'O complemento ideal' },
-  'burgers':            { icon: '🍔', desc: 'Artesanais e suculentos' },
-  'espetadas':          { icon: '🥩', desc: 'Grelhadas no carvão' },
-  'carnes':             { icon: '🥩', desc: 'Premium na brasa' },
-  'pastelaria':         { icon: '🥐', desc: 'Doçaria artesanal' },
-  'cafés':              { icon: '☕', desc: 'Aromas selecionados' },
+/* ─── Grouping Logic ─────────────────────────────────────────── */
+const COMIDA_KEYWORDS = ['comida', 'entradas', 'pratos', 'carnes', 'peixes', 'mariscos', 'burgers', 'pizzas', 'pastas', 'saladas', 'vegetariano', 'infantil', 'extras', 'acompanhamentos', 'tostas', 'miudezas', 'mutxutxus'];
+const SOBREMESAS_KEYWORDS = ['sobremesa', 'doce', 'pastelaria', 'gelado', 'pudim', 'mousse', 'tarte'];
+const BEBIDAS_KEYWORDS = ['bebida', 'cocktail', 'cerveja', 'vinho', 'gin', 'café', 'cafes', 'refrigerante', 'agua', 'cidra', 'espirituosa'];
+
+const getGroup = (name: string): 'Comida' | 'Bebidas' | 'Sobremesas' => {
+  const n = name.toLowerCase();
+  if (SOBREMESAS_KEYWORDS.some(k => n.includes(k))) return 'Sobremesas';
+  if (BEBIDAS_KEYWORDS.some(k => n.includes(k))) return 'Bebidas';
+  return 'Comida';
 };
 
-const getCategoryMeta = (name: string) => {
-  const key = name.toLowerCase().trim();
-  return CATEGORY_META[key] || { icon: '📋', desc: `Opções de ${name}` };
+const GROUP_CONFIG = {
+  Comida: {
+    icon: <Utensils size={24} />,
+    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80',
+    subtitle: 'Pratos Principais & Entradas'
+  },
+  Bebidas: {
+    icon: <CupSoda size={24} />,
+    img: 'https://images.unsplash.com/photo-1536935338218-844c798056d7?w=1200&q=80',
+    subtitle: 'Vinhos, Cocktails & Refrescos'
+  },
+  Sobremesas: {
+    icon: <IceCream size={24} />,
+    img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80',
+    subtitle: 'Doces & Pastelaria Fina'
+  }
 };
+
+/* ─── Sub-Components ──────────────────────────────────────────── */
+
+const EntryCard = ({ title, config, onClick, isTall = false }: { title: string, config: any, onClick: () => void, isTall?: boolean }) => (
+  <button
+    onClick={onClick}
+    className="group relative overflow-hidden rounded-[2.5rem] w-full h-full transition-all duration-500 hover:scale-[1.04] active:scale-[0.98] shadow-premium"
+  >
+    <img 
+      src={config.img} 
+      alt={title} 
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:bg-black/60 transition-colors duration-500" />
+    
+    <div className="absolute bottom-8 left-8 text-left z-10 transition-transform duration-500 group-hover:translate-x-2 text-white">
+      <div className="flex items-center gap-3 mb-3 opacity-90">
+        <div className="p-2.5 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20">
+          {config.icon}
+        </div>
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-70">
+          {config.subtitle}
+        </span>
+      </div>
+      <h3 className="text-4xl md:text-5xl font-display font-black italic uppercase tracking-tighter leading-none">
+        {title}
+      </h3>
+    </div>
+  </button>
+);
+
+const MenuItemCard = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: () => void, onRemove: () => void, qty: number }) => (
+  <div className={`group bg-surface border rounded-[1.5rem] p-4 transition-all duration-300 ${qty > 0 ? 'border-primary/50 shadow-premium' : 'border-border-subtle hover:border-primary/30'}`}>
+    <div className="relative aspect-square overflow-hidden rounded-2xl mb-4">
+      <img 
+        src={item.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80'} 
+        alt={item.name}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+      {qty > 0 && (
+        <div className="absolute top-3 right-3 bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shadow-lg animate-in zoom-in">
+          {qty}
+        </div>
+      )}
+    </div>
+    
+    <div className="space-y-3">
+      <div className="flex justify-between items-start gap-2">
+        <h4 className="font-bold text-text-main text-base line-clamp-2 leading-tight">{item.name}</h4>
+      </div>
+      
+      <div className="flex items-center justify-between mt-auto">
+        <span className="font-black text-primary text-lg">{item.price}</span>
+        
+        {qty === 0 ? (
+          <button
+            onClick={onAdd}
+            className="w-10 h-10 rounded-xl bg-bg border border-border-subtle flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all duration-300"
+          >
+            <Plus size={18} />
+          </button>
+        ) : (
+          <div className="flex items-center gap-2 bg-primary/10 rounded-xl p-1 border border-primary/20">
+            <button
+              onClick={onRemove}
+              className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform"
+            >
+              <Minus size={14} />
+            </button>
+            <span className="w-4 text-center font-black text-xs text-primary">{qty}</span>
+            <button
+              onClick={onAdd}
+              className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-sm active:scale-90 transition-transform"
+            >
+              <Plus size={14} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
 
 /* ═══════════════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -61,24 +152,40 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   restaurantName,
   whatsapp,
 }) => {
-  const [path, setPath] = useState<MenuCategory[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
-  const [detailItem, setDetailItem] = useState<{item: MenuItem, categoryName: string} | null>(null);
   
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionsRef = useRef<Record<string, HTMLDivElement | null>>({});
 
-  /* ─── Cart helpers ──────────────────────────────────────────── */
+  const groupedMenu = useMemo(() => {
+    const result = {
+      Comida: [] as MenuCategory[],
+      Bebidas: [] as MenuCategory[],
+      Sobremesas: [] as MenuCategory[]
+    };
+    
+    menuCategories.forEach(cat => {
+      const group = getGroup(cat.name);
+      result[group].push(cat);
+    });
+    
+    return result;
+  }, [menuCategories]);
+
+  const scrollToSection = (id: string) => {
+    gsap.to(window, {
+      duration: 0.6,
+      scrollTo: { y: `#${id}`, offsetY: 40 },
+      ease: 'power3.inOut'
+    });
+  };
+
+  /* ─── Cart Logic ────────────────────────────────────────────── */
   const addToCart = useCallback((item: MenuItem, categoryName: string) => {
     setCart(prev => {
       const existing = prev.find(c => c.name === item.name && c.categoryName === categoryName);
-      if (existing) {
-        return prev.map(c =>
-          c.name === item.name && c.categoryName === categoryName
-            ? { ...c, qty: c.qty + 1 }
-            : c
-        );
-      }
+      if (existing) return prev.map(c => c.name === item.name && c.categoryName === categoryName ? { ...c, qty: c.qty + 1 } : c);
       return [...prev, { ...item, qty: 1, categoryName }];
     });
   }, []);
@@ -86,59 +193,16 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const removeFromCart = useCallback((itemName: string, categoryName: string) => {
     setCart(prev => {
       const existing = prev.find(c => c.name === itemName && c.categoryName === categoryName);
-      if (existing && existing.qty > 1) {
-        return prev.map(c =>
-          c.name === itemName && c.categoryName === categoryName
-            ? { ...c, qty: c.qty - 1 }
-            : c
-        );
-      }
+      if (existing && existing.qty > 1) return prev.map(c => c.name === itemName && c.categoryName === categoryName ? { ...c, qty: c.qty - 1 } : c);
       return prev.filter(c => !(c.name === itemName && c.categoryName === categoryName));
     });
   }, []);
 
-  const getItemQty = useCallback((itemName: string, categoryName: string) => {
-    return cart.find(c => c.name === itemName && c.categoryName === categoryName)?.qty || 0;
-  }, [cart]);
+  const getItemQty = (itemName: string, categoryName: string) => 
+    cart.find(c => c.name === itemName && c.categoryName === categoryName)?.qty || 0;
 
   const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
 
-  /* ─── Navigation Handlers ───────────────────────────────────── */
-  const currentCategory = path.length > 0 ? path[path.length - 1] : null;
-
-  const navigateForward = (cat: MenuCategory) => {
-    if (containerRef.current) {
-      gsap.to(containerRef.current, {
-        opacity: 0,
-        y: 10,
-        duration: 0.2,
-        onComplete: () => {
-          setPath([...path, cat]);
-          gsap.fromTo(containerRef.current, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3 });
-        }
-      });
-    } else {
-      setPath([...path, cat]);
-    }
-  };
-
-  const navigateBack = () => {
-    if (containerRef.current) {
-      gsap.to(containerRef.current, {
-        opacity: 0,
-        y: -10,
-        duration: 0.2,
-        onComplete: () => {
-          setPath(path.slice(0, -1));
-          gsap.fromTo(containerRef.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 });
-        }
-      });
-    } else {
-      setPath(path.slice(0, -1));
-    }
-  };
-
-  /* ─── WhatsApp ──────────────────────────────────────────────── */
   const sendToWhatsApp = () => {
     if (!whatsapp || cart.length === 0) return;
     const lines = cart.map(c => `• ${c.qty}x ${c.name} (${c.price})`);
@@ -146,211 +210,157 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
-  /* ─── Render functions ──────────────────────────────────────── */
-
-  const renderBreadcrumb = () => {
-    if (path.length === 0) return null;
-    return (
-      <div className="flex items-center gap-2 mb-6 text-sm text-text-dim px-2">
-        <button onClick={navigateBack} className="p-2 -ml-2 hover:bg-black/5 rounded-full transition-colors flex items-center justify-center">
-          <ArrowLeft size={18} />
-        </button>
-        <div className="flex items-center gap-2 font-medium">
-          <button onClick={() => setPath([])} className="hover:text-primary transition-colors">Menu</button>
-          {path.map((p, i) => (
-            <React.Fragment key={p.name}>
-              <ChevronRight size={14} className="opacity-50" />
-              <button 
-                onClick={() => setPath(path.slice(0, i + 1))} 
-                className={`transition-colors ${i === path.length - 1 ? 'text-primary font-bold' : 'hover:text-primary'}`}
-              >
-                {p.name}
-              </button>
-            </React.Fragment>
-          ))}
+  return (
+    <div ref={containerRef} className="w-full space-y-20">
+      
+      {/* 1. Pinterest-Style Entry Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto md:h-[600px]">
+        {/* LEFT COLUMN */}
+        <div className="flex flex-col gap-6 h-full">
+          <div className="flex-[2] min-h-[250px]">
+            <EntryCard title="Comida" config={GROUP_CONFIG.Comida} onClick={() => scrollToSection('Comida')} />
+          </div>
+          <div className="flex-[1] min-h-[150px]">
+            <EntryCard title="Sobremesas" config={GROUP_CONFIG.Sobremesas} onClick={() => scrollToSection('Sobremesas')} />
+          </div>
+        </div>
+        
+        {/* RIGHT COLUMN */}
+        <div className="h-full min-h-[400px]">
+          <EntryCard isTall title="Bebidas" config={GROUP_CONFIG.Bebidas} onClick={() => scrollToSection('Bebidas')} />
         </div>
       </div>
-    );
-  };
 
-  // State 1 & 2: Categories or Subcategories Grid
-  const renderCategoriesGrid = (categories: MenuCategory[]) => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {categories.map((cat, idx) => {
-          const meta = getCategoryMeta(cat.name);
-          const hasSubs = cat.subcategories && cat.subcategories.length > 0;
-          const itemCount = hasSubs ? `${cat.subcategories!.length} seções` : `${cat.items?.length || 0} itens`;
-
+      {/* 2. Structured Menu Below */}
+      <div className="space-y-32 pt-10">
+        {(Object.entries(groupedMenu) as ['Comida' | 'Bebidas' | 'Sobremesas', MenuCategory[]][]).map(([groupName, categories]) => {
+          if (categories.length === 0) return null;
+          
           return (
-            <button
-              key={idx}
-              onClick={() => navigateForward(cat)}
-              className="text-left bg-white border border-border-subtle p-5 rounded-2xl hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all group flex items-center justify-between"
+            <section 
+              key={groupName} 
+              id={groupName}
+              ref={el => sectionsRef.current[groupName] = el}
+              className="scroll-mt-32"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-bg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  {meta.icon}
+              {/* Group Header */}
+              <div className="flex items-center gap-6 mb-16">
+                <div className="w-16 h-16 rounded-3xl bg-surface border border-border-subtle flex items-center justify-center text-primary shadow-sm">
+                  {GROUP_CONFIG[groupName].icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-text-main text-lg mb-0.5">{cat.name}</h3>
-                  <p className="text-sm text-text-dim truncate max-w-[200px]">{meta.desc}</p>
+                  <h2 className="text-5xl md:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-none">
+                    {groupName}
+                  </h2>
+                  <p className="text-text-dim/60 font-black uppercase tracking-[0.3em] text-[10px] mt-2">
+                    {categories.length} Categorias Reais
+                  </p>
                 </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-border-subtle to-transparent ml-8" />
               </div>
-              <div className="flex flex-col items-end gap-1">
-                <span className="text-xs font-bold text-text-dim/60 bg-bg px-2 py-1 rounded-md uppercase tracking-wider">{itemCount}</span>
-                <div className="w-8 h-8 rounded-full bg-primary/5 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
-                  <ChevronRight size={16} />
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
 
-  // State 3: Items Grid
-  const renderItemsList = (items: MenuItem[], categoryName: string) => {
-    if (!items || items.length === 0) {
-      return <div className="p-8 text-center text-text-dim bg-bg rounded-2xl">Nenhum item nesta categoria.</div>;
-    }
-
-    return (
-      <div className="flex flex-col gap-4">
-        {items.map((item, i) => {
-          const qty = getItemQty(item.name, categoryName);
-          const description = item.desc || item.description || '';
-
-          return (
-            <div key={i} className={`bg-white border rounded-2xl p-5 transition-all overflow-hidden relative ${qty > 0 ? 'border-primary/50 shadow-md' : 'border-border-subtle hover:border-black/10'}`}>
-              
-              <div className="flex justify-between gap-4 relative z-10">
-                <div className="flex-1">
-                  <h4 className="font-bold text-text-main text-lg mb-1">{item.name}</h4>
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className="font-black text-primary text-xl bg-primary/5 px-3 py-1 rounded-lg inline-block">{item.price}</span>
-                    <button 
-                      onClick={() => setDetailItem({ item, categoryName })} 
-                      className="text-sm font-semibold text-text-dim hover:text-black hover:underline transition-colors focus:outline-none"
-                    >
-                      Ver Detalhes
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="flex flex-col items-end justify-between shrink-0">
-                  {qty === 0 ? (
-                    <button
-                      onClick={() => addToCart(item, categoryName)}
-                      className="bg-bg hover:bg-black hover:text-white transition-colors text-text-main font-bold rounded-xl px-4 py-2 flex items-center gap-2 h-10 mt-auto"
-                    >
-                      <Plus size={16} />
-                      <span className="text-sm">Adicionar</span>
-                    </button>
-                  ) : (
-                    <div className="bg-primary text-white rounded-xl flex items-center h-10 mt-auto pl-1 pr-1 overflow-hidden">
-                      <button
-                        onClick={() => removeFromCart(item.name, categoryName)}
-                        className="w-10 h-full flex items-center justify-center hover:bg-black/20 transition-colors"
-                      >
-                        <Minus size={16} />
-                      </button>
-                      <span className="w-8 text-center font-bold text-sm">{qty}</span>
-                      <button
-                        onClick={() => addToCart(item, categoryName)}
-                        className="w-10 h-full flex items-center justify-center hover:bg-black/20 transition-colors"
-                      >
-                        <Plus size={16} />
-                      </button>
+              {/* Subcategories */}
+              <div className="space-y-24">
+                {categories.map((cat, idx) => (
+                  <div key={idx} className="space-y-10">
+                    <div className="flex items-center gap-4">
+                      <h3 className="text-2xl font-bold text-text-main tracking-tight whitespace-nowrap">
+                        {cat.name}
+                      </h3>
+                      <div className="flex-1 h-px bg-border-subtle/40" />
                     </div>
-                  )}
-                </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {(cat.items || []).map((item, i) => (
+                        <MenuItemCard 
+                          key={i} 
+                          item={item} 
+                          qty={getItemQty(item.name, cat.name)}
+                          onAdd={() => addToCart(item, cat.name)}
+                          onRemove={() => removeFromCart(item.name, cat.name)}
+                        />
+                      ))}
+                    </div>
+
+                    {cat.subcategories?.map((sub, i) => (
+                      <div key={i} className="pl-6 border-l-2 border-primary/10 space-y-10 mt-12">
+                         <div className="flex items-center gap-4">
+                            <h4 className="text-xl font-bold text-text-dim tracking-tight italic">
+                              {sub.name}
+                            </h4>
+                            <div className="flex-1 h-px bg-border-subtle/20" />
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {(sub.items || []).map((item, j) => (
+                              <MenuItemCard 
+                                key={j} 
+                                item={item} 
+                                qty={getItemQty(item.name, sub.name)}
+                                onAdd={() => addToCart(item, sub.name)}
+                                onRemove={() => removeFromCart(item.name, sub.name)}
+                              />
+                            ))}
+                          </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
-              
-            </div>
+            </section>
           );
         })}
       </div>
-    );
-  };
 
-  const hasSubcategories = currentCategory?.subcategories && currentCategory.subcategories.length > 0;
-
-  return (
-    <div className="menu-categories-root w-full max-w-4xl mx-auto">
-      
-      {/* View Container */}
-      <div className="bg-surface rounded-3xl p-2 md:p-4 min-h-[60vh] flex flex-col relative top-0 w-full" ref={containerRef}>
-        
-        {/* Header / Breadcrumb area */}
-        {renderBreadcrumb()}
-        
-        {path.length === 0 && (
-          <div className="mb-6 px-2">
-            <h2 className="text-2xl md:text-3xl font-display font-black text-text-main mb-2">Explore o Menu</h2>
-            <p className="text-text-dim">Escolha uma categoria para continuar</p>
-          </div>
-        )}
-
-        {/* Content Area */}
-        <div className="flex-1 w-full pb-20">
-          {path.length === 0 && renderCategoriesGrid(menuCategories)}
-          {path.length > 0 && hasSubcategories && currentCategory && renderCategoriesGrid(currentCategory.subcategories!)}
-          {path.length > 0 && !hasSubcategories && currentCategory && renderItemsList(currentCategory.items || [], currentCategory.name)}
-        </div>
-
-      </div>
-
-      {/* Floating Cart Button */}
+      {/* 3. Floating Cart UI */}
       {totalItems > 0 && (
-        <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-full max-w-sm px-4">
           <button
-            onClick={() => setShowCart(!showCart)}
-            className="pointer-events-auto bg-black text-white px-6 py-4 rounded-full flex items-center gap-4 shadow-2xl hover:scale-105 transition-transform font-bold w-full max-w-md"
+            onClick={() => setShowCart(true)}
+            className="w-full bg-black text-white h-16 rounded-2xl flex items-center justify-between px-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-300 group"
           >
-            <div className="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
-              <span className="text-sm">{totalItems}</span>
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-black animate-pulse">
+                {totalItems}
+              </div>
+              <span className="font-black uppercase tracking-widest text-[10px]">O Seu Pedido</span>
             </div>
-            <span className="flex-1 text-center">Ver o seu pedido</span>
-            <ShoppingBag size={20} />
+            <ShoppingBag size={20} className="text-primary" />
           </button>
         </div>
       )}
 
-      {/* Cart Drawer */}
-      {showCart && totalItems > 0 && (
+      {/* Cart Drawer Overlay */}
+      {showCart && (
         <>
-          <div className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm" onClick={() => setShowCart(false)} />
-          <div className="fixed top-auto bottom-0 left-0 right-0 max-h-[85vh] bg-surface rounded-t-[2rem] z-50 flex flex-col md:max-w-md md:left-auto md:top-0 md:rounded-l-[2rem] md:rounded-tr-none md:h-screen w-full transition-transform">
-            <div className="p-6 border-b border-border-subtle flex items-center justify-between">
-              <h3 className="font-display font-black text-2xl">O Seu Pedido</h3>
-              <button onClick={() => setShowCart(false)} className="p-2 bg-bg rounded-full hover:bg-black/10 transition-colors">
+          <div className="fixed inset-0 bg-black/70 z-[110] backdrop-blur-md animate-in fade-in" onClick={() => setShowCart(false)} />
+          <div className="fixed bottom-0 left-0 right-0 z-[120] bg-surface rounded-t-[3rem] p-8 max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-500 lg:max-w-lg lg:left-auto lg:top-0 lg:rounded-l-[3rem] lg:rounded-tr-none lg:h-screen lg:max-h-none">
+            
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h3 className="text-3xl font-display font-black italic uppercase tracking-tighter">O Seu Pedido</h3>
+                <p className="text-text-dim text-[10px] font-black uppercase tracking-widest opacity-50 mt-1">Confirmar detalhes no WhatsApp</p>
+              </div>
+              <button 
+                onClick={() => setShowCart(false)}
+                className="w-12 h-12 rounded-2xl bg-bg border border-border-subtle flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm"
+              >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
+            <div className="flex-1 space-y-6">
               {cart.map((item, i) => (
-                <div key={i} className="flex flex-col gap-3 pb-4 border-b border-border-subtle last:border-0 relative">
-                  <div className="flex justify-between items-start gap-4">
-                    <div>
-                      <span className="font-bold text-text-main block">{item.name}</span>
-                      <span className="text-xs text-text-dim bg-bg px-2 py-0.5 rounded uppercase mt-1 inline-block">
-                        {item.categoryName}
-                      </span>
-                    </div>
-                    <span className="font-black text-primary">{item.price}</span>
+                <div key={i} className="flex items-start justify-between gap-4 pb-6 border-b border-border-subtle/50 last:border-0 relative">
+                  <div className="space-y-2">
+                    <span className="font-bold text-text-main block leading-snug">{item.name}</span>
+                    <span className="text-[9px] font-black uppercase tracking-wider text-text-dim px-2.5 py-1 bg-bg border border-border-subtle rounded-lg block w-fit">{item.categoryName}</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-bg rounded-xl flex items-center h-10 w-fit">
-                      <button onClick={() => removeFromCart(item.name, item.categoryName)} className="w-10 h-full flex items-center justify-center hover:bg-black/10 transition-colors rounded-l-xl">
-                        <Minus size={14} />
-                      </button>
-                      <span className="w-8 text-center font-bold text-sm">{item.qty}</span>
-                      <button onClick={() => addToCart(item, item.categoryName)} className="w-10 h-full flex items-center justify-center hover:bg-black/10 transition-colors rounded-r-xl">
-                        <Plus size={14} />
-                      </button>
+                  <div className="flex flex-col items-end gap-3">
+                    <span className="font-black text-primary text-lg">{item.price}</span>
+                    <div className="flex items-center gap-2 bg-bg rounded-xl p-1 border border-border-subtle shadow-sm">
+                      <button onClick={() => removeFromCart(item.name, item.categoryName)} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white transition-all"><Minus size={12} /></button>
+                      <span className="w-6 text-center font-black text-xs">{item.qty}</span>
+                      <button onClick={() => addToCart(item, item.categoryName)} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white transition-all"><Plus size={12} /></button>
                     </div>
                   </div>
                 </div>
@@ -358,67 +368,15 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
             </div>
 
             {whatsapp && (
-              <div className="p-6 border-t border-border-subtle bg-bg/50">
-                <button onClick={sendToWhatsApp} className="w-full bg-primary text-white py-4 rounded-xl font-black text-lg hover:bg-black transition-colors shadow-xl shadow-primary/30">
-                  Pedir via WhatsApp
+              <div className="mt-8 pt-8 border-t border-border-subtle">
+                <button 
+                  onClick={sendToWhatsApp}
+                  className="w-full bg-primary text-white h-18 rounded-2xl flex items-center justify-center gap-4 font-black text-xl shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  <MessageCircle size={28} /> Finalizar Pedido
                 </button>
               </div>
             )}
-          </div>
-        </>
-      )}
-
-      {/* Detail Modal */}
-      {detailItem && (
-        <>
-          <div className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm transition-opacity" onClick={() => setDetailItem(null)} />
-          <div className="fixed top-auto bottom-0 left-0 right-0 max-h-[90vh] bg-surface rounded-t-[2rem] z-50 flex flex-col md:max-w-xl md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:bottom-auto md:rounded-3xl md:h-auto w-full shadow-2xl transition-transform animate-in fade-in slide-in-from-bottom-10 md:slide-in-from-bottom-0 md:zoom-in-95">
-            
-            {detailItem.item.image_url && (
-              <div className="w-full h-56 md:h-64 relative rounded-t-[2rem] md:rounded-t-3xl overflow-hidden bg-bg">
-                <img src={detailItem.item.image_url} alt={detailItem.item.name} className="w-full h-full object-cover" />
-                <button onClick={() => setDetailItem(null)} className="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10 backdrop-blur-md">
-                  <X size={20} />
-                </button>
-              </div>
-            )}
-            
-            {!detailItem.item.image_url && (
-              <div className="flex justify-end p-4 pb-0 h-14">
-                <button onClick={() => setDetailItem(null)} className="p-2 bg-bg rounded-full hover:bg-black/10 transition-colors absolute right-4 top-4">
-                  <X size={20} />
-                </button>
-              </div>
-            )}
-
-            <div className="p-6 md:p-8 overflow-y-auto flex-1 flex flex-col gap-4 pt-4">
-              <div className="flex justify-between items-start gap-4">
-                <h3 className="font-display font-black text-2xl md:text-3xl text-text-main leading-tight">{detailItem.item.name}</h3>
-                <span className="font-black text-primary text-2xl shrink-0">{detailItem.item.price}</span>
-              </div>
-              
-              <div className="bg-bg w-fit px-3 py-1 border border-border-subtle rounded-md">
-                 <span className="text-xs font-bold text-text-dim uppercase tracking-wider">{detailItem.categoryName}</span>
-              </div>
-
-              {(detailItem.item.desc || detailItem.item.description) && (
-                <div className="mt-2 text-text-dim text-base leading-relaxed">
-                  {detailItem.item.desc || detailItem.item.description}
-                </div>
-              )}
-            </div>
-
-            <div className="p-6 border-t border-border-subtle bg-surface md:rounded-b-3xl shrink-0">
-              <button 
-                onClick={() => {
-                  addToCart(detailItem.item, detailItem.categoryName);
-                  setDetailItem(null);
-                }}
-                className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-black transition-colors shadow-xl shadow-primary/30 flex items-center justify-center gap-2"
-              >
-                <Plus size={20} /> Adicionar ao Pedido
-              </button>
-            </div>
           </div>
         </>
       )}
