@@ -181,7 +181,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
                                 {[
                                     { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
-                                    { id: 'about', label: 'Sobre', icon: <Info size={16} /> },
+                                    { id: 'about', label: 'Visita & Experiência', icon: <Info size={16} /> },
                                     { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
                                     { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> }
                                 ].map(tab => (
