@@ -180,31 +180,50 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     {/* LEFT COLUMN: Menu & Reviews */}
                     <div className="space-y-12">
                         
-                        {/* Tabs Navigation */}
-                        <div className="flex items-center gap-1 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full md:w-fit overflow-x-auto no-scrollbar reveal-up shadow-sm">
-                            {[
-                                { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
-                                { id: 'experience', label: 'Experiência', icon: <Camera size={16} /> },
-                                { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
-                                { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> },
-                                { id: 'info', label: 'Visita', icon: <MapPin size={16} /> }
-                            ].map(tab => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id as any)}
-                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap ${
-                                        activeTab === tab.id 
-                                        ? 'bg-primary text-white shadow-lg' 
-                                        : 'text-text-dim hover:bg-black/5'
-                                    }`}
-                                >
-                                    {tab.icon}
-                                    {tab.label}
-                                </button>
-                            ))}
+                        {/* Tabs Navigation (Sticky on Mobile) */}
+                        <div className="sticky top-0 z-[40] -mx-6 px-6 py-4 bg-bg/80 backdrop-blur-md lg:relative lg:top-auto lg:z-auto lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none reveal-up">
+                            <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full md:w-fit overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
+                                {[
+                                    { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
+                                    { id: 'experience', label: 'Experiência', icon: <Camera size={16} /> },
+                                    { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
+                                    { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> },
+                                    { id: 'info', label: 'Visita', icon: <MapPin size={16} /> }
+                                ].map(tab => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => {
+                                            setActiveTab(tab.id as any);
+                                            // Scroll to top of content on mobile when switching tabs
+                                            if (window.innerWidth < 1024) {
+                                                const element = document.getElementById('tab-content');
+                                                if (element) {
+                                                    const offset = 80; // height of sticky nav
+                                                    const bodyRect = document.body.getBoundingClientRect().top;
+                                                    const elementRect = element.getBoundingClientRect().top;
+                                                    const elementPosition = elementRect - bodyRect;
+                                                    const offsetPosition = elementPosition - offset;
+                                                    window.scrollTo({
+                                                        top: offsetPosition,
+                                                        behavior: 'smooth'
+                                                    });
+                                                }
+                                            }
+                                        }}
+                                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap snap-center ${
+                                            activeTab === tab.id 
+                                            ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                                            : 'text-text-dim hover:bg-black/5'
+                                        }`}
+                                    >
+                                        {tab.icon}
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
-                        <div className="reveal-up min-h-[600px]">
+                        <div id="tab-content" className="reveal-up min-h-[600px]">
                             {activeTab === 'menu' && (
                                 <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <MenuCategories 

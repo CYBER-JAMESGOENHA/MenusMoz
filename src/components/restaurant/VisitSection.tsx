@@ -39,14 +39,14 @@ export const VisitSection: React.FC<VisitSectionProps> = ({ restaurant, lang }) 
             {/* --- LOCATION & HOURS GRID --- */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Hours Card */}
-                <div className="bg-surface rounded-[2.5rem] p-10 border border-border-subtle shadow-sm space-y-8">
+                <div className="bg-surface rounded-3xl md:rounded-[2.5rem] p-6 md:p-10 border border-border-subtle shadow-sm space-y-6 md:space-y-8">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                                <Clock size={24} />
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                                <Clock size={20} className="md:w-6 md:h-6" />
                             </div>
                             <div>
-                                <h3 className="text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">Horário</h3>
+                                <h3 className="text-xl md:text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">Horário</h3>
                                 <div className="flex items-center gap-2 mt-0.5">
                                     <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
                                     <span className={`text-[10px] font-black uppercase tracking-widest ${isOpenNow ? 'text-green-600' : 'text-red-600'}`}>
@@ -72,19 +72,19 @@ export const VisitSection: React.FC<VisitSectionProps> = ({ restaurant, lang }) 
                 </div>
 
                 {/* Map & Directions Card */}
-                <div className="bg-surface rounded-[2.5rem] p-10 border border-border-subtle shadow-sm flex flex-col gap-8">
+                <div className="bg-surface rounded-3xl md:rounded-[2.5rem] p-6 md:p-10 border border-border-subtle shadow-sm flex flex-col gap-6 md:gap-8">
                     <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                            <MapPin size={24} />
+                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                            <MapPin size={20} className="md:w-6 md:h-6" />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">Localização</h3>
+                            <h3 className="text-xl md:text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">Localização</h3>
                             <p className="text-text-dim text-xs font-medium mt-0.5">{restaurant.address || 'Maputo, Moçambique'}</p>
                         </div>
                     </div>
 
                     {/* Google Maps Embed Placeholder/Container */}
-                    <div className="flex-1 min-h-[300px] rounded-[2rem] bg-bg border border-border-subtle overflow-hidden relative group">
+                    <div className="flex-1 min-h-[250px] md:min-h-[300px] rounded-3xl md:rounded-[2rem] bg-bg border border-border-subtle overflow-hidden relative group">
                         <img 
                             src={`https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80`} 
                             alt="Map Location"
@@ -139,26 +139,26 @@ export const VisitSection: React.FC<VisitSectionProps> = ({ restaurant, lang }) 
             </div>
 
             {/* --- CONTACT & SOCIAL --- */}
-            <div className="bg-black text-white rounded-[3rem] p-12 overflow-hidden relative">
-                 <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
-                    <div className="flex-1 space-y-4">
-                        <h2 className="text-3xl md:text-5xl font-display font-black italic uppercase tracking-tighter">Reservas & Contactos</h2>
+            <div className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 overflow-hidden relative">
+                 <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
+                    <div className="flex-1 space-y-4 text-center md:text-left">
+                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter">Reservas & Contactos</h2>
                         <p className="text-white/40 text-lg font-medium leading-relaxed">Pode reservar a sua mesa diretamente por telefone ou via WhatsApp para uma resposta imediata.</p>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                         <a 
                             href={`tel:${restaurant.phone || restaurant.whatsapp}`}
-                            className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-xl"
+                            className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-white text-black px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-xl"
                         >
-                            <Phone size={18} /> {isEn ? 'Call Now' : 'Ligar Agora'}
+                            <Phone size={16} className="md:w-[18px]" /> {isEn ? 'Call Now' : 'Ligar Agora'}
                         </a>
                         <a 
                             href={`https://wa.me/${restaurant.whatsapp}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
+                            className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-[#25D366] text-white px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
                         >
-                            <CalendarCheck size={18} /> WhatsApp
+                            <CalendarCheck size={16} className="md:w-[18px]" /> WhatsApp
                         </a>
                     </div>
                  </div>

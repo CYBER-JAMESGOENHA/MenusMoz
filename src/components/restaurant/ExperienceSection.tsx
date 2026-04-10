@@ -11,7 +11,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
     const isEn = lang === 'en';
     
     return (
-        <div className="space-y-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-12 md:space-y-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* --- STORY / CONCEPT --- */}
             <section className="relative">
                 <div className="flex flex-col md:flex-row gap-12 items-center">
@@ -20,7 +20,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
                             <Utensils size={14} className="text-primary" />
                             <span className="text-[10px] font-black uppercase tracking-widest text-primary">A nossa Essência</span>
                         </div>
-                        <h2 className="text-4xl md:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9]">
+                        <h2 className="text-2xl md:text-5xl lg:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9]">
                             {isEn ? 'The Art of Mozambican Flavors' : 'A Arte dos Sabores Moçambicanos'}
                         </h2>
                         <div className="text-text-dim text-lg leading-relaxed font-medium space-y-4">
@@ -37,7 +37,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
                     </div>
                     
                     {/* Visual Stamp/Badge */}
-                    <div className="w-full md:w-[400px] aspect-square rounded-[3rem] overflow-hidden relative group">
+                    <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group">
                         <img 
                             src={restaurant.image} 
                             alt="Atmosphere" 
@@ -56,10 +56,10 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
 
             {/* --- CHEF PHILOSOPHY --- */}
             {restaurant.chefName && (
-                <section className="bg-surface rounded-[3rem] p-12 border border-border-subtle overflow-hidden relative">
+                <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-                    <div className="flex flex-col md:flex-row gap-12 items-center relative z-10">
-                        <div className="w-48 h-48 md:w-64 md:h-64 rounded-[2.5rem] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 shadow-2xl">
+                    <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
+                        <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 shadow-2xl">
                             <img 
                                 src={restaurant.chefImage || "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80"} 
                                 alt={restaurant.chefName}
@@ -68,7 +68,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
                         </div>
                         <div className="flex-1 text-center md:text-left space-y-4">
                             <Quote size={48} className="text-primary/20 mb-4 mx-auto md:mx-0" />
-                            <p className="text-2xl md:text-3xl italic font-medium text-text-main leading-relaxed">
+                            <p className="text-lg md:text-2xl lg:text-3xl italic font-medium text-text-main leading-relaxed">
                                 "{restaurant.chefQuote || (isEn 
                                     ? 'Cooking is a language that speaks to the soul through the palate.' 
                                     : 'Cozinhar é uma linguagem que fala à alma através do paladar.')}"
@@ -86,8 +86,8 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
             <section className="space-y-8">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-3xl md:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">Pratos de Assinatura</h2>
-                        <p className="text-text-dim text-sm font-bold uppercase tracking-widest mt-2">O que nos torna icónicos</p>
+                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">Pratos de Assinatura</h2>
+                        <p className="text-text-dim text-[10px] font-bold uppercase tracking-widest mt-2 px-3 py-1 bg-surface border border-border-subtle rounded-full w-fit">O que nos torna icónicos</p>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -127,9 +127,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
             </section>
 
             {/* --- MEDIA GALLERY --- */}
-            <section className="space-y-8">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-3xl md:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">Ambiance & Gallery</h2>
+            <section className="space-y-6 md:space-y-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">Ambiance & Gallery</h2>
                     <div className="flex gap-2">
                         {['Date Night', 'Family', 'Business'].map(tag => (
                             <span key={tag} className="px-4 py-1.5 rounded-full bg-surface border border-border-subtle text-[10px] font-black uppercase tracking-widest text-text-dim">
@@ -139,7 +139,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
                     </div>
                 </div>
                 
-                <div className="columns-2 md:columns-3 gap-6 space-y-6">
+                <div className="columns-2 md:columns-3 gap-4 lg:gap-6 space-y-4 lg:space-y-6">
                     {(restaurant.gallery && restaurant.gallery.length > 0) ? (
                         restaurant.gallery.map((item: any, i: number) => (
                             <div key={i} className="break-inside-avoid relative rounded-[2rem] overflow-hidden group cursor-zoom-in">
@@ -161,7 +161,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
                             'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b',
                             'https://images.unsplash.com/photo-1414235077428-338989a2e8c0'
                         ].map((url, i) => (
-                            <div key={i} className="break-inside-avoid relative rounded-[2.5rem] overflow-hidden border border-border-subtle">
+                            <div key={i} className="break-inside-avoid relative rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-border-subtle">
                                 <img src={`${url}?w=800&q=80`} alt="Gallery" className="w-full h-auto object-cover" />
                             </div>
                         ))
@@ -171,12 +171,12 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
 
             {/* --- AWARDS --- */}
             {restaurant.awards && restaurant.awards.length > 0 && (
-                <section className="bg-black text-white rounded-[3rem] p-12 overflow-hidden relative">
+                <section className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 overflow-hidden relative">
                     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
                     <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
                         <div className="flex-1 text-center md:text-left">
-                            <h2 className="text-3xl md:text-5xl font-display font-black italic uppercase tracking-tighter mb-4">Reconhecimento & Prémios</h2>
-                            <p className="text-white/50 font-medium text-lg leading-relaxed">O nosso compromisso com a excelência culinária e hospitalidade foi reconhecido por líderes da indústria.</p>
+                            <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter mb-4">Reconhecimento & Prémios</h2>
+                            <p className="text-white/50 font-medium text-base md:text-lg leading-relaxed">O nosso compromisso com a excelência culinária e hospitalidade foi reconhecido por líderes da indústria.</p>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8">
                             {restaurant.awards.map((award: any, i: number) => (

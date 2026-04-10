@@ -12,12 +12,12 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
     const specials = restaurant.specials || [];
 
     return (
-        <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-10 lg:space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* --- UPCOMING EVENTS --- */}
             <section className="space-y-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
-                        <h2 className="text-4xl md:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-none">
+                        <h2 className="text-2xl md:text-5xl lg:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-none">
                             {isEn ? 'Events & Nights' : 'Eventos & Noites'}
                         </h2>
                         <p className="text-text-dim text-sm font-bold uppercase tracking-widest mt-4">Experiências vibrantes para todos</p>
@@ -27,7 +27,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                 {events.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {events.map((event: any) => (
-                            <div key={event.id} className="group bg-surface rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
+                            <div key={event.id} className="group bg-surface rounded-3xl md:rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
                                 <div className="aspect-[16/9] relative overflow-hidden">
                                     <img 
                                         src={event.image_url || "https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=800&q=80"} 
@@ -50,7 +50,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                                         </div>
                                     )}
                                 </div>
-                                <div className="p-8 space-y-4">
+                                <div className="p-6 md:p-8 space-y-4">
                                     <div className="flex items-center gap-3 text-primary">
                                         <Music size={18} />
                                         <span className="font-black text-[10px] uppercase tracking-[0.2em]">{event.title}</span>
@@ -78,14 +78,14 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                             { title: 'Noites de Jazz ao Vivo', time: 'Quintas-feiras, 19:30', img: 'https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=800&q=80', desc: 'Desfrute de uma noite relaxante com o melhor do jazz local enquanto saboreia as nossas especialidades.' },
                             { title: 'Brunch de Domingo', time: 'Domingos, 11:00 - 15:00', img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&q=80', desc: 'O buffet mais completo da cidade com música ambiente e mimosas ilimitadas.' }
                          ].map((ev, i) => (
-                            <div key={i} className="group bg-surface rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
+                            <div key={i} className="group bg-surface rounded-3xl md:rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
                                 <div className="aspect-[16/9] relative overflow-hidden">
                                      <img src={ev.img} alt={ev.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                                      <div className="absolute top-6 left-6 bg-primary text-white px-4 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl">
                                          Em Destaque
                                      </div>
                                 </div>
-                                <div className="p-8 space-y-4">
+                                <div className="p-6 md:p-8 space-y-4">
                                     <h3 className="text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">{ev.title}</h3>
                                     <p className="text-text-dim text-sm leading-relaxed">{ev.desc}</p>
                                     <div className="pt-4 flex items-center justify-between border-t border-border-subtle/50">
@@ -101,7 +101,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
             </section>
 
             {/* --- SPECIALS & PROMOS --- */}
-            <section className="bg-black text-white rounded-[3rem] p-12 overflow-hidden relative">
+            <section className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 lg:p-16 overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[120px] -mr-48 -mt-48" />
                 <div className="relative z-10 space-y-10">
                     <div>
@@ -109,7 +109,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                             <Sparkles size={20} />
                             <span className="font-black text-xs uppercase tracking-[0.4em] italic">Especiais da Semana</span>
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-display font-black italic uppercase tracking-tighter">Happy Hour & Sabores Atemporais</h2>
+                        <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter leading-tight">Happy Hour & Sabores Atemporais</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
