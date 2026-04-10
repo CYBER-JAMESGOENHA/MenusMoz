@@ -174,11 +174,11 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </section>
 
             {/* --- MAIN CONTENT --- */}
-            <main className="max-w-7xl mx-auto px-6 md:px-12 -mt-8 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12">
+            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 -mt-8 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
                     
                     {/* LEFT COLUMN: Menu & Reviews */}
-                    <div className="space-y-12">
+                    <div className="lg:col-span-8 space-y-12">
                         
                         {/* Tabs Navigation (Sticky on Mobile) */}
                         <div className="sticky top-0 z-[40] -mx-6 px-6 py-4 bg-bg/80 backdrop-blur-md lg:relative lg:top-auto lg:z-auto lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none reveal-up">
@@ -310,8 +310,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </div>
 
                     {/* RIGHT COLUMN: Sidebar (Desktop Only) */}
-                    <aside className="hidden lg:block">
-                        <div className="sticky top-24 space-y-8 reveal-up">
+                    <aside className="hidden lg:block lg:col-span-4">
+                        <div className="sticky top-24 space-y-8 reveal-up pr-2">
                             {/* Booking Card */}
                                 <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
 
