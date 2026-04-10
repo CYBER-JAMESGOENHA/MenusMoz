@@ -350,19 +350,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                 </section>
             )}
 
-            {/* --- CONTACT & SOCIAL --- */}
-            <div id="contact" className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 transition-all hover:scale-[1.01] duration-700">
-                 <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                    <div className="flex-1 space-y-4 text-center md:text-left">
-                        <h3 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter">{t.reservation}</h3>
-                        <p className="text-white/40 text-lg font-medium leading-relaxed">Pode reservar a sua mesa diretamente por telefone ou via WhatsApp para uma resposta imediata.</p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                        <a href={`tel:${restaurant.phone || restaurant.whatsapp}`} className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-white text-black px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-xl"><Phone size={16} /> {t.callNow}</a>
-                        <a href={`https://wa.me/${restaurant.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex-1 md:flex-none flex items-center justify-center gap-3 bg-[#25D366] text-white px-6 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-xl"><CalendarCheck size={16} /> WhatsApp</a>
-                    </div>
-                 </div>
-            </div>
         </div>
     );
 };

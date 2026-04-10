@@ -63,9 +63,6 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                                             <Clock size={14} />
                                             <span className="font-bold text-[10px] uppercase tracking-widest">{event.event_time || '20:00 - 23:00'}</span>
                                         </div>
-                                        <button className="flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-primary hover:gap-3 transition-all">
-                                            Reservar Lugar <ArrowRight size={14} />
-                                        </button>
                                     </div>
                                 </div>
                             </div>
