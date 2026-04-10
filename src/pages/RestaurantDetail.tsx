@@ -267,21 +267,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
                             {activeTab === 'reviews' && (
                                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                    {/* Trust Badges */}
-                                    <div className="flex flex-wrap gap-4 mb-12">
-                                        {[
-                                            { label: 'Portions', count: '85%' },
-                                            { label: 'Service', count: 'High' },
-                                            { label: 'Jazz Music', count: 'Weekly' }
-                                        ].map(tag => (
-                                            <div key={tag.label} className="bg-surface px-6 py-3 rounded-2xl border border-border-subtle flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black italic">
-                                                    {tag.count}
-                                                </div>
-                                                <span className="font-black text-[10px] uppercase tracking-widest text-text-main">"{tag.label}"</span>
-                                            </div>
-                                        ))}
-                                    </div>
 
                                     <ReviewSection 
                                         restaurant={restaurant} 
