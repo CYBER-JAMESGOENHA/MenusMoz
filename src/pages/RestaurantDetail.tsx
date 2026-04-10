@@ -294,7 +294,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             )}
                         </div>
                     </div>
-
+                </div>
+            </main>
         </div>
     );
 }
