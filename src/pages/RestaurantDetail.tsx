@@ -142,7 +142,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const isFavorite = (favorites || []).includes(restaurant.id);
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-bg pb-20 lg:pb-0">
+        <div ref={containerRef} className="min-h-screen bg-bg">
             <Helmet>
                 <title>{restaurant.name} | Locais de Moz</title>
                 <meta name="description" content={restaurant.description} />
@@ -170,15 +170,15 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </section>
 
             {/* --- MAIN CONTENT --- */}
-            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 -mt-8 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
+            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 -mt-8 relative z-10 w-full">
+                <div className="flex flex-col gap-8 xl:gap-12">
                     
-                    {/* FULL WIDTH COLUMN: Menu & Reviews */}
-                    <div className="lg:col-span-12 space-y-12">
+                    {/* FULL WIDTH CONTENT: Menu, About, Events, Reviews */}
+                    <div className="w-full space-y-12">
                         
                         {/* Tabs Navigation (Sticky on Mobile) */}
                         <div className="sticky top-0 z-[40] -mx-6 px-6 py-4 bg-bg/80 backdrop-blur-md lg:relative lg:top-auto lg:z-auto lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none reveal-up">
-                            <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full md:w-fit overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
+                            <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
                                 {[
                                     { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
                                     { id: 'about', label: 'Sobre', icon: <Info size={16} /> },
