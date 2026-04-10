@@ -1,5 +1,15 @@
-import React from 'react';
-import { MessageCircle, Phone, Star, ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+    MessageCircle, 
+    Phone, 
+    Star, 
+    ChevronDown, 
+    Users, 
+    Calendar, 
+    Clock, 
+    CheckCircle2,
+    CalendarPlus
+} from 'lucide-react';
 
 interface Review {
     rating: number;
@@ -19,15 +29,121 @@ interface ReservationSidebarProps {
     lang: string;
 }
 
-/** Sidebar card com reserva via WhatsApp e review mais recente */
 export const ReservationSidebar: React.FC<ReservationSidebarProps> = ({ restaurant, t, lang }) => {
-    const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do Locais de Moz.`)}`;
+    const [guests, setGuests] = useState(2);
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [time, setTime] = useState('19:30');
+    const [isReserved, setIsReserved] = useState(false);
+
+    const timeSlots = ['12:00', '13:00', '19:00', '19:30', '20:00', '20:30', '21:00'];
+
+    const constructBookingMessage = () => {
+        const text = `Olá! Gostaria de solicitar uma reserva:\n\n📍 *Restaurante:* ${restaurant.name}\n👥 *Pessoas:* ${guests}\n📅 *Data:* ${date}\n🕒 *Hora:* ${time}\n\nReserva feita via Locais de Moz.`;
+        return `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(text)}`;
+    };
+
+    const handleReserve = () => {
+        setIsReserved(true);
+        window.open(constructBookingMessage(), '_blank');
+    };
+
+    const handleAddToCalendar = () => {
+        const title = `Jantar no ${restaurant.name}`;
+        const start = `${date.replace(/-/g, '')}T${time.replace(':', '')}00`;
+        const end = `${date.replace(/-/g, '')}T${(parseInt(time.split(':')[0]) + 2).toString().padStart(2, '0')}${time.split(':')[1]}00`;
+        const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&details=Reserva via Locais de Moz`;
+        window.open(url, '_blank');
+    };
 
     return (
-        <div className="space-y-5 h-full flex flex-col">
+        <div className="space-y-6 h-full flex flex-col">
+            {/* Booking Form Card */}
+            <div className="bg-surface border border-border-subtle p-8 rounded-[2.5rem] shadow-premium space-y-8 animate-in fade-in zoom-in duration-500">
+                <div className="space-y-2">
+                    <h3 className="font-display font-black text-2xl italic uppercase tracking-tighter">Reservar Mesa</h3>
+                    <p className="text-text-dim text-[10px] font-black uppercase tracking-widest opacity-60">Escolha os detalhes da sua visita</p>
+                </div>
+
+                <div className="space-y-5">
+                    {/* Guests & Date */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-text-dim/60 ml-1 flex items-center gap-1">
+                                <Users size={10} /> Pessoas
+                            </label>
+                            <div className="flex items-center justify-between bg-bg border border-border-subtle rounded-xl p-2 h-12">
+                                <button onClick={() => setGuests(Math.max(1, guests - 1))} className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center font-bold">-</button>
+                                <span className="font-black text-sm">{guests}</span>
+                                <button onClick={() => setGuests(guests + 1)} className="w-8 h-8 rounded-lg hover:bg-black/5 flex items-center justify-center font-bold">+</button>
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-text-dim/60 ml-1 flex items-center gap-1">
+                                <Calendar size={10} /> Data
+                            </label>
+                            <input 
+                                type="date" 
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                className="w-full bg-bg border border-border-subtle rounded-xl px-3 h-12 font-bold text-xs focus:outline-none focus:border-primary transition-colors cursor-pointer"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Time Slots */}
+                    <div className="space-y-3">
+                        <label className="text-[9px] font-black uppercase tracking-widest text-text-dim/60 ml-1 flex items-center gap-1">
+                            <Clock size={10} /> Horários Disponíveis
+                        </label>
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                            {timeSlots.map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setTime(t)}
+                                    className={`shrink-0 px-4 py-3 rounded-xl font-black text-[10px] tracking-widest transition-all ${
+                                        time === t 
+                                        ? 'bg-primary text-white shadow-lg scale-105' 
+                                        : 'bg-bg text-text-dim border border-border-subtle hover:border-primary/40'
+                                    }`}
+                                >
+                                    {t}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Reserve Button */}
+                    <div className="pt-2">
+                        {isReserved ? (
+                            <div className="space-y-3">
+                                <button 
+                                    className="w-full bg-green-500 text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-black text-sm shadow-xl"
+                                    disabled
+                                >
+                                    <CheckCircle2 size={18} /> Resposta Enviada
+                                </button>
+                                <button 
+                                    onClick={handleAddToCalendar}
+                                    className="w-full bg-surface text-text-main border border-border-subtle h-12 rounded-xl flex items-center justify-center gap-2 font-black text-[10px] uppercase tracking-widest hover:bg-bg transition-all"
+                                >
+                                    <CalendarPlus size={14} /> Adicionar ao Calendário
+                                </button>
+                                <p className="text-[9px] text-center text-text-dim font-medium italic mt-2 opacity-60">O restaurante entrará em contacto para confirmar.</p>
+                            </div>
+                        ) : (
+                            <button 
+                                onClick={handleReserve}
+                                className="w-full bg-primary text-white h-16 rounded-2xl flex items-center justify-center gap-3 font-black text-lg shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all group"
+                            >
+                                <MessageCircle size={24} className="group-hover:rotate-12 transition-transform" /> Reservar Mesa
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
 
             {/* Review snippet */}
-            {restaurant.reviews && restaurant.reviews.length > 0 && (
+            {restaurant.reviews && restaurant.reviews.length > 0 && !isReserved && (
                 <div className="bg-surface border border-border-subtle p-8 rounded-[2.5rem] shadow-premium relative overflow-hidden group hover:-translate-y-2 transition-transform duration-500">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full -mr-8 -mt-8" />
                     <div className="flex items-center gap-2 mb-4 text-accent relative z-10 bg-accent/5 w-fit px-2.5 py-1 rounded-xl border border-accent/10">

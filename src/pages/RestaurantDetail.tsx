@@ -13,7 +13,17 @@ import {
     Star,
     Navigation,
     Phone,
-    Globe
+    Globe,
+    BookOpen,
+    Camera,
+    Calendar,
+    Users,
+    CreditCard,
+    Car,
+    Accessibility,
+    Trophy,
+    Music,
+    UtensilsCrossed
 } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,6 +33,9 @@ import { DetailStarRating, OrnamentalDivider } from '../components/restaurant/De
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
 import { ReviewSection } from '../components/restaurant/ReviewSection';
+import { ExperienceSection } from '../components/restaurant/ExperienceSection';
+import { EventsSection } from '../components/restaurant/EventsSection';
+import { VisitSection } from '../components/restaurant/VisitSection';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -41,7 +54,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'reviews' | 'info'>('menu');
+    const [activeTab, setActiveTab] = useState<'menu' | 'experience' | 'events' | 'reviews' | 'info'>('menu');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -168,16 +181,18 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     <div className="space-y-12">
                         
                         {/* Tabs Navigation */}
-                        <div className="flex items-center gap-1 bg-surface border border-border-subtle p-1.5 rounded-2xl w-fit reveal-up shadow-sm">
+                        <div className="flex items-center gap-1 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full md:w-fit overflow-x-auto no-scrollbar reveal-up shadow-sm">
                             {[
-                                { id: 'menu', label: 'Menu', icon: <Info size={16} /> },
+                                { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
+                                { id: 'experience', label: 'Experiência', icon: <Camera size={16} /> },
+                                { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
                                 { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> },
-                                { id: 'info', label: 'Info', icon: <MapPin size={16} /> }
+                                { id: 'info', label: 'Visita', icon: <MapPin size={16} /> }
                             ].map(tab => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id as any)}
-                                    className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${
+                                    className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap ${
                                         activeTab === tab.id 
                                         ? 'bg-primary text-white shadow-lg' 
                                         : 'text-text-dim hover:bg-black/5'
@@ -224,8 +239,38 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 </div>
                             )}
 
+                            {activeTab === 'experience' && (
+                                <ExperienceSection 
+                                    restaurant={restaurant} 
+                                    lang={lang} 
+                                />
+                            )}
+
+                            {activeTab === 'events' && (
+                                <EventsSection 
+                                    restaurant={restaurant} 
+                                    lang={lang} 
+                                />
+                            )}
+
                             {activeTab === 'reviews' && (
                                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    {/* Trust Badges */}
+                                    <div className="flex flex-wrap gap-4 mb-12">
+                                        {[
+                                            { label: 'Portions', count: '85%' },
+                                            { label: 'Service', count: 'High' },
+                                            { label: 'Jazz Music', count: 'Weekly' }
+                                        ].map(tag => (
+                                            <div key={tag.label} className="bg-surface px-6 py-3 rounded-2xl border border-border-subtle flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black italic">
+                                                    {tag.count}
+                                                </div>
+                                                <span className="font-black text-[10px] uppercase tracking-widest text-text-main">"{tag.label}"</span>
+                                            </div>
+                                        ))}
+                                    </div>
+
                                     <ReviewSection 
                                         restaurant={restaurant} 
                                         user={user} 
@@ -237,93 +282,10 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             )}
 
                             {activeTab === 'info' && (
-                                <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                    {/* Location Card */}
-                                    <div className="bg-surface rounded-[2.5rem] p-8 border border-border-subtle space-y-8 shadow-sm">
-                                        <div className="flex flex-col md:flex-row gap-8 items-start">
-                                            <div className="flex-1 space-y-6">
-                                                <div className="space-y-2">
-                                                    <h3 className="font-display font-black text-2xl uppercase italic tracking-tighter">Onde Estamos</h3>
-                                                    <p className="text-text-dim font-medium flex items-start gap-2">
-                                                        <MapPin className="shrink-0 text-primary mt-1" size={18} />
-                                                        {restaurant.address || 'Endereço não disponível'}
-                                                    </p>
-                                                </div>
-                                                
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <a 
-                                                        href={`tel:${restaurant.phone || restaurant.whatsapp}`}
-                                                        className="flex items-center gap-4 p-4 rounded-2xl bg-bg border border-border-subtle hover:border-primary/30 transition-all group"
-                                                    >
-                                                        <div className="w-10 h-10 rounded-xl bg-primary/5 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
-                                                            <Phone size={18} />
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-[10px] font-black uppercase tracking-widest text-text-dim/50">Telefone</p>
-                                                            <p className="font-bold text-text-main">{restaurant.phone || restaurant.whatsapp}</p>
-                                                        </div>
-                                                    </a>
-                                                    {restaurant.website && (
-                                                        <a 
-                                                            href={restaurant.website}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center gap-4 p-4 rounded-2xl bg-bg border border-border-subtle hover:border-primary/30 transition-all group"
-                                                        >
-                                                            <div className="w-10 h-10 rounded-xl bg-primary/5 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
-                                                                <Globe size={18} />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-[10px] font-black uppercase tracking-widest text-text-dim/50">Website</p>
-                                                                <p className="font-bold text-text-main truncate max-w-[120px]">{restaurant.website.replace('https://', '')}</p>
-                                                            </div>
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            
-                                            {/* Static Map Placement */}
-                                            <div className="w-full md:w-80 h-48 md:h-64 rounded-3xl bg-bg border border-border-subtle overflow-hidden relative">
-                                                <img 
-                                                    src={`https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80`} 
-                                                    alt="Location Map"
-                                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                                                />
-                                                <div className="absolute inset-0 bg-black/10 pointer-events-none" />
-                                                <button className="absolute bottom-4 right-4 bg-white text-black px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl flex items-center gap-2 hover:bg-black hover:text-white transition-all">
-                                                    <Navigation size={12} /> Abrir no Maps
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div className="pt-8 border-t border-border-subtle">
-                                            <h3 className="font-display font-black text-2xl uppercase italic tracking-tighter mb-4 flex items-center gap-2">
-                                                <Clock size={24} className="text-primary" /> Horário de Funcionamento
-                                            </h3>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                {restaurant.hours && Object.entries(restaurant.hours).map(([day, hours]: [string, any]) => (
-                                                    <div key={day} className="flex justify-between items-center p-3 rounded-xl bg-bg/50 border border-border-subtle/30">
-                                                        <span className="font-black text-[10px] uppercase tracking-widest text-text-dim">{day}</span>
-                                                        <span className="font-bold text-sm text-text-main">{hours || 'Cerrado'}</span>
-                                                    </div>
-                                                ))}
-                                                {!restaurant.hours && (
-                                                    <p className="text-text-dim italic text-sm">Horário sob consulta</p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Features / Tags */}
-                                    <div className="flex flex-wrap gap-3">
-                                        {restaurant.features?.map((f: string) => (
-                                            <div key={f} className="bg-surface px-5 py-3 rounded-2xl border border-border-subtle flex items-center gap-3 shadow-sm">
-                                                <div className="w-2 h-2 rounded-full bg-primary" />
-                                                <span className="font-black text-xs uppercase tracking-widest text-text-main">{f}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <VisitSection 
+                                    restaurant={restaurant} 
+                                    lang={lang} 
+                                />
                             )}
                         </div>
                     </div>
@@ -332,36 +294,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     <aside className="hidden lg:block">
                         <div className="sticky top-24 space-y-8 reveal-up">
                             {/* Booking Card */}
-                            <div className="bg-surface rounded-[2.5rem] p-10 border border-border-subtle shadow-premium space-y-6">
-                                <div className="space-y-2">
-                                    <h3 className="font-display font-black text-3xl italic uppercase tracking-tighter">Reserva Rápida</h3>
-                                    <p className="text-text-dim text-sm font-medium leading-relaxed">Garanta o seu lugar ou faça o seu pedido antecipadamente via WhatsApp.</p>
-                                </div>
-                                <div className="space-y-3">
-                                    <a 
-                                        href={`https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do Locais de Moz.`)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full bg-primary text-white h-16 rounded-2xl flex items-center justify-center gap-3 font-black text-lg shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all"
-                                    >
-                                        <MessageCircle size={24} /> Reservar WhatsApp
-                                    </a>
-                                    <a 
-                                        href={`tel:${restaurant.phone || restaurant.whatsapp}`}
-                                        className="w-full bg-bg text-text-main border border-border-subtle h-14 rounded-2xl flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest hover:border-primary/50 transition-all"
-                                    >
-                                        <Phone size={18} /> Ligar para o Local
-                                    </a>
-                                </div>
-                                
-                                <div className="pt-4 flex items-center gap-4">
-                                    <div className="flex-1 h-px bg-border-subtle" />
-                                    <span className="text-[10px] font-black text-text-dim/40 uppercase tracking-[0.3em]">Ou consulte</span>
-                                    <div className="flex-1 h-px bg-border-subtle" />
-                                </div>
-                                
                                 <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
-                            </div>
 
                             {/* Info Snippet */}
                             <div className="bg-surface rounded-[2rem] p-8 border border-border-subtle space-y-4 shadow-sm">

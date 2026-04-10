@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Star, Send, LogIn, ThumbsUp } from 'lucide-react';
+import { Star, Send, LogIn, ThumbsUp, CheckCircle2, Users } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 import { User } from '@supabase/supabase-js';
 
@@ -52,34 +52,63 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
     const avatarUrl = review.avatar || review.profiles?.avatar_url;
 
     return (
-        <div className="bg-surface border border-border-subtle rounded-3xl p-6 flex flex-col gap-4 hover:shadow-premium transition-all duration-500 group">
+        <div className="bg-surface border border-border-subtle rounded-[2rem] p-8 flex flex-col gap-6 hover:shadow-premium transition-all duration-500 group relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-full -mr-8 -mt-8 opacity-0 group-hover:opacity-100 transition-opacity" />
+            
             <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                     {avatarUrl ? (
-                        <img
-                            src={avatarUrl}
-                            alt={displayName}
-                            className="w-12 h-12 rounded-2xl object-cover border-2 border-primary/20 shadow-sm"
-                        />
+                        <div className="relative">
+                            <img
+                                src={avatarUrl}
+                                alt={displayName}
+                                className="w-14 h-14 rounded-2xl object-cover border-2 border-primary/20 shadow-md"
+                            />
+                            <div className="absolute -bottom-1 -right-1 bg-green-500 text-white p-0.5 rounded-full border-2 border-white shadow-sm">
+                                <CheckCircle2 size={10} />
+                            </div>
+                        </div>
                     ) : (
-                        <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-sm border border-primary/20">
+                        <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-black text-lg border border-primary/20 shadow-sm relative">
                             {initials}
+                            <div className="absolute -bottom-1 -right-1 bg-green-500 text-white p-0.5 rounded-full border-2 border-white shadow-sm">
+                                <CheckCircle2 size={10} />
+                            </div>
                         </div>
                     )}
                     <div>
-                        <p className="font-black text-text-main text-sm uppercase tracking-tight italic">{displayName}</p>
-                        <p className="text-[10px] text-text-dim/60 font-black uppercase tracking-widest mt-0.5">
-                            Cliente Verificado
-                        </p>
+                        <p className="font-black text-text-main text-base uppercase tracking-tight italic">{displayName}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-[9px] text-green-600 font-black uppercase tracking-widest bg-green-50 px-2 py-0.5 rounded-md border border-green-100">
+                                Diner Verificado
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-0.5 shrink-0 bg-accent/5 px-2 py-1 rounded-lg">
+                <div className="flex items-center gap-0.5 shrink-0 bg-accent/5 px-2.5 py-1.5 rounded-xl border border-accent/10">
                     {[1, 2, 3, 4, 5].map(i => (
-                        <Star key={i} size={10} className={i <= stars ? 'text-accent fill-accent' : 'text-text-dim/20'} />
+                        <Star key={i} size={12} className={i <= stars ? 'text-accent fill-accent' : 'text-text-dim/20'} />
                     ))}
                 </div>
             </div>
-            <p className="text-text-dim/90 text-sm leading-relaxed italic font-medium">"{review.comment}"</p>
+            
+            <div className="relative">
+                <p className="text-text-dim text-base leading-relaxed italic font-medium relative z-10">
+                    "{review.comment}"
+                </p>
+            </div>
+
+            {/* Simulated Owner Response */}
+            {review.id === (typeof review.id === 'number' ? review.id : 0) && (
+                <div className="mt-2 pl-6 border-l-2 border-primary/20 py-2 space-y-2">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                        <Users size={12} /> Resposta do Proprietário
+                    </p>
+                    <p className="text-sm text-text-dim/80 font-medium italic">
+                        "Obrigado pela sua visita e pelo feedback positivo. Esperamos vê-lo(a) novamente em breve!"
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

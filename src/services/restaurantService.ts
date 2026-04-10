@@ -14,6 +14,8 @@ export interface Restaurant {
   price_level?: string;
   address?: string;
   phone?: string;
+  whatsapp?: string;
+  website?: string;
   is_featured?: boolean;
   is_open?: boolean;
   isOpen?: boolean;
@@ -33,6 +35,39 @@ export interface Restaurant {
   features?: string[];
   logo?: string;
   identity_text?: string;
+  hours?: any;
+  // New rich fields
+  story?: string;
+  dress_code?: string;
+  parking?: string;
+  payment_methods?: string[];
+  accessibility?: string[];
+  ambiance_tags?: string[];
+  gallery?: { type: 'image' | 'video'; url: string; title?: string }[];
+  awards?: { title: string; year: string; icon?: string }[];
+  signature_dishes?: { name: string; description: string; image_url: string }[];
+  events?: RestaurantEvent[];
+  specials?: RestaurantSpecial[];
+}
+
+export interface RestaurantEvent {
+  id: number;
+  title: string;
+  description: string;
+  event_date?: string;
+  event_time?: string;
+  image_url: string;
+  is_recurring: boolean;
+  recurring_days?: string[];
+}
+
+export interface RestaurantSpecial {
+  id: number;
+  title: string;
+  description: string;
+  valid_days: string[];
+  valid_hours: string;
+  image_url?: string;
 }
 
 export interface MenuItem {
@@ -80,7 +115,9 @@ const BASE_RESTAURANT_QUERY = `
   reviews (
     *,
     profiles (full_name, avatar_url)
-  )
+  ),
+  restaurant_events (*),
+  restaurant_specials (*)
 `;
 
 const mapRestaurant = (r: any): Restaurant => ({
@@ -96,6 +133,8 @@ const mapRestaurant = (r: any): Restaurant => ({
   reviewCount: r.review_count,
   cuisines: r.tags || [{ name: r.cuisine, slug: r.cuisine?.toLowerCase() }],
   isOpen: r.is_open !== undefined ? r.is_open : checkIsOpen(r.hours),
+  events: r.restaurant_events || [],
+  specials: r.restaurant_specials || [],
   menuCategories: (r.menu_categories || []).map((cat: any) => {
     // Primeiro mapeamos as subcategorias para que elas tenham os seus itens formatados
     const mappedSubcategories = (cat.subcategories || []).map((sub: any) => ({
