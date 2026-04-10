@@ -139,30 +139,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 <meta name="description" content={restaurant.description} />
             </Helmet>
 
-            {/* Sticky Mobile Header */}
-            <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 lg:hidden pointer-events-none">
-                <button 
-                    onClick={() => navigate(-1)}
-                    className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white pointer-events-auto active:scale-90 transition-transform shadow-2xl"
-                >
-                    <ArrowLeft size={24} />
-                </button>
-                <div className="flex gap-2 pointer-events-auto">
-                    <button 
-                        onClick={handleShare}
-                        className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white active:scale-90 transition-transform shadow-2xl"
-                    >
-                        <Share2 size={20} />
-                    </button>
-                    <button 
-                        onClick={() => toggleFavorite(restaurant.id)}
-                        className={`w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center active:scale-90 transition-transform shadow-2xl ${isFavorite ? 'text-primary' : 'text-white'}`}
-                    >
-                        <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
-                    </button>
-                </div>
-            </div>
-
             {/* --- HERO SECTION --- */}
             <section ref={heroRef} className="relative h-[50vh] md:h-[65vh] w-full overflow-hidden">
                 <img 
@@ -171,55 +147,9 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     className="absolute inset-0 w-full h-full object-cover scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
-                
-                {/* Desktop Top Nav */}
-                <div className="absolute top-0 left-0 right-0 p-8 hidden lg:flex items-center justify-between">
-                    <button 
-                        onClick={() => navigate(-1)}
-                        className="group flex items-center gap-3 bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-white hover:bg-white/20 transition-all font-black uppercase text-xs tracking-widest"
-                    >
-                        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                        {t.back}
-                    </button>
-                    <div className="flex gap-4">
-                        <button 
-                            onClick={handleShare}
-                            className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-white hover:bg-white/20 transition-all"
-                        >
-                            <Share2 size={20} />
-                        </button>
-                        <button 
-                            onClick={() => toggleFavorite(restaurant.id)}
-                            className={`bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 transition-all ${isFavorite ? 'text-primary' : 'text-white'} hover:bg-white/20`}
-                        >
-                            <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} />
-                        </button>
-                    </div>
-                </div>
 
                 {/* Hero Content Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 max-w-7xl mx-auto flex flex-col items-start gap-4">
-                    <div className="reveal-up flex flex-wrap gap-2">
-                        {restaurant.isOpen ? (
-                            <span className="bg-primary text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-primary-glow">
-                                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                                {common.open_now}
-                            </span>
-                        ) : (
-                            <span className="bg-text-dim/20 backdrop-blur-md text-text-dim px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">
-                                {common.closed}
-                            </span>
-                        )}
-                        <span className="bg-white/10 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/10">
-                            {restaurant.cuisine}
-                        </span>
-                        {restaurant.price_level && (
-                            <span className="bg-white/10 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border border-white/10">
-                                {restaurant.price_level}
-                            </span>
-                        )}
-                    </div>
-                    
                     <h1 className="reveal-up text-5xl md:text-8xl font-display font-black text-white italic uppercase tracking-tighter leading-[0.8] drop-shadow-2xl">
                         {restaurant.name}
                     </h1>
