@@ -3,8 +3,6 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
     ChevronLeft, 
-    MapPin, 
-    Clock, 
     Share2, 
     Heart, 
     MessageCircle, 
@@ -31,7 +29,6 @@ import { restaurantService } from '../services/restaurantService';
 import { translations } from '../translations';
 import { DetailStarRating, OrnamentalDivider } from '../components/restaurant/DetailShared';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
-import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
 import { ReviewSection } from '../components/restaurant/ReviewSection';
 import { EventsSection } from '../components/restaurant/EventsSection';
 import { AboutSection } from '../components/restaurant/AboutSection';
@@ -176,8 +173,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 -mt-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
                     
-                    {/* LEFT COLUMN: Menu & Reviews */}
-                    <div className="lg:col-span-8 space-y-12">
+                    {/* FULL WIDTH COLUMN: Menu & Reviews */}
+                    <div className="lg:col-span-12 space-y-12">
                         
                         {/* Tabs Navigation (Sticky on Mobile) */}
                         <div className="sticky top-0 z-[40] -mx-6 px-6 py-4 bg-bg/80 backdrop-blur-md lg:relative lg:top-auto lg:z-auto lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none reveal-up">
@@ -298,35 +295,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         </div>
                     </div>
 
-                    {/* RIGHT COLUMN: Sidebar (Desktop Only) */}
-                    <aside className="hidden lg:block lg:col-span-4">
-                        <div className="sticky top-24 space-y-8 reveal-up pr-2">
-                            {/* Booking Card */}
-                                <ReservationSidebar restaurant={restaurant} t={t} lang={lang} />
-
-                            {/* Info Snippet */}
-                            <div className="bg-surface rounded-[2rem] p-8 border border-border-subtle space-y-4 shadow-sm">
-                                <div className="flex items-center gap-4 text-text-dim">
-                                    <div className="w-10 h-10 rounded-xl bg-bg flex items-center justify-center shrink-0 border border-border-subtle">
-                                        <MapPin size={18} />
-                                    </div>
-                                    <p className="text-xs font-bold leading-relaxed">{restaurant.address}</p>
-                                </div>
-                                <div className="flex items-center gap-4 text-text-dim">
-                                    <div className="w-10 h-10 rounded-xl bg-bg flex items-center justify-center shrink-0 border border-border-subtle">
-                                        <Clock size={18} />
-                                    </div>
-                                    <p className="text-xs font-bold">Consumo Médio: <span className="text-text-main">{restaurant.avg_consumption || 'Variável'}</span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-
-                </div>
-            </main>
-
-            {/* Mobile Booking Bar */}
-            <MobileReservationBar restaurant={restaurant} t={t} />
         </div>
     );
 }

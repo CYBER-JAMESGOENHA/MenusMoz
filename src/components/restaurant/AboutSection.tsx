@@ -67,17 +67,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
             {/* --- INTRO CARD --- */}
             <section className="bg-surface rounded-3xl md:rounded-[3rem] p-8 md:p-12 border border-border-subtle relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50 group-hover:bg-primary/10 transition-colors duration-700" />
-                <div className="relative z-10 max-w-2xl">
+                <div className="relative z-10 max-w-4xl">
                     <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-6">
                         <Info size={14} className="text-primary" />
                         <span className="text-[10px] font-black uppercase tracking-widest text-primary">{t.intro}</span>
                     </div>
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9] mb-6">
+                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9] mb-6">
                         {restaurant.name}: <span className="text-primary">Muito mais</span> que um restaurante.
                     </h2>
-                    <p className="text-text-dim text-lg md:text-xl font-medium leading-relaxed mb-8">
+                    <p className="text-text-dim text-lg md:text-2xl font-medium leading-relaxed mb-8">
                         {t.introDesc}
                     </p>
+
 
                     {/* Social Proof Chips */}
                     <div className="flex flex-wrap gap-2 mb-10">
