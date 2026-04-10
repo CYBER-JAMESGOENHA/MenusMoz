@@ -33,9 +33,8 @@ import { DetailStarRating, OrnamentalDivider } from '../components/restaurant/De
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { ReservationSidebar, MobileReservationBar } from '../components/restaurant/ReservationSidebar';
 import { ReviewSection } from '../components/restaurant/ReviewSection';
-import { ExperienceSection } from '../components/restaurant/ExperienceSection';
 import { EventsSection } from '../components/restaurant/EventsSection';
-import { VisitSection } from '../components/restaurant/VisitSection';
+import { AboutSection } from '../components/restaurant/AboutSection';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -54,7 +53,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'experience' | 'events' | 'reviews' | 'info'>('menu');
+    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events' | 'reviews'>('menu');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -185,29 +184,26 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full md:w-fit overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
                                 {[
                                     { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
-                                    { id: 'experience', label: 'Experiência', icon: <Camera size={16} /> },
+                                    { id: 'about', label: 'Sobre', icon: <Info size={16} /> },
                                     { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
-                                    { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> },
-                                    { id: 'info', label: 'Visita', icon: <MapPin size={16} /> }
+                                    { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> }
                                 ].map(tab => (
                                     <button
                                         key={tab.id}
                                         onClick={() => {
                                             setActiveTab(tab.id as any);
-                                            // Scroll to top of content on mobile when switching tabs
-                                            if (window.innerWidth < 1024) {
-                                                const element = document.getElementById('tab-content');
-                                                if (element) {
-                                                    const offset = 80; // height of sticky nav
-                                                    const bodyRect = document.body.getBoundingClientRect().top;
-                                                    const elementRect = element.getBoundingClientRect().top;
-                                                    const elementPosition = elementRect - bodyRect;
-                                                    const offsetPosition = elementPosition - offset;
-                                                    window.scrollTo({
-                                                        top: offsetPosition,
-                                                        behavior: 'smooth'
-                                                    });
-                                                }
+                                            // Scroll to top of content when switching tabs
+                                            const element = document.getElementById('tab-content');
+                                            if (element) {
+                                                const offset = window.innerWidth < 1024 ? 80 : 100; // height of sticky nav
+                                                const bodyRect = document.body.getBoundingClientRect().top;
+                                                const elementRect = element.getBoundingClientRect().top;
+                                                const elementPosition = elementRect - bodyRect;
+                                                const offsetPosition = elementPosition - offset;
+                                                window.scrollTo({
+                                                    top: offsetPosition,
+                                                    behavior: 'smooth'
+                                                });
                                             }
                                         }}
                                         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap snap-center ${
@@ -258,8 +254,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 </div>
                             )}
 
-                            {activeTab === 'experience' && (
-                                <ExperienceSection 
+                            {activeTab === 'about' && (
+                                <AboutSection 
                                     restaurant={restaurant} 
                                     lang={lang} 
                                 />
@@ -298,13 +294,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                         onLoginOpen={showLogin}
                                     />
                                 </div>
-                            )}
-
-                            {activeTab === 'info' && (
-                                <VisitSection 
-                                    restaurant={restaurant} 
-                                    lang={lang} 
-                                />
                             )}
                         </div>
                     </div>

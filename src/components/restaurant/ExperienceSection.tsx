@@ -127,7 +127,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ restaurant
             </section>
 
             {/* --- MEDIA GALLERY --- */}
-            <section className="space-y-6 md:space-y-8">
+            <section id="gallery" className="space-y-6 md:space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">Ambiance & Gallery</h2>
                     <div className="flex gap-2">

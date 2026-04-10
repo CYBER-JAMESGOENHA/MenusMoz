@@ -100,12 +100,30 @@ export const VisitSection: React.FC<VisitSectionProps> = ({ restaurant, lang }) 
                                 <Navigation size={18} /> {isEn ? 'Get Directions' : 'Como Chegar'}
                              </a>
                         </div>
+                        
+                        {/* Status Overlay */}
+                        <div className="absolute top-6 left-6 flex flex-col gap-2">
+                             <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white flex items-center gap-3">
+                                 <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                                 <span className="text-[10px] font-black uppercase tracking-widest text-black">
+                                     {isOpenNow ? (isEn ? 'Open Now' : 'Aberto Agora') : (isEn ? 'Closed' : 'Encerrado')}
+                                 </span>
+                             </div>
+                             {isOpenNow && (
+                                 <div className="bg-black/80 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/10 flex items-center gap-3">
+                                     <Clock size={12} className="text-primary" />
+                                     <span className="text-[10px] font-black uppercase tracking-widest text-white">
+                                         {isEn ? 'ETA: 15 min' : 'ETA: 15 min'} • 2.4km
+                                     </span>
+                                 </div>
+                             )}
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* --- FACILITIES & AMENITIES --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div id="amenities" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                     { 
                         icon: <Shirt size={20} />, 
@@ -139,7 +157,7 @@ export const VisitSection: React.FC<VisitSectionProps> = ({ restaurant, lang }) 
             </div>
 
             {/* --- CONTACT & SOCIAL --- */}
-            <div className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 overflow-hidden relative">
+            <div id="contact" className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 overflow-hidden relative">
                  <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
                     <div className="flex-1 space-y-4 text-center md:text-left">
                         <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter">Reservas & Contactos</h2>

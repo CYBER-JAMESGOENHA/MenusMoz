@@ -8,7 +8,9 @@ import {
     Calendar, 
     Clock, 
     CheckCircle2,
-    CalendarPlus
+    CalendarPlus,
+    MapPin,
+    Share2
 } from 'lucide-react';
 
 interface Review {
@@ -187,26 +189,60 @@ interface MobileReservationBarProps {
     t: any;
 }
 
-/** Fixed bottom bar com WhatsApp — mobile only */
+/** Fixed bottom bar with action rail — mobile only */
 export const MobileReservationBar: React.FC<MobileReservationBarProps> = ({ restaurant, t }) => {
     const whatsappLink = `https://wa.me/${restaurant.whatsapp}?text=${encodeURIComponent(`Olá, gostaria de fazer uma reserva no ${restaurant.name} através do Locais de Moz.`)}`;
 
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({ 
+                    title: `Locais de Moz — ${restaurant.name}`, 
+                    text: `Olha este restaurante que encontrei no Locais de Moz!`, 
+                    url: window.location.href 
+                });
+            } catch (err) {
+                console.log('Share error:', err);
+            }
+        }
+    };
+
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-            <div className="bg-bg/85 backdrop-blur-2xl border-t border-border-subtle p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex flex-col items-center gap-3 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] theme-dark:shadow-[0_-10px_40px_rgba(0,0,0,0.4)]">
+        <div className="fixed bottom-0 left-0 right-0 z-[60] lg:hidden">
+            <div className="bg-bg/90 backdrop-blur-2xl border-t border-border-subtle p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] flex items-center justify-between gap-2 shadow-[0_-10px_40px_rgba(0,0,0,0.15)] theme-dark:shadow-[0_-10px_40px_rgba(0,0,0,0.4)] px-4">
+                
+                {/* Secondary Actions */}
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                    <a
+                        href={`tel:${restaurant.whatsapp}`}
+                        className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-text-dim hover:text-primary transition-colors shrink-0"
+                    >
+                        <Phone size={18} />
+                    </a>
+                    <a
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(restaurant.name)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-text-dim hover:text-primary transition-colors shrink-0"
+                    >
+                        <MapPin size={18} />
+                    </a>
+                    <button
+                        onClick={handleShare}
+                        className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-text-dim hover:text-primary transition-colors shrink-0"
+                    >
+                        <Share2 size={18} />
+                    </button>
+                </div>
+
+                {/* Primary Action */}
                 <a
                     href={whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full max-w-sm bg-primary text-white h-14 rounded-2xl font-black text-lg flex items-center justify-center gap-3 shadow-xl shadow-primary/30 hover:brightness-110 active:scale-95 transition-all duration-300"
+                    className="flex-1 bg-primary text-white h-12 rounded-xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all duration-300 max-w-[200px]"
                 >
-                    <MessageCircle size={24} /> {t.whatsapp_res}
-                </a>
-                <a
-                    href={`tel:${restaurant.whatsapp}`}
-                    className="w-full max-w-sm glass h-12 rounded-xl font-black uppercase tracking-widest flex items-center justify-center gap-2 text-text-main border border-border-subtle text-[10px] hover:bg-primary/5 active:scale-95 transition-all duration-300"
-                >
-                    <Phone size={16} /> {t.ligar}
+                    <MessageCircle size={18} /> Reservar
                 </a>
             </div>
         </div>
