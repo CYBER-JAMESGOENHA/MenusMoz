@@ -27,7 +27,6 @@ const RestaurantListing = lazy(() => import('./pages/RestaurantListing'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Profile = lazy(() => import('./pages/Profile'));
-const AdminImages = lazy(() => import('./pages/AdminImages'));
 
 
 export default function App() {
@@ -166,8 +165,6 @@ export default function App() {
                       <Route path="/privacidade" element={<Privacy lang={selectedLang} />} />
                       <Route path="/termos" element={<Terms lang={selectedLang} />} />
                       <Route path="/perfil" element={<Profile lang={selectedLang} />} />
-                      <Route path="/admin/imagens" element={<AdminImages />} />
-
                       
                       <Route path="*" element={
                         <div className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 pt-32 text-center bg-bg relative overflow-hidden">
