@@ -6,8 +6,6 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error?: any; data?: any }>;
-  updatePassword: (newPassword: string) => Promise<{ error?: any; data?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,24 +43,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const resetPassword = async (email: string) => {
-    if (!isSupabaseConfigured || !supabase) return { error: 'Supabase not configured' };
-    return await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/perfil?reset=true`,
-    });
-  };
-
-  const updatePassword = async (newPassword: string) => {
-    if (!isSupabaseConfigured || !supabase) return { error: 'Supabase not configured' };
-    return await supabase.auth.updateUser({ password: newPassword });
-  };
-
   const value: AuthContextType = {
     user,
     loading,
     signOut,
-    resetPassword,
-    updatePassword,
   };
 
   return (

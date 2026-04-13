@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
-
+import { customCookieStorage } from '../core/utils/cookieStorage';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
@@ -22,5 +22,12 @@ if (!isSupabaseConfigured) {
 }
 
 export const supabase: SupabaseClient | null = isSupabaseConfigured 
-  ? createClient(supabaseUrl, supabaseAnonKey) 
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storage: customCookieStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      }
+    }) 
   : null
