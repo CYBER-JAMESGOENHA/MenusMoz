@@ -22,10 +22,21 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         e.preventDefault();
         e.stopPropagation();
         if (restaurant.lat && restaurant.lng) {
-            window.open(`https://maps.google.com/?q=${restaurant.lat},${restaurant.lng}`, '_blank');
+            // Precise directions to exact GPS coordinates
+            window.open(
+                `https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`,
+                '_blank'
+            );
+        } else if (restaurant.location || restaurant.address) {
+            window.open(
+                `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address)}`,
+                '_blank'
+            );
         } else {
-            // Fallback if no lat/lng provided but maps link might work via address string.
-            window.open(`https://maps.google.com/?q=${encodeURIComponent(restaurant.name || 'restaurant')}`, '_blank');
+            window.open(
+                `https://maps.google.com/?q=${encodeURIComponent((restaurant.name || 'restaurante') + ' Moçambique')}`,
+                '_blank'
+            );
         }
     }, [restaurant]);
 
@@ -48,13 +59,23 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 {/* Elegant gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
 
-                {/* Distance Badge (Location Overlay) */}
+                {/* Location / Directions Badge */}
                 <button
                     onClick={handleLocationClick}
-                    className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[12px] font-bold z-10 hover:bg-black/60 transition-colors shadow-sm cursor-pointer"
+                    title="Ver no Google Maps"
+                    className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[12px] font-bold z-10 hover:bg-primary/80 hover:border-primary/40 transition-all duration-300 shadow-sm cursor-pointer active:scale-95"
                 >
-                    <span className="text-[13px] leading-none mb-[1px]">📍</span>
-                    <span>{restaurant.distance_km || restaurant.distance || "2.8"} km · 8 min</span>
+                    <span className="text-[13px] leading-none">📍</span>
+                    <span className="truncate max-w-[120px]">
+                        {restaurant.location
+                            ? restaurant.location.split(',')[0]
+                            : (restaurant.lat && restaurant.lng)
+                                ? `${Number(restaurant.lat).toFixed(4)}, ${Number(restaurant.lng).toFixed(4)}`
+                                : 'Ver no mapa'}
+                    </span>
+                    {(restaurant.lat && restaurant.lng) && (
+                        <span className="text-emerald-400 text-[10px] font-black uppercase tracking-wider">GPS</span>
+                    )}
                 </button>
 
                 {/* Favorite Button (Upgraded) */}
@@ -74,9 +95,9 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
             <div className="p-4 flex flex-col gap-2.5">
                 {/* 1. HEADER LINE */}
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden border border-border-subtle bg-gray-50 dark:bg-gray-800 flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 shrink-0 rounded-full overflow-hidden border border-border-subtle bg-surface flex items-center justify-center shadow-sm">
                         <img 
-                            src={restaurant.logo || restaurant.image} 
+                            src={restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
                             alt={`${restaurant.name} logo`} 
                             className="w-full h-full object-cover" 
                         />

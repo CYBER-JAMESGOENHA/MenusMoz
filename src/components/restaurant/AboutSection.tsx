@@ -273,17 +273,50 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         </div>
                         <div>
                             <h3 className="text-xl md:text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">{t.map}</h3>
-                            <p className="text-text-dim text-xs font-medium mt-0.5">{restaurant.address || 'Maputo, Moçambique'}</p>
+                            <p className="text-text-dim text-xs font-medium mt-0.5">{restaurant.location || restaurant.address || 'Maputo, Moçambique'}</p>
                         </div>
                     </div>
-                    <div className="flex-1 min-h-[250px] md:min-h-[300px] rounded-3xl md:rounded-[2rem] bg-bg border border-border-subtle overflow-hidden relative group">
-                        <img src={`https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80`} alt="Map" className="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                             <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(restaurant.address || restaurant.name)}`} target="_blank" rel="noopener noreferrer" className="bg-white text-black px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-2xl flex items-center gap-3 hover:bg-primary hover:text-white transition-all transform hover:scale-110 active:scale-95">
-                                <Navigation size={18} /> {t.directions}
-                             </a>
-                        </div>
+                    {/* Google Maps embed — precise pin if lat/lng, text search otherwise */}
+                    <div className="flex-1 min-h-[250px] md:min-h-[300px] rounded-3xl md:rounded-[2rem] border border-border-subtle overflow-hidden relative">
+                        {(restaurant.lat && restaurant.lng) ? (
+                            <iframe
+                                title={`${restaurant.name} - Localização`}
+                                width="100%"
+                                height="100%"
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                src={`https://maps.google.com/maps?q=${restaurant.lat},${restaurant.lng}&z=16&output=embed`}
+                                className="absolute inset-0 w-full h-full border-0"
+                            />
+                        ) : (
+                            <iframe
+                                title={`${restaurant.name} - Localização`}
+                                width="100%"
+                                height="100%"
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                src={`https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name + ' Moçambique')}&z=15&output=embed`}
+                                className="absolute inset-0 w-full h-full border-0"
+                            />
+                        )}
                     </div>
+                    {/* Directions CTA */}
+                    <a
+                        href={
+                            (restaurant.lat && restaurant.lng)
+                                ? `https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`
+                                : `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name)}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-3 w-full py-4 bg-text-main text-surface rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-sm hover:shadow-primary-glow/20 active:scale-95 duration-300"
+                    >
+                        <Navigation size={18} />
+                        {t.directions}
+                        {restaurant.lat && restaurant.lng && (
+                            <span className="text-[9px] bg-white/20 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">GPS</span>
+                        )}
+                    </a>
                 </div>
             </div>
 

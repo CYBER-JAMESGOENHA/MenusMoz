@@ -6,7 +6,9 @@ export interface Restaurant {
   id: string | number;
   name: string;
   slug: string;
-  image: string;
+  image: string;        // card hero / cover photo (maps from cover_url → image_url)
+  logo?: string;        // small round avatar/logo (maps from logo → image_url)
+  cover_url?: string;   // raw cover image URL from DB
   cuisine: string;
   rating: number;
   reviewCount: number;
@@ -33,8 +35,8 @@ export interface Restaurant {
   avg_consumption?: string;
   tags?: string[];
   features?: string[];
-  logo?: string;
   identity_text?: string;
+  location?: string;
   hours?: any;
   // New rich fields
   story?: string;
@@ -122,11 +124,14 @@ const BASE_RESTAURANT_QUERY = `
 
 const mapRestaurant = (r: any): Restaurant => ({
   ...r,
-  image: r.image_url,
-  logo: r.logo || null,
+  // cover_url  → big card/hero photo; falls back to image_url if not set
+  image: r.cover_url || r.image_url || null,
+  // logo       → small round avatar/logo; falls back to image_url
+  logo: r.logo || r.image_url || null,
   identity_text: r.identity_text || null,
-  lat: r.latitude || (r.coords?.lat),
-  lng: r.longitude || (r.coords?.lng),
+  // latitude / longitude columns take priority over legacy coords jsonb
+  lat: r.latitude != null ? Number(r.latitude) : (r.coords?.lat ?? null),
+  lng: r.longitude != null ? Number(r.longitude) : (r.coords?.lng ?? null),
   chefName: r.chef_name,
   chefImage: r.chef_image,
   chefQuote: r.chef_quote,
