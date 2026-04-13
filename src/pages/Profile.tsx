@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { User as UserIcon, Mail, Calendar, Heart, MessageSquare, Settings, LogOut, ChevronRight, Shield, Award, Camera, MapPin, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { User as UserIcon, Mail, Calendar, Heart, MessageSquare, Settings, LogOut, ChevronRight, Shield, Award, Camera, MapPin, Lock, CheckCircle, AlertCircle, CreditCard, Receipt, Download } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { translations } from '../translations';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
@@ -337,6 +337,63 @@ export default function Profile({ lang }: ProfileProps) {
                         </div>
                         <p className="text-7xl font-display font-black text-text-main leading-none mb-4 italic tracking-tighter relative z-10">{stats.reviews}</p>
                         <p className="text-xs font-black uppercase tracking-[0.4em] text-text-dim/60 italic relative z-10">{t.reviews}</p>
+                    </div>
+                </div>
+
+                {/* Payment History Portal */}
+                <div className="space-y-6 reveal mb-8">
+                    <div className="bg-surface rounded-[3.5rem] border border-border-subtle overflow-hidden shadow-premium">
+                        <div className="p-10 border-b border-border-subtle bg-primary/5 flex items-center justify-between">
+                             <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary">
+                                    <CreditCard size={20} />
+                                </div>
+                                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-primary italic">
+                                    {selectedLang === 'pt' ? 'Histórico de Pagamentos' : 'Payment History'}
+                                </h3>
+                             </div>
+                             <span className="text-[10px] font-black uppercase tracking-widest text-text-dim/40 italic">Transações Recentes</span>
+                        </div>
+                        
+                        <div className="divide-y divide-border-subtle/30 px-6">
+                            {[
+                                { id: 'TXN-9823', date: '12 Abril 2026', amount: '3.500 MT', desc: 'Reserva Premium - Restaurante Zambezi', status: 'completed' },
+                                { id: 'TXN-9810', date: '05 Abril 2026', amount: '1.200 MT', desc: 'Sinal de Reserva - Dhow Maputo', status: 'completed' },
+                                { id: 'TXN-9784', date: '28 Março 2026', amount: '5.000 MT', desc: 'Evento Exclusivo Wine Tasting', status: 'refunded' }
+                            ].map((txn, i) => (
+                                <div key={i} className="w-full flex flex-col md:flex-row md:items-center justify-between p-8 md:p-10 hover:bg-primary/5 transition-all duration-300 group rounded-[2rem] my-2 gap-6">
+                                    <div className="flex items-start md:items-center gap-6">
+                                        <div className={`w-14 h-14 rounded-2xl border flex-shrink-0 flex items-center justify-center transition-all duration-300 ${txn.status === 'completed' ? 'bg-green-500/10 border-green-500/20 text-green-500 group-hover:bg-green-500/20' : 'bg-red-500/10 border-red-500/20 text-red-500 group-hover:bg-red-500/20'}`}>
+                                            <Receipt size={26} strokeWidth={2.5} />
+                                        </div>
+                                        <div className="text-left">
+                                            <p className="text-xl font-display font-black text-text-main italic tracking-tight group-hover:text-primary transition-colors leading-none mb-2">{txn.desc}</p>
+                                            <div className="flex items-center gap-3 text-[10px] text-text-dim/60 uppercase font-black tracking-widest italic">
+                                                <span>{txn.date}</span>
+                                                <span className="w-1 h-1 rounded-full bg-border-subtle"></span>
+                                                <span className="font-mono">{txn.id}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto mt-4 md:mt-0 pl-20 md:pl-0">
+                                        <div className="text-left md:text-right">
+                                            <p className="text-2xl font-display font-black text-text-main italic tracking-tight leading-none mb-1">{txn.amount}</p>
+                                            <p className={`text-[9px] uppercase font-black tracking-[0.2em] italic ${txn.status === 'completed' ? 'text-green-500' : 'text-red-500'}`}>
+                                                {txn.status === 'completed' ? (selectedLang === 'pt' ? 'Concluído' : 'Completed') : (selectedLang === 'pt' ? 'Reembolsado' : 'Refunded')}
+                                            </p>
+                                        </div>
+                                        <button className="w-10 h-10 rounded-xl bg-surface-alt border border-border-subtle flex items-center justify-center text-text-dim hover:text-primary hover:border-primary/30 transition-all ml-4">
+                                            <Download size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="p-6 bg-surface-alt border-t border-border-subtle text-center">
+                            <button className="text-[10px] font-black uppercase tracking-[0.3em] text-primary hover:text-primary-hover transition-colors italic">
+                                {selectedLang === 'pt' ? 'Ver todas as transações' : 'View all transactions'}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
