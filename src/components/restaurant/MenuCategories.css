@@ -110,3 +110,25 @@
   }
 }
 
+/* Netflix-style horizontal scroll sections */
+.netflix-section {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.netflix-section::-webkit-scrollbar {
+  display: none;
+}
+
+.netflix-card {
+  min-width: 240px;
+  max-width: 280px;
+}
+
+@media (min-width: 768px) {
+  .netflix-card {
+    min-width: 260px;
+    max-width: 300px;
+  }
+}
+

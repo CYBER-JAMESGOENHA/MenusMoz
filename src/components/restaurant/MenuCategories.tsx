@@ -164,18 +164,38 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const viewContainerRef = useRef<HTMLDivElement>(null);
 
   /* ─── Grouping Logic ───────────────────────────────────────── */
-  const groupedMenu = useMemo(() => {
-    const result: Record<MenuGroup, MenuCategory[]> = {
-      Comida: [],
-      Bebidas: [],
-      Sobremesas: []
-    };
-    menuCategories.forEach(cat => {
-      const group = getGroup(cat.name);
-      result[group].push(cat);
-    });
-    return result;
-  }, [menuCategories]);
+const getSubcategorySection = (name: string): string => {
+  const n = name.toLowerCase();
+  if (n.includes('entradas') || n.includes('aperitivo') || n.includes('começar') || n.includes('frito')) return 'Para Começar';
+  if (n.includes('carne') || n.includes('frango') || n.includes('peixe') || n.includes('marisco') || n.includes('prato') || n.includes('grelh')) return 'Pratos Principais';
+  if (n.includes('salada') || n.includes('sopa') || n.includes('leve') || n.includes('acompanh') || n.includes('tosta') || n.includes('burger') || n.includes('pizza') || n.includes('pasta')) return 'Leves & Casuais';
+  return 'Outros';
+};
+
+const SECTION_ORDER = ['Para Começar', 'Pratos Principais', 'Leves & Casuais', 'Outros'];
+
+const groupedMenu = useMemo(() => {
+  const result: Record<MenuGroup, MenuCategory[]> = {
+    Comida: [],
+    Bebidas: [],
+    Sobremesas: []
+  };
+  menuCategories.forEach(cat => {
+    const group = getGroup(cat.name);
+    result[group].push(cat);
+  });
+  return result;
+}, [menuCategories]);
+
+const getSubcategorySections = (categories: MenuCategory[]) => {
+  const sections: Record<string, MenuCategory[]> = {};
+  categories.forEach(cat => {
+    const section = getSubcategorySection(cat.name);
+    if (!sections[section]) sections[section] = [];
+    sections[section].push(cat);
+  });
+  return sections;
+};
 
   /* ─── Navigation Logic ──────────────────────────────────────── */
   const navigateTo = (newView: MenuView, group: MenuGroup | null = null, cat: MenuCategory | null = null) => {
@@ -293,8 +313,8 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
 
         {/* LEVEL 2 — Subcategories View */}
         {view === 'subcategory' && selectedGroup && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-right duration-500">
-            <div className="flex items-center gap-4 mb-10">
+          <div className="space-y-10 animate-in fade-in slide-in-from-right duration-500">
+            <div className="flex items-center gap-4 mb-6">
               <div className="w-14 h-14 rounded-2xl bg-surface border border-border-subtle flex items-center justify-center text-primary">
                 {GROUP_CONFIG[selectedGroup].icon}
               </div>
@@ -303,20 +323,30 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
               </h2>
             </div>
             
-            <div className="flex flex-col gap-3">
-              {groupedMenu[selectedGroup].map((cat, idx) => (
-                <button 
-                  key={idx} 
-                  onClick={() => navigateTo('dishes', selectedGroup, cat)}
-                  className="subcategory-item group"
-                >
-                  <span className="font-bold text-xl text-text-main group-hover:text-primary transition-colors">
-                    {cat.name}
-                  </span>
-                  <ChevronRight size={20} className="text-text-dim/40 group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                </button>
-              ))}
-            </div>
+            {(() => {
+              const sections = getSubcategorySections(groupedMenu[selectedGroup]);
+              return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
+                <div key={section} className="space-y-4">
+                  <h3 className="text-xl font-black uppercase tracking-wider text-text-main pl-1">{section}</h3>
+                  <div className="flex gap-4 overflow-x-auto netflix-section pb-2 px-1">
+                    {sections[section].map((cat, idx) => (
+                      <button 
+                        key={idx} 
+                        onClick={() => navigateTo('dishes', selectedGroup, cat)}
+                        className="netflix-card group bg-surface border border-border-subtle rounded-3xl p-5 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]"
+                      >
+                        <span className="font-bold text-lg text-text-main block mb-2 group-hover:text-primary transition-colors">
+                          {cat.name}
+                        </span>
+                        <span className="text-sm text-text-dim leading-relaxed">
+                          Explore our delicious selection of {cat.name.toLowerCase()} dishes
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ));
+            })()}
           </div>
         )}
 
