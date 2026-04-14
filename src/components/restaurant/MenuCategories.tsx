@@ -68,7 +68,7 @@ const GROUP_CONFIG = {
 const EntryCard = ({ title, config, onClick }: { title: string, config: any, onClick: () => void }) => (
   <button
     onClick={onClick}
-    className="group relative overflow-hidden rounded-[2rem] w-full h-full min-h-[140px] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] shadow-premium bg-surface"
+    className="group relative overflow-hidden rounded-[2rem] w-full h-full min-h-[140px] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-premium bg-surface"
   >
     <img 
       src={config.img} 
@@ -279,17 +279,15 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
         {/* LEVEL 1 — Entry View */}
         {view === 'entry' && (
           <div className="entry-card-container">
-            <div className="flex flex-col gap-3 h-full">
-               <div className="flex-[2] min-h-[150px]">
-                  <EntryCard title="Comida" config={GROUP_CONFIG.Comida} onClick={() => navigateTo('subcategory', 'Comida')} />
-               </div>
-               <div className="flex-[1] min-h-[75px]">
-                  <EntryCard title="Sobremesas" config={GROUP_CONFIG.Sobremesas} onClick={() => navigateTo('subcategory', 'Sobremesas')} />
-               </div>
-            </div>
-            <div className="h-full min-h-[190px]">
+             <div>
+               <EntryCard title="Comida" config={GROUP_CONFIG.Comida} onClick={() => navigateTo('subcategory', 'Comida')} />
+             </div>
+             <div>
+               <EntryCard title="Sobremesas" config={GROUP_CONFIG.Sobremesas} onClick={() => navigateTo('subcategory', 'Sobremesas')} />
+             </div>
+             <div>
                <EntryCard title="Bebidas" config={GROUP_CONFIG.Bebidas} onClick={() => navigateTo('subcategory', 'Bebidas')} />
-            </div>
+             </div>
           </div>
         )}
 
