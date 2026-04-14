@@ -462,7 +462,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
             )}
 
             {/* Nested Sub-subcategories */}
-            {selectedCategory.subcategories?.map((sub, i) => (
+            {selectedCategory.subcategories?.filter(sub => sub.name.toLowerCase() !== 'geral').map((sub, i) => (
               <div key={i} className="space-y-6 pt-8 border-t border-border-subtle/30">
                 <div className="flex items-center gap-4">
                   <h3 className="text-xl font-bold text-text-main tracking-tight uppercase italic">{sub.name}</h3>
