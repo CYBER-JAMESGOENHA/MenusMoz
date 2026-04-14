@@ -47,17 +47,17 @@ const getGroup = (name: string): MenuGroup => {
 
 const GROUP_CONFIG = {
   Comida: {
-    icon: <Utensils size={24} />,
+    icon: <Utensils size={16} />,
     img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80',
     subtitle: 'Pratos Principais & Entradas'
   },
   Bebidas: {
-    icon: <CupSoda size={24} />,
+    icon: <CupSoda size={16} />,
     img: 'https://images.unsplash.com/photo-1536935338218-844c798056d7?w=1200&q=80',
     subtitle: 'Vinhos, Cocktails & Refrescos'
   },
   Sobremesas: {
-    icon: <IceCream size={24} />,
+    icon: <IceCream size={16} />,
     img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80',
     subtitle: 'Doces & Pastelaria Fina'
   }
@@ -68,7 +68,7 @@ const GROUP_CONFIG = {
 const EntryCard = ({ title, config, onClick }: { title: string, config: any, onClick: () => void }) => (
   <button
     onClick={onClick}
-    className="group relative overflow-hidden rounded-[2.5rem] w-full h-full transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] shadow-premium bg-surface"
+    className="group relative overflow-hidden rounded-[2rem] w-full h-full min-h-[140px] transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] shadow-premium bg-surface"
   >
     <img 
       src={config.img} 
@@ -77,16 +77,16 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
     />
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:bg-black/60 transition-colors duration-500" />
     
-    <div className="absolute bottom-8 left-8 text-left z-10 transition-transform duration-500 group-hover:translate-x-2 text-white">
-      <div className="flex items-center gap-3 mb-3 opacity-90">
-        <div className="p-2.5 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20">
+    <div className="absolute bottom-3 left-4 text-left z-10 transition-transform duration-500 group-hover:translate-x-2 text-white">
+      <div className="flex items-center gap-1.5 mb-1.5 opacity-90">
+        <div className="p-1.5 bg-white/10 backdrop-blur-xl rounded-lg border border-white/20">
           {config.icon}
         </div>
-        <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-70">
+        <span className="text-[8px] font-black uppercase tracking-[0.3em] opacity-70">
           {config.subtitle}
         </span>
       </div>
-      <h3 className="text-4xl md:text-5xl font-display font-black italic uppercase tracking-tighter leading-none">
+      <h3 className="text-2xl md:text-3xl font-display font-black italic uppercase tracking-tighter leading-none">
         {title}
       </h3>
     </div>
@@ -279,15 +279,15 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
         {/* LEVEL 1 — Entry View */}
         {view === 'entry' && (
           <div className="entry-card-container">
-            <div className="flex flex-col gap-6 h-full">
-               <div className="flex-[2] min-h-[300px]">
+            <div className="flex flex-col gap-3 h-full">
+               <div className="flex-[2] min-h-[150px]">
                   <EntryCard title="Comida" config={GROUP_CONFIG.Comida} onClick={() => navigateTo('subcategory', 'Comida')} />
                </div>
-               <div className="flex-[1] min-h-[150px]">
+               <div className="flex-[1] min-h-[75px]">
                   <EntryCard title="Sobremesas" config={GROUP_CONFIG.Sobremesas} onClick={() => navigateTo('subcategory', 'Sobremesas')} />
                </div>
             </div>
-            <div className="h-full min-h-[400px]">
+            <div className="h-full min-h-[190px]">
                <EntryCard title="Bebidas" config={GROUP_CONFIG.Bebidas} onClick={() => navigateTo('subcategory', 'Bebidas')} />
             </div>
           </div>
