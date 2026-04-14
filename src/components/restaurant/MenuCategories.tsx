@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
-import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft, ChefHat } from 'lucide-react';
 import { gsap } from 'gsap';
 import './MenuCategories.css';
 
@@ -375,26 +375,23 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                     {sections[section].map((cat, idx) => {
                       const isExpanded = expandedCard === `${selectedGroup}-${cat.name}`;
                       const trendingItems = cat.items?.slice(0, 3) || [];
+                      const isHero = idx === 0;
                       
                       return (
                         <button 
                           key={idx}
                           onClick={() => setExpandedCard(isExpanded ? null : `${selectedGroup}-${cat.name}`)}
-                          className={`netflix-card group bg-surface border rounded-3xl p-5 text-left transition-all duration-300 ${
+                          className={`relative netflix-card group bg-surface border rounded-3xl p-5 text-left transition-all duration-300 ${
                             isExpanded 
                               ? 'border-primary shadow-lg ring-2 ring-primary/20' 
                               : 'border-border-subtle hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]'
-                          }`}
+                          } ${isHero ? 'w-80 md:w-96' : 'w-48 md:w-56'}`}
                         >
                           <span className={`font-bold text-lg text-text-main block mb-2 transition-colors ${isExpanded ? 'text-primary' : 'group-hover:text-primary'}`}>
                             {cat.name}
                           </span>
                           
                           <div className={`transition-all duration-300 overflow-hidden ${isExpanded ? 'mt-3' : ''}`}>
-                            <p className={`text-sm text-text-dim leading-relaxed transition-opacity duration-200 ${isExpanded ? 'opacity-0 hidden' : 'opacity-100'}`}>
-                              Explore our delicious selection of {cat.name.toLowerCase()} dishes
-                            </p>
-                            
                             {isExpanded && (
                               <div className="space-y-2 mt-2 animate-in fade-in duration-200">
                                 {trendingItems.map((item, i) => (
@@ -415,6 +412,10 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                                 </button>
                               </div>
                             )}
+                          </div>
+                          
+                          <div className="absolute bottom-3 right-3 opacity-5 pointer-events-none">
+                            <ChefHat className="w-16 h-16" />
                           </div>
                         </button>
                       );
