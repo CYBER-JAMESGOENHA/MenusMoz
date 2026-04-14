@@ -157,6 +157,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [view, setView] = useState<MenuView>('entry');
   const [selectedGroup, setSelectedGroup] = useState<MenuGroup | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
@@ -329,20 +330,53 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                 <div key={section} className="space-y-4">
                   <h3 className="text-xl font-black uppercase tracking-wider text-text-main pl-1">{section}</h3>
                   <div className="flex gap-4 overflow-x-auto netflix-section pb-2 px-1">
-                    {sections[section].map((cat, idx) => (
-                      <button 
-                        key={idx} 
-                        onClick={() => navigateTo('dishes', selectedGroup, cat)}
-                        className="netflix-card group bg-surface border border-border-subtle rounded-3xl p-5 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]"
-                      >
-                        <span className="font-bold text-lg text-text-main block mb-2 group-hover:text-primary transition-colors">
-                          {cat.name}
-                        </span>
-                        <span className="text-sm text-text-dim leading-relaxed">
-                          Explore our delicious selection of {cat.name.toLowerCase()} dishes
-                        </span>
-                      </button>
-                    ))}
+                    {sections[section].map((cat, idx) => {
+                      const isExpanded = expandedCard === `${selectedGroup}-${cat.name}`;
+                      const trendingItems = cat.items?.slice(0, 3) || [];
+                      
+                      return (
+                        <button 
+                          key={idx}
+                          onClick={() => setExpandedCard(isExpanded ? null : `${selectedGroup}-${cat.name}`)}
+                          className={`netflix-card group bg-surface border rounded-3xl p-5 text-left transition-all duration-300 ${
+                            isExpanded 
+                              ? 'border-primary shadow-lg ring-2 ring-primary/20' 
+                              : 'border-border-subtle hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]'
+                          }`}
+                        >
+                          <span className={`font-bold text-lg text-text-main block mb-2 transition-colors ${isExpanded ? 'text-primary' : 'group-hover:text-primary'}`}>
+                            {cat.name}
+                          </span>
+                          
+                          <div className={`transition-all duration-300 overflow-hidden ${isExpanded ? 'mt-3' : ''}`}>
+                            <p className={`text-sm text-text-dim leading-relaxed transition-opacity duration-200 ${isExpanded ? 'opacity-0 hidden' : 'opacity-100'}`}>
+                              Explore our delicious selection of {cat.name.toLowerCase()} dishes
+                            </p>
+                            
+                            {isExpanded && (
+                              <div className="space-y-2 mt-2 animate-in fade-in duration-200">
+                                {trendingItems.map((item, i) => (
+                                  <div key={i} className="flex justify-between items-center text-sm border-b border-border-subtle/50 pb-2">
+                                    <span className="text-text-main font-medium truncate flex-1 mr-2">{item.name}</span>
+                                    <span className="text-primary font-black shrink-0">{item.price}</span>
+                                  </div>
+                                ))}
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigateTo('dishes', selectedGroup, cat);
+                                    setExpandedCard(null);
+                                  }}
+                                  className="w-full mt-3 py-2.5 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary/90 transition-colors"
+                                >
+                                  Ver Menu Completo
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ));
