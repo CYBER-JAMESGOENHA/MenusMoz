@@ -227,27 +227,27 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     
                                     <OrnamentalDivider />
                                     
-                                    {restaurant.chefName && (
-                                        <div className="bg-surface rounded-[2.5rem] p-10 border border-border-subtle overflow-hidden relative group">
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000" />
-                                            <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
-                                                {restaurant.chefImage && (
-                                                    <img 
-                                                        src={restaurant.chefImage} 
-                                                        alt={restaurant.chefName}
-                                                        className="w-32 h-32 rounded-3xl object-cover ring-4 ring-primary/10"
-                                                    />
-                                                )}
-                                                <div className="text-center md:text-left">
-                                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-2">Pelas mãos de</p>
-                                                    <h3 className="text-3xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">Chef {restaurant.chefName}</h3>
-                                                    <p className="text-text-dim text-lg italic font-medium leading-relaxed max-w-xl">
-                                                        "{restaurant.chefQuote || 'A nossa cozinha é uma celebração dos sabores autênticos de Moçambique, elevada com técnicas modernas.'}"
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
+                                     {restaurant.chefName && (
+                                         <div className="bg-surface rounded-[2.5rem] p-10 border border-border-subtle overflow-hidden relative group">
+                                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000" />
+                                             <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
+                                                 {restaurant.chefImage && (
+                                                     <img 
+                                                         src={restaurant.chefImage} 
+                                                         alt={restaurant.chefName}
+                                                         className="w-32 h-32 rounded-3xl object-cover ring-4 ring-primary/10"
+                                                     />
+                                                 )}
+                                                 <div className="text-center md:text-left">
+                                                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-2">Pelas mãos de</p>
+                                                     <h3 className="text-3xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">{restaurant.chefName}</h3>
+                                                     <p className="text-text-dim text-lg italic font-medium leading-relaxed max-w-xl">
+                                                         "{restaurant.chefQuote || 'A nossa cozinha é uma celebração dos sabores autênticos de Moçambique, elevada com técnicas modernas.'}"
+                                                     </p>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     )}
                                 </div>
                             )}
 

@@ -170,32 +170,53 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                 </div>
             </section>
 
-            {restaurant.chefName && (
-                <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-                    <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
-                        <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 shadow-2xl">
-                            <img 
-                                src={restaurant.chefImage || "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80"} 
-                                alt={restaurant.chefName}
-                                className="w-full h-full object-cover"
-                            />
+            {/* Restaurant About Card */}
+            <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+                <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
+                    {/* Image Section - Restaurant Logo/Interior */}
+                    <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl">
+                        <img 
+                            src={restaurant.logo || restaurant.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
+                            alt={`${restaurant.name} logo`}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="flex-1 text-center md:text-left space-y-4">
+                        {/* OvereLine Text */}
+                        <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-4">
+                            <Info size={14} className="text-primary" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">SOBRE O RESTAURANTE</span>
                         </div>
-                        <div className="flex-1 text-center md:text-left space-y-4">
-                            <Quote size={48} className="text-primary/20 mb-4 mx-auto md:mx-0" />
-                            <p className="text-lg md:text-2xl lg:text-3xl italic font-medium text-text-main leading-relaxed">
-                                "{restaurant.chefQuote || (isEn 
-                                    ? 'Cooking is a language that speaks to the soul through the palate.' 
-                                    : 'Cozinhar é uma linguagem que fala à alma através do paladar.')}"
-                            </p>
-                            <div>
-                                <h4 className="text-xl font-display font-black text-primary italic uppercase tracking-tighter">Chef {restaurant.chefName}</h4>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-text-dim mt-1">Executive Chef & Visionary</p>
-                            </div>
+                        
+                        {/* Heading - Restaurant Name */}
+                        <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">
+                            {restaurant.name}
+                        </h3>
+                        
+                        {/* Premium Bio Paragraph */}
+                        <p className="text-text-dim text-base md:text-lg leading-relaxed">
+                            {restaurant.bio || restaurant.description || (isEn 
+                                ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
+                                : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
+                        </p>
+                        
+                        {/* Sleek Pill/Tag for Location or Cuisine Style */}
+                        <div className="flex items-center gap-2 mt-3">
+                            {restaurant.cuisine && (
+                                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-medium">
+                                    {restaurant.cuisine}
+                                </span>
+                            )}
+                            {!restaurant.cuisine && restaurant.location && (
+                                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-medium">
+                                    {restaurant.location.split(',')[0]}
+                                </span>
+                            )}
                         </div>
                     </div>
-                </section>
-            )}
+                </div>
+            </section>
 
             {/* --- SIGNATURE DISHES --- */}
             <section className="space-y-8">
