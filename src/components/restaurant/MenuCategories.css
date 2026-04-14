@@ -110,6 +110,11 @@
   }
 }
 
+.menu-list-container {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Netflix-style horizontal scroll sections */
 .netflix-section {
   scrollbar-width: none;

@@ -145,6 +145,48 @@ const MenuItemCard = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: (
   </div>
 );
 
+const MenuItemList = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: () => void, onRemove: () => void, qty: number }) => (
+  <div className={`group border-b border-border-subtle/50 py-4 transition-all duration-300 ${qty > 0 ? 'bg-primary/5 -mx-4 px-4 rounded-2xl border-x border-t border-b border-primary/30' : ''}`}>
+    <div className="flex items-start justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <h4 className="font-bold text-text-main text-lg leading-tight">{item.name}</h4>
+        {item.desc || item.description ? (
+          <p className="text-text-dim text-sm mt-1.5 leading-relaxed">{item.desc || item.description}</p>
+        ) : null}
+      </div>
+      
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="font-black text-primary text-lg">{item.price}</span>
+        
+        {qty === 0 ? (
+          <button
+            onClick={onAdd}
+            className="px-4 py-2 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary/90 transition-all duration-300 active:scale-95"
+          >
+            Adicionar
+          </button>
+        ) : (
+          <div className="flex items-center gap-1 bg-primary rounded-xl p-1">
+            <button
+              onClick={onRemove}
+              className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform"
+            >
+              <Minus size={12} />
+            </button>
+            <span className="w-6 text-center font-black text-sm text-white">{qty}</span>
+            <button
+              onClick={onAdd}
+              className="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform"
+            >
+              <Plus size={12} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
 /* ═══════════════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════ */
@@ -386,21 +428,29 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
 
         {/* LEVEL 3 — Dishes View */}
         {view === 'dishes' && selectedCategory && (
-          <div className="space-y-12 animate-in fade-in slide-in-from-right duration-500">
-            <div className="border-b border-border-subtle pb-8">
-              <h2 className="text-5xl font-display font-black italic uppercase tracking-tighter text-text-main">
-                {selectedCategory.name}
-              </h2>
-              <p className="text-text-dim text-[10px] uppercase font-black tracking-[0.4em] mt-3">
-                {selectedCategory.items?.length || 0} Itens Disponíveis
-              </p>
+          <div className="space-y-8 animate-in fade-in slide-in-from-right duration-500">
+            <div className="flex items-center justify-between border-b border-border-subtle pb-6">
+              <div>
+                <h2 className="text-4xl font-display font-black italic uppercase tracking-tighter text-text-main">
+                  {selectedCategory.name}
+                </h2>
+                <p className="text-text-dim text-[10px] uppercase font-black tracking-[0.4em] mt-2">
+                  {selectedCategory.items?.length || 0} Itens Disponíveis
+                </p>
+              </div>
+              <button 
+                onClick={() => navigateTo('subcategory', selectedGroup)}
+                className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-[10px] hover:opacity-70 transition-opacity"
+              >
+                <ChevronLeft size={16} /> Voltar
+              </button>
             </div>
 
-            {/* Direct Dishes */}
+            {/* Direct Dishes - List View */}
             {selectedCategory.items && selectedCategory.items.length > 0 && (
-              <div className="dishes-grid">
+              <div className="menu-list-container">
                 {selectedCategory.items.map((item, i) => (
-                  <MenuItemCard 
+                  <MenuItemList 
                     key={i} 
                     item={item} 
                     qty={getItemQty(item.name, selectedCategory.name)}
@@ -413,14 +463,14 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
 
             {/* Nested Sub-subcategories */}
             {selectedCategory.subcategories?.map((sub, i) => (
-              <div key={i} className="space-y-8 mt-16 pt-12 border-t border-border-subtle/30">
+              <div key={i} className="space-y-6 pt-8 border-t border-border-subtle/30">
                 <div className="flex items-center gap-4">
-                  <h3 className="text-2xl font-bold text-text-main tracking-tight uppercase italic">{sub.name}</h3>
+                  <h3 className="text-xl font-bold text-text-main tracking-tight uppercase italic">{sub.name}</h3>
                   <div className="flex-1 h-px bg-border-subtle/30" />
                 </div>
-                <div className="dishes-grid">
+                <div className="menu-list-container">
                   {(sub.items || []).map((item, j) => (
-                    <MenuItemCard 
+                    <MenuItemList 
                       key={j} 
                       item={item} 
                       qty={getItemQty(item.name, sub.name)}
