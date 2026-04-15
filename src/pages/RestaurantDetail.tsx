@@ -158,29 +158,36 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </section>
 
             {/* --- MAIN CONTENT --- */}
-            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 -mt-8 relative z-10 w-full">
+            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full">
                 <div className="flex flex-col gap-8 xl:gap-12">
                     
                     {/* FULL WIDTH CONTENT: Menu, About, Events, Reviews */}
                     <div className="w-full space-y-12">
                         
-                        {/* Tabs Navigation (Sticky on Mobile) */}
-                        <div className="sticky top-0 z-[40] -mx-6 px-6 py-4 bg-bg/80 backdrop-blur-md lg:relative lg:top-auto lg:z-auto lg:mx-0 lg:px-0 lg:py-0 lg:bg-transparent lg:backdrop-blur-none reveal-up">
-                            <div className="flex items-center gap-1.5 bg-surface border border-border-subtle p-1.5 rounded-2xl w-full overflow-x-auto no-scrollbar shadow-sm snap-x snap-mandatory">
+                        {/* Premium Restaurant Header */}
+                        <div className="bg-white border-b border-gray-100 px-6 md:px-8 py-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <img 
+                                    src={restaurant.logo || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
+                                    alt={restaurant.name}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                                <span className="font-serif text-xl md:text-2xl text-gray-900">{restaurant.name}</span>
+                            </div>
+                            <div className="flex items-center gap-8">
                                 {[
-                                    { id: 'menu', label: 'Menu', icon: <UtensilsCrossed size={16} /> },
-                                    { id: 'about', label: 'Visita & Experiência', icon: <Info size={16} /> },
-                                    { id: 'events', label: 'Eventos', icon: <Calendar size={16} /> },
-                                    { id: 'reviews', label: 'Reviews', icon: <Star size={16} /> }
+                                    { id: 'menu', label: 'MENU' },
+                                    { id: 'about', label: 'VISITA & EXPERIÊNCIA' },
+                                    { id: 'events', label: 'EVENTOS' },
+                                    { id: 'reviews', label: 'REVIEWS' }
                                 ].map(tab => (
                                     <button
                                         key={tab.id}
                                         onClick={() => {
                                             setActiveTab(tab.id as any);
-                                            // Scroll to top of content when switching tabs
                                             const element = document.getElementById('tab-content');
                                             if (element) {
-                                                const offset = window.innerWidth < 1024 ? 80 : 100; // height of sticky nav
+                                                const offset = window.innerWidth < 1024 ? 80 : 100;
                                                 const bodyRect = document.body.getBoundingClientRect().top;
                                                 const elementRect = element.getBoundingClientRect().top;
                                                 const elementPosition = elementRect - bodyRect;
@@ -191,13 +198,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                                 });
                                             }
                                         }}
-                                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all whitespace-nowrap snap-center ${
+                                        className={`text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap ${
                                             activeTab === tab.id 
-                                            ? 'bg-primary text-white shadow-lg shadow-primary/20' 
-                                            : 'text-text-dim hover:bg-black/5'
+                                            ? 'text-red-600 border-b-2 border-red-600' 
+                                            : 'text-gray-500 hover:text-gray-900'
                                         }`}
                                     >
-                                        {tab.icon}
                                         {tab.label}
                                     </button>
                                 ))}
