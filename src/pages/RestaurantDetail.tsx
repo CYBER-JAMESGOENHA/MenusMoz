@@ -51,6 +51,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events' | 'reviews'>('menu');
+    const [isScrolled, setIsScrolled] = useState(false);
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -73,6 +74,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 });
         }
     }, [slug]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -165,48 +174,59 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     <div className="w-full space-y-12">
                         
                         {/* Premium Restaurant Header */}
-                        <div className="bg-white border-b border-gray-100 px-6 md:px-8 py-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <img 
-                                    src={restaurant.logo || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
-                                    alt={restaurant.name}
-                                    className="w-10 h-10 rounded-full object-cover"
-                                />
-                                <span className="font-serif text-xl md:text-2xl text-gray-900">{restaurant.name}</span>
-                            </div>
-                            <div className="flex items-center gap-8">
-                                {[
-                                    { id: 'menu', label: 'MENU' },
-                                    { id: 'about', label: 'VISITA & EXPERIÊNCIA' },
-                                    { id: 'events', label: 'EVENTOS' },
-                                    { id: 'reviews', label: 'REVIEWS' }
-                                ].map(tab => (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setActiveTab(tab.id as any);
-                                            const element = document.getElementById('tab-content');
-                                            if (element) {
-                                                const offset = window.innerWidth < 1024 ? 80 : 100;
-                                                const bodyRect = document.body.getBoundingClientRect().top;
-                                                const elementRect = element.getBoundingClientRect().top;
-                                                const elementPosition = elementRect - bodyRect;
-                                                const offsetPosition = elementPosition - offset;
-                                                window.scrollTo({
-                                                    top: offsetPosition,
-                                                    behavior: 'smooth'
-                                                });
-                                            }
-                                        }}
-                                        className={`text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap ${
-                                            activeTab === tab.id 
-                                            ? 'text-red-600 border-b-2 border-red-600' 
-                                            : 'text-gray-500 hover:text-gray-900'
-                                        }`}
-                                    >
-                                        {tab.label}
-                                    </button>
-                                ))}
+                        <div className={`sticky top-0 z-50 transition-all duration-300 ${
+                            isScrolled 
+                            ? 'bg-[#121212]/80 backdrop-blur-md py-3' 
+                            : 'bg-transparent py-6'
+                        }`}>
+                            <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col md:flex-row items-center justify-center md:justify-between gap-4">
+                                {/* Initial: Vertical Stack / Sticky: Logo + Name Left */}
+                                <div className={`flex items-center gap-3 ${isScrolled ? 'md:justify-start justify-center' : 'justify-center'}`}>
+                                    <img 
+                                        src={restaurant.logo || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
+                                        alt={restaurant.name}
+                                        className={`rounded-full object-cover transition-all ${isScrolled ? 'w-8 h-8' : 'w-16 h-16'}`}
+                                    />
+                                    <span className={`font-serif text-gray-900 transition-all ${isScrolled ? 'text-lg md:block hidden' : 'text-2xl md:text-3xl md:block hidden'}`}>
+                                        {restaurant.name}
+                                    </span>
+                                </div>
+                                
+                                {/* Navigation Links */}
+                                <div className="flex items-center gap-6 md:gap-8">
+                                    {[
+                                        { id: 'menu', label: 'MENU' },
+                                        { id: 'about', label: 'VISITA & EXPERIÊNCIA' },
+                                        { id: 'events', label: 'EVENTOS' },
+                                        { id: 'reviews', label: 'REVIEWS' }
+                                    ].map(tab => (
+                                        <button
+                                            key={tab.id}
+                                            onClick={() => {
+                                                setActiveTab(tab.id as any);
+                                                const element = document.getElementById('tab-content');
+                                                if (element) {
+                                                    const offset = window.innerWidth < 1024 ? 80 : 100;
+                                                    const bodyRect = document.body.getBoundingClientRect().top;
+                                                    const elementRect = element.getBoundingClientRect().top;
+                                                    const elementPosition = elementRect - bodyRect;
+                                                    const offsetPosition = elementPosition - offset;
+                                                    window.scrollTo({
+                                                        top: offsetPosition,
+                                                        behavior: 'smooth'
+                                                    });
+                                                }
+                                            }}
+                                            className={`text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap ${
+                                                activeTab === tab.id 
+                                                ? 'text-red-600 border-b-2 border-red-600' 
+                                                : 'text-gray-400 hover:text-white'
+                                            }`}
+                                        >
+                                            {tab.label}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
