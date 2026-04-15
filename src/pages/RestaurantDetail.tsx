@@ -149,24 +149,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </Helmet>
 
             {/* --- HERO SECTION --- */}
-            <section ref={heroRef} className="relative h-[50vh] md:h-[65vh] w-full overflow-hidden">
+            <section ref={heroRef} className="relative h-[50vh] md:h-[65vh] w-full overflow-hidden rounded-b-3xl">
                 <img 
                     src={restaurant.image} 
                     alt={restaurant.name} 
                     className="absolute inset-0 w-full h-full object-cover scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent" />
-
-                {/* Hero Content Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 max-w-7xl mx-auto flex flex-col items-start gap-4">
-                    <h1 className="reveal-up text-5xl md:text-8xl font-display font-black text-white italic uppercase tracking-tighter leading-[0.8] drop-shadow-2xl">
-                        {restaurant.name}
-                    </h1>
-                    
-                    <div className="reveal-up flex items-center gap-6 mt-2">
-                        <DetailStarRating rating={restaurant.rating} reviewCount={restaurant.reviewCount} />
-                    </div>
-                </div>
             </section>
 
             {/* --- MAIN CONTENT --- */}
