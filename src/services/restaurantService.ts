@@ -6,9 +6,11 @@ export interface Restaurant {
   id: string | number;
   name: string;
   slug: string;
-  image: string;        // card hero / cover photo (maps from cover_url → image_url)
-  logo?: string;        // small round avatar/logo (maps from logo → image_url)
-  cover_url?: string;   // raw cover image URL from DB
+  image: string;
+  logo?: string;
+  cover_url?: string;
+  hero_image_url?: string;
+  logo_url?: string;
   cuisine: string;
   rating: number;
   reviewCount: number;
@@ -124,6 +126,10 @@ const BASE_RESTAURANT_QUERY = `
 
 const mapRestaurant = (r: any): Restaurant => ({
   ...r,
+  // hero_image_url → large top background banner
+  hero_image_url: r.hero_image_url || null,
+  // logo_url → small circular avatar in sub-header
+  logo_url: r.logo_url || null,
   // cover_url  → big card/hero photo; falls back to image_url if not set
   image: r.cover_url || r.image_url || null,
   // logo       → small round avatar/logo; falls back to image_url

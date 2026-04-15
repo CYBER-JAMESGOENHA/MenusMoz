@@ -149,12 +149,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             </Helmet>
 
             {/* --- HERO SECTION --- */}
-            <section ref={heroRef} className="relative h-[50vh] md:h-[65vh] w-full overflow-hidden rounded-b-3xl">
-                <img 
-                    src={restaurant.image} 
-                    alt={restaurant.name} 
-                    className="absolute inset-0 w-full h-full object-cover scale-110"
-                />
+            <section ref={heroRef} className={`relative h-[50vh] md:h-[65vh] w-full overflow-hidden rounded-b-3xl ${!restaurant.hero_image_url ? 'bg-neutral-900' : ''}`}>
+                {restaurant.hero_image_url && (
+                    <img 
+                        src={restaurant.hero_image_url} 
+                        alt={restaurant.name} 
+                        className="absolute inset-0 w-full h-full object-cover scale-110"
+                    />
+                )}
             </section>
 
             {/* --- MAIN CONTENT --- */}
@@ -168,7 +170,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         <div className="flex justify-between items-center px-6 md:px-8 py-6">
                             <div className="flex items-center gap-3">
                                 <img 
-                                    src={restaurant.logo || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
+                                    src={restaurant.logo_url || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
                                     alt={restaurant.name}
                                     className="w-12 h-12 rounded-full object-cover"
                                 />
