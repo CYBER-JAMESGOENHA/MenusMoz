@@ -19,7 +19,7 @@ import {
     Globe,
     Users
 } from 'lucide-react';
-import { OrnamentalDivider, DetailStarRating } from './DetailShared';
+import { DetailStarRating } from './DetailShared';
 
 interface AboutSectionProps {
     restaurant: any;
@@ -252,9 +252,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                 </div>
             </section>
 
-            <OrnamentalDivider />
-
-            {/* --- LOCATION & HOURS GRID --- */}
+            
             <div id="location" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Hours Card */}
                 <div className="bg-surface rounded-3xl md:rounded-[2.5rem] p-6 md:p-10 border border-border-subtle shadow-sm space-y-6 md:space-y-8">

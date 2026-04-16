@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
-import { OrnamentalDivider } from './DetailShared';
 
 interface MenuItem {
     name: string;
@@ -97,7 +96,6 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories, activePage, 
                         <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-text-main leading-none font-display italic uppercase">
                             {currentCategory?.name || 'Menu'}
                         </h2>
-                        <OrnamentalDivider />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">

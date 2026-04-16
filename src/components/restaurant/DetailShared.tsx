@@ -33,18 +33,4 @@ export const DetailStarRating: React.FC<DetailStarRatingProps> = ({ rating, revi
     );
 };
 
-export const OrnamentalDivider: React.FC = () => (
-    <div className="flex items-center justify-center gap-4 my-10 text-primary/30 select-none px-4">
-        <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/20 to-primary/40" />
-        <div className="flex items-center gap-2">
-            <svg width="24" height="24" viewBox="0 0 24 24" className="shrink-0 group-hover:rotate-45 transition-transform duration-1000">
-                <path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="currentColor" />
-            </svg>
-            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-            <svg width="24" height="24" viewBox="0 0 24 24" className="shrink-0 group-hover:rotate-45 transition-transform duration-1000">
-                <path d="M12 2 L13.8 10.2 L22 12 L13.8 13.8 L12 22 L10.2 13.8 L2 12 L10.2 10.2 Z" fill="currentColor" />
-            </svg>
-        </div>
-        <div className="flex-1 h-px bg-gradient-to-l from-transparent via-primary/20 to-primary/40" />
-    </div>
-);
+
