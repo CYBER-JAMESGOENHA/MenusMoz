@@ -45,6 +45,7 @@ Apply the SQL migrations in order via the Supabase Dashboard SQL Editor or CLI:
 | 5 | `005_active_restaurants_view.sql` | `active_restaurants_view` used by the frontend |
 | 6 | `006_profile_trigger.sql` | Auto-creates a `profiles` row on user signup |
 | 7 | `007_restaurant_extra_columns_and_price_value.sql` | Extra restaurant columns + `price_value` NUMERIC on menu_items |
+| 8 | `008_restaurant_media_storage.sql` | Restaurant media columns + `restaurant-media` Supabase Storage bucket |
 
 > **All migrations are additive** and use `IF NOT EXISTS` / `IF NOT EXISTS` column checks for safety.
 
@@ -115,6 +116,8 @@ MenusMoz/
 ## Data Entry
 
 There is no admin dashboard. Restaurant data is managed directly via the **Supabase Table Editor** in the Supabase Dashboard. Simply open your project, navigate to the Table Editor, and add/edit rows in the `restaurants`, `menu_categories`, `subcategories`, `menu_items`, `hero_slides`, and `blog_posts` tables.
+
+For real restaurant images, use **Supabase Storage** and store the resulting public URLs in `restaurants.cover_url`, `restaurants.hero_image_url`, `restaurants.logo_url`, and `restaurants.gallery`. A step-by-step example for the first restaurant is available in [docs/IYPSLON_SETUP.md](docs/IYPSLON_SETUP.md).
 
 ## Key Architecture Notes
 
