@@ -127,13 +127,13 @@ const BASE_RESTAURANT_QUERY = `
 const mapRestaurant = (r: any): Restaurant => ({
   ...r,
   // hero_image_url → large top background banner
-  hero_image_url: r.hero_image_url || null,
+  hero_image_url: r.hero_image_url || r.cover_url || r.image_url || null,
   // logo_url → small circular avatar in sub-header
-  logo_url: r.logo_url || null,
+  logo_url: r.logo_url || r.logo || r.image_url || null,
   // cover_url  → big card/hero photo; falls back to image_url if not set
   image: r.cover_url || r.image_url || null,
   // logo       → small round avatar/logo; falls back to image_url
-  logo: r.logo || r.image_url || null,
+  logo: r.logo || r.logo_url || r.image_url || null,
   identity_text: r.identity_text || null,
   // latitude / longitude columns take priority over legacy coords jsonb
   lat: r.latitude != null ? Number(r.latitude) : (r.coords?.lat ?? null),
