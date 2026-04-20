@@ -95,42 +95,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
 
     return (
         <div className="space-y-16 md:space-y-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* --- INTRO CARD --- */}
-            <section className="bg-surface rounded-3xl md:rounded-[3rem] p-8 md:p-12 border border-border-subtle relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl opacity-50 group-hover:bg-primary/10 transition-colors duration-700" />
-                <div className="relative z-10 max-w-4xl">
-                    <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-6">
-                        <Info size={14} className="text-primary" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary">{t.intro}</span>
-                    </div>
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9] mb-6">
-                        {restaurant.name}: <span className="text-primary">Muito mais</span> que um restaurante.
-                    </h2>
-                    <p className="text-text-dim text-lg md:text-2xl font-medium leading-relaxed mb-8">
-                        {t.introDesc}
-                    </p>
-
-                    <div className="flex flex-wrap gap-3">
-                        {[
-                            { id: 'story', label: t.history },
-                            { id: 'gallery', label: isEn ? 'Gallery' : 'Galeria' },
-                            { id: 'location', label: t.map },
-                            { id: 'amenities', label: t.amenities },
-                            { id: 'contact', label: t.contact }
-                        ].map((link) => (
-                            <button
-                                key={link.id}
-                                onClick={() => scrollTo(link.id)}
-                                className="px-4 py-2 bg-bg border border-border-subtle hover:border-primary/50 rounded-xl text-[10px] font-black uppercase tracking-widest text-text-dim hover:text-primary transition-all flex items-center gap-2"
-                            >
-                                {link.label}
-                                <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* --- STORY / ESSENCE --- */}
             <section id="story" className="relative">
                 <div className="flex flex-col md:flex-row gap-12 items-center">
@@ -139,7 +103,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                             <Utensils size={14} className="text-primary" />
                             <span className="text-[10px] font-black uppercase tracking-widest text-primary">{t.history}</span>
                         </div>
-                        <h3 className="text-2xl md:text-5xl lg:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.9]">
+                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-wider leading-[0.9]">
                             {isEn ? 'The Art of Mozambican Flavors' : 'A Arte dos Sabores Moçambicanos'}
                         </h3>
                         <div className="text-text-dim text-lg leading-relaxed font-medium space-y-4">
@@ -171,38 +135,30 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
             </section>
 
             {/* Restaurant About Card */}
-            <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-                <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
-                    {/* Image Section - Restaurant Logo/Interior */}
-                    <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl">
-                        <img 
-                            src={restaurant.logo || restaurant.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
-                            alt={`${restaurant.name} logo`}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div className="flex-1 text-center md:text-left space-y-4">
-                        {/* OvereLine Text */}
-                        <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-4">
-                            <Info size={14} className="text-primary" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">SOBRE O RESTAURANTE</span>
-                        </div>
-                        
-                        {/* Heading - Restaurant Name */}
-                        <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">
-                            {restaurant.name}
-                        </h3>
-                        
-                        {/* Premium Bio Paragraph */}
-                        <p className="text-text-dim text-base md:text-lg leading-relaxed">
-                            {restaurant.bio || restaurant.description || (isEn 
-                                ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
-                                : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div className="aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden">
+                    <img 
+                        src={restaurant.image || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
+                        alt={`${restaurant.name}`}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+                <div className="space-y-4">
+                    <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                        {restaurant.name}
+                    </h3>
+                    <p className="text-text-dim text-base leading-relaxed font-sans">
+                        {restaurant.description || (isEn 
+                            ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
+                            : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
+                    </p>
+                    {restaurant.bio && (
+                        <p className="text-text-dim text-base leading-relaxed font-sans">
+                            {restaurant.bio}
                         </p>
-                        
-                        {/* Sleek Pill/Tag for Location or Cuisine Style */}
-                        <div className="flex items-center gap-2 mt-3">
+                    )}
+                    {(restaurant.cuisine || restaurant.location) && (
+                        <div className="flex items-center gap-2 pt-2">
                             {restaurant.cuisine && (
                                 <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-medium">
                                     {restaurant.cuisine}
@@ -214,13 +170,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                                 </span>
                             )}
                         </div>
-                    </div>
+                    )}
                 </div>
             </section>
 
             {/* --- SIGNATURE DISHES --- */}
             <section className="space-y-8">
-                <h3 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">{t.signature}</h3>
+                <h3 className="text-3xl md:text-4xl font-display font-black text-text-main italic uppercase tracking-wider">{t.signature}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {(restaurant.signature_dishes && restaurant.signature_dishes.length > 0) ? (
                         restaurant.signature_dishes.map((dish: any, i: number) => (
@@ -253,73 +209,30 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
             </section>
 
             
-            <div id="location" className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Hours Card */}
-                <div className="bg-surface rounded-3xl md:rounded-[2.5rem] p-6 md:p-10 border border-border-subtle shadow-sm space-y-6 md:space-y-8">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                            <Clock size={20} className="md:w-6 md:h-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl md:text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">{t.hours}</h3>
-                            <div className="flex items-center gap-2 mt-0.5">
-                                <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
-                                <span className={`text-[10px] font-black uppercase tracking-widest ${isOpenNow ? 'text-green-600' : 'text-red-600'}`}>
-                                    {isOpenNow ? t.openNow : t.closed}
-                                </span>
-                            </div>
-                        </div>
+            <div id="location" className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <Clock size={20} />
                     </div>
-                    <div className="space-y-3">
-                        {days.map(day => {
-                            const hours = restaurant.working_hours?.[day.key] || restaurant.hours?.[day.key] || (isEn ? 'Closed' : 'Cerrado');
-                            const isToday = currentDay.toLowerCase().includes(day.key.toLowerCase());
-                            return (
-                                <div key={day.key} className={`flex justify-between items-center p-4 rounded-2xl border transition-all ${isToday ? 'bg-primary/5 border-primary/20 shadow-sm' : 'bg-bg/50 border-border-subtle/30'}`}>
-                                    <span className={`font-black text-xs uppercase tracking-widest ${isToday ? 'text-primary' : 'text-text-dim'}`}>{day.label}</span>
-                                    <span className={`font-bold text-sm ${isToday ? 'text-text-main' : 'text-text-dim'}`}>{hours}</span>
-                                </div>
-                            );
-                        })}
+                    <div>
+                        <span className="text-xs font-medium text-text-dim uppercase tracking-wider">{t.hours}</span>
+                        <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                            <span className={`text-xs font-bold uppercase tracking-wider ${isOpenNow ? 'text-green-600' : 'text-red-600'}`}>
+                                {isOpenNow ? t.openNow : t.closed}
+                            </span>
+                        </div>
                     </div>
                 </div>
-
-                {/* Map Card */}
-                <div className="bg-surface rounded-3xl md:rounded-[2.5rem] p-6 md:p-10 border border-border-subtle shadow-sm flex flex-col gap-6 md:gap-8">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                            <MapPin size={20} className="md:w-6 md:h-6" />
-                        </div>
-                        <div>
-                            <h3 className="text-xl md:text-2xl font-display font-black text-text-main italic uppercase tracking-tighter">{t.map}</h3>
-                            <p className="text-text-dim text-xs font-medium mt-0.5">{restaurant.location || restaurant.address || 'Maputo, Moçambique'}</p>
-                        </div>
+                <div className="hidden md:block w-px bg-border-subtle" />
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <MapPin size={20} />
                     </div>
-                    {/* Google Maps embed — precise pin if lat/lng, text search otherwise */}
-                    <div className="flex-1 min-h-[250px] md:min-h-[300px] rounded-3xl md:rounded-[2rem] border border-border-subtle overflow-hidden relative">
-                        {(restaurant.lat && restaurant.lng) ? (
-                            <iframe
-                                title={`${restaurant.name} - Localização`}
-                                width="100%"
-                                height="100%"
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://maps.google.com/maps?q=${restaurant.lat},${restaurant.lng}&z=16&output=embed`}
-                                className="absolute inset-0 w-full h-full border-0"
-                            />
-                        ) : (
-                            <iframe
-                                title={`${restaurant.name} - Localização`}
-                                width="100%"
-                                height="100%"
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                src={`https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name + ' Moçambique')}&z=15&output=embed`}
-                                className="absolute inset-0 w-full h-full border-0"
-                            />
-                        )}
+                    <div className="flex-1">
+                        <span className="text-xs font-medium text-text-dim uppercase tracking-wider">{t.map}</span>
+                        <p className="text-sm font-medium text-text-main">{restaurant.location || restaurant.address || 'Maputo, Moçambique'}</p>
                     </div>
-                    {/* Directions CTA */}
                     <a
                         href={
                             (restaurant.lat && restaurant.lng)
@@ -328,20 +241,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         }
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-3 w-full py-4 bg-text-main text-surface rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-sm hover:shadow-primary-glow/20 active:scale-95 duration-300"
+                        className="px-4 py-2 bg-text-main text-surface rounded-full font-bold text-xs uppercase tracking-wider hover:bg-primary transition-all"
                     >
-                        <Navigation size={18} />
                         {t.directions}
-                        {restaurant.lat && restaurant.lng && (
-                            <span className="text-[9px] bg-white/20 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">GPS</span>
-                        )}
                     </a>
                 </div>
             </div>
 
             {/* --- GALLERY --- */}
             <section id="gallery" className="space-y-8">
-                <h3 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">{t.gallery}</h3>
+                <h3 className="text-3xl md:text-4xl font-display font-black text-text-main italic uppercase tracking-wider">{t.gallery}</h3>
                 <div className="columns-2 md:columns-3 gap-4 lg:gap-6 space-y-4 lg:space-y-6">
                     {(restaurant.gallery && restaurant.gallery.length > 0) ? (
                         restaurant.gallery.map((item: any, i: number) => (
