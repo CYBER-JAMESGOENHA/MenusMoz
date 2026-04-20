@@ -1,6 +1,8 @@
 import React from 'react';
 import { Calendar, Music, Clock, Star, ArrowRight, MapPin, Sparkles } from 'lucide-react';
 
+const DARK_PATTERN = 'data:image/svg+xml,%3Csvg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg"%3E%3Crect fill="%231a1a1a" width="800" height="450"/%3E%3Ccircle cx="400" cy="225" r="150" fill="none" stroke="%23222" stroke-width="0.5"/%3E%3Ccircle cx="400" cy="225" r="100" fill="none" stroke="%23222" stroke-width="0.5"/%3E%3Ccircle cx="400" cy="225" r="50" fill="none" stroke="%23222" stroke-width="0.5"/%3E%3C/svg%3E';
+
 interface EventsSectionProps {
     restaurant: any;
     lang: string;
@@ -30,7 +32,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                             <div key={event.id} className="group bg-surface rounded-3xl md:rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
                                 <div className="aspect-[16/9] relative overflow-hidden">
                                     <img 
-                                        src={event.image_url || "https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=1200&q=80"} 
+                                        src={event.image_url || DARK_PATTERN} 
                                         alt={event.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                                     />
