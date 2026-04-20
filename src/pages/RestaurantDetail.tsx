@@ -244,7 +244,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${
                                         activeTab === tab.id 
                                         ? 'bg-red-600 text-white' 
-                                        : 'bg-neutral-200 text-neutral-700 hover:bg-neutral-300 dark:bg-white/10 dark:text-neutral-200 dark:hover:bg-white/20'
+                                        : 'bg-white text-text-dim border border-border-subtle hover:bg-white dark:bg-neutral-800/60 dark:text-neutral-300 dark:border-white/5 dark:hover:bg-neutral-700/60'
                                     }`}
                                 >
                                     {tab.label}
