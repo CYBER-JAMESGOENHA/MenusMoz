@@ -50,7 +50,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events' | 'reviews'>('menu');
+    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events' | 'reviews'>('about');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -157,62 +157,94 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         className="absolute inset-0 w-full h-full object-cover scale-110"
                     />
                 )}
+                <div className="absolute bottom-8 left-8 z-20">
+                    <img 
+                        src={restaurant.logo_url || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
+                        alt={restaurant.name}
+                        className="w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl"
+                    />
+                </div>
+                {/* Desktop Tabs - Inside Hero */}
+                <div className="hidden md:flex absolute bottom-8 right-8 z-20 gap-8">
+                    {[
+                        { id: 'about', label: 'AMBIENTE' },
+                        { id: 'menu', label: 'MENU' },
+                        { id: 'events', label: 'EVENTOS' },
+                        { id: 'reviews', label: 'REVIEWS' }
+                    ].map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => {
+                                setActiveTab(tab.id as any);
+                                const element = document.getElementById('tab-content');
+                                if (element) {
+                                    const offset = window.innerWidth < 1024 ? 80 : 100;
+                                    const bodyRect = document.body.getBoundingClientRect().top;
+                                    const elementRect = element.getBoundingClientRect().top;
+                                    const elementPosition = elementRect - bodyRect;
+                                    const offsetPosition = elementPosition - offset;
+                                    window.scrollTo({
+                                        top: offsetPosition,
+                                        behavior: 'smooth'
+                                    });
+                                }
+                            }}
+                            className={`text-sm uppercase tracking-wide font-medium transition-all whitespace-nowrap ${
+                                activeTab === tab.id 
+                                ? 'text-white border-b border-white' 
+                                : 'text-white/70 hover:text-white'
+                            }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
             </section>
 
             {/* --- MAIN CONTENT --- */}
-            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full">
+            <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full bg-bg">
                 <div className="flex flex-col gap-8 xl:gap-12">
                     
                     {/* FULL WIDTH CONTENT: Menu, About, Events, Reviews */}
                     <div className="w-full space-y-12">
                         
-                        {/* Restaurant Sub-Header */}
-                        <div className="flex justify-between items-center px-6 md:px-8 py-6">
-                            <div className="flex items-center gap-3">
-                                <img 
-                                    src={restaurant.logo_url || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
-                                    alt={restaurant.name}
-                                    className="w-12 h-12 rounded-full object-cover"
-                                />
-                                <span className="font-serif text-2xl md:text-3xl text-gray-900">{restaurant.name}</span>
-                            </div>
-                            <div className="flex items-center gap-8">
-                                {[
-                                    { id: 'menu', label: 'MENU' },
-                                    { id: 'about', label: 'VISITA & EXPERIÊNCIA' },
-                                    { id: 'events', label: 'EVENTOS' },
-                                    { id: 'reviews', label: 'REVIEWS' }
-                                ].map(tab => (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => {
-                                            setActiveTab(tab.id as any);
-                                            const element = document.getElementById('tab-content');
-                                            if (element) {
-                                                const offset = window.innerWidth < 1024 ? 80 : 100;
-                                                const bodyRect = document.body.getBoundingClientRect().top;
-                                                const elementRect = element.getBoundingClientRect().top;
-                                                const elementPosition = elementRect - bodyRect;
-                                                const offsetPosition = elementPosition - offset;
-                                                window.scrollTo({
-                                                    top: offsetPosition,
-                                                    behavior: 'smooth'
-                                                });
-                                            }
-                                        }}
-                                        className={`text-sm uppercase tracking-wide font-medium transition-all whitespace-nowrap ${
-                                            activeTab === tab.id 
-                                            ? 'text-red-600 border-b border-red-600' 
-                                            : 'text-gray-400 hover:text-gray-600'
-                                        }`}
-                                    >
-                                        {tab.label}
-                                    </button>
-                                ))}
-                            </div>
+                        {/* Restaurant Sub-Header - Mobile Only */}
+                        <div className="flex md:hidden gap-3 items-center px-6 md:px-8 mt-8 mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+                            {[
+                                { id: 'about', label: 'AMBIENTE' },
+                                { id: 'menu', label: 'MENU' },
+                                { id: 'events', label: 'EVENTOS' },
+                                { id: 'reviews', label: 'REVIEWS' }
+                            ].map(tab => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => {
+                                        setActiveTab(tab.id as any);
+                                        const element = document.getElementById('tab-content');
+                                        if (element) {
+                                            const offset = window.innerWidth < 1024 ? 80 : 100;
+                                            const bodyRect = document.body.getBoundingClientRect().top;
+                                            const elementRect = element.getBoundingClientRect().top;
+                                            const elementPosition = elementRect - bodyRect;
+                                            const offsetPosition = elementPosition - offset;
+                                            window.scrollTo({
+                                                top: offsetPosition,
+                                                behavior: 'smooth'
+                                            });
+                                        }
+                                    }}
+                                    className={`px-5 py-2.5 text-sm font-medium rounded-full whitespace-nowrap transition-all ${
+                                        activeTab === tab.id 
+                                        ? 'bg-red-600 text-white' 
+                                        : 'bg-neutral-200 text-neutral-700 hover:bg-neutral-300 dark:bg-white/10 dark:text-neutral-200 dark:hover:bg-white/20'
+                                    }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
                         </div>
 
-                        <div id="tab-content" className="reveal-up">
+                        <div id="tab-content" className="reveal-up mt-8">
                             {activeTab === 'menu' && (
                                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <MenuCategories 
