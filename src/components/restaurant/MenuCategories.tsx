@@ -220,15 +220,15 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
     return {
       Comida: {
         ...DEFAULT_GROUP_CONFIG.Comida,
-        img: findImg(COMIDA_KEYWORDS) || DEFAULT_GROUP_CONFIG.Comida.img
+        img: restaurant.menu_food_image || findImg(COMIDA_KEYWORDS) || DEFAULT_GROUP_CONFIG.Comida.img
       },
       Bebidas: {
         ...DEFAULT_GROUP_CONFIG.Bebidas,
-        img: findImg(BEBIDAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Bebidas.img
+        img: restaurant.menu_drinks_image || findImg(BEBIDAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Bebidas.img
       },
       Sobremesas: {
         ...DEFAULT_GROUP_CONFIG.Sobremesas,
-        img: findImg(SOBREMESAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Sobremesas.img
+        img: restaurant.menu_desserts_image || findImg(SOBREMESAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Sobremesas.img
       }
     };
   }, [restaurant]);
@@ -419,17 +419,34 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                         <button 
                           key={idx}
                           onClick={() => setExpandedCard(isExpanded ? null : `${selectedGroup}-${cat.name}`)}
-                          className={`relative netflix-card group bg-surface border rounded-3xl p-5 text-left transition-all duration-300 ${
+                          className={`relative netflix-card group bg-surface border rounded-3xl overflow-hidden text-left transition-all duration-300 ${
                             isExpanded 
                               ? 'border-primary shadow-lg ring-2 ring-primary/20' 
                               : 'border-border-subtle hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]'
                           } ${isHero ? 'w-80 md:w-96' : 'w-48 md:w-56'}`}
                         >
-                          <span className={`font-bold text-lg text-text-main block mb-2 transition-colors ${isExpanded ? 'text-primary' : 'group-hover:text-primary'}`}>
-                            {cat.name}
-                          </span>
+                          {/* Category Thumbnail */}
+                          <div className={`relative h-28 md:h-32 w-full overflow-hidden bg-bg ${!isExpanded ? 'grayscale group-hover:grayscale-0' : ''} transition-all duration-700`}>
+                            <img 
+                                src={cat.items?.find(item => item.image_url)?.image_url || `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80`} 
+                                alt={cat.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            <div className="absolute bottom-3 left-4 right-3">
+                                <span className={`font-display font-black text-white italic uppercase tracking-tighter text-lg transition-colors ${isExpanded ? 'text-primary' : ''}`}>
+                                    {cat.name}
+                                </span>
+                            </div>
+                          </div>
                           
-                          <div className={`transition-all duration-300 overflow-hidden ${isExpanded ? 'mt-3' : ''}`}>
+                          <div className={`p-5 transition-all duration-300 overflow-hidden ${isExpanded ? 'block' : 'hidden md:block'}`}>
+                            {!isExpanded && (
+                                <p className="text-[10px] font-black uppercase tracking-widest text-text-dim/50 flex justify-between items-center">
+                                    <span>{cat.items?.length || 0} Itens</span>
+                                    <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                                </p>
+                            )}
                             {isExpanded && (
                               <div className="space-y-2 mt-2 animate-in fade-in duration-200">
                                 {trendingItems.map((item, i) => (
