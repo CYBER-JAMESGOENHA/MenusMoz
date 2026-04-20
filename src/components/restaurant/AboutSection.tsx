@@ -178,7 +178,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                                 </span>
                             )}
                         </div>
-                    )}
+                    </div>
                 </div>
             </section>
 
