@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Heart, ShoppingCart, History, User, Search, Bell } from 'lucide-react';
 import { translations } from '../../translations';
 import NavbarSearch from './NavbarSearch';
@@ -24,12 +24,14 @@ const Navbar: React.FC<NavbarProps> = ({
   lang,
   favoritesCount 
 }) => {
+  const location = useLocation();
+  const isRestaurantDetail = location.pathname.startsWith('/restaurant/');
   const t = (translations[lang as keyof typeof translations] as any)?.nav ?? translations.pt.nav;
-  const cartCount = 0; // Placeholder as requested
+  const cartCount = 0;
 
   return (
     <nav 
-      className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'}`}
+      className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'} ${isRestaurantDetail ? 'hidden md:block' : ''}`}
       aria-label="Navegação principal"
     >
       <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2.5rem] px-4 md:px-6 py-2 ${isScrolled ? 'glass shadow-premium-lg' : 'bg-transparent'}`}>

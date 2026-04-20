@@ -150,6 +150,14 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
             {/* --- HERO SECTION --- */}
             <section ref={heroRef} className={`relative h-[50vh] md:h-[65vh] w-full overflow-hidden rounded-b-3xl ${!restaurant.hero_image_url ? 'bg-neutral-900' : ''}`}>
+                {/* Mobile Back Button */}
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex md:hidden absolute top-16 left-4 z-30 w-10 h-10 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-black/40 transition"
+                    aria-label="Voltar"
+                >
+                    <ChevronLeft size={24} />
+                </button>
                 {restaurant.hero_image_url && (
                     <img 
                         src={restaurant.hero_image_url} 
