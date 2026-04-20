@@ -167,9 +167,9 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 )}
                 <div className="absolute bottom-8 left-8 z-20">
                     <img 
-                        src={restaurant.logo_url || "https://placehold.co/100x100/e5e5e5/666666?text=REST"} 
+                        src={restaurant.logo_url || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=000&color=fff&size=256&bold=true`} 
                         alt={restaurant.name}
-                        className="w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl"
+                        className="w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl bg-surface"
                     />
                 </div>
                 {/* Desktop Tabs - Inside Hero */}
@@ -256,9 +256,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             {activeTab === 'menu' && (
                                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <MenuCategories 
-                                        menuCategories={restaurant.menuCategories || []} 
-                                        restaurantName={restaurant.name}
-                                        whatsapp={restaurant.whatsapp}
+                                        restaurant={restaurant}
                                     />
                                 </div>
                             )}

@@ -25,8 +25,9 @@ interface CartItem extends MenuItem {
 }
 
 interface MenuCategoriesProps {
-  menuCategories: MenuCategory[];
-  restaurantName: string;
+  restaurant: any;
+  menuCategories?: MenuCategory[];
+  restaurantName?: string;
   whatsapp?: string;
 }
 
@@ -45,7 +46,7 @@ const getGroup = (name: string): MenuGroup => {
   return 'Comida';
 };
 
-const GROUP_CONFIG = {
+const DEFAULT_GROUP_CONFIG = {
   Comida: {
     icon: <Utensils size={16} />,
     img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80',
@@ -68,7 +69,7 @@ const GROUP_CONFIG = {
 const EntryCard = ({ title, config, onClick }: { title: string, config: any, onClick: () => void }) => (
   <button
     onClick={onClick}
-    className="group relative overflow-hidden rounded-[2rem] w-full h-full min-h-[140px] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-premium bg-surface"
+    className="group relative overflow-hidden rounded-[2rem] w-full h-full min-h-[140px] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-premium bg-surface border border-border-subtle"
   >
     <img 
       src={config.img} 
@@ -77,7 +78,7 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
     />
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:bg-black/60 transition-colors duration-500" />
     
-    <div className="absolute bottom-3 left-4 text-left z-10 transition-transform duration-500 group-hover:translate-x-2 text-white">
+    <div className="absolute bottom-4 left-5 text-left z-10 transition-transform duration-500 group-hover:translate-x-2 text-white">
       <div className="flex items-center gap-1.5 mb-1.5 opacity-90">
         <div className="p-1.5 bg-white/10 backdrop-blur-xl rounded-lg border border-white/20">
           {config.icon}
@@ -95,9 +96,9 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
 
 const MenuItemCard = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: () => void, onRemove: () => void, qty: number }) => (
   <div className={`group bg-surface border rounded-[1.5rem] p-4 transition-all duration-300 ${qty > 0 ? 'border-primary/50 shadow-premium' : 'border-border-subtle hover:border-primary/30'}`}>
-    <div className="relative aspect-square overflow-hidden rounded-2xl mb-4">
+    <div className="relative aspect-square overflow-hidden rounded-2xl mb-4 bg-bg border border-border-subtle">
       <img 
-        src={item.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80'} 
+        src={item.image_url || 'https://images.unsplash.com/photo-1546241072-48010ad28c2c?w=400&q=80'} 
         alt={item.name}
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       />
@@ -191,10 +192,47 @@ const MenuItemList = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: (
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════════════ */
 export const MenuCategories: React.FC<MenuCategoriesProps> = ({
-  menuCategories,
-  restaurantName,
-  whatsapp,
+  restaurant,
+  menuCategories: propCategories,
+  restaurantName: propName,
+  whatsapp: propWhatsapp,
 }) => {
+  const menuCategories = propCategories || restaurant?.menuCategories || [];
+  const restaurantName = propName || restaurant?.name || '';
+  const whatsapp = propWhatsapp || restaurant?.whatsapp || '';
+
+  const GROUP_CONFIG = useMemo(() => {
+    const gallery = restaurant?.gallery || [];
+    const signatures = restaurant?.signature_dishes || [];
+    
+    const findImg = (keywords: string[]) => {
+      // 1. Try signatures first
+      const sigMatch = signatures.find((s: any) => keywords.some(k => s.name.toLowerCase().includes(k) || s.description?.toLowerCase().includes(k)));
+      if (sigMatch) return sigMatch.image_url;
+      
+      // 2. Try gallery
+      const gallMatch = gallery.find((g: any) => keywords.some(k => g.title?.toLowerCase().includes(k)));
+      if (gallMatch) return gallMatch.url;
+      
+      return null;
+    };
+
+    return {
+      Comida: {
+        ...DEFAULT_GROUP_CONFIG.Comida,
+        img: findImg(COMIDA_KEYWORDS) || DEFAULT_GROUP_CONFIG.Comida.img
+      },
+      Bebidas: {
+        ...DEFAULT_GROUP_CONFIG.Bebidas,
+        img: findImg(BEBIDAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Bebidas.img
+      },
+      Sobremesas: {
+        ...DEFAULT_GROUP_CONFIG.Sobremesas,
+        img: findImg(SOBREMESAS_KEYWORDS) || DEFAULT_GROUP_CONFIG.Sobremesas.img
+      }
+    };
+  }, [restaurant]);
+
   /* ─── State ────────────────────────────────────────────────── */
   const [view, setView] = useState<MenuView>('entry');
   const [selectedGroup, setSelectedGroup] = useState<MenuGroup | null>(null);

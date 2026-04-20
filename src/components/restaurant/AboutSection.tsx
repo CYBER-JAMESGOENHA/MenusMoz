@@ -119,53 +119,61 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         </div>
                     </div>
                     
-                    <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group">
+                    <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
                         <img 
-                            src={restaurant.image} 
+                            src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
                             alt="Atmosphere" 
                             className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         <div className="absolute bottom-8 left-8 right-8 text-white">
-                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Est. 2012</p>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">Maputo, Moçambique</p>
+                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Est. {new Date(restaurant.created_at || Date.now()).getFullYear()}</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">{restaurant.location?.split(',')[0] || 'Maputo, Moçambique'}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Restaurant About Card */}
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                <div className="aspect-[4/3] rounded-2xl md:rounded-3xl overflow-hidden">
-                    <img 
-                        src={restaurant.image || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
-                        alt={`${restaurant.name}`}
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-                <div className="space-y-4">
-                    <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter">
-                        {restaurant.name}
-                    </h3>
-                    <p className="text-text-dim text-base leading-relaxed font-sans">
-                        {restaurant.description || (isEn 
-                            ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
-                            : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
-                    </p>
-                    {restaurant.bio && (
-                        <p className="text-text-dim text-base leading-relaxed font-sans">
-                            {restaurant.bio}
+            <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+                <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
+                    {/* Image Section - Restaurant Logo/Interior */}
+                    <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl bg-bg border border-border-subtle flex items-center justify-center">
+                        <img 
+                            src={restaurant.logo_url || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=000&color=fff&size=256&bold=true`} 
+                            alt={`${restaurant.name} logo`}
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div className="flex-1 text-center md:text-left space-y-4">
+                        {/* OvereLine Text */}
+                        <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-4">
+                            <Info size={14} className="text-primary" />
+                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">{isEn ? 'ABOUT THE RESTAURANT' : 'SOBRE O RESTAURANTE'}</span>
+                        </div>
+                        
+                        {/* Heading - Restaurant Name */}
+                        <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">
+                            {restaurant.name}
+                        </h3>
+                        
+                        {/* Premium Bio Paragraph */}
+                        <p className="text-text-dim text-base md:text-lg leading-relaxed">
+                            {restaurant.bio || restaurant.description || (isEn 
+                                ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
+                                : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
                         </p>
-                    )}
-                    {(restaurant.cuisine || restaurant.location) && (
-                        <div className="flex items-center gap-2 pt-2">
+                        
+                        {/* Sleek Pill/Tag for Location or Cuisine Style */}
+                        <div className="flex items-center gap-2 mt-3 justify-center md:justify-start">
                             {restaurant.cuisine && (
-                                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-medium">
+                                <span className="bg-primary text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
                                     {restaurant.cuisine}
                                 </span>
                             )}
-                            {!restaurant.cuisine && restaurant.location && (
-                                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[12px] font-medium">
+                            {restaurant.location && (
+                                <span className="bg-surface-variant text-text-dim border border-border-subtle px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
                                     {restaurant.location.split(',')[0]}
                                 </span>
                             )}
@@ -182,7 +190,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         restaurant.signature_dishes.map((dish: any, i: number) => (
                             <div key={i} className="group cursor-pointer">
                                 <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-surface border border-border-subtle relative">
-                                    <img src={dish.image_url} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                    <img src={dish.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80'} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                     <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                                         <h4 className="text-white font-display font-black text-xl italic uppercase tracking-tighter">{dish.name}</h4>
@@ -193,20 +201,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         ))
                     ) : (
                         [
-                            { name: 'Lagosta à Laurentina', img: 'https://images.unsplash.com/photo-1553603227-2358aabe2b18?w=800&q=80' },
-                            { name: 'Frango Zambeziana', img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80' },
-                            { name: 'Caril de Caranguejo', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80' }
+                            { name: isEn ? 'Ocean Prime' : 'Lagosta à Laurentina', img: 'https://images.unsplash.com/photo-1553603227-2358aabe2b18?w=800&q=80' },
+                            { name: isEn ? 'Savanna Spices' : 'Frango Zambeziana', img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80' },
+                            { name: isEn ? 'Mozambican Gold' : 'Caril de Caranguejo', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80' }
                         ].map((s, i) => (
-                            <div key={i} className="group relative aspect-square rounded-[2rem] overflow-hidden border border-border-subtle">
-                                <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                                    <p className="text-white font-display font-black italic uppercase tracking-tighter">{s.name}</p>
+                            <div key={i} className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-border-subtle bg-surface">
+                                <img src={s.img} alt={s.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
+                                    <p className="text-white font-display font-black italic uppercase tracking-tighter text-lg">{s.name}</p>
+                                    <span className="text-primary text-[9px] font-black tracking-widest uppercase mt-1 block">{isEn ? 'House Special' : 'Especialidade da Casa'}</span>
                                 </div>
                             </div>
                         ))
                     )}
                 </div>
             </section>
+
 
             
             <div id="location" className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">

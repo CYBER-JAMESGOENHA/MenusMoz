@@ -45,7 +45,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 {/* Circular Logo Avatar */}
                 <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-2xl bg-surface flex items-center justify-center shrink-0 transition-transform duration-700 group-hover:rotate-3 group-hover:scale-105">
                     <img 
-                        src={restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=random&color=fff&size=128&bold=true`} 
+                        src={restaurant.logo_url || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=000&color=fff&size=128&bold=true`} 
                         alt={`${restaurant.name} logo`} 
                         className="w-full h-full object-cover" 
                     />

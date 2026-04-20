@@ -30,7 +30,7 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                             <div key={event.id} className="group bg-surface rounded-3xl md:rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
                                 <div className="aspect-[16/9] relative overflow-hidden">
                                     <img 
-                                        src={event.image_url || "https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=800&q=80"} 
+                                        src={event.image_url || "https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=1200&q=80"} 
                                         alt={event.title}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                                     />
@@ -72,12 +72,12 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          {/* Fallback event cards */}
                          {[
-                            { title: 'Noites de Jazz ao Vivo', time: 'Quintas-feiras, 19:30', img: 'https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=800&q=80', desc: 'Desfrute de uma noite relaxante com o melhor do jazz local enquanto saboreia as nossas especialidades.' },
-                            { title: 'Brunch de Domingo', time: 'Domingos, 11:00 - 15:00', img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&q=80', desc: 'O buffet mais completo da cidade com música ambiente e mimosas ilimitadas.' }
+                            { title: isEn ? 'Live Jazz Nights' : 'Noites de Jazz ao Vivo', time: isEn ? 'Thursdays, 19:30' : 'Quintas-feiras, 19:30', img: 'https://images.unsplash.com/photo-1514525253361-bee8718a74a2?w=800&q=80', desc: isEn ? 'Relax with the city\'s finest jazz and our gourmet tapas.' : 'Desfrute de uma noite relaxante com o melhor do jazz local enquanto saboreia as nossas especialidades.' },
+                            { title: isEn ? 'Sunday Brunch' : 'Brunch de Domingo', time: isEn ? 'Sundays, 11:00 - 15:00' : 'Domingos, 11:00 - 15:00', img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&q=80', desc: isEn ? 'The most complete buffet with ambient music and bottomless mimosas.' : 'O buffet mais completo da cidade com música ambiente e mimosas ilimitadas.' }
                          ].map((ev, i) => (
                             <div key={i} className="group bg-surface rounded-3xl md:rounded-[2.5rem] border border-border-subtle overflow-hidden flex flex-col hover:shadow-premium transition-all duration-500">
-                                <div className="aspect-[16/9] relative overflow-hidden">
-                                     <img src={ev.img} alt={ev.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                <div className="aspect-[16/9] relative overflow-hidden bg-bg">
+                                     <img src={ev.img} alt={ev.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
                                      <div className="absolute top-6 left-6 bg-primary text-white px-4 py-2 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl">
                                          Em Destaque
                                      </div>
