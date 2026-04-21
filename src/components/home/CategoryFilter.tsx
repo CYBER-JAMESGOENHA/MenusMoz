@@ -2,51 +2,44 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { restaurantService } from '../../services/restaurantService';
 
 interface CategoryItem {
     name: string;
-    img: string;
+    slug: string;
+    image_url: string;
 }
 
-const CATEGORY_DATA: CategoryItem[] = [
-    { 
-        name: 'Mariscos', 
-        img: 'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=800&h=1200&fit=crop'
-    },
-    { 
-        name: 'Portuguesa', 
-        img: 'https://images.unsplash.com/photo-1534080564583-6be75777b700?w=800&h=1200&fit=crop'
-    },
-    { 
-        name: 'Pastelaria', 
-        img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=1200&fit=crop'
-    },
-    { 
-        name: 'Street Food', 
-        img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=1200&fit=crop'
-    },
-    { 
-        name: 'Moçambicana', 
-        img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&h=1200&fit=crop'
-    },
-    { 
-        name: 'Grelhados', 
-        img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=1200&fit=crop'
-    }
+const DEFAULT_CATEGORIES: CategoryItem[] = [
+    { name: 'Mariscos',    slug: 'mariscos',    image_url: 'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=800&h=1200&fit=crop' },
+    { name: 'Portuguesa',  slug: 'portuguesa',  image_url: 'https://images.unsplash.com/photo-1534080564583-6be75777b700?w=800&h=1200&fit=crop' },
+    { name: 'Pastelaria',  slug: 'pastelaria',  image_url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=1200&fit=crop' },
+    { name: 'Street Food', slug: 'street-food', image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=1200&fit=crop' },
+    { name: 'Moçambicana', slug: 'mocambicana', image_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&h=1200&fit=crop' },
+    { name: 'Grelhados',   slug: 'grelhados',   image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=1200&fit=crop' },
 ];
+
 
 export const CategoryFilter: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(1);
+    const [categories, setCategories] = useState<CategoryItem[]>(DEFAULT_CATEGORIES);
     const containerRef = useRef<HTMLElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const touchStartX = useRef<number | null>(null);
 
+    // Fetch cuisine categories from Supabase on mount
+    useEffect(() => {
+        restaurantService.getCuisineCategories().then((data) => {
+            if (data && data.length > 0) setCategories(data as CategoryItem[]);
+        }).catch(() => { /* keep defaults */ });
+    }, []);
+
     const handleNext = () => {
-        setActiveIndex((prev) => (prev + 1) % CATEGORY_DATA.length);
+        setActiveIndex((prev) => (prev + 1) % categories.length);
     };
 
     const handlePrev = () => {
-        setActiveIndex((prev) => (prev - 1 + CATEGORY_DATA.length) % CATEGORY_DATA.length);
+        setActiveIndex((prev) => (prev - 1 + categories.length) % categories.length);
     };
 
     // Touch handlers for mobile swipe
@@ -76,7 +69,7 @@ export const CategoryFilter: React.FC = () => {
     }, []);
 
     const getCardStyles = (index: number) => {
-        const total = CATEGORY_DATA.length;
+        const total = categories.length;
         const diff = (index - activeIndex + total) % total;
         
         // Circular logic for 3 cards visible
@@ -112,14 +105,14 @@ export const CategoryFilter: React.FC = () => {
 
             {/* Mobile Native Scroll View (Circular Categories) */}
             <div className="md:hidden flex overflow-x-auto gap-4 px-2 pb-4 pt-2 no-scrollbar snap-x snap-mandatory">
-                {CATEGORY_DATA.map((cat) => (
+                {categories.map((cat) => (
                     <Link 
                         key={cat.name}
                         to={`/restaurantes?category=${encodeURIComponent(cat.name)}`}
                         className="flex-shrink-0 w-28 h-28 sm:w-32 sm:h-32 rounded-full relative overflow-hidden group snap-center border-2 border-border-subtle/20 shadow-xl"
                     >
                         <img 
-                            src={cat.img} 
+                            src={cat.image_url} 
                             alt={cat.name} 
                             loading="lazy"
                             className="absolute inset-0 w-full h-full object-cover"
@@ -147,7 +140,7 @@ export const CategoryFilter: React.FC = () => {
                 </button>
 
                 <div className="relative w-full max-w-6xl h-full flex items-center justify-center pointer-events-none">
-                    {CATEGORY_DATA.map((cat, index) => {
+                    {categories.map((cat, index) => {
                         const { isActive, isSide, isHidden, position } = getCardStyles(index);
                         
                         return (
@@ -173,7 +166,7 @@ export const CategoryFilter: React.FC = () => {
                                 }}
                             >
                                 <img 
-                                    src={cat.img} 
+                                    src={cat.image_url} 
                                     alt={cat.name} 
                                     loading="lazy"
                                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110"
@@ -227,7 +220,7 @@ export const CategoryFilter: React.FC = () => {
 
             {/* Pagination / Progress (Desktop only) */}
             <div className="hidden md:flex justify-center gap-3 mt-4">
-                {CATEGORY_DATA.map((_, i) => (
+                {categories.map((_, i) => (
                     <button
                         key={i}
                         onClick={() => setActiveIndex(i)}

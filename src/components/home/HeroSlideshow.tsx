@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FEATURED_DISHES } from '../../data/mockData';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +23,10 @@ interface HeroSlideshowProps {
 export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ heroSlides = [], th, rootRef }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideshowRef = useRef<HTMLElement>(null);
-    const slides = heroSlides.length > 0 ? heroSlides : (FEATURED_DISHES as HeroSlide[]);
+    // Use whatever slides come from Supabase; empty = no section rendered
+    const slides = heroSlides;
+    if (slides.length === 0) return null;
+
 
     useEffect(() => {
         const timer = setInterval(() => {

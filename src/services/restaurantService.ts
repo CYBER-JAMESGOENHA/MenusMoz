@@ -283,6 +283,34 @@ export const restaurantService = {
     }))
   },
 
+  async getCuisineCategories() {
+    // Default categories used as fallback when Supabase isn't configured or table is empty
+    const DEFAULT_CATEGORIES = [
+      { name: 'Mariscos',    slug: 'mariscos',    image_url: 'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=800&h=1200&fit=crop' },
+      { name: 'Portuguesa',  slug: 'portuguesa',  image_url: 'https://images.unsplash.com/photo-1534080564583-6be75777b700?w=800&h=1200&fit=crop' },
+      { name: 'Pastelaria',  slug: 'pastelaria',  image_url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&h=1200&fit=crop' },
+      { name: 'Street Food', slug: 'street-food', image_url: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&h=1200&fit=crop' },
+      { name: 'Moçambicana', slug: 'mocambicana', image_url: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&h=1200&fit=crop' },
+      { name: 'Grelhados',   slug: 'grelhados',   image_url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&h=1200&fit=crop' },
+    ];
+
+    if (!isSupabaseConfigured || !supabase) return DEFAULT_CATEGORIES;
+
+    const { data, error } = await supabase
+      .from('cuisine_categories')
+      .select('name, slug, image_url')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true });
+
+    if (error) {
+      console.error('Supabase error [getCuisineCategories]:', error);
+      return DEFAULT_CATEGORIES;
+    }
+
+    // If table exists but is empty, return defaults
+    return data && data.length > 0 ? data : DEFAULT_CATEGORIES;
+  },
+
   async toggleFavorite(userId: string, restaurantId: string | number, isCurrentlyFavorite: boolean) {
     if (!isSupabaseConfigured || !supabase) return
 
