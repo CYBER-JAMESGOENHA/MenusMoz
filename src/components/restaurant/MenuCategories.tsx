@@ -425,18 +425,42 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                         <button 
                           key={idx}
                           onClick={() => setExpandedCard(isExpanded ? null : `${selectedGroup}-${cat.name}`)}
-                          className={`relative netflix-card group bg-surface border rounded-3xl overflow-hidden text-left transition-all duration-300 ${
+                          className={`relative netflix-card group bg-surface border rounded-2xl overflow-hidden text-left transition-all duration-300 ${
                             isExpanded 
                               ? 'border-primary shadow-lg ring-2 ring-primary/20' 
-                              : 'border-border-subtle hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]'
-                          } ${isHero ? 'w-80 md:w-96' : 'w-48 md:w-56'}`}
+                              : 'border-border-subtle hover:border-primary/50 hover:shadow-md'
+                          } ${isHero ? 'w-64 md:w-72' : 'w-44 md:w-52'}`}
                         >
-                          {/* Category Name Only */}
-                          <div className="min-h-[3rem] w-full flex items-center justify-center bg-bg p-4">
-                            <span className={`font-display font-black text-text-main italic uppercase tracking-tighter text-lg text-center transition-colors ${isExpanded ? 'text-primary' : ''}`}>
-                              {cat.name}
-                            </span>
+
+                          {/* Compact Row Header */}
+                          <div className="p-3 flex items-center gap-3">
+                            <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                              isExpanded ? 'bg-primary text-white' : 'bg-bg text-primary group-hover:scale-110'
+                            }`}>
+                              {React.cloneElement(GROUP_CONFIG[selectedGroup].icon as React.ReactElement, { size: 20 })}
+                            </div>
+                            
+                            <div className="flex-1 min-w-0 text-left">
+                              <h4 className={`font-black uppercase tracking-tighter text-sm truncate transition-colors duration-300 ${
+                                isExpanded ? 'text-primary' : 'text-text-main'
+                              }`}>
+                                {cat.name}
+                              </h4>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] font-bold uppercase tracking-widest text-text-dim/50">
+                                  {cat.items?.length || 0} Itens
+                                </span>
+                              </div>
+                            </div>
+
+                            {!isExpanded && (
+                              <ChevronRight size={14} className="text-text-dim/20 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                            )}
                           </div>
+
+
+
+
                           
                           <div className={`p-5 transition-all duration-300 overflow-hidden ${isExpanded ? 'block' : 'hidden md:block'}`}>
                             {!isExpanded && (
@@ -467,9 +491,9 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                             )}
                           </div>
                           
-                          <div className="absolute bottom-3 right-3 opacity-5 pointer-events-none">
-                            <ChefHat className="w-16 h-16" />
-                          </div>
+
+
+
                         </button>
                       );
                     })}
