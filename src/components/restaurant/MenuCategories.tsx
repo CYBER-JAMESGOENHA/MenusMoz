@@ -243,7 +243,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [view, setView] = useState<MenuView>('entry');
   const [selectedGroup, setSelectedGroup] = useState<MenuGroup | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
-  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  
   
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
@@ -415,88 +415,18 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
               return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
                 <div key={section} className="space-y-4">
                   <h3 className="text-xl font-black uppercase tracking-wider text-text-main pl-1">{section}</h3>
-                  <div className="flex gap-4 overflow-x-auto netflix-section pb-2 px-1">
-                    {sections[section].map((cat, idx) => {
-                      const isExpanded = expandedCard === `${selectedGroup}-${cat.name}`;
-                      const trendingItems = cat.items?.slice(0, 3) || [];
-                      const isHero = idx === 0;
-                      
-                      return (
-                        <button 
-                          key={idx}
-                          onClick={() => setExpandedCard(isExpanded ? null : `${selectedGroup}-${cat.name}`)}
-                          className={`relative netflix-card group bg-surface border rounded-2xl overflow-hidden text-left transition-all duration-300 ${
-                            isExpanded 
-                              ? 'border-primary shadow-lg ring-2 ring-primary/20' 
-                              : 'border-border-subtle hover:border-primary/50 hover:shadow-md'
-                          } ${isHero ? 'w-64 md:w-72' : 'w-44 md:w-52'}`}
-                        >
-
-                          {/* Compact Row Header */}
-                          <div className="p-3 flex items-center gap-3">
-                            <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                              isExpanded ? 'bg-primary text-white' : 'bg-bg text-primary group-hover:scale-110'
-                            }`}>
-                              {React.cloneElement(GROUP_CONFIG[selectedGroup].icon as React.ReactElement, { size: 20 })}
-                            </div>
-                            
-                            <div className="flex-1 min-w-0 text-left">
-                              <h4 className={`font-black uppercase tracking-tighter text-sm truncate transition-colors duration-300 ${
-                                isExpanded ? 'text-primary' : 'text-text-main'
-                              }`}>
-                                {cat.name}
-                              </h4>
-                              <div className="flex items-center gap-2">
-                                <span className="text-[9px] font-bold uppercase tracking-widest text-text-dim/50">
-                                  {cat.items?.length || 0} Itens
-                                </span>
-                              </div>
-                            </div>
-
-                            {!isExpanded && (
-                              <ChevronRight size={14} className="text-text-dim/20 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                            )}
-                          </div>
-
-
-
-
-                          
-                          <div className={`p-5 transition-all duration-300 overflow-hidden ${isExpanded ? 'block' : 'hidden md:block'}`}>
-                            {!isExpanded && (
-                                <p className="text-[10px] font-black uppercase tracking-widest text-text-dim/50 flex justify-between items-center">
-                                    <span>{cat.items?.length || 0} Itens</span>
-                                    <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                                </p>
-                            )}
-                            {isExpanded && (
-                              <div className="space-y-2 mt-2 animate-in fade-in duration-200">
-                                {trendingItems.map((item, i) => (
-                                  <div key={i} className="flex justify-between items-center text-sm border-b border-border-subtle/50 pb-2">
-                                    <span className="text-text-main font-medium truncate flex-1 mr-2">{item.name}</span>
-                                    <span className="text-primary font-black shrink-0">{item.price}</span>
-                                  </div>
-                                ))}
-                                <button 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigateTo('dishes', selectedGroup, cat);
-                                    setExpandedCard(null);
-                                  }}
-                                  className="w-full mt-3 py-2.5 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary/90 transition-colors"
-                                >
-                                  Ver Menu Completo
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                          
-
-
-
-                        </button>
-                      );
-                    })}
+                  <div className="netflix-section pb-2 px-1">
+                    {sections[section].map((cat, idx) => (
+                      <button 
+                        key={idx}
+                        onClick={() => navigateTo('dishes', selectedGroup, cat)}
+                        className="netflix-card group"
+                      >
+                        <h4 className="netflix-card-title">
+                          {cat.name}
+                        </h4>
+                      </button>
+                    ))}
                   </div>
                 </div>
               ));
