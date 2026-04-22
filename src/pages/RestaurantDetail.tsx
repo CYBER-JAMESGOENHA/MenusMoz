@@ -212,11 +212,27 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full bg-bg">
                 <div className="flex flex-col gap-8 xl:gap-12">
                     
-                    {/* Welcome Text */}
+                    {/* Welcome Text & Hero Image */}
                     <div className="pt-8">
-                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
-                            Welcome to <span className="text-primary">{restaurant.name}</span>
-                        </h1>
+                        <div className="flex flex-col lg:flex-row gap-8 items-start">
+                            <div className="flex-1">
+                                <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                                    Welcome to <span className="text-primary">{restaurant.name}</span>
+                                </h1>
+                            </div>
+                            <div className="w-full lg:w-[320px] lg:aspect-square rounded-3xl overflow-hidden relative group bg-surface border border-border-subtle">
+                                <img 
+                                    src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
+                                    alt="Atmosphere" 
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                <div className="absolute bottom-8 left-8 right-8 text-white">
+                                    <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Est. {new Date(restaurant.created_at || Date.now()).getFullYear()}</p>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">{restaurant.location?.split(',')[0] || 'Maputo, Moçambique'}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* FULL WIDTH CONTENT: Menu, About, Events, Reviews */}
