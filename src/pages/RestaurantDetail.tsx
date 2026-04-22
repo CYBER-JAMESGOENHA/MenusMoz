@@ -220,7 +220,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     Welcome to <span className="text-primary">{restaurant.name}</span>
                                 </h1>
                             </div>
-                            <div className="w-full lg:w-[500px] lg:h-[400px] rounded-3xl overflow-hidden relative group bg-surface border border-border-subtle">
+                            <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
                                 <img 
                                     src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
                                     alt="Atmosphere" 
