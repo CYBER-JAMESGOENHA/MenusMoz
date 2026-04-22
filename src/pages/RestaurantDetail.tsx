@@ -212,6 +212,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full bg-bg">
                 <div className="flex flex-col gap-8 xl:gap-12">
                     
+                    {/* Welcome Text */}
+                    <div className="pt-8">
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                            Welcome to <span className="text-primary">{restaurant.name}</span>
+                        </h1>
+                    </div>
+
                     {/* FULL WIDTH CONTENT: Menu, About, Events, Reviews */}
                     <div className="w-full space-y-12">
                         
