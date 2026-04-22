@@ -31,6 +31,7 @@ import { DetailStarRating } from '../components/restaurant/DetailShared';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { ReviewSection } from '../components/restaurant/ReviewSection';
 import { EventsSection } from '../components/restaurant/EventsSection';
+import { AboutSection } from '../components/restaurant/AboutSection';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -49,7 +50,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'events'>('menu');
+    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events'>('menu');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -174,6 +175,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 {/* Desktop Tabs - Inside Hero */}
                 <div className="hidden md:flex absolute bottom-8 right-8 z-20 gap-8">
                     {[
+                        { id: 'about', label: 'AMBIENTE' },
                         { id: 'menu', label: 'MENU' },
                         { id: 'events', label: 'EVENTOS' }
                     ].map(tab => (
@@ -241,6 +243,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         {/* Restaurant Sub-Header - Mobile Only */}
                         <div className="flex md:hidden gap-3 items-center px-6 md:px-8 mt-8 mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden">
                             {[
+                                { id: 'about', label: 'AMBIENTE' },
                                 { id: 'menu', label: 'MENU' },
                                 { id: 'events', label: 'EVENTOS' }
                             ].map(tab => (
@@ -279,6 +282,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                         restaurant={restaurant}
                                     />
                                 </div>
+                            )}
+
+                            {activeTab === 'about' && (
+                                <AboutSection 
+                                    restaurant={restaurant} 
+                                    lang={lang} 
+                                />
                             )}
 
                             {activeTab === 'events' && (
