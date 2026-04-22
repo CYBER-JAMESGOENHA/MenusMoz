@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
-import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft, ChefHat, Star } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft, ChefHat, Star, StickyNote, Trash2, CheckCircle } from 'lucide-react';
 import { gsap } from 'gsap';
 import './MenuCategories.css';
 import { translations } from '../../translations';
 import { useAuth } from '../../context/AuthContext';
+import toast from 'react-hot-toast';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface MenuItem {
@@ -24,7 +25,21 @@ interface MenuCategory {
 interface CartItem extends MenuItem {
   qty: number;
   categoryName: string;
+  note?: string;
 }
+
+/* ─── Price Parsing ─────────────────────────────────────────────── */
+const parsePrice = (priceStr: string): number => {
+  if (!priceStr) return 0;
+  // Handle formats like "350 MZN", "350MTn", "350,00", "350.00", "MZN 350"
+  const cleaned = priceStr.replace(/[^\d,.]/g, '').replace(',', '.');
+  return parseFloat(cleaned) || 0;
+};
+
+const formatTotal = (amount: number): string => {
+  if (amount === 0) return '0 MZN';
+  return `${amount.toFixed(0)} MZN`;
+};
 
 interface MenuCategoriesProps {
   restaurant: any;
@@ -257,8 +272,25 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
   
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const CART_KEY = `menusmoz_cart_${restaurant?.id || restaurant?.slug || 'default'}`;
+
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(CART_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [showCart, setShowCart] = useState(false);
+  const [itemNotes, setItemNotes] = useState<Record<string, string>>({});
+  const [expandedNote, setExpandedNote] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Persist cart to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    } catch {}
+  }, [cart, CART_KEY]);
   
   const viewContainerRef = useRef<HTMLDivElement>(null);
 
@@ -332,6 +364,12 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
       if (existing) return prev.map(c => c.name === item.name && c.categoryName === categoryName ? { ...c, qty: c.qty + 1 } : c);
       return [...prev, { ...item, qty: 1, categoryName }];
     });
+    // Micro-feedback toast
+    toast.success(`${item.name} adicionado!`, {
+      icon: '🛒',
+      duration: 1500,
+      style: { fontSize: '0.75rem' }
+    });
   }, []);
 
   const removeFromCart = useCallback((itemName: string, categoryName: string) => {
@@ -342,16 +380,42 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
     });
   }, []);
 
+  const removeItemCompletely = useCallback((itemName: string, categoryName: string) => {
+    setCart(prev => prev.filter(c => !(c.name === itemName && c.categoryName === categoryName)));
+  }, []);
+
+  const clearCart = useCallback(() => {
+    setCart([]);
+    setItemNotes({});
+  }, []);
+
   const getItemQty = (itemName: string, categoryName: string) => 
     cart.find(c => c.name === itemName && c.categoryName === categoryName)?.qty || 0;
 
   const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
 
+  const grandTotal = useMemo(() => {
+    return cart.reduce((sum, c) => sum + parsePrice(c.price) * c.qty, 0);
+  }, [cart]);
+
+  const noteKey = (itemName: string, cat: string) => `${itemName}__${cat}`;
+
   const sendToWhatsApp = () => {
     if (!whatsapp || cart.length === 0) return;
-    const lines = cart.map(c => `• ${c.qty}x ${c.name} (${c.price})`);
-    const msg = `Olá, gostaria de fazer o seguinte pedido no ${restaurantName} via Locais de Moz:\n\n${lines.join('\n')}\n\nObrigado!`;
+    const lines = cart.map(c => {
+      const note = itemNotes[noteKey(c.name, c.categoryName)];
+      return `• ${c.qty}x ${c.name} (${c.price})${note ? ` — Nota: ${note}` : ''}`;
+    });
+    const totalLine = grandTotal > 0 ? `\n\nTotal estimado: ${formatTotal(grandTotal)}` : '';
+    const msg = `Olá, gostaria de fazer o seguinte pedido no ${restaurantName} via Locais de Moz:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    // Show success state
+    setShowSuccess(true);
+    setTimeout(() => {
+      setShowSuccess(false);
+      setShowCart(false);
+      clearCart();
+    }, 2500);
   };
 
   /* ─── Render Helpers ────────────────────────────────────────── */
@@ -554,71 +618,206 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
         )}
       </div>
 
-      {/* 3. Floating Cart UI (Preserved) */}
+      {/* 3. Floating Cart Bar — UberEats style */}
       {totalItems > 0 && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-full max-w-sm px-4">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-md px-4 animate-in slide-in-from-bottom duration-500">
           <button
             onClick={() => setShowCart(true)}
-            className="w-full bg-black text-white h-16 rounded-2xl flex items-center justify-between px-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-300 group"
+            className="w-full bg-[#111] text-white h-[60px] rounded-2xl flex items-center justify-between px-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 group"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-black animate-pulse">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center font-black text-white text-sm shadow-sm">
                 {totalItems}
               </div>
-              <span className="font-black uppercase tracking-widest text-[10px]">O Seu Pedido</span>
+              <div className="text-left">
+                <span className="font-black uppercase tracking-widest text-[9px] block opacity-60">O Seu Pedido</span>
+                <span className="font-black text-sm">{totalItems} {totalItems === 1 ? 'item' : 'itens'}</span>
+              </div>
             </div>
-            <ShoppingBag size={20} className="text-primary" />
+            <div className="flex items-center gap-3">
+              {grandTotal > 0 && (
+                <span className="font-black text-primary text-base">{formatTotal(grandTotal)}</span>
+              )}
+              <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center group-hover:bg-primary/80 transition-colors">
+                <ShoppingBag size={16} className="text-white" />
+              </div>
+            </div>
           </button>
         </div>
       )}
 
-      {/* Cart Drawer Overlay (Preserved) */}
+      {/* Cart Drawer — Premium UberEats-inspired */}
       {showCart && (
         <>
           <div className="fixed inset-0 bg-black/70 z-[110] backdrop-blur-md animate-in fade-in" onClick={() => setShowCart(false)} />
-          <div className="fixed bottom-0 left-0 right-0 z-[120] bg-surface rounded-t-[3rem] p-8 max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-500 lg:max-w-lg lg:left-auto lg:top-0 lg:rounded-l-[3rem] lg:rounded-tr-none lg:h-screen lg:max-h-none">
+          <div className="fixed bottom-0 left-0 right-0 z-[120] bg-surface rounded-t-[2.5rem] max-h-[92vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-500 lg:max-w-lg lg:left-auto lg:top-0 lg:rounded-l-[2.5rem] lg:rounded-tr-none lg:h-screen lg:max-h-none">
             
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h3 className="text-3xl font-display font-black italic uppercase tracking-tighter">O Seu Pedido</h3>
-                <p className="text-text-dim text-[10px] font-black uppercase tracking-widest opacity-50 mt-1">Confirmar detalhes no WhatsApp</p>
+            {/* Success State */}
+            {showSuccess ? (
+              <div className="flex flex-col items-center justify-center flex-1 py-20 px-8 text-center gap-6">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center animate-in zoom-in duration-500">
+                  <CheckCircle size={40} className="text-green-500" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-display font-black italic uppercase tracking-tighter text-text-main">Pedido Enviado!</h3>
+                  <p className="text-text-dim text-sm mt-2">A redirecionar para o WhatsApp do restaurante...</p>
+                </div>
               </div>
-              <button 
-                onClick={() => setShowCart(false)}
-                className="w-12 h-12 rounded-2xl bg-bg border border-border-subtle flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-sm"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="flex-1 space-y-6">
-              {cart.map((item, i) => (
-                <div key={i} className="flex items-start justify-between gap-4 pb-6 border-b border-border-subtle/50 last:border-0 relative">
-                  <div className="space-y-2">
-                    <span className="font-bold text-text-main block leading-snug">{item.name}</span>
-                    <span className="text-[9px] font-black uppercase tracking-wider text-text-dim px-2.5 py-1 bg-bg border border-border-subtle rounded-lg block w-fit">{item.categoryName}</span>
+            ) : (
+              <>
+                {/* Header */}
+                <div className="flex items-center justify-between px-7 pt-7 pb-4 border-b border-border-subtle shrink-0">
+                  <div>
+                    <h3 className="text-2xl font-display font-black italic uppercase tracking-tighter">O Seu Pedido</h3>
+                    <p className="text-text-dim text-[9px] font-black uppercase tracking-widest opacity-50 mt-0.5">{restaurantName}</p>
                   </div>
-                  <div className="flex flex-col items-end gap-3">
-                    <span className="font-black text-primary text-lg">{item.price}</span>
-                    <div className="flex items-center gap-2 bg-bg rounded-xl p-1 border border-border-subtle shadow-sm">
-                      <button onClick={() => removeFromCart(item.name, item.categoryName)} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white transition-all"><Minus size={12} /></button>
-                      <span className="w-6 text-center font-black text-xs">{item.qty}</span>
-                      <button onClick={() => addToCart(item, item.categoryName)} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white transition-all"><Plus size={12} /></button>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    {cart.length > 0 && (
+                      <button
+                        onClick={clearCart}
+                        className="h-9 px-3 rounded-xl bg-bg border border-border-subtle text-text-dim hover:text-red-500 hover:border-red-200 transition-all text-[10px] font-black uppercase tracking-wider flex items-center gap-1"
+                      >
+                        <Trash2 size={12} /> Limpar
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => setShowCart(false)}
+                      className="w-10 h-10 rounded-xl bg-bg border border-border-subtle flex items-center justify-center hover:bg-black hover:text-white transition-all"
+                    >
+                      <X size={18} />
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            {whatsapp && (
-              <div className="mt-8 pt-8 border-t border-border-subtle">
-                <button 
-                  onClick={sendToWhatsApp}
-                  className="w-full bg-primary text-white h-18 rounded-2xl flex items-center justify-center gap-4 font-black text-xl shadow-primary-glow hover:scale-[1.02] active:scale-95 transition-all"
-                >
-                  <MessageCircle size={28} /> Finalizar Pedido
-                </button>
-              </div>
+                {/* Items List */}
+                <div className="flex-1 overflow-y-auto px-7 py-5">
+                  {cart.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                      <div className="w-20 h-20 bg-bg rounded-3xl border border-border-subtle flex items-center justify-center text-4xl">
+                        🛒
+                      </div>
+                      <div>
+                        <p className="font-black text-text-main uppercase tracking-tight text-lg">Carrinho vazio</p>
+                        <p className="text-text-dim text-sm mt-1">Adicione itens do menu para começar</p>
+                      </div>
+                      <button
+                        onClick={() => setShowCart(false)}
+                        className="mt-2 px-6 py-3 bg-primary text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all"
+                      >
+                        Ver Menu
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-0">
+                      {cart.map((item, i) => {
+                        const nk = noteKey(item.name, item.categoryName);
+                        const isNoteOpen = expandedNote === nk;
+                        return (
+                          <div key={i} className="py-4 border-b border-border-subtle/40 last:border-0">
+                            <div className="flex items-start gap-3">
+                              {/* Thumbnail */}
+                              {item.image_url && (
+                                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-border-subtle bg-bg">
+                                  <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                              {/* Info */}
+                              <div className="flex-1 min-w-0">
+                                <span className="font-bold text-text-main block leading-snug text-base">{item.name}</span>
+                                <span className="text-[9px] font-black uppercase tracking-wider text-text-dim opacity-60">{item.categoryName}</span>
+                                {/* Note preview */}
+                                {itemNotes[nk] && !isNoteOpen && (
+                                  <p className="text-[11px] text-text-dim mt-1 italic line-clamp-1">📝 {itemNotes[nk]}</p>
+                                )}
+                              </div>
+                              {/* Right side: price + qty */}
+                              <div className="flex flex-col items-end gap-2 shrink-0">
+                                <span className="font-black text-primary text-base">{item.price}</span>
+                                <div className="flex items-center gap-1.5 bg-bg rounded-xl p-1 border border-border-subtle shadow-sm">
+                                  <button
+                                    onClick={() => removeFromCart(item.name, item.categoryName)}
+                                    className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all"
+                                  >
+                                    {item.qty === 1 ? <Trash2 size={13} /> : <Minus size={13} />}
+                                  </button>
+                                  <span className="w-5 text-center font-black text-sm">{item.qty}</span>
+                                  <button
+                                    onClick={() => addToCart(item, item.categoryName)}
+                                    className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white hover:bg-primary/90 transition-all"
+                                  >
+                                    <Plus size={13} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Special note toggle */}
+                            <div className="mt-2 ml-0">
+                              {isNoteOpen ? (
+                                <div className="flex gap-2 mt-2 animate-in slide-in-from-top-2 duration-200">
+                                  <input
+                                    type="text"
+                                    placeholder="Ex: sem cebola, bem passado..."
+                                    value={itemNotes[nk] || ''}
+                                    onChange={e => setItemNotes(prev => ({ ...prev, [nk]: e.target.value }))}
+                                    onBlur={() => setExpandedNote(null)}
+                                    autoFocus
+                                    className="flex-1 text-xs bg-bg border border-border-subtle rounded-xl px-3 py-2 text-text-main placeholder-text-dim/40 outline-none focus:border-primary/50 transition-colors"
+                                  />
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => setExpandedNote(nk)}
+                                  className="flex items-center gap-1.5 text-[10px] text-text-dim hover:text-primary transition-colors mt-1.5 font-black uppercase tracking-wider"
+                                >
+                                  <StickyNote size={11} />
+                                  {itemNotes[nk] ? 'Editar nota' : 'Adicionar nota'}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer — Total + CTA */}
+                {cart.length > 0 && (
+                  <div className="shrink-0 px-7 pt-5 pb-8 border-t border-border-subtle bg-surface">
+                    {/* Order summary */}
+                    <div className="space-y-2 mb-5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-text-dim text-sm font-bold">{totalItems} {totalItems === 1 ? 'item' : 'itens'}</span>
+                        {grandTotal > 0 && (
+                          <span className="font-black text-text-main text-sm">{formatTotal(grandTotal)}</span>
+                        )}
+                      </div>
+                      {grandTotal > 0 && (
+                        <div className="flex items-center justify-between border-t border-border-subtle pt-2">
+                          <span className="font-black uppercase tracking-wider text-xs text-text-main">Total estimado</span>
+                          <span className="font-black text-primary text-xl">{formatTotal(grandTotal)}</span>
+                        </div>
+                      )}
+                      <p className="text-[9px] text-text-dim opacity-50 font-bold">* O valor final será confirmado pelo restaurante</p>
+                    </div>
+
+                    {whatsapp ? (
+                      <button 
+                        onClick={sendToWhatsApp}
+                        className="w-full bg-[#25D366] text-white h-[60px] rounded-2xl flex items-center justify-center gap-3 font-black text-base shadow-lg hover:bg-[#1ebe5a] hover:scale-[1.02] active:scale-95 transition-all"
+                      >
+                        <MessageCircle size={22} fill="white" />
+                        Finalizar via WhatsApp
+                      </button>
+                    ) : (
+                      <div className="w-full bg-bg border border-border-subtle h-[60px] rounded-2xl flex items-center justify-center text-text-dim text-sm font-bold">
+                        WhatsApp não disponível
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </>
