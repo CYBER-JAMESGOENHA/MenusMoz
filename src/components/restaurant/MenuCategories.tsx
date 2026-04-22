@@ -432,8 +432,8 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                           } ${isHero ? 'w-80 md:w-96' : 'w-48 md:w-56'}`}
                         >
                           {/* Category Name Only */}
-                          <div className="h-28 md:h-32 w-full flex items-center justify-center bg-bg p-4">
-                            <span className={`font-display font-black text-white italic uppercase tracking-tighter text-lg text-center transition-colors ${isExpanded ? 'text-primary' : ''}`}>
+                          <div className="min-h-[3rem] w-full flex items-center justify-center bg-bg p-4">
+                            <span className={`font-display font-black text-text-main italic uppercase tracking-tighter text-lg text-center transition-colors ${isExpanded ? 'text-primary' : ''}`}>
                               {cat.name}
                             </span>
                           </div>
