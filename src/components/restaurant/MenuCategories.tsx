@@ -410,27 +410,29 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
               </h2>
             </div>
             
-            {(() => {
-              const sections = getSubcategorySections(groupedMenu[selectedGroup]);
-              return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
-                <div key={section} className="space-y-4">
-                  <h3 className="text-xl font-black uppercase tracking-wider text-text-main pl-1">{section}</h3>
-                  <div className="netflix-section pb-2 px-1">
-                    {sections[section].map((cat, idx) => (
-                      <button 
-                        key={idx}
-                        onClick={() => navigateTo('dishes', selectedGroup, cat)}
-                        className="netflix-card group"
-                      >
-                        <h4 className="netflix-card-title">
-                          {cat.name}
-                        </h4>
-                      </button>
-                    ))}
+            <div className="netflix-sections-container">
+              {(() => {
+                const sections = getSubcategorySections(groupedMenu[selectedGroup]);
+                return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
+                  <div key={section} className="netflix-section-group">
+                    <h3 className="netflix-section-group-title">{section}</h3>
+                    <div className="netflix-section-grid pb-2">
+                      {sections[section].map((cat, idx) => (
+                        <button 
+                          key={idx}
+                          onClick={() => navigateTo('dishes', selectedGroup, cat)}
+                          className="netflix-card group"
+                        >
+                          <h4 className="netflix-card-title">
+                            {cat.name}
+                          </h4>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ));
-            })()}
+                ));
+              })()}
+            </div>
           </div>
         )}
 

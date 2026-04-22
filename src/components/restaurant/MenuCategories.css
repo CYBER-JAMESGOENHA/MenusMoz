@@ -116,16 +116,45 @@
 }
 
 /* Netflix-style grid sections */
-.netflix-section {
+.netflix-sections-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .netflix-sections-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+.netflix-section-group {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
+.netflix-section-group-title {
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  font-size: 1.125rem;
+  color: var(--color-text-main);
+  border-left: 4px solid var(--color-primary);
+  padding-left: 0.75rem;
+}
+
+.netflix-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
 @media (min-width: 768px) {
-  .netflix-section {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+  .netflix-section-grid {
+    grid-template-columns: 1fr; /* Stack cards inside the 3-column section layout */
+    gap: 1rem;
   }
 }
 
