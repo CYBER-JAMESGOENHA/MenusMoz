@@ -168,16 +168,87 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1rem;
 }
 
-.netflix-card:hover {
+.netflix-card:hover:not(.expanded) {
   transform: translateY(-4px) scale(1.02);
   border-color: var(--color-primary);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   background: linear-gradient(135deg, color-mix(in srgb, var(--color-surface), black 2%) 0%, color-mix(in srgb, var(--color-surface), black 8%) 100%);
+}
+
+.netflix-card.expanded {
+  aspect-ratio: auto;
+  min-height: 200px;
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-premium);
+  justify-content: flex-start;
+  padding: 1.5rem;
+}
+
+.netflix-card-preview {
+  width: 100%;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.preview-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.preview-item {
+  font-size: 0.875rem;
+  color: var(--color-text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.preview-item::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.netflix-cta-button {
+  width: 100%;
+  padding: 0.875rem;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 0.75rem;
+  font-weight: 900;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px -3px rgba(var(--color-primary-rgb), 0.4);
+}
+
+.netflix-cta-button:hover {
+  background: color-mix(in srgb, var(--color-primary), black 10%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -3px rgba(var(--color-primary-rgb), 0.5);
 }
 
 .netflix-card::after {

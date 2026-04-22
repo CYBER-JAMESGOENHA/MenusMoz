@@ -243,6 +243,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [view, setView] = useState<MenuView>('entry');
   const [selectedGroup, setSelectedGroup] = useState<MenuGroup | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
   
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -297,6 +298,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
         setView(newView);
         if (group !== undefined) setSelectedGroup(group);
         if (cat !== undefined) setSelectedCategory(cat);
+        setExpandedCard(null);
         
         // Final objective transition in
         gsap.fromTo(viewContainerRef.current, 
@@ -433,17 +435,45 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                         {chunkIdx === 0 ? section : `${section} (...)`}
                       </h3>
                       <div className="netflix-section-grid pb-2">
-                        {chunk.map((cat, idx) => (
-                          <button 
-                            key={idx}
-                            onClick={() => navigateTo('dishes', selectedGroup, cat)}
-                            className="netflix-card group"
-                          >
-                            <h4 className="netflix-card-title">
-                              {cat.name}
-                            </h4>
-                          </button>
-                        ))}
+                        {chunk.map((cat, idx) => {
+                          const isExpanded = expandedCard === cat.name;
+                          return (
+                            <div 
+                              key={idx}
+                              className={`netflix-card-container ${isExpanded ? 'is-expanded' : ''}`}
+                            >
+                              <button 
+                                onClick={() => setExpandedCard(isExpanded ? null : cat.name)}
+                                className={`netflix-card group ${isExpanded ? 'expanded' : ''}`}
+                              >
+                                <h4 className="netflix-card-title">
+                                  {cat.name}
+                                </h4>
+                                
+                                {isExpanded && (
+                                  <div className="netflix-card-preview animate-in fade-in slide-in-from-top-2 duration-300">
+                                    <div className="preview-items-list">
+                                      {cat.items?.slice(0, 3).map((item, i) => (
+                                        <div key={i} className="preview-item line-clamp-1">
+                                          {item.name}
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <button 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigateTo('dishes', selectedGroup, cat);
+                                      }}
+                                      className="netflix-cta-button"
+                                    >
+                                      Ver Cardápio <ChevronRight size={14} />
+                                    </button>
+                                  </div>
+                                )}
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ));
