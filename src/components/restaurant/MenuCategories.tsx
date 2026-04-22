@@ -431,19 +431,11 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                               : 'border-border-subtle hover:border-primary/50 hover:shadow-lg hover:scale-[1.02]'
                           } ${isHero ? 'w-80 md:w-96' : 'w-48 md:w-56'}`}
                         >
-                          {/* Category Thumbnail */}
-                          <div className={`relative h-28 md:h-32 w-full overflow-hidden bg-bg ${!isExpanded ? 'grayscale group-hover:grayscale-0' : ''} transition-all duration-700`}>
-                            <img 
-                                src={cat.items?.find(item => item.image_url)?.image_url || `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80`} 
-                                alt={cat.name}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                            <div className="absolute bottom-3 left-4 right-3">
-                                <span className={`font-display font-black text-white italic uppercase tracking-tighter text-lg transition-colors ${isExpanded ? 'text-primary' : ''}`}>
-                                    {cat.name}
-                                </span>
-                            </div>
+                          {/* Category Name Only */}
+                          <div className="h-28 md:h-32 w-full flex items-center justify-center bg-bg p-4">
+                            <span className={`font-display font-black text-white italic uppercase tracking-tighter text-lg text-center transition-colors ${isExpanded ? 'text-primary' : ''}`}>
+                              {cat.name}
+                            </span>
                           </div>
                           
                           <div className={`p-5 transition-all duration-300 overflow-hidden ${isExpanded ? 'block' : 'hidden md:block'}`}>
