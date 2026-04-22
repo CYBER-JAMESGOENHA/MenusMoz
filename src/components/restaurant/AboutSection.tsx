@@ -95,6 +95,31 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
 
     return (
         <div className="space-y-16 md:space-y-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Welcome Text & Dish of the Day */}
+            <div className="pt-4">
+                <div className="flex flex-col lg:flex-row gap-6 items-start">
+                    <div className="flex-1">
+                        <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                            Welcome to <span className="text-primary">{restaurant.name}</span>
+                        </h1>
+                    </div>
+                    <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
+                        <img 
+                            src={restaurant.dish_of_the_day_image || restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
+                            alt="Prato do Dia" 
+                            className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter mb-2">Prato do Dia</p>
+                            <button className="bg-white text-text-main px-6 py-2 rounded-full font-bold text-sm hover:bg-primary hover:text-white transition-all">
+                                Ver Detalhes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* --- STORY / ESSENCE --- */}
             <section id="story" className="relative">
                 <div className="flex flex-col md:flex-row gap-12 items-center">
