@@ -413,24 +413,41 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
             <div className="netflix-sections-container">
               {(() => {
                 const sections = getSubcategorySections(groupedMenu[selectedGroup]);
-                return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
-                  <div key={section} className="netflix-section-group">
-                    <h3 className="netflix-section-group-title">{section}</h3>
-                    <div className="netflix-section-grid pb-2">
-                      {sections[section].map((cat, idx) => (
-                        <button 
-                          key={idx}
-                          onClick={() => navigateTo('dishes', selectedGroup, cat)}
-                          className="netflix-card group"
-                        >
-                          <h4 className="netflix-card-title">
-                            {cat.name}
-                          </h4>
-                        </button>
-                      ))}
+                
+                // Helper to chunk array
+                const chunkArray = (arr, size) => {
+                  const chunks = [];
+                  for (let i = 0; i < arr.length; i += size) {
+                    chunks.push(arr.slice(i, i + size));
+                  }
+                  return chunks;
+                };
+
+                return SECTION_ORDER.filter(s => sections[s]?.length > 0).flatMap(section => {
+                  const subcategories = sections[section];
+                  const chunks = chunkArray(subcategories, 3);
+                  
+                  return chunks.map((chunk, chunkIdx) => (
+                    <div key={`${section}-${chunkIdx}`} className="netflix-section-group">
+                      <h3 className="netflix-section-group-title">
+                        {chunkIdx === 0 ? section : `${section} (...)`}
+                      </h3>
+                      <div className="netflix-section-grid pb-2">
+                        {chunk.map((cat, idx) => (
+                          <button 
+                            key={idx}
+                            onClick={() => navigateTo('dishes', selectedGroup, cat)}
+                            className="netflix-card group"
+                          >
+                            <h4 className="netflix-card-title">
+                              {cat.name}
+                            </h4>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ));
+                  ));
+                });
               })()}
             </div>
           </div>
