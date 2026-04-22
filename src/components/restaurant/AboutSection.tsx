@@ -120,45 +120,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                 </div>
             </div>
 
-            {/* --- STORY / ESSENCE --- */}
-            <section id="story" className="relative">
-                <div className="flex flex-col md:flex-row gap-12 items-center">
-                    <div className="flex-1 space-y-6">
-                        <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
-                            <Utensils size={14} className="text-primary" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">{t.history}</span>
-                        </div>
-                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-wider leading-[0.9]">
-                            {isEn ? 'The Art of Mozambican Flavors' : 'A Arte dos Sabores Moçambicanos'}
-                        </h3>
-                        <div className="text-text-dim text-lg leading-relaxed font-medium space-y-4">
-                            {restaurant.story ? (
-                                <p className="whitespace-pre-line">{restaurant.story}</p>
-                            ) : (
-                                <p>
-                                    {restaurant.description || (isEn 
-                                        ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
-                                        : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                    
-                    <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
-                        <img 
-                            src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
-                            alt="Atmosphere" 
-                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute bottom-8 left-8 right-8 text-white">
-                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Est. {new Date(restaurant.created_at || Date.now()).getFullYear()}</p>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">{restaurant.location?.split(',')[0] || 'Maputo, Moçambique'}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             {/* Restaurant About Card */}
             <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
