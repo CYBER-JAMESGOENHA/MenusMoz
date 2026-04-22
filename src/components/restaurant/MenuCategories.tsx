@@ -52,6 +52,17 @@ const getGroup = (name: string): MenuGroup => {
   return 'Comida';
 };
 
+const getCategoryType = (name: string): string => {
+  const n = name.toLowerCase();
+  if (n.includes('carne') || n.includes('frango') || n.includes('bife') || n.includes('picanha') || n.includes('steak') || n.includes('burguer') || n.includes('chicken')) return 'meat';
+  if (n.includes('marisco') || n.includes('peixe') || n.includes('camarão') || n.includes('lagosta') || n.includes('sushi') || n.includes('fish') || n.includes('seafood') || n.includes('shrimp')) return 'seafood';
+  if (n.includes('vegetariano') || n.includes('salada') || n.includes('vegan') || n.includes('veggie') || n.includes('salad') || n.includes('legumes')) return 'veggie';
+  if (n.includes('massa') || n.includes('pasta') || n.includes('pizza') || n.includes('esparguete') || n.includes('lasanha') || n.includes('spaghetti')) return 'pasta';
+  if (n.includes('bebida') || n.includes('cocktail') || n.includes('vinho') || n.includes('cerveja') || n.includes('sumo') || n.includes('drink') || n.includes('juice') || n.includes('wine') || n.includes('beer')) return 'drink';
+  if (n.includes('sobremesa') || n.includes('doce') || n.includes('gelado') || n.includes('bolo') || n.includes('dessert') || n.includes('sweet') || n.includes('cake') || n.includes('ice cream')) return 'dessert';
+  return 'default';
+};
+
 const DEFAULT_GROUP_CONFIG = {
   Comida: {
     icon: <Utensils size={16} />,
@@ -391,7 +402,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
              <div>
                <EntryCard title="Comida" config={GROUP_CONFIG.Comida} onClick={() => navigateTo('subcategory', 'Comida')} />
              </div>
-<div>
+ <div>
                 <EntryCard title="Bebidas" config={GROUP_CONFIG.Bebidas} onClick={() => navigateTo('subcategory', 'Bebidas')} />
               </div>
               <div>
@@ -445,6 +456,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                               <button 
                                 onClick={() => setExpandedCard(isExpanded ? null : cat.name)}
                                 className={`netflix-card group ${isExpanded ? 'expanded' : ''}`}
+                                data-category-type={getCategoryType(cat.name)}
                               >
                                 <h4 className="netflix-card-title">
                                   {cat.name}
