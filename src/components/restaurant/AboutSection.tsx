@@ -110,8 +110,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                             className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter mb-2">Prato do Dia</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between text-white">
+                            <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Prato do Dia</p>
                             <button className="bg-white text-text-main px-6 py-2 rounded-full font-bold text-sm hover:bg-primary hover:text-white transition-all">
                                 Ver Detalhes
                             </button>
