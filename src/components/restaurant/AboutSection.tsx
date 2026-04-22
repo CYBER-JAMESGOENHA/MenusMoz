@@ -102,6 +102,38 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
                             Welcome to <span className="text-primary">{restaurant.name}</span>
                         </h1>
+                        <div className="mt-6 space-y-4">
+                            <div className="flex items-center gap-3">
+                                <Clock size={20} className="text-primary" />
+                                <div>
+                                    <p className="font-bold text-text-main">{t.hours}</p>
+                                    <p className="text-text-dim text-sm">{restaurant.hours || (isEn ? 'Check website for hours' : 'Consulte o site para horários')}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <MapPin size={20} className="text-primary" />
+                                <div>
+                                    <p className="font-bold text-text-main">{t.map}</p>
+                                    <p className="text-text-dim text-sm">{restaurant.location || (isEn ? 'Maputo, Mozambique' : 'Maputo, Moçambique')}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Phone size={20} className="text-primary" />
+                                <div>
+                                    <p className="font-bold text-text-main">{t.contact}</p>
+                                    <p className="text-text-dim text-sm">{restaurant.whatsapp || restaurant.phone || '-'}</p>
+                                </div>
+                            </div>
+                            {restaurant.cuisine && (
+                                <div className="flex items-center gap-3">
+                                    <Utensils size={20} className="text-primary" />
+                                    <div>
+                                        <p className="font-bold text-text-main">{isEn ? 'Cuisine' : 'Cozinha'}</p>
+                                        <p className="text-text-dim text-sm">{restaurant.cuisine}</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
                         <img 
