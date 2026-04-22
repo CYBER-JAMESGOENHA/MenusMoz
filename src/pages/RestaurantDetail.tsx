@@ -50,7 +50,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events' | 'reviews'>('about');
+    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events'>('about');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -177,8 +177,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     {[
                         { id: 'about', label: 'AMBIENTE' },
                         { id: 'menu', label: 'MENU' },
-                        { id: 'events', label: 'EVENTOS' },
-                        { id: 'reviews', label: 'REVIEWS' }
+                        { id: 'events', label: 'EVENTOS' }
                     ].map(tab => (
                         <button
                             key={tab.id}
@@ -221,8 +220,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             {[
                                 { id: 'about', label: 'AMBIENTE' },
                                 { id: 'menu', label: 'MENU' },
-                                { id: 'events', label: 'EVENTOS' },
-                                { id: 'reviews', label: 'REVIEWS' }
+                                { id: 'events', label: 'EVENTOS' }
                             ].map(tab => (
                                 <button
                                     key={tab.id}
@@ -273,19 +271,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     restaurant={restaurant} 
                                     lang={lang} 
                                 />
-                            )}
-
-                            {activeTab === 'reviews' && (
-                                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-
-                                    <ReviewSection 
-                                        restaurant={restaurant} 
-                                        user={user} 
-                                        lang={lang} 
-                                        t={t}
-                                        onLoginOpen={showLogin}
-                                    />
-                                </div>
                             )}
                         </div>
                     </div>

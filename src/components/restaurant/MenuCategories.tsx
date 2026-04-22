@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from 'react';
-import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft, ChefHat } from 'lucide-react';
+import { ShoppingBag, Plus, Minus, X, Utensils, CupSoda, IceCream, MessageCircle, ChevronRight, ChevronLeft, ChefHat, Star } from 'lucide-react';
 import { gsap } from 'gsap';
 import './MenuCategories.css';
+import { translations } from '../../translations';
+import { useAuth } from '../../context/AuthContext';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface MenuItem {
@@ -29,6 +31,10 @@ interface MenuCategoriesProps {
   menuCategories?: MenuCategory[];
   restaurantName?: string;
   whatsapp?: string;
+  user?: any;
+  lang?: string;
+  t?: any;
+  onLoginOpen?: () => void;
 }
 
 type MenuView = 'entry' | 'subcategory' | 'dishes';
@@ -609,6 +615,57 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
             )}
           </div>
         </>
+      )}
+
+      {view === 'entry' && restaurant && (
+        <div className="mt-16 pt-12 border-t border-border-subtle">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-display font-black uppercase tracking-tighter text-text-main">
+              Reviews
+            </h2>
+            <div className="flex items-center gap-1">
+              <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+              <span className="font-black text-text-main">{restaurant.rating || '0.0'}</span>
+              <span className="text-text-dim text-sm">({restaurant.review_count || 0})</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {restaurant.reviews && restaurant.reviews.length > 0 ? (
+              restaurant.reviews.slice(0, 3).map((review: any, idx: number) => (
+                <div key={idx} className="bg-surface border border-border-subtle rounded-2xl p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-red-600 flex items-center justify-center text-white font-black">
+                        {(review.user_name || 'A')[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-bold text-text-main">{review.user_name || 'Anónimo'}</p>
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`w-3 h-3 ${i < (review.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'text-text-dim'}`} />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-text-dim text-sm">{review.date || ''}</span>
+                  </div>
+                  <p className="text-text-main text-sm leading-relaxed">{review.text || review.comment || ''}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-text-dim">
+                <p>Ainda não há reviews.</p>
+              </div>
+            )}
+          </div>
+
+          {restaurant.reviews && restaurant.reviews.length > 3 && (
+            <button className="w-full mt-6 py-4 border border-border-subtle rounded-2xl font-bold text-text-main hover:bg-surface transition-all">
+              Ver todas as reviews
+            </button>
+          )}
+        </div>
       )}
 
     </div>
