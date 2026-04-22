@@ -55,6 +55,7 @@ export interface Restaurant {
   menu_food_image?: string;
   menu_drinks_image?: string;
   menu_desserts_image?: string;
+  dish_of_the_day_image?: string;
 }
 
 export interface RestaurantEvent {
@@ -152,6 +153,7 @@ const mapRestaurant = (r: any): Restaurant => ({
   menu_food_image: r.menu_food_image || null,
   menu_drinks_image: r.menu_drinks_image || null,
   menu_desserts_image: r.menu_desserts_image || null,
+  dish_of_the_day_image: r.dish_of_the_day_image || null,
   menuCategories: (r.menu_categories || []).map((cat: any) => {
     // Primeiro mapeamos as subcategorias para que elas tenham os seus itens formatados
     const mappedSubcategories = (cat.subcategories || []).map((sub: any) => ({
