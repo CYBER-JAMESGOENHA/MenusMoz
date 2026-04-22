@@ -31,7 +31,6 @@ import { DetailStarRating } from '../components/restaurant/DetailShared';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { ReviewSection } from '../components/restaurant/ReviewSection';
 import { EventsSection } from '../components/restaurant/EventsSection';
-import { AboutSection } from '../components/restaurant/AboutSection';
 import { DetailSkeleton } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
@@ -50,7 +49,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { slug } = useParams<{ slug: string }>();
     const [restaurant, setRestaurant] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'menu' | 'about' | 'events'>('about');
+    const [activeTab, setActiveTab] = useState<'menu' | 'events'>('menu');
     
     const containerRef = useRef<HTMLDivElement>(null);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -175,7 +174,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                 {/* Desktop Tabs - Inside Hero */}
                 <div className="hidden md:flex absolute bottom-8 right-8 z-20 gap-8">
                     {[
-                        { id: 'about', label: 'AMBIENTE' },
                         { id: 'menu', label: 'MENU' },
                         { id: 'events', label: 'EVENTOS' }
                     ].map(tab => (
@@ -212,7 +210,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
             <main className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 relative z-10 w-full bg-bg">
                 <div className="flex flex-col gap-8 xl:gap-12">
                     
-                    {/* Welcome Text & Hero Image */}
+                    {/* Welcome Text & Dish of the Day */}
                     <div className="pt-8">
                         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
                             <div className="flex-1">
@@ -222,14 +220,16 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             </div>
                             <div className="w-full md:w-[320px] lg:w-[400px] aspect-square rounded-3xl md:rounded-[3rem] overflow-hidden relative group bg-surface border border-border-subtle">
                                 <img 
-                                    src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
-                                    alt="Atmosphere" 
-                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                                    src={restaurant.dish_of_the_day_image || restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
+                                    alt="Prato do Dia" 
+                                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                <div className="absolute bottom-8 left-8 right-8 text-white">
-                                    <p className="font-display font-black text-2xl italic uppercase tracking-tighter">Est. {new Date(restaurant.created_at || Date.now()).getFullYear()}</p>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">{restaurant.location?.split(',')[0] || 'Maputo, Moçambique'}</p>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                    <p className="font-display font-black text-2xl italic uppercase tracking-tighter mb-2">Prato do Dia</p>
+                                    <button className="bg-white text-text-main px-6 py-2 rounded-full font-bold text-sm hover:bg-primary hover:text-white transition-all">
+                                        Ver Detalhes
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +241,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         {/* Restaurant Sub-Header - Mobile Only */}
                         <div className="flex md:hidden gap-3 items-center px-6 md:px-8 mt-8 mb-6 overflow-x-auto [&::-webkit-scrollbar]:hidden">
                             {[
-                                { id: 'about', label: 'AMBIENTE' },
                                 { id: 'menu', label: 'MENU' },
                                 { id: 'events', label: 'EVENTOS' }
                             ].map(tab => (
@@ -280,13 +279,6 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                         restaurant={restaurant}
                                     />
                                 </div>
-                            )}
-
-                            {activeTab === 'about' && (
-                                <AboutSection 
-                                    restaurant={restaurant} 
-                                    lang={lang} 
-                                />
                             )}
 
                             {activeTab === 'events' && (
