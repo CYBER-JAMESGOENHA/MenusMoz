@@ -214,13 +214,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     
                     {/* Welcome Text & Hero Image */}
                     <div className="pt-8">
-                        <div className="flex flex-col lg:flex-row gap-8 items-start">
+                        <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 items-start">
                             <div className="flex-1">
                                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
                                     Welcome to <span className="text-primary">{restaurant.name}</span>
                                 </h1>
                             </div>
-                            <div className="w-full lg:w-[320px] lg:aspect-square rounded-3xl overflow-hidden relative group bg-surface border border-border-subtle">
+                            <div className="w-full lg:w-[500px] lg:h-[400px] rounded-3xl overflow-hidden relative group bg-surface border border-border-subtle">
                                 <img 
                                     src={restaurant.hero_image_url || restaurant.image || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80'} 
                                     alt="Atmosphere" 
