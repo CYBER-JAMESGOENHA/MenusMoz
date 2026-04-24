@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Star, ArrowRight, MapPin } from 'lucide-react';
-import { calculateDistance } from '../hooks/useUserLocation';
+import { calculateDistance } from '../../hooks/useUserLocation';
 
 interface RestaurantCardProps {
     restaurant: any;
