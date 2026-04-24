@@ -3,6 +3,8 @@ import { Search, ChevronRight, MapPin, ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RESTAURANTS } from '../../data/mockData';
 import { translations } from '../../translations';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { useAuth } from '../../context/AuthContext';
 
 interface Suggestion {
   type: 'restaurant' | 'dish';
@@ -24,9 +26,33 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   const searchRef = useRef<HTMLDivElement>(null);
   const t = (translations[lang as keyof typeof translations] as any) ?? translations.pt;
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const fetchLocationFromProfile = async (userId: string) => {
+    if (!isSupabaseConfigured || !supabase) return;
+    const { data } = await supabase
+      .from('profiles')
+      .select('preferred_location, preferred_latitude, preferred_longitude')
+      .eq('id', userId)
+      .single();
+    if (data?.preferred_location) {
+      setLocation(data.preferred_location);
+    }
+  };
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (user) {
+      fetchLocationFromProfile(user.id);
+    }
+  }, [user]);
+
+  const detectAndSaveLocation = async (): Promise<string> => {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        resolve('Maxaquene');
+        return;
+      }
+      setIsLoadingLocation(true);
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           try {
@@ -34,20 +60,41 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt`
             );
             const data = await response.json();
+            let city = 'Minha Localização';
             if (data.address) {
-              const city = data.address.city || data.address.town || data.address.village || data.address.municipality;
-              if (city) {
-                setLocation(city);
-              }
+              city = data.address.city || data.address.town || data.address.village || data.address.municipality || 'Minha Localização';
             }
+            setLocation(city);
+            
+            if (isSupabaseConfigured && supabase && user) {
+              await supabase
+                .from('profiles')
+                .update({
+                  preferred_location: city,
+                  preferred_latitude: position.coords.latitude,
+                  preferred_longitude: position.coords.longitude
+                })
+                .eq('id', user.id);
+            }
+            resolve(city);
           } catch {
             setLocation('Minha Localização');
+            resolve('Minha Localização');
+          } finally {
+            setIsLoadingLocation(false);
           }
         },
         () => {
-          // Keep default location if permission denied
+          setIsLoadingLocation(false);
+          resolve('Maxaquene');
         }
       );
+    });
+  };
+
+  useEffect(() => {
+    if (!user && navigator.geolocation) {
+      detectAndSaveLocation();
     }
   }, []);
 
@@ -99,35 +146,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
         
         {/* Location Selector (Left) */}
         <button
-          onClick={() => {
-            if (navigator.geolocation) {
-              setIsLoadingLocation(true);
-              navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                  try {
-                    const response = await fetch(
-                      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt`
-                    );
-                    const data = await response.json();
-                    if (data.address) {
-                      const city = data.address.city || data.address.town || data.address.village || data.address.municipality;
-                      if (city) {
-                        setLocation(city);
-                      }
-                    }
-                  } catch {
-                    setLocation('Minha Localização');
-                  } finally {
-                    setIsLoadingLocation(false);
-                  }
-                },
-                () => {
-                  setIsLoadingLocation(false);
-                  alert('Permita o acesso à localização.');
-                }
-              );
-            }
-          }}
+          onClick={() => detectAndSaveLocation()}
           className="flex items-center gap-2 h-full px-6 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
         >
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
