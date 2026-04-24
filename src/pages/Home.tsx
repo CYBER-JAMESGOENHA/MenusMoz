@@ -9,6 +9,7 @@ import { RestaurantCard } from '../components/ui/RestaurantCard';
 import { RestaurantCardSkeleton } from '../components/ui/Skeleton';
 import { Restaurant } from '../services/restaurantService';
 import { HeroSlide, BlogPost } from '../hooks/useContent';
+import { useUserLocation } from '../hooks/useUserLocation';
 
 interface HomeProps {
     lang: string;
@@ -33,6 +34,7 @@ export default function Home({
     const t = (translations[lang as keyof typeof translations] as any) ?? translations.pt;
     const th = t.home;
     const rootRef = useRef<HTMLDivElement>(null);
+    const { latitude, longitude, city, requestLocation } = useUserLocation();
 
     const filteredRestaurants = useMemo(() => 
         restaurants.filter(r => !showOnlyFavorites || favorites.includes(Number(r.id))),
@@ -106,6 +108,9 @@ export default function Home({
                     lang={lang}
                     animationClass="dish-card-anim"
                     rootRef={rootRef}
+                    userLatitude={latitude}
+                    userLongitude={longitude}
+                    userCity={city}
                 />
             )}
 
@@ -122,6 +127,9 @@ export default function Home({
                                         isFavorite={favorites.includes(Number(rest.id))}
                                         toggleFavorite={toggleFavorite}
                                         lang={lang}
+                                        userLatitude={latitude}
+                                        userLongitude={longitude}
+                                        userCity={city}
                                     />
                                 </div>
                             ))
@@ -141,6 +149,9 @@ export default function Home({
                     lang={lang}
                     animationClass="recommended-card"
                     rootRef={rootRef}
+                    userLatitude={latitude}
+                    userLongitude={longitude}
+                    userCity={city}
                 />
             )}
 

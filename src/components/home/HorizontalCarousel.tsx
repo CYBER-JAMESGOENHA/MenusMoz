@@ -15,6 +15,9 @@ interface HorizontalCarouselProps {
     lang: string;
     animationClass: string;
     rootRef: React.RefObject<HTMLDivElement | null>;
+    userLatitude?: number | null;
+    userLongitude?: number | null;
+    userCity?: string | null;
 }
 
 export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
@@ -26,6 +29,9 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
     lang,
     animationClass,
     rootRef,
+    userLatitude,
+    userLongitude,
+    userCity,
 }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
@@ -88,6 +94,9 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                                 isFavorite={favorites.includes(rest.id)}
                                 toggleFavorite={toggleFavorite}
                                 lang={lang}
+                                userLatitude={userLatitude}
+                                userLongitude={userLongitude}
+                                userCity={userCity}
                             />
                         </div>
                     ))}

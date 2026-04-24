@@ -1,15 +1,19 @@
-import React, { useRef, useCallback, memo } from 'react';
+import React, { useRef, useCallback, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Star, ArrowRight } from 'lucide-react';
+import { Heart, Star, ArrowRight, MapPin } from 'lucide-react';
+import { calculateDistance } from '../hooks/useUserLocation';
 
 interface RestaurantCardProps {
     restaurant: any;
     isFavorite: boolean;
     toggleFavorite: (id: any) => Promise<void>;
     lang: string;
+    userLatitude?: number | null;
+    userLongitude?: number | null;
+    userCity?: string | null;
 }
 
-export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang }: RestaurantCardProps) => {
+export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, lang, userLatitude, userLongitude, userCity }: RestaurantCardProps) => {
     const cardRef = useRef<HTMLAnchorElement>(null);
 
     const handleToggleFavorite = useCallback((e: React.MouseEvent) => {
@@ -17,6 +21,18 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         e.stopPropagation();
         toggleFavorite(restaurant.id);
     }, [restaurant.id, toggleFavorite]);
+
+    const distanceInfo = useMemo(() => {
+        if (!userLatitude || !userLongitude || !restaurant.latitude || !restaurant.longitude) return null;
+        const distance = calculateDistance(userLatitude, userLongitude, restaurant.latitude, restaurant.longitude);
+        if (distance < 1) return '< 1 km';
+        return `${distance.toFixed(1)} km`;
+    }, [userLatitude, userLongitude, restaurant.latitude, restaurant.longitude]);
+
+    const locationDisplay = useMemo(() => {
+        if (distanceInfo) return distanceInfo;
+        return restaurant.location?.split(',')[0] || 'Maputo';
+    }, [distanceInfo, restaurant.location]);
 
     return (
         <Link
@@ -59,8 +75,9 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                     
                     {/* Metadata Pills (Text-only) */}
                     <div className="flex flex-wrap gap-x-4 gap-y-1">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/60">
-                            {restaurant.location?.split(',')[0] || 'Maputo'}
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/60 flex items-center gap-1">
+                            <MapPin size={10} className="text-primary/60" />
+                            {locationDisplay}
                         </span>
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-dim/60">
                             {restaurant.cuisine || 'Gourmet'}
