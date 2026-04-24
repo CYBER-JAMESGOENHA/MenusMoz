@@ -20,9 +20,36 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [location, setLocation] = useState('Maxaquene');
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const t = (translations[lang as keyof typeof translations] as any) ?? translations.pt;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt`
+            );
+            const data = await response.json();
+            if (data.address) {
+              const city = data.address.city || data.address.town || data.address.village || data.address.municipality;
+              if (city) {
+                setLocation(city);
+              }
+            }
+          } catch {
+            setLocation('Minha Localização');
+          }
+        },
+        () => {
+          // Keep default location if permission denied
+        }
+      );
+    }
+  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -66,31 +93,49 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
     }
   };
 
-  const handleLocationRequest = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        () => {
-          // In a real app, update with real address
-          setLocation('Minha Localização');
-        },
-        () => {
-          alert('Permita o acesso à localização.');
-        }
-      );
-    }
-  };
-
   return (
     <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12">
       <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:shadow-premium-lg ring-primary/5 focus-within:ring-2 focus-within:border-primary/30 h-14">
         
         {/* Location Selector (Left) */}
         <button
-          onClick={handleLocationRequest}
+          onClick={() => {
+            if (navigator.geolocation) {
+              setIsLoadingLocation(true);
+              navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                  try {
+                    const response = await fetch(
+                      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt`
+                    );
+                    const data = await response.json();
+                    if (data.address) {
+                      const city = data.address.city || data.address.town || data.address.village || data.address.municipality;
+                      if (city) {
+                        setLocation(city);
+                      }
+                    }
+                  } catch {
+                    setLocation('Minha Localização');
+                  } finally {
+                    setIsLoadingLocation(false);
+                  }
+                },
+                () => {
+                  setIsLoadingLocation(false);
+                  alert('Permita o acesso à localização.');
+                }
+              );
+            }
+          }}
           className="flex items-center gap-2 h-full px-6 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
         >
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
-            <MapPin size={16} />
+            {isLoadingLocation ? (
+              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <MapPin size={16} />
+            )}
           </div>
           <div className="flex flex-col items-start leading-none">
             <span className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
