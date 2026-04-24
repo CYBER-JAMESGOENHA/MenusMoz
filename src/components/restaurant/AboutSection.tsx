@@ -255,7 +255,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {popularItems.map((item, i) => (
+                    {(restaurant.signature_dishes && restaurant.signature_dishes.length > 0 ? restaurant.signature_dishes : popularItems).slice(0, 3).map((item: any, i: number) => (
                         <div 
                             key={i} 
                             onClick={handleMenuClick}
@@ -263,12 +263,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                         >
                             <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-lg">
                                 <img 
-                                    src={item.img} 
+                                    src={item.image_url || item.img} 
                                     alt={item.name} 
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                                 />
                                 <div className="absolute top-6 left-6 px-4 py-1.5 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg">
-                                    {item.tag}
+                                    {item.tag || (isEn ? 'Signature' : 'Assinatura')}
                                 </div>
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
                             </div>
@@ -277,48 +277,108 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                                     <h4 className="text-2xl font-display font-black italic uppercase tracking-tighter text-text-main group-hover:text-primary transition-colors">
                                         {item.name}
                                     </h4>
-                                    <p className="text-text-dim text-sm font-bold mt-1 uppercase tracking-widest opacity-60">
-                                        {isEn ? 'Top Selection' : 'Top Seleção'}
+                                    <p className="text-text-dim text-xs font-bold mt-1 uppercase tracking-widest opacity-60">
+                                        {item.description ? (item.description.length > 60 ? item.description.substring(0, 60) + '...' : item.description) : (isEn ? 'Chef\'s Top Selection' : 'Seleção do Chef')}
                                     </p>
                                 </div>
-                                <span className="font-black text-primary text-lg">{item.price}</span>
+                                {item.price && <span className="font-black text-primary text-lg">{item.price}</span>}
                             </div>
                         </div>
                     ))}
                 </div>
             </section>
 
-            {/* 4. Why Choose Us */}
-            <section className="bg-surface border border-border-subtle rounded-[3rem] p-12 md:p-20 relative overflow-hidden shadow-sm">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -mr-48 -mt-48" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -ml-48 -mb-48" />
-                
-                <div className="relative z-10 text-center mb-16 max-w-3xl mx-auto">
-                    <span className="text-primary font-black uppercase tracking-widest text-sm mb-3 block">
-                        {isEn ? 'The Experience' : 'A Experiência'}
-                    </span>
-                    <h2 className="text-4xl md:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter mb-6">
-                        {isEn ? 'Why Choose Our Food' : 'Porquê Escolher a Nossa Comida'}
-                    </h2>
-                    <p className="text-text-dim text-lg font-medium leading-relaxed">
-                        {isEn 
-                            ? 'We believe that dining is more than just eating—it\'s about creating lasting memories with the people you care about.' 
-                            : 'Acreditamos que jantar é mais do que apenas comer — é criar memórias duradouras com as pessoas de quem gosta.'}
-                    </p>
+            {/* 4. The Experience & Ambiance (Refined) */}
+            <section className="relative overflow-hidden rounded-[3rem] group bg-bg border border-border-subtle shadow-2xl">
+                {/* Advanced Unique Dynamic Background */}
+                <div className="absolute inset-0 z-0 overflow-hidden">
+                    <div 
+                        className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] opacity-20 blur-[120px] animate-pulse"
+                        style={{
+                            background: restaurant.id % 3 === 0 ? '#FF385C' : restaurant.id % 3 === 1 ? '#38BDF8' : '#FBBF24',
+                        }}
+                    />
+                    <div 
+                        className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] opacity-20 blur-[120px] animate-pulse"
+                        style={{
+                            background: restaurant.id % 3 === 0 ? '#38BDF8' : restaurant.id % 3 === 1 ? '#FBBF24' : '#FF385C',
+                            animationDelay: '2s'
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-surface/40 backdrop-blur-[100px]" />
+                    <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-                    {reasons.map((reason, i) => (
-                        <div key={i} className="space-y-6 text-center group">
-                            <div className="w-20 h-20 mx-auto rounded-3xl bg-bg border border-border-subtle flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-sm">
-                                {reason.icon}
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
+                    {/* Left Side: Editorial Image Composition */}
+                    <div className="relative p-6 lg:p-10 flex items-center justify-center min-h-[500px]">
+                        <div className="relative w-full h-full max-w-lg mx-auto">
+                            {/* Main Large Image */}
+                            <div className="absolute top-0 left-0 w-[85%] h-[85%] rounded-[2rem] overflow-hidden shadow-2xl z-20 border-4 border-surface group-hover:-translate-y-2 transition-transform duration-700">
+                                <img 
+                                    src={restaurant.gallery?.[0]?.url || restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80'} 
+                                    className="w-full h-full object-cover" 
+                                    alt="Main Ambiance" 
+                                />
                             </div>
-                            <div className="space-y-2">
-                                <h4 className="font-display font-black text-xl uppercase tracking-wider text-text-main">{reason.title}</h4>
-                                <p className="text-text-dim text-sm font-medium leading-relaxed px-4">{reason.desc}</p>
+                            {/* Secondary Overlapping Image */}
+                            <div className="absolute bottom-0 right-0 w-[55%] h-[55%] rounded-[2rem] overflow-hidden shadow-2xl z-30 border-4 border-surface group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-1000 delay-100">
+                                <img 
+                                    src={restaurant.gallery?.[1]?.url || restaurant.hero_image_url || 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80'} 
+                                    className="w-full h-full object-cover" 
+                                    alt="Detail" 
+                                />
+                                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500" />
+                            </div>
+                            {/* Decorative Element */}
+                            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl animate-bounce duration-[4s]" />
+                        </div>
+                    </div>
+
+                    {/* Right Side: Narrative Content */}
+                    <div className="p-10 md:p-16 lg:p-24 flex flex-col justify-center">
+                        <div className="space-y-8">
+                            <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20">
+                                <Star size={14} className="text-primary fill-primary" />
+                                <span className="text-primary font-black uppercase tracking-[0.2em] text-[10px]">
+                                    {isEn ? 'The Atmosphere' : 'A Atmosfera'}
+                                </span>
+                            </div>
+                            
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-text-main italic uppercase tracking-tighter leading-[0.85]">
+                                {isEn ? 'Crafted for' : 'Criado para'} <br />
+                                <span className="text-primary">{isEn ? 'Pure' : 'Puro'}</span> {isEn ? 'Comfort' : 'Conforto'}
+                            </h2>
+
+                            <p className="text-text-dim text-lg font-medium leading-relaxed max-w-lg border-l-2 border-primary/30 pl-6 italic">
+                                {isEn 
+                                    ? 'Step into a world where every corner is a masterpiece of design and hospitality. We don\'t just serve food; we curate moments that stay with you forever.' 
+                                    : 'Entre num mundo onde cada canto é uma obra-prima de design e hospitalidade. Não servimos apenas comida; curamos momentos que permanecem consigo para sempre.'}
+                            </p>
+
+                            <div className="grid grid-cols-2 gap-x-10 gap-y-8 pt-6">
+                                {reasons.slice(0, 4).map((reason, i) => (
+                                    <div key={i} className="group/item space-y-3">
+                                        <div className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-primary group-hover/item:scale-110 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
+                                            {reason.icon}
+                                        </div>
+                                        <h4 className="font-display font-black text-xs uppercase tracking-widest text-text-main">
+                                            {reason.title}
+                                        </h4>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="pt-10">
+                                <button 
+                                    onClick={() => window.open(`https://wa.me/${restaurant.whatsapp?.replace(/\D/g, '')}`, '_blank')}
+                                    className="px-10 py-5 bg-text-main text-surface rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-primary transition-all duration-500 shadow-xl"
+                                >
+                                    {isEn ? 'Experience it Yourself' : 'Experimente Você Mesmo'}
+                                </button>
                             </div>
                         </div>
-                    ))}
+                    </div>
                 </div>
             </section>
 
