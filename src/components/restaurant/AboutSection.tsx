@@ -224,7 +224,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                             { name: isEn ? 'Mozambican Gold' : 'Caril de Caranguejo', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80' }
                         ].map((s, i) => (
                             <div key={i} className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-border-subtle bg-surface">
-                                <img src={s.img} alt={s.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+                                <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
                                 <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
                                     <p className="text-white font-display font-black italic uppercase tracking-tighter text-lg">{s.name}</p>
                                     <span className="text-primary text-[9px] font-black tracking-widest uppercase mt-1 block">{isEn ? 'House Special' : 'Especialidade da Casa'}</span>
