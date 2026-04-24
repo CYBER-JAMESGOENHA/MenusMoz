@@ -48,9 +48,9 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 }} 
             />
 
-            {/* Floating Rating Badge (Anchored to top-right edge) */}
-            <div className="absolute top-0 right-0 z-20">
-                <div className="bg-text-main text-white px-4 py-2 rounded-bl-2xl font-black text-[14px] shadow-xl flex items-center gap-1.5 transition-transform duration-500 group-hover:scale-110 origin-top-right">
+            {/* Floating Rating Badge (Anchored to top-left edge) */}
+            <div className="absolute top-0 left-0 z-20">
+                <div className="bg-text-main text-white px-4 py-2 rounded-br-2xl font-black text-[14px] shadow-xl flex items-center gap-1.5 transition-transform duration-500 group-hover:scale-110 origin-top-right">
                     <span>{typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5'}</span>
                     <Star size={12} className="fill-white text-white mb-0.5" />
                 </div>
@@ -68,7 +68,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
                 </div>
 
                 {/* Restaurant Name */}
-                <div className="mt-1 pr-12">
+                <div className="mt-1">
                     <h3 className="text-2xl font-bold leading-tight text-text-main tracking-tight mb-2 transition-colors duration-300 group-hover:text-primary line-clamp-2">
                         {restaurant.name}
                     </h3>
@@ -113,7 +113,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
             </div>
 
             {/* Footer */}
-            <div className="mt-auto pt-5 flex items-center justify-between border-t border-border-subtle relative z-10">
+            <div className="mt-auto pt-5 flex items-end justify-between border-t border-border-subtle relative z-10">
                 <div className="flex items-center gap-2.5">
                     <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${restaurant.isOpen !== false ? 'bg-moz-green shadow-[0_0_10px_rgba(0,154,68,0.4)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]'}`} />
                     <span className={`text-[11px] font-black uppercase tracking-[0.2em] ${restaurant.isOpen !== false ? 'text-moz-green' : 'text-red-500'}`}>
@@ -134,7 +134,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
             {/* Subtle Favorite Heart */}
             <button
                 onClick={handleToggleFavorite}
-                className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 z-20 bg-surface/50 backdrop-blur-sm border border-border-subtle/50
+                className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 z-20 bg-surface/50 backdrop-blur-sm
                     ${isFavorite 
                         ? 'text-red-500 drop-shadow-md scale-110' 
                         : 'text-text-dim/50 hover:text-red-500 hover:scale-110'}`}

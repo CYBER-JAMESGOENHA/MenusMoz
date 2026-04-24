@@ -107,22 +107,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
 
     const reasons = [
         {
-            icon: <Leaf className="text-green-500" />,
+            image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80',
             title: isEn ? 'Fresh Ingredients' : 'Ingredientes Frescos',
             desc: isEn ? 'We source daily from local organic farms.' : 'Abastecemo-nos diariamente em quintas biológicas locais.'
         },
         {
-            icon: <Flame className="text-orange-500" />,
+            image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80',
             title: isEn ? 'Expert Craft' : 'Artesanato Especializado',
             desc: isEn ? 'Our chefs bring decades of international experience.' : 'Os nossos chefs trazem décadas de experiência internacional.'
         },
         {
-            icon: <Heart className="text-red-500" />,
+            image: 'https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?w=400&q=80',
             title: isEn ? 'Made with Love' : 'Feito com Amor',
             desc: isEn ? 'Every dish is a testament to our culinary passion.' : 'Cada prato é um testemunho da nossa paixão culinária.'
         },
         {
-            icon: <Users className="text-blue-500" />,
+            image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&q=80',
             title: isEn ? 'Perfect for Groups' : 'Ideal para Grupos',
             desc: isEn ? 'Spacious settings for unforgettable gatherings.' : 'Ambientes espaçosos para reuniões inesquecíveis.'
         }
@@ -178,8 +178,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
 
             {/* 2. About Us Section */}
             <section className="relative group">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-8 order-2 lg:order-1">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+                    <div className="space-y-6 order-2 lg:order-1">
                         <div>
                             <span className="text-primary font-black uppercase tracking-widest text-sm mb-3 block">
                                 {isEn ? 'Our Story' : 'A Nossa História'}
@@ -218,7 +218,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                             </div>
                         </div>
                     </div>
-                    <div className="relative order-1 lg:order-2 h-[400px] md:h-[500px] rounded-[3rem] overflow-hidden group shadow-2xl">
+                    <div className="relative order-1 lg:order-2 h-[350px] md:h-[420px] rounded-[3rem] overflow-hidden group shadow-2xl">
                         <img 
                             src={restaurant.hero_image_url || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80'} 
                             alt="About Us" 
@@ -311,7 +311,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
 
                 <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2">
                     {/* Left Side: Editorial Image Composition */}
-                    <div className="relative p-6 lg:p-10 flex items-center justify-center min-h-[500px]">
+                    <div className="relative p-6 lg:p-10 flex items-center justify-center min-h-[380px] md:min-h-[480px]">
                         <div className="relative w-full h-full max-w-lg mx-auto">
                             {/* Main Large Image */}
                             <div className="absolute top-0 left-0 w-[85%] h-[85%] rounded-[2rem] overflow-hidden shadow-2xl z-20 border-4 border-surface group-hover:-translate-y-2 transition-transform duration-700">
@@ -336,8 +336,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                     </div>
 
                     {/* Right Side: Narrative Content */}
-                    <div className="p-10 md:p-16 lg:p-24 flex flex-col justify-center">
-                        <div className="space-y-8">
+                    <div className="p-10 md:p-14 lg:p-16 flex flex-col justify-center">
+                        <div className="space-y-6">
                             <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20">
                                 <Star size={14} className="text-primary fill-primary" />
                                 <span className="text-primary font-black uppercase tracking-[0.2em] text-[10px]">
@@ -356,13 +356,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang, se
                                     : 'Entre num mundo onde cada canto é uma obra-prima de design e hospitalidade. Não servimos apenas comida; curamos momentos que permanecem consigo para sempre.'}
                             </p>
 
-                            <div className="grid grid-cols-2 gap-x-10 gap-y-8 pt-6">
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-6 pt-4">
                                 {reasons.slice(0, 4).map((reason, i) => (
-                                    <div key={i} className="group/item space-y-3">
-                                        <div className="w-10 h-10 rounded-xl bg-surface border border-border-subtle flex items-center justify-center text-primary group-hover/item:scale-110 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
-                                            {reason.icon}
+                                    <div key={i} className="group/item space-y-2">
+                                        <div className="w-16 h-12 rounded-xl overflow-hidden bg-surface border border-border-subtle group-hover/item:scale-105 transition-all duration-500 shadow-sm">
+                                            <img src={reason.image} className="w-full h-full object-cover" alt={reason.title} />
                                         </div>
-                                        <h4 className="font-display font-black text-xs uppercase tracking-widest text-text-main">
+                                        <h4 className="font-display font-black text-[10px] uppercase tracking-widest text-text-main leading-tight">
                                             {reason.title}
                                         </h4>
                                     </div>
