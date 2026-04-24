@@ -73,44 +73,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
     ];
 
     return (
-<<<<<<< Updated upstream
-        <div className="space-y-16 md:space-y-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Welcome Text & Dish of the Day */}
-            <div className="pt-4 text-center">
-                <div className="max-w-4xl mx-auto">
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
-                        Welcome to <span className="text-primary">{restaurant.name}</span>
-                    </h1>
-                    <div className="mt-8 flex flex-wrap justify-center gap-x-12 gap-y-6">
-                        <div className="flex items-center gap-3">
-                            <Clock size={20} className="text-primary" />
-                            <div className="text-left">
-                                <p className="font-bold text-text-main text-sm">{t.hours}</p>
-                                <p className="text-text-dim text-xs">{restaurant.hours || (isEn ? 'Check website for hours' : 'Consulte o site para horários')}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <MapPin size={20} className="text-primary" />
-                            <div className="text-left">
-                                <p className="font-bold text-text-main text-sm">{t.map}</p>
-                                <p className="text-text-dim text-xs">{restaurant.location || (isEn ? 'Maputo, Mozambique' : 'Maputo, Moçambique')}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Phone size={20} className="text-primary" />
-                            <div className="text-left">
-                                <p className="font-bold text-text-main text-sm">{t.contact}</p>
-                                <p className="text-text-dim text-xs">{restaurant.whatsapp || restaurant.phone || '-'}</p>
-                            </div>
-                        </div>
-                        {restaurant.cuisine && (
-                            <div className="flex items-center gap-3">
-                                <Utensils size={20} className="text-primary" />
-                                <div className="text-left">
-                                    <p className="font-bold text-text-main text-sm">{isEn ? 'Cuisine' : 'Cozinha'}</p>
-                                    <p className="text-text-dim text-xs">{restaurant.cuisine}</p>
-                                </div>
-=======
         <div className="space-y-16 md:space-y-24 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header & Main Actions */}
             <div className="pt-8 flex flex-col gap-12">
@@ -134,7 +96,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                         {restaurant.cuisine && (
                             <div className="px-5 py-2 rounded-full bg-surface border border-border-subtle text-text-dim text-sm font-bold uppercase tracking-wider">
                                 {restaurant.cuisine}
->>>>>>> Stashed changes
                             </div>
                         )}
                     </div>
@@ -199,13 +160,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                             { name: isEn ? 'Local Flavors' : 'Sabores Locais', img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', desc: isEn ? 'Authentic taste with premium ingredients.' : 'Sabor autêntico com ingredientes premium.' },
                             { name: isEn ? 'Premium Cut' : 'Corte Premium', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80', desc: isEn ? 'Perfectly cooked to your exact preference.' : 'Cozinhado na perfeição de acordo com a sua preferência.' }
                         ].map((s, i) => (
-<<<<<<< Updated upstream
-                            <div key={i} className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-border-subtle bg-surface">
-                                <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
-                                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
-                                    <p className="text-white font-display font-black italic uppercase tracking-tighter text-lg">{s.name}</p>
-                                    <span className="text-primary text-[9px] font-black tracking-widest uppercase mt-1 block">{isEn ? 'House Special' : 'Especialidade da Casa'}</span>
-=======
                             <div key={i} className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-border-subtle bg-surface shadow-sm">
                                 <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
@@ -213,7 +167,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                                     <span className="text-primary text-[11px] font-black tracking-widest uppercase mb-3 block">{isEn ? 'Signature' : 'Assinatura'}</span>
                                     <h4 className="text-white font-display font-black text-3xl italic uppercase tracking-tighter mb-3">{s.name}</h4>
                                     <p className="text-white/80 text-sm font-medium line-clamp-2 leading-relaxed">{s.desc}</p>
->>>>>>> Stashed changes
                                 </div>
                             </div>
                         ))
