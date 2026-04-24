@@ -22,7 +22,7 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
             ref={cardRef}
-            className="group relative flex flex-col bg-surface rounded-[32px] overflow-hidden border border-border-subtle min-h-[240px] p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            className="group relative flex flex-col bg-surface rounded-[32px] overflow-hidden border border-border-subtle h-[340px] p-8 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
         >
             {/* Ambient Background Radial Gradient (Top Right, Diffuse) */}
             <div 
@@ -70,8 +70,8 @@ export const RestaurantCard = memo(({ restaurant, isFavorite, toggleFavorite, la
             </div>
 
             {/* Body: Short Description (Muted Sans-serif) */}
-            <div className="mb-8 relative z-10 max-w-[90%]">
-                <p className="text-[15px] text-text-dim/70 font-body font-medium leading-relaxed line-clamp-2 italic">
+            <div className="mb-4 relative z-10 max-w-[90%] flex-1">
+                <p className="text-[15px] text-text-dim/70 font-body font-medium leading-relaxed line-clamp-3 italic">
                     {restaurant.identity_text || restaurant.description || "Experiência gastronómica única com sabores autênticos e ingredientes selecionados."}
                 </p>
             </div>

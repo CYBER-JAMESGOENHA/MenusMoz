@@ -12,33 +12,35 @@ export const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
 };
 
 export const RestaurantCardSkeleton: React.FC = () => (
-    <div className="bg-surface rounded-[20px] overflow-hidden border border-border-subtle h-fit animate-pulse flex flex-col">
-        {/* Image Placeholder */}
-        <div className="aspect-[16/9] w-full bg-gray-200 dark:bg-gray-800" />
-        
-        {/* Content Placeholder */}
-        <div className="p-4 sm:p-5 flex flex-col gap-3">
-            {/* Title */}
-            <div className="h-5 bg-gray-200 dark:bg-gray-800 w-3/4 rounded-md" />
-            
-            {/* Meta Row (Rating/Category) */}
-            <div className="flex gap-2 items-center">
-                <div className="h-4 bg-gray-200 dark:bg-gray-800 w-12 rounded-md" />
-                <div className="h-1 w-1 bg-gray-200 dark:bg-gray-800 rounded-full" />
-                <div className="h-4 bg-gray-200 dark:bg-gray-800 w-24 rounded-md" />
-            </div>
+    <div className="relative bg-surface rounded-[32px] overflow-hidden border border-border-subtle h-[340px] animate-pulse flex flex-col p-8">
+        {/* Top Right Badge */}
+        <div className="absolute top-0 right-0 w-20 h-10 bg-gray-200 dark:bg-gray-800 rounded-bl-2xl" />
 
-            {/* Logistics info (ETA/Dist) */}
-            <div className="flex gap-3 pt-1">
-                <div className="h-5 bg-gray-100 dark:bg-gray-800/50 w-20 rounded-md border border-gray-100 dark:border-gray-700/50" />
-                <div className="h-5 bg-gray-100 dark:bg-gray-800/50 w-20 rounded-md border border-gray-100 dark:border-gray-700/50" />
+        {/* Header: Logo & Name */}
+        <div className="flex items-start gap-5 mb-4">
+            <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-800 shrink-0" />
+            <div className="flex-1 mt-2">
+                <div className="h-8 bg-gray-200 dark:bg-gray-800 w-3/4 rounded-md mb-3" />
+                <div className="flex gap-4">
+                    <div className="h-3 bg-gray-200 dark:bg-gray-800 w-16 rounded" />
+                    <div className="h-3 bg-gray-200 dark:bg-gray-800 w-20 rounded" />
+                </div>
             </div>
+        </div>
 
-            {/* Price Footer */}
-            <div className="mt-2.5 pt-2.5 border-t border-border-subtle/30 flex justify-between items-center">
-                <div className="h-5 bg-gray-200 dark:bg-gray-800 w-28 rounded-md" />
-                <div className="h-5 bg-gray-200 dark:bg-gray-800 w-5 rounded-md" />
+        {/* Body */}
+        <div className="flex-1">
+            <div className="h-4 bg-gray-200 dark:bg-gray-800 w-full rounded mb-2" />
+            <div className="h-4 bg-gray-200 dark:bg-gray-800 w-4/5 rounded" />
+        </div>
+
+        {/* Footer */}
+        <div className="pt-6 flex items-center justify-between border-t border-border-subtle/30">
+            <div className="flex items-center gap-2.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-gray-200 dark:bg-gray-800" />
+                <div className="h-3 bg-gray-200 dark:bg-gray-800 w-20 rounded" />
             </div>
+            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800/50" />
         </div>
     </div>
 );
