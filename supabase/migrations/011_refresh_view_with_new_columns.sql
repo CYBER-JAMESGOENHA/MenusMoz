@@ -11,9 +11,6 @@ DROP VIEW IF EXISTS public.active_restaurants_view;
 
 CREATE VIEW public.active_restaurants_view AS
 SELECT
-  r.*,
-  -- Derived lat/lng from coords JSONB (legacy) OR explicit columns
-  COALESCE(r.latitude,  (r.coords->>'lat')::DOUBLE PRECISION) AS latitude,
-  COALESCE(r.longitude, (r.coords->>'lng')::DOUBLE PRECISION) AS longitude
+  r.*
 FROM public.restaurants r
 WHERE r.is_active = true;

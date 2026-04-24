@@ -12,8 +12,6 @@ DROP VIEW IF EXISTS public.active_restaurants_view;
 
 CREATE VIEW public.active_restaurants_view AS
 SELECT
-  r.*,
-  (r.coords->>'lat')::DOUBLE PRECISION AS latitude,
-  (r.coords->>'lng')::DOUBLE PRECISION AS longitude
+  r.*
 FROM public.restaurants r
 WHERE r.is_active = true;
