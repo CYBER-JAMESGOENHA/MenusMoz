@@ -99,11 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({
               className="hidden md:flex w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-2xl glass hover:bg-primary/10 transition-all text-text-main group overflow-hidden border-2 border-transparent hover:border-primary"
               aria-label="Conta"
             >
-              {user.user_metadata?.avatar_url ? (
-                <img src={user.user_metadata.avatar_url} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <User size={18} className="group-hover:scale-110 transition-transform" />
-              )}
+              <User size={18} className="group-hover:scale-110 transition-transform" />
             </button>
           ) : (
             <button
