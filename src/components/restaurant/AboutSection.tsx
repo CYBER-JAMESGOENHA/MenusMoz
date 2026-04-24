@@ -2,24 +2,19 @@ import React from 'react';
 import { 
     Clock, 
     MapPin, 
-    Navigation, 
     Phone, 
     CreditCard, 
     Car, 
     Accessibility, 
     Shirt, 
-    CalendarCheck,
     Utensils,
-    Quote,
-    Trophy,
-    Info,
     ArrowRight,
-    Star,
-    Play,
-    Globe,
-    Users
+    Trophy,
+    CalendarCheck,
+    Navigation,
+    Info,
+    ChefHat
 } from 'lucide-react';
-import { DetailStarRating } from './DetailShared';
 
 interface AboutSectionProps {
     restaurant: any;
@@ -28,72 +23,57 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) => {
     const isEn = lang === 'en';
-    const t = isEn ? {
-        intro: "Experience & Visit",
-        introDesc: "Travel through our history, atmosphere and everything we have prepared for you.",
-        explore: "Explore Sections",
-        history: "Our Essence",
-        gallery: "Ambiance",
-        map: "Location",
-        amenities: "Amenities",
-        contact: "Contact",
-        hours: "Opening Hours",
-        directions: "Get Directions",
-        openNow: "Open Now",
-        closed: "Closed",
-        signature: "Signature Dishes",
-        awards: "Recognition & Awards",
-        reservation: "Bookings & Contact",
-        callNow: "Call Now"
-    } : {
-        intro: "Visita & Experiência",
-        introDesc: "Viaje pela nossa história, ambiente e tudo o que preparámos para si.",
-        explore: "Explorar Secções",
-        history: "A nossa Essência",
-        gallery: "Ambiance & Galeria",
-        map: "Localização",
-        amenities: "Facilidades",
-        contact: "Contacto",
-        hours: "Horário",
-        directions: "Como Chegar",
-        openNow: "Aberto Agora",
-        closed: "Encerrado",
-        signature: "Pratos de Assinatura",
-        awards: "Reconhecimento & Prémios",
-        reservation: "Reservas & Contactos",
-        callNow: "Ligar Agora"
-    };
-
-    const days = [
-        { key: 'Segunda', label: isEn ? 'Monday' : 'Segunda' },
-        { key: 'Terça', label: isEn ? 'Tuesday' : 'Terça' },
-        { key: 'Quarta', label: isEn ? 'Wednesday' : 'Quarta' },
-        { key: 'Quinta', label: isEn ? 'Thursday' : 'Quinta' },
-        { key: 'Sexta', label: isEn ? 'Friday' : 'Sexta' },
-        { key: 'Sábado', label: isEn ? 'Saturday' : 'Sábado' },
-        { key: 'Domingo', label: isEn ? 'Sunday' : 'Domingo' }
-    ];
-
-    const currentDay = new Intl.DateTimeFormat(lang === 'pt' ? 'pt-BR' : 'en-US', { weekday: 'long' }).format(new Date());
+    
     const isOpenNow = restaurant.isOpen;
 
-    const scrollTo = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            const offset = 140; // sticky nav height
-            const bodyRect = document.body.getBoundingClientRect().top;
-            const elementRect = element.getBoundingClientRect().top;
-            const elementPosition = elementRect - bodyRect;
-            const offsetPosition = elementPosition - offset;
-            
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
+    const handleMenuClick = () => {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent === 'MENU') {
+                btn.click();
+            }
+        });
     };
 
+    // Action buttons data
+    const actions = [
+        {
+            id: 'menu',
+            icon: <Utensils size={24} />,
+            title: isEn ? 'Explore Menu' : 'Explorar Menu',
+            desc: isEn ? 'Discover our dishes' : 'Descubra os pratos',
+            onClick: handleMenuClick
+        },
+        {
+            id: 'reserve',
+            icon: <CalendarCheck size={24} />,
+            title: isEn ? 'Book a Table' : 'Reservar Mesa',
+            desc: isEn ? 'Secure your spot' : 'Garanta o seu lugar',
+            onClick: () => window.open(`https://wa.me/${restaurant.whatsapp?.replace(/\D/g, '')}`, '_blank')
+        },
+        {
+            id: 'call',
+            icon: <Phone size={24} />,
+            title: isEn ? 'Call Us' : 'Ligar Agora',
+            desc: restaurant.phone || restaurant.whatsapp || (isEn ? 'Get in touch' : 'Contacte-nos'),
+            onClick: () => window.open(`tel:${restaurant.phone || restaurant.whatsapp}`)
+        },
+        {
+            id: 'directions',
+            icon: <Navigation size={24} />,
+            title: isEn ? 'Directions' : 'Como Chegar',
+            desc: restaurant.location?.split(',')[0] || (isEn ? 'Find us on map' : 'Encontre-nos no mapa'),
+            onClick: () => {
+                const url = (restaurant.lat && restaurant.lng)
+                    ? `https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`
+                    : `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name)}`;
+                window.open(url, '_blank');
+            }
+        }
+    ];
+
     return (
+<<<<<<< Updated upstream
         <div className="space-y-16 md:space-y-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Welcome Text & Dish of the Day */}
             <div className="pt-4 text-center">
@@ -130,88 +110,110 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                                     <p className="font-bold text-text-main text-sm">{isEn ? 'Cuisine' : 'Cozinha'}</p>
                                     <p className="text-text-dim text-xs">{restaurant.cuisine}</p>
                                 </div>
+=======
+        <div className="space-y-16 md:space-y-24 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Header & Main Actions */}
+            <div className="pt-8 flex flex-col gap-12">
+                {/* Title and Short Bio */}
+                <div className="text-center max-w-4xl mx-auto space-y-6">
+                    <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                        Welcome to <br className="md:hidden" /><span className="text-primary">{restaurant.name}</span>
+                    </h1>
+                    <p className="text-text-dim text-lg md:text-xl leading-relaxed mx-auto max-w-3xl font-medium px-4">
+                        {restaurant.bio || restaurant.description || (isEn 
+                            ? 'Experience a culinary journey that combines passion, exceptional ingredients, and unforgettable flavors.' 
+                            : 'Experiencie uma viagem culinária que combina paixão, ingredientes excepcionais e sabores inesquecíveis.')}
+                    </p>
+                    
+                    {/* Status Badge */}
+                    <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
+                        <div className={`px-5 py-2 rounded-full border ${isOpenNow ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'} flex items-center gap-2 text-sm font-bold uppercase tracking-wider`}>
+                            <div className={`w-2.5 h-2.5 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                            {isOpenNow ? (isEn ? 'Open Now' : 'Aberto Agora') : (isEn ? 'Closed' : 'Encerrado')}
+                        </div>
+                        {restaurant.cuisine && (
+                            <div className="px-5 py-2 rounded-full bg-surface border border-border-subtle text-text-dim text-sm font-bold uppercase tracking-wider">
+                                {restaurant.cuisine}
+>>>>>>> Stashed changes
                             </div>
                         )}
                     </div>
                 </div>
+
+                {/* Primary Action Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+                    {actions.map((action, i) => (
+                        <button 
+                            key={i}
+                            onClick={action.onClick}
+                            className="group relative overflow-hidden bg-surface border border-border-subtle rounded-[2rem] p-6 hover:border-primary/50 transition-all duration-500 text-left flex flex-col h-full shadow-sm hover:shadow-md"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="relative z-10 flex items-start justify-between mb-10">
+                                <div className="w-16 h-16 rounded-full bg-bg border border-border-subtle flex items-center justify-center text-text-main group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-500 shadow-sm">
+                                    {action.icon}
+                                </div>
+                                <div className="w-10 h-10 rounded-full bg-bg flex items-center justify-center text-text-dim group-hover:text-primary group-hover:bg-primary/10 transition-colors opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 duration-500">
+                                    <ArrowRight size={18} />
+                                </div>
+                            </div>
+                            <div className="relative z-10 mt-auto">
+                                <h3 className="font-display font-black text-2xl uppercase tracking-wider text-text-main mb-2">{action.title}</h3>
+                                <p className="text-text-dim text-sm font-medium">{action.desc}</p>
+                            </div>
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            {/* Restaurant About Card */}
-            <section className="bg-surface rounded-3xl md:rounded-[3rem] p-6 md:p-12 border border-border-subtle overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-                <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
-                    {/* Image Section - Restaurant Logo/Interior */}
-                    <div className="w-40 h-40 md:w-56 lg:w-64 md:h-56 lg:h-64 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl bg-bg border border-border-subtle flex items-center justify-center">
-                        <img 
-                            src={restaurant.logo_url || restaurant.logo || `https://ui-avatars.com/api/?name=${encodeURIComponent(restaurant.name || 'R')}&background=000&color=fff&size=256&bold=true`} 
-                            alt={`${restaurant.name} logo`}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div className="flex-1 text-center md:text-left space-y-4">
-                        {/* OvereLine Text */}
-                        <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20 mb-4">
-                            <Info size={14} className="text-primary" />
-                            <span className="text-[10px] font-black uppercase tracking-widest text-primary">{isEn ? 'ABOUT THE RESTAURANT' : 'SOBRE O RESTAURANTE'}</span>
-                        </div>
-                        
-                        {/* Heading - Restaurant Name */}
-                        <h3 className="text-xl font-display font-black text-text-main italic uppercase tracking-tighter mb-4">
-                            {restaurant.name}
-                        </h3>
-                        
-                        {/* Premium Bio Paragraph */}
-                        <p className="text-text-dim text-base md:text-lg leading-relaxed">
-                            {restaurant.bio || restaurant.description || (isEn 
-                                ? 'Founded with a passion for excellence, our restaurant brings together the freshest local ingredients and global culinary techniques.' 
-                                : 'Fundado com uma paixão pela excelência, o nosso restaurante reúne os ingredientes locais mais frescos e técnicas culinárias globais.')}
-                        </p>
-                        
-                        {/* Sleek Pill/Tag for Location or Cuisine Style */}
-                        <div className="flex items-center gap-2 mt-3 justify-center md:justify-start">
-                            {restaurant.cuisine && (
-                                <span className="bg-primary text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                    {restaurant.cuisine}
-                                </span>
-                            )}
-                            {restaurant.location && (
-                                <span className="bg-surface-variant text-text-dim border border-border-subtle px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                    {restaurant.location.split(',')[0]}
-                                </span>
-                            )}
-                        </div>
+            {/* Signature Dishes */}
+            <section className="space-y-8">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-2">
+                    <div>
+                        <span className="text-primary font-black uppercase tracking-widest text-sm mb-2 block">
+                            {isEn ? 'Highlights' : 'Destaques'}
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                            {isEn ? 'Signature Dishes' : 'Pratos de Assinatura'}
+                        </h2>
                     </div>
                 </div>
-            </section>
-
-            {/* --- SIGNATURE DISHES --- */}
-            <section className="space-y-8">
-                <h3 className="text-3xl md:text-4xl font-display font-black text-text-main italic uppercase tracking-wider">{t.signature}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {(restaurant.signature_dishes && restaurant.signature_dishes.length > 0) ? (
                         restaurant.signature_dishes.map((dish: any, i: number) => (
                             <div key={i} className="group cursor-pointer">
-                                <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-surface border border-border-subtle relative">
-                                    <img src={dish.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80'} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                    <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                        <h4 className="text-white font-display font-black text-xl italic uppercase tracking-tighter">{dish.name}</h4>
-                                        <p className="text-white/70 text-xs mt-2 line-clamp-2">{dish.description}</p>
+                                <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-surface border border-border-subtle relative shadow-sm">
+                                    <img src={dish.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80'} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                                    <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                        <h4 className="text-white font-display font-black text-3xl italic uppercase tracking-tighter mb-3">{dish.name}</h4>
+                                        <p className="text-white/80 text-sm line-clamp-2 font-medium leading-relaxed">{dish.description}</p>
                                     </div>
                                 </div>
                             </div>
                         ))
                     ) : (
                         [
-                            { name: isEn ? 'Ocean Prime' : 'Lagosta à Laurentina', img: 'https://images.unsplash.com/photo-1553603227-2358aabe2b18?w=800&q=80' },
-                            { name: isEn ? 'Savanna Spices' : 'Frango Zambeziana', img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80' },
-                            { name: isEn ? 'Mozambican Gold' : 'Caril de Caranguejo', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80' }
+                            { name: isEn ? 'Chef\'s Special' : 'Especialidade do Chef', img: 'https://images.unsplash.com/photo-1553603227-2358aabe2b18?w=800&q=80', desc: isEn ? 'Our most requested culinary masterpiece.' : 'A nossa obra-prima culinária mais requisitada.' },
+                            { name: isEn ? 'Local Flavors' : 'Sabores Locais', img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80', desc: isEn ? 'Authentic taste with premium ingredients.' : 'Sabor autêntico com ingredientes premium.' },
+                            { name: isEn ? 'Premium Cut' : 'Corte Premium', img: 'https://images.unsplash.com/photo-1559742811-822873691df8?w=800&q=80', desc: isEn ? 'Perfectly cooked to your exact preference.' : 'Cozinhado na perfeição de acordo com a sua preferência.' }
                         ].map((s, i) => (
+<<<<<<< Updated upstream
                             <div key={i} className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-border-subtle bg-surface">
                                 <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
                                 <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
                                     <p className="text-white font-display font-black italic uppercase tracking-tighter text-lg">{s.name}</p>
                                     <span className="text-primary text-[9px] font-black tracking-widest uppercase mt-1 block">{isEn ? 'House Special' : 'Especialidade da Casa'}</span>
+=======
+                            <div key={i} className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-border-subtle bg-surface shadow-sm">
+                                <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                    <span className="text-primary text-[11px] font-black tracking-widest uppercase mb-3 block">{isEn ? 'Signature' : 'Assinatura'}</span>
+                                    <h4 className="text-white font-display font-black text-3xl italic uppercase tracking-tighter mb-3">{s.name}</h4>
+                                    <p className="text-white/80 text-sm font-medium line-clamp-2 leading-relaxed">{s.desc}</p>
+>>>>>>> Stashed changes
                                 </div>
                             </div>
                         ))
@@ -219,110 +221,99 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ restaurant, lang }) 
                 </div>
             </section>
 
-
-            
-            <div id="location" className="flex flex-col md:flex-row items-stretch gap-4 md:gap-6">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                        <Clock size={20} />
-                    </div>
-                    <div>
-                        <span className="text-xs font-medium text-text-dim uppercase tracking-wider">{t.hours}</span>
-                        <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
-                            <span className={`text-xs font-bold uppercase tracking-wider ${isOpenNow ? 'text-green-600' : 'text-red-600'}`}>
-                                {isOpenNow ? t.openNow : t.closed}
-                            </span>
+            {/* Amenities & Info Grid */}
+            <section className="bg-surface border border-border-subtle rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 relative z-10">
+                    
+                    {/* Essential Info */}
+                    <div className="space-y-8 lg:col-span-1">
+                        <div>
+                            <h3 className="font-display font-black text-3xl uppercase tracking-tighter text-text-main mb-8">
+                                {isEn ? 'Essential Info' : 'Informação Essencial'}
+                            </h3>
+                            <div className="space-y-8">
+                                <div className="flex items-start gap-5">
+                                    <div className="w-12 h-12 rounded-full bg-bg border border-border-subtle flex items-center justify-center text-primary shrink-0 shadow-sm">
+                                        <Clock size={20} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <p className="font-black text-xs uppercase tracking-widest text-text-dim mb-2">{isEn ? 'Working Hours' : 'Horário de Funcionamento'}</p>
+                                        <p className="font-bold text-text-main text-base">{restaurant.hours || (isEn ? '12:00 PM - 11:00 PM' : '12:00 - 23:00')}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-5">
+                                    <div className="w-12 h-12 rounded-full bg-bg border border-border-subtle flex items-center justify-center text-primary shrink-0 shadow-sm">
+                                        <MapPin size={20} />
+                                    </div>
+                                    <div className="pt-1">
+                                        <p className="font-black text-xs uppercase tracking-widest text-text-dim mb-2">{isEn ? 'Location' : 'Localização'}</p>
+                                        <p className="font-bold text-text-main text-base">{restaurant.location || restaurant.address || 'Maputo, Moçambique'}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="hidden md:block w-px bg-border-subtle" />
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                        <MapPin size={20} />
-                    </div>
-                    <div className="flex-1">
-                        <span className="text-xs font-medium text-text-dim uppercase tracking-wider">{t.map}</span>
-                        <p className="text-sm font-medium text-text-main">{restaurant.location || restaurant.address || 'Maputo, Moçambique'}</p>
-                    </div>
-                    <a
-                        href={
-                            (restaurant.lat && restaurant.lng)
-                                ? `https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`
-                                : `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name)}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 bg-text-main text-surface rounded-full font-bold text-xs uppercase tracking-wider hover:bg-primary transition-all"
-                    >
-                        {t.directions}
-                    </a>
-                </div>
-            </div>
 
-            {/* --- GALLERY --- */}
-            <section id="gallery" className="space-y-8">
-                <h3 className="text-3xl md:text-4xl font-display font-black text-text-main italic uppercase tracking-wider">{t.gallery}</h3>
-                <div className="columns-2 md:columns-3 gap-4 lg:gap-6 space-y-4 lg:space-y-6">
-                    {(restaurant.gallery && restaurant.gallery.length > 0) ? (
-                        restaurant.gallery.map((item: any, i: number) => (
-                            <div key={i} className="break-inside-avoid relative rounded-[2rem] overflow-hidden group">
-                                <img src={item.url} alt={item.title} className="w-full h-auto object-cover" />
-                                {item.type === 'video' && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white"><Play fill="white" size={20} /></div>
+                    {/* Facilities */}
+                    <div className="lg:col-span-2">
+                        <h3 className="font-display font-black text-3xl uppercase tracking-tighter text-text-main mb-8">
+                            {isEn ? 'Facilities & Amenities' : 'Facilidades e Comodidades'}
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            {[
+                                { icon: <Shirt size={20} />, label: isEn ? 'Dress Code' : 'Código de Vestuário', value: restaurant.dress_code || (isEn ? 'Smart Casual' : 'Casual Elegante') },
+                                { icon: <Car size={20} />, label: isEn ? 'Parking' : 'Estacionamento', value: restaurant.parking || (isEn ? 'Valet & Street' : 'Valet e Rua') },
+                                { icon: <CreditCard size={20} />, label: isEn ? 'Payments' : 'Pagamentos', value: restaurant.payment_methods?.join(', ') || 'M-Pesa, POS, Cash' },
+                                { icon: <Accessibility size={20} />, label: isEn ? 'Accessibility' : 'Acessibilidade', value: restaurant.accessibility?.join(', ') || (isEn ? 'Family Friendly, Wheelchair' : 'Familiar, Cadeira de Rodas') }
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center gap-5 p-5 rounded-[1.5rem] bg-bg border border-border-subtle hover:border-primary/30 transition-colors">
+                                    <div className="w-12 h-12 rounded-full bg-surface border border-border-subtle flex items-center justify-center text-text-main shrink-0">
+                                        {item.icon}
                                     </div>
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4', 'https://images.unsplash.com/photo-1552566626-52f8b828add9', 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b', 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0'].map((url, i) => (
-                            <div key={i} className="break-inside-avoid relative rounded-2xl md:rounded-[2.5rem] overflow-hidden border border-border-subtle"><img src={`${url}?w=800&q=80`} alt="Gallery" className="w-full h-auto object-cover" /></div>
-                        ))
-                    )}
+                                    <div>
+                                        <p className="font-black text-[10px] uppercase tracking-widest text-text-dim mb-1">{item.label}</p>
+                                        <p className="font-bold text-text-main text-base">{item.value}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
-            {/* --- FACILITIES --- */}
-            <div id="amenities" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { icon: <Shirt size={20} />, label: isEn ? 'Dress Code' : 'Código de Vestuário', value: restaurant.dress_code || (isEn ? 'Smart Casual' : 'Casual Elegante') },
-                    { icon: <Car size={20} />, label: isEn ? 'Parking' : 'Estacionamento', value: restaurant.parking || (isEn ? 'Valet & Street' : 'Valet e Rua') },
-                    { icon: <CreditCard size={20} />, label: isEn ? 'Payments' : 'Pagamentos', value: restaurant.payment_methods?.join(', ') || 'M-Pesa, POS, Cash' },
-                    { icon: <Accessibility size={20} />, label: isEn ? 'Accessibility' : 'Acessibilidade', value: restaurant.accessibility?.join(', ') || (isEn ? 'Family Friendly, Wheelchair' : 'Familiar, Cadeira de Rodas') }
-                ].map((item, i) => (
-                    <div key={i} className="bg-surface rounded-3xl p-6 border border-border-subtle hover:border-primary/30 transition-colors group">
-                        <div className="w-10 h-10 rounded-xl bg-bg border border-border-subtle text-text-dim flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all">{item.icon}</div>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-text-dim/50 mb-1">{item.label}</p>
-                        <p className="font-bold text-text-main text-sm">{item.value}</p>
-                    </div>
-                ))}
-            </div>
-
-            {/* --- AWARDS --- */}
+            {/* Awards (Only if present) */}
             {restaurant.awards && restaurant.awards.length > 0 && (
-                <section className="bg-black text-white rounded-3xl md:rounded-[3rem] p-8 md:p-12 overflow-hidden relative">
-                    <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                <section className="bg-text-main text-surface rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-14 overflow-hidden relative shadow-xl">
+                    <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/noise-lines.png')]" />
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none" />
+                    
                     <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
                         <div className="flex-1 text-center md:text-left">
-                            <h3 className="text-2xl md:text-4xl lg:text-5xl font-display font-black italic uppercase tracking-tighter mb-4">{t.awards}</h3>
-                            <p className="text-white/50 font-medium text-base md:text-lg leading-relaxed">O nosso compromisso com a excelência culinária e hospitalidade foi reconhecido por líderes da indústria.</p>
+                            <span className="text-primary font-black uppercase tracking-widest text-sm mb-3 block">
+                                {isEn ? 'Excellence' : 'Excelência'}
+                            </span>
+                            <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-black italic uppercase tracking-tighter mb-6">
+                                {isEn ? 'Recognition & Awards' : 'Reconhecimento e Prémios'}
+                            </h3>
+                            <p className="text-surface/70 font-medium text-lg lg:text-xl max-w-xl leading-relaxed">
+                                {isEn ? 'Our commitment to culinary excellence has been recognized by industry leaders.' : 'O nosso compromisso com a excelência culinária foi reconhecido por líderes da indústria.'}
+                            </p>
                         </div>
-                        <div className="flex flex-wrap justify-center gap-8">
+                        <div className="flex flex-wrap justify-center gap-6">
                             {restaurant.awards.map((award: any, i: number) => (
-                                <div key={i} className="flex flex-col items-center gap-3">
-                                    <div className="w-20 h-20 rounded-full border-2 border-primary/30 flex items-center justify-center p-4"><Trophy className="text-primary" size={32} /></div>
-                                    <div className="text-center">
-                                        <p className="font-black text-xs uppercase tracking-widest leading-tight">{award.title}</p>
-                                        <p className="text-[10px] text-white/40 font-bold uppercase mt-1">{award.year}</p>
-                                    </div>
+                                <div key={i} className="flex flex-col items-center justify-center p-8 bg-surface/10 backdrop-blur-md rounded-[2rem] border border-surface/20 min-w-[160px] hover:bg-surface/20 transition-colors">
+                                    <Trophy className="text-primary mb-4" size={36} />
+                                    <p className="font-black text-sm uppercase tracking-widest text-center mb-2">{award.title}</p>
+                                    <p className="text-xs text-surface/50 font-bold uppercase">{award.year}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
             )}
-
         </div>
     );
 };
