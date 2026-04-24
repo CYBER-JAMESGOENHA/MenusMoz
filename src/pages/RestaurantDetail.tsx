@@ -263,6 +263,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 <AboutSection 
                                     restaurant={restaurant} 
                                     lang={lang} 
+                                    setActiveTab={setActiveTab}
                                 />
                             )}
 
