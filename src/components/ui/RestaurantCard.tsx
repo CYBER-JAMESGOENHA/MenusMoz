@@ -57,74 +57,84 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group flex flex-col hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            className="group flex flex-col transition-all duration-300 ease-out"
         >
-            {/* IMAGE CONTAINER — ~72% of card height */}
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
+            {/* IMAGE CONTAINER — Aspect Ratio Square like Airbnb */}
+            <div className="relative aspect-square w-full overflow-hidden rounded-[16px] bg-neutral-100">
                 {hasImage ? (
                     <img
                         src={imageUrl}
                         alt={restaurant.name}
-                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                     />
                 ) : (
                     <div
                         className="w-full h-full flex items-center justify-center"
                         style={{
-                            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 20%, transparent 80%), color-mix(in srgb, var(--color-accent) 10%, transparent 90%)'
+                            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 10%, transparent 90%), color-mix(in srgb, var(--color-accent) 5%, transparent 95%))'
                         }}
                     >
-                        <span className="text-8xl font-display font-bold text-[var(--color-text-main)] opacity-15">
+                        <span className="text-6xl font-display font-bold text-[var(--color-text-main)] opacity-10">
                             {initial}
                         </span>
                     </div>
                 )}
 
-                {/* Rating — Top Left */}
+                {/* Badge — Top Left (Airbnb "Guest Favorite" style) */}
                 <div className="absolute top-3 left-3 z-20">
-                    <div className="bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm">
-                        <Star size={10} className="fill-amber-400 text-amber-400" />
-                        <span className="text-[var(--color-text-main)]">{rating}</span>
+                    <div className="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full text-[12px] font-bold text-[var(--color-text-main)] shadow-[0_2px_8px_rgba(0,0,0,0.08)] border border-white/20">
+                        {lang === 'pt' ? 'Preferido' : 'Favorite'}
                     </div>
                 </div>
 
-                {/* Heart — Top Right */}
+                {/* Heart — Top Right (Airbnb style: No bg circle, just icon with shadow) */}
                 <button
                     onClick={handleToggleFavorite}
-                    className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-transform duration-300 hover:scale-110"
-                    style={{ color: isFavorite ? 'var(--color-primary)' : 'var(--color-text-main)' }}
+                    className="absolute top-3 right-3 z-20 transition-transform duration-300 hover:scale-110 active:scale-95"
+                    style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}
                 >
-                    <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
+                    <Heart 
+                        size={24} 
+                        className={`transition-colors duration-300 ${isFavorite ? 'fill-[var(--color-primary)] text-[var(--color-primary)]' : 'text-white'}`}
+                        strokeWidth={2}
+                    />
                 </button>
 
-                {/* Status — Bottom Left */}
-                {isOpen ? (
-                    <div className="absolute bottom-3 left-3 z-20">
-                        <span className="text-xs font-medium text-white bg-[var(--color-moz-green)]/90 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                            {lang === 'pt' ? 'Aberto agora' : 'Open now'}
+                {/* Status Overlay — Bottom Left (Optional, keeping it subtle) */}
+                {!isOpen && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+                        <span className="px-3 py-1 bg-white/90 rounded-full text-xs font-bold text-neutral-800">
+                            {lang === 'pt' ? 'Fechado' : 'Closed'}
                         </span>
                     </div>
-                ) : null}
+                )}
             </div>
 
-            {/* TEXT CONTENT — ~28% of card height */}
-            <div className="mt-3 flex flex-col min-h-[88px]">
-                {/* Line 1: Name */}
-                <h3 className="text-[15px] font-medium text-[var(--color-text-main)] normal-case leading-snug line-clamp-1">
-                    {restaurant.name}
-                </h3>
+            {/* TEXT CONTENT — Airbnb Hierarchy */}
+            <div className="mt-3 flex flex-col">
+                {/* Line 1: Type · Location (Bold) */}
+                <div className="flex justify-between items-start gap-2">
+                    <h3 className="text-[15px] font-semibold text-[var(--color-text-main)] line-clamp-1">
+                        {restaurant.cuisine || 'Restaurante'} · {locationDisplay}
+                    </h3>
+                </div>
 
-                {/* Line 2: Cuisine + Location */}
-                <p className="text-[14px] font-normal text-[var(--color-text-dim)] mt-0.5 line-clamp-1">
-                    {restaurant.cuisine || 'Restaurante'} · {locationDisplay}
+                {/* Line 2: Name (Grey) */}
+                <p className="text-[15px] font-normal text-[var(--color-text-dim)] line-clamp-1">
+                    {restaurant.name}
                 </p>
 
-                {/* Line 3: Delivery Time */}
-                {deliveryTime && (
-                    <p className="text-[13px] font-normal text-[var(--color-text-dim)] mt-0.5 opacity-80">
-                        {deliveryTime}
+                {/* Line 3: Delivery Time + Rating (Grey) */}
+                <div className="flex justify-between items-center mt-0.5">
+                    <p className="text-[15px] font-normal text-[var(--color-text-dim)]">
+                        {deliveryTime || (lang === 'pt' ? '30-40 min' : '30-40 min')}
                     </p>
-                )}
+                    
+                    <div className="flex items-center gap-1">
+                        <Star size={12} className="fill-[var(--color-text-main)] text-[var(--color-text-main)]" />
+                        <span className="text-[14px] font-normal text-[var(--color-text-main)]">{rating}</span>
+                    </div>
+                </div>
             </div>
         </Link>
     );
