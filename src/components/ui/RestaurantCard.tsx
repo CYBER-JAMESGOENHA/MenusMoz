@@ -13,14 +13,14 @@ interface RestaurantCardProps {
     userCity?: string | null;
 }
 
-export const RestaurantCard = memo(({  
-    restaurant, 
-    isFavorite, 
-    toggleFavorite, 
-    lang, 
-    userLatitude, 
-    userLongitude, 
-    userCity  
+export const RestaurantCard = memo(({
+    restaurant,
+    isFavorite,
+    toggleFavorite,
+    lang,
+    userLatitude,
+    userLongitude,
+    userCity
 }: RestaurantCardProps) => {
     const handleToggleFavorite = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -40,82 +40,91 @@ export const RestaurantCard = memo(({
         return restaurant.location?.split(',')[0] || 'Maputo';
     }, [distanceInfo, restaurant.location]);
 
+    const deliveryTime = useMemo(() => {
+        if (restaurant.delivery_time) return `${restaurant.delivery_time} min`;
+        if (restaurant.delivery_min_time && restaurant.delivery_max_time) {
+            return `${restaurant.delivery_min_time}–${restaurant.delivery_max_time} min`;
+        }
+        return null;
+    }, [restaurant.delivery_time, restaurant.delivery_min_time, restaurant.delivery_max_time]);
+
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
     const hasImage = !!imageUrl;
     const initial = restaurant.name?.[0]?.toUpperCase() || 'R';
     const isOpen = restaurant.isOpen !== false;
+    const rating = typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5';
 
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative flex flex-col hover:-translate-1 transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+            className="group flex flex-col hover:-translate-y-0.5 transition-all duration-300 ease-out"
         >
-            {/* IMAGE CONTAINER */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[18px]">
+            {/* IMAGE CONTAINER — ~72% of card height */}
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
                 {hasImage ? (
                     <img
                         src={imageUrl}
                         alt={restaurant.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+                        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                     />
                 ) : (
                     <div
-                        className="w-full h-full flex items-center justify-center bg-surface"
-                        style={{  
-                            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary), transparent 80%), color-mix(in srgb, var(--color-accent), transparent 90%))'  
+                        className="w-full h-full flex items-center justify-center"
+                        style={{
+                            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-primary) 20%, transparent 80%), color-mix(in srgb, var(--color-accent) 10%, transparent 90%)'
                         }}
                     >
-                        <span className="text-7xl font-display font-bold text-text-main opacity-20">
+                        <span className="text-8xl font-display font-bold text-[var(--color-text-main)] opacity-15">
                             {initial}
                         </span>
                     </div>
                 )}
 
-                {/* Heart Favorite - Top Right */}
-                <button
-                    onClick={handleToggleFavorite}
-                    className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 z-20
-                        ${isFavorite
-                            ? 'text-[var(--color-primary)] drop-shadow-md scale-125'
-                            : 'text-white drop-shadow-md hover:scale-110'}`}
-                    style={{ filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.4))' }}
-                >
-                    <Heart size={20} className={isFavorite ? 'fill-current' : ''} />
-                </button>
-            </div>
-
-            {/* CONTENT AREA */}
-            <div className="mt-3 flex flex-col">
-                {/* Line 1: Name | Rating */}
-                <div className="flex items-center justify-between">
-                    <h3 className="text-[15px] font-bold text-[var(--color-text-main)] line-clamp-1 normal-case">
-                        {restaurant.name}
-                    </h3>
-                    <div className="flex items-center gap-1 text-[14px] font-light text-[var(--color-text-main)]">
-                        <Star size={12} className="fill-amber-400 text-amber-400" />
-                        <span>{typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5'}</span>
+                {/* Rating — Top Left */}
+                <div className="absolute top-3 left-3 z-20">
+                    <div className="bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1 shadow-sm">
+                        <Star size={10} className="fill-amber-400 text-amber-400" />
+                        <span className="text-[var(--color-text-main)]">{rating}</span>
                     </div>
                 </div>
 
-                {/* Line 2: Cuisine · Location */}
-                <p className="text-[14px] font-light text-[var(--color-text-dim)] mt-0.5">
+                {/* Heart — Top Right */}
+                <button
+                    onClick={handleToggleFavorite}
+                    className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-transform duration-300 hover:scale-110"
+                    style={{ color: isFavorite ? 'var(--color-primary)' : 'var(--color-text-main)' }}
+                >
+                    <Heart size={18} className={isFavorite ? 'fill-current' : ''} />
+                </button>
+
+                {/* Status — Bottom Left */}
+                {isOpen ? (
+                    <div className="absolute bottom-3 left-3 z-20">
+                        <span className="text-xs font-medium text-white bg-[var(--color-moz-green)]/90 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                            {lang === 'pt' ? 'Aberto agora' : 'Open now'}
+                        </span>
+                    </div>
+                ) : null}
+            </div>
+
+            {/* TEXT CONTENT — ~28% of card height */}
+            <div className="mt-3 flex flex-col min-h-[88px]">
+                {/* Line 1: Name */}
+                <h3 className="text-[15px] font-medium text-[var(--color-text-main)] normal-case leading-snug line-clamp-1">
+                    {restaurant.name}
+                </h3>
+
+                {/* Line 2: Cuisine + Location */}
+                <p className="text-[14px] font-normal text-[var(--color-text-dim)] mt-0.5 line-clamp-1">
                     {restaurant.cuisine || 'Restaurante'} · {locationDisplay}
                 </p>
 
-                {/* Line 3: Price Range */}
-                {restaurant.price_range && (
-                    <p className="text-[14px] font-light text-[var(--color-text-dim)] mt-0.5">
-                        {restaurant.price_range}
+                {/* Line 3: Delivery Time */}
+                {deliveryTime && (
+                    <p className="text-[13px] font-normal text-[var(--color-text-dim)] mt-0.5 opacity-80">
+                        {deliveryTime}
                     </p>
                 )}
-
-                {/* Line 4: Status */}
-                <p 
-                    className="text-[14px] font-bold mt-0.5"
-                    style={{ color: isOpen ? 'var(--color-moz-green)' : 'var(--color-primary)' }}
-                >
-                    {isOpen ? (lang === 'pt' ? 'Aberto agora' : 'Open now') : (lang === 'pt' ? 'Fechado' : 'Closed')}
-                </p>
             </div>
         </Link>
     );
