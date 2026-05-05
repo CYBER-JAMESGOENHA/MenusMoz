@@ -74,10 +74,7 @@ export default function Home({
 
             {/* ── Discovery Header (Airbnb Style) ────────────────────────── */}
             {!showOnlyFavorites && (
-                <>
-                    <SearchPill />
-                    <DiscoveryCategories />
-                </>
+                <SearchPill />
             )}
 
             {/* ── Favorites header ─────────────────────────────────────── */}
@@ -153,6 +150,15 @@ export default function Home({
                     userLongitude={longitude}
                     userCity={city}
                 />
+            )}
+
+            {/* ── Discovery Categories (Bottom) ────────────────────────────── */}
+            {!showOnlyFavorites && (
+                <section className="pb-section px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <DiscoveryCategories />
+                    </div>
+                </section>
             )}
 
         </div>
