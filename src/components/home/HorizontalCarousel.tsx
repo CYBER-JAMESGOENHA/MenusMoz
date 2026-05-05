@@ -93,7 +93,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                     <ChevronRight size={24} />
                 </button>
 
-                <div ref={scrollRef} className="flex overflow-x-auto gap-8 px-6 pb-12 pt-2 no-scrollbar snap-x snap-mandatory scrollbar-hide">
+                <div ref={scrollRef} className="flex overflow-x-auto gap-8 px-6 pb-12 pt-2 no-scrollbar snap-x snap-mandatory">
                     {restaurants.map((rest, idx) => (
                         <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[280px] lg:w-[320px] snap-start`}>
                             <RestaurantCard

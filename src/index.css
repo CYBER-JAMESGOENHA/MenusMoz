@@ -203,13 +203,26 @@
     transform: scale(0.95);
   }
 
-  /* Airbnb-inspired Discovery Utilities */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
   .discovery-scroller {
-    @apply flex overflow-x-auto snap-x snap-mandatory scrollbar-hide;
+    @apply flex overflow-x-auto snap-x snap-mandatory;
     -ms-overflow-style: none;
     scrollbar-width: none;
     gap: 16px;
     padding: 16px 0;
+  }
+
+  .discovery-scroller::-webkit-scrollbar {
+    display: none;
   }
 
   .discovery-card-image {

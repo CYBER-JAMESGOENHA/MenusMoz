@@ -21,6 +21,8 @@ interface HomeProps {
     heroSlides?: HeroSlide[];
     blogPosts?: BlogPost[];
     isLoading?: boolean;
+}
+
 export default function Home({
     lang, 
     favorites, 
