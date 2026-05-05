@@ -11,6 +11,7 @@ interface RestaurantCardProps {
     userLatitude?: number | null;
     userLongitude?: number | null;
     userCity?: string | null;
+    mode?: 'discovery' | 'delivery';
 }
 
 export const RestaurantCard = memo(({
@@ -20,7 +21,8 @@ export const RestaurantCard = memo(({
     lang,
     userLatitude,
     userLongitude,
-    userCity
+    userCity,
+    mode = 'delivery'
 }: RestaurantCardProps) => {
     const handleToggleFavorite = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -47,6 +49,25 @@ export const RestaurantCard = memo(({
         }
         return null;
     }, [restaurant.delivery_time, restaurant.delivery_min_time, restaurant.delivery_max_time]);
+
+    const priceLevelAdjective = useMemo(() => {
+        const priceMap: Record<string, string> = {
+            1: 'Affordable',
+            2: 'Everyday',
+            3: 'Moderate',
+            4: 'Premium',
+            5: 'Fine Dining',
+            affordable: 'Affordable',
+            everyday: 'Everyday',
+            moderate: 'Moderate',
+            premium: 'Premium',
+            fine_dining: 'Fine Dining'
+        };
+        const level = restaurant.priceLevel ?? restaurant.price_level;
+        return priceMap[level] || null;
+    }, [restaurant.priceLevel, restaurant.price_level]);
+
+    const showDiscoveryLayout = mode === 'discovery' || (!deliveryTime && !restaurant.delivery_time);
 
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
     const hasImage = !!imageUrl;
@@ -109,27 +130,37 @@ export const RestaurantCard = memo(({
 
             {/* TEXT CONTENT — Compact Airbnb Hierarchy */}
             <div className="mt-2.5 flex flex-col gap-0.5 font-sans">
-                {/* Line 1: Type · Location (Bold & Compact) */}
-                <h3 className="text-[14px] font-bold text-neutral-900 line-clamp-1 not-italic normal-case tracking-normal leading-tight">
-                    {restaurant.cuisine || 'Restaurante'} · {locationDisplay}
-                </h3>
-
-                {/* Line 2: Name (Grey) */}
-                <p className="text-[14px] font-normal text-neutral-500 line-clamp-1 not-italic normal-case tracking-normal leading-tight">
-                    {restaurant.name}
-                </p>
-
-                {/* Line 3: Delivery Time + Rating (Grey) */}
-                <div className="flex justify-between items-center mt-0.5">
-                    <p className="text-[14px] font-normal text-neutral-500 not-italic normal-case">
-                        {deliveryTime || '30-40 min'}
-                    </p>
-                    
-                    <div className="flex items-center gap-1">
-                        <Star size={11} className="fill-neutral-900 text-neutral-900" />
-                        <span className="text-[14px] font-normal text-neutral-900">{rating}</span>
-                    </div>
-                </div>
+                {showDiscoveryLayout ? (
+                    <>
+                        <h3 className="text-[14px] font-bold text-neutral-900 line-clamp-1 not-italic normal-case tracking-normal leading-tight">
+                            {restaurant.cuisine || 'Restaurant'} – {restaurant.name}
+                        </h3>
+                        <p className="text-[14px] font-normal text-neutral-500 not-italic normal-case tracking-normal leading-tight">
+                            {rating} ★ {priceLevelAdjective ? ` • ${priceLevelAdjective}` : ''}
+                        </p>
+                        <p className="text-[14px] font-normal text-neutral-500 not-italic normal-case mt-0.5">
+                            {locationDisplay}
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h3 className="text-[14px] font-bold text-neutral-900 line-clamp-1 not-italic normal-case tracking-normal leading-tight">
+                            {restaurant.cuisine || 'Restaurante'} · {locationDisplay}
+                        </h3>
+                        <p className="text-[14px] font-normal text-neutral-500 line-clamp-1 not-italic normal-case tracking-normal leading-tight">
+                            {restaurant.name}
+                        </p>
+                        <div className="flex justify-between items-center mt-0.5">
+                            <p className="text-[14px] font-normal text-neutral-500 not-italic normal-case">
+                                {deliveryTime || '30-40 min'}
+                            </p>
+                            <div className="flex items-center gap-1">
+                                <Star size={11} className="fill-neutral-900 text-neutral-900" />
+                                <span className="text-[14px] font-normal text-neutral-900">{rating}</span>
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
         </Link>
     );
