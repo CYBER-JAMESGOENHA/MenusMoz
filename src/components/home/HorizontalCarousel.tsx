@@ -62,33 +62,40 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
     }, [restaurants, animationClass, rootRef]);
 
     return (
-        <div className="mb-section">
-            <div className="max-w-7xl mx-auto px-6 mb-4">
-                <h2 className="text-xl md:text-2xl font-sans font-bold text-text-main tracking-tight uppercase">{title}</h2>
-                {subtitle && (
-                    <p className="text-[11px] font-medium text-text-dim uppercase tracking-widest mt-1.5 opacity-60">{subtitle}</p>
-                )}
+        <div className="mb-section pt-4">
+            <div className="max-w-7xl mx-auto px-6 mb-8 flex items-center gap-4">
+                <div className="w-1.5 h-12 bg-primary rounded-full shadow-[0_0_15px_rgba(220,38,38,0.3)]" />
+                <div className="flex flex-col">
+                    <h2 className="text-3xl md:text-4xl font-display font-black italic text-text-main tracking-tighter uppercase leading-[0.8]">
+                        {title}
+                    </h2>
+                    {subtitle && (
+                        <p className="text-[11px] font-black text-text-dim uppercase tracking-[0.2em] mt-2 opacity-70">
+                            {subtitle}
+                        </p>
+                    )}
+                </div>
             </div>
 
             <section ref={sectionRef} className="max-w-7xl mx-auto px-4 pb-2 relative group/carousel">
                 <button
                     onClick={() => scrollCarousel('left')}
-                    className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-70 hover:opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary"
+                    className="absolute left-6 md:-left-4 top-[40%] -translate-y-1/2 z-30 w-12 h-12 rounded-full glass bg-surface/90 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-500 hover:scale-110 hover:text-primary border border-black/5"
                     aria-label="Scroll esquerda"
                 >
-                    <ChevronLeft size={28} />
+                    <ChevronLeft size={24} />
                 </button>
                 <button
                     onClick={() => scrollCarousel('right')}
-                    className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-14 h-14 rounded-full glass bg-surface/80 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-100 transition-all duration-300 hover:scale-110 hover:text-primary animate-pulse hover:animate-none"
+                    className="absolute right-6 md:-right-4 top-[40%] -translate-y-1/2 z-30 w-12 h-12 rounded-full glass bg-surface/90 text-text-main shadow-premium hidden sm:flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-500 hover:scale-110 hover:text-primary border border-black/5"
                     aria-label="Scroll direita"
                 >
-                    <ChevronRight size={28} />
+                    <ChevronRight size={24} />
                 </button>
 
-                <div ref={scrollRef} className="flex overflow-x-auto gap-4 px-6 pb-6 pt-1 no-scrollbar snap-x snap-mandatory scrollbar-hide">
+                <div ref={scrollRef} className="flex overflow-x-auto gap-8 px-6 pb-12 pt-2 no-scrollbar snap-x snap-mandatory scrollbar-hide">
                     {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[70vw] sm:w-[220px] lg:w-[245px] snap-start`}>
+                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-8 shrink-0 w-[85vw] sm:w-[280px] lg:w-[320px] snap-start`}>
                             <RestaurantCard
                                 restaurant={rest}
                                 isFavorite={favorites.includes(rest.id)}

@@ -45,11 +45,12 @@
 }
 
 .dark {
-  --bg-color: #050505;
-  --surface-color: #0F0F0F;
+  --bg-color: #000000;
+  --surface-color: #000000;
   --text-color: #FDFDFD;
   --text-dim-color: #9CA3AF;
-  --border-color: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
 }
 
 @layer base {
@@ -202,15 +203,33 @@
     transform: scale(0.95);
   }
 
-  /* Modern Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
+  /* Airbnb-inspired Discovery Utilities */
+  .discovery-scroller {
+    @apply flex overflow-x-auto snap-x snap-mandatory scrollbar-hide;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    gap: 16px;
+    padding: 16px 0;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+
+  .discovery-card-image {
+    @apply relative aspect-[4/5] overflow-hidden rounded-xl bg-surface transition-transform duration-500;
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-text-dim/20 rounded-full hover:bg-primary/40 transition-colors;
+
+  .discovery-card-image:hover {
+    @apply scale-[1.02];
+  }
+
+  .discovery-gradient-scrim {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
+  }
+
+  .discovery-pill {
+    @apply px-6 py-3 rounded-full border border-border-subtle bg-surface text-xs font-bold uppercase tracking-widest transition-all;
+  }
+
+  .discovery-pill.active {
+    @apply border-moz-yellow text-moz-yellow ring-1 ring-moz-yellow/20;
   }
 }
 

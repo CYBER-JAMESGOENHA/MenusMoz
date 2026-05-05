@@ -2,7 +2,6 @@ import React, { useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
 import { HeroSlideshow } from '../components/home/HeroSlideshow';
-import { CategoryFilter } from '../components/home/CategoryFilter';
 import { HorizontalCarousel } from '../components/home/HorizontalCarousel';
 import { EmptyFavorites } from '../components/home/EmptyFavorites';
 import { RestaurantCard } from '../components/ui/RestaurantCard';
@@ -10,6 +9,8 @@ import { RestaurantCardSkeleton } from '../components/ui/Skeleton';
 import { Restaurant } from '../services/restaurantService';
 import { HeroSlide, BlogPost } from '../hooks/useContent';
 import { useUserLocation } from '../hooks/useUserLocation';
+import { SearchPill } from '../components/home/SearchPill';
+import { DiscoveryCategories } from '../components/home/DiscoveryCategories';
 
 interface HomeProps {
     lang: string;
@@ -20,9 +21,7 @@ interface HomeProps {
     heroSlides?: HeroSlide[];
     blogPosts?: BlogPost[];
     isLoading?: boolean;
-}
-
-export default function Home({ 
+export default function Home({
     lang, 
     favorites, 
     toggleFavorite, 
@@ -67,15 +66,23 @@ export default function Home({
     }
 
     return (
-        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
+        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20 pt-20">
             <Helmet>
                 <title>{t.meta.title}</title>
                 <meta name="description" content={t.meta.description} />
             </Helmet>
 
+            {/* ── Discovery Header (Airbnb Style) ────────────────────────── */}
+            {!showOnlyFavorites && (
+                <>
+                    <SearchPill />
+                    <DiscoveryCategories />
+                </>
+            )}
+
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="pt-28 pb-section px-4 text-center">
+                <section className="pt-8 pb-section px-4 text-center">
                     <div className="max-w-7xl mx-auto">
                         <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-6">
                             ❤️ {lang === 'pt' ? 'Os teus favoritos' : 'Your Favorites'}
@@ -89,13 +96,6 @@ export default function Home({
 
             {/* ── Hero Slideshow ────────────────────────────────────────── */}
             {!showOnlyFavorites && <HeroSlideshow heroSlides={heroSlides} th={th} rootRef={rootRef} />}
-
-            {/* ── Marquee Banner ────────────────────────────────────────── */}
-
-            {/* ── Category Filter Pills ──────────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <CategoryFilter />
-            )}
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
