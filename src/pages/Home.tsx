@@ -9,8 +9,6 @@ import { RestaurantCardSkeleton } from '../components/ui/Skeleton';
 import { Restaurant } from '../services/restaurantService';
 import { HeroSlide, BlogPost } from '../hooks/useContent';
 import { useUserLocation } from '../hooks/useUserLocation';
-import { SearchPill } from '../components/home/SearchPill';
-import { DiscoveryCategories } from '../components/home/DiscoveryCategories';
 
 interface HomeProps {
     lang: string;
@@ -68,16 +66,11 @@ export default function Home({
     }
 
     return (
-        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20 pt-20">
+        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
             <Helmet>
                 <title>{t.meta.title}</title>
                 <meta name="description" content={t.meta.description} />
             </Helmet>
-
-            {/* ── Discovery Header (Airbnb Style) ────────────────────────── */}
-            {!showOnlyFavorites && (
-                <SearchPill />
-            )}
 
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
@@ -152,15 +145,6 @@ export default function Home({
                     userLongitude={longitude}
                     userCity={city}
                 />
-            )}
-
-            {/* ── Discovery Categories (Bottom) ────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <section className="pb-section px-4">
-                    <div className="max-w-7xl mx-auto">
-                        <DiscoveryCategories />
-                    </div>
-                </section>
             )}
 
         </div>
