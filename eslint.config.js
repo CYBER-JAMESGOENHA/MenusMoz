@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig } from 'eslint/config'
 
 export default defineConfig([
-  { ignores: ['dist', '.agent/**'] },
+  { ignores: ['dist', 'MenusMoz/dist', '.agent/**', 'antigravity-awesome-skills/**', 'node_modules/**'] },
   {
     files: ['**/*.{js,jsx}'],
     extends: [
