@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  updatePassword?: (newPassword: string) => Promise<{ error?: { message: string } | string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,10 +44,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updatePassword = async (newPassword: string) => {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) return { error: error.message };
+      return { error: undefined };
+    }
+    return { error: 'Supabase not configured' };
+  };
+
   const value: AuthContextType = {
     user,
     loading,
     signOut,
+    updatePassword,
   };
 
   return (

@@ -23,7 +23,7 @@ interface Stats {
 }
 
 export default function Profile({ lang }: ProfileProps) {
-    const { user: authUser, updatePassword } = useAuth();
+    const { user: authUser, updatePassword: updatePasswordFn } = useAuth();
     const [user, setUser] = useState<User | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [stats, setStats] = useState<Stats>({ favorites: 0, reviews: 0 });
@@ -106,9 +106,14 @@ export default function Profile({ lang }: ProfileProps) {
 
         setResetStatus('submitting');
         try {
-            const result = await updatePassword(newPassword);
-            if (result.error) {
-                setResetError(typeof result.error === 'string' ? result.error : result.error.message || (selectedLang === 'pt' ? 'Erro ao atualizar.' : 'Update failed.'));
+            if (!updatePasswordFn) {
+                setResetError(selectedLang === 'pt' ? 'Funcionalidade não disponível.' : 'Functionality not available.');
+                setResetStatus('error');
+                return;
+            }
+            const result = await updatePasswordFn(newPassword);
+            if (result && result.error) {
+                setResetError(typeof result.error === 'string' ? result.error : (result.error as any).message || (selectedLang === 'pt' ? 'Erro ao atualizar.' : 'Update failed.'));
                 setResetStatus('error');
             } else {
                 setResetStatus('success');

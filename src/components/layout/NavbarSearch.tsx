@@ -124,7 +124,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
       const filteredDishes: Suggestion[] = [];
       RESTAURANTS.forEach(r => {
         r.menuCategories.forEach(cat => {
-          cat.items.forEach(item => {
+          cat.items?.forEach(item => {
             if (item.name.toLowerCase().includes(query.toLowerCase())) {
               filteredDishes.push({ type: 'dish', name: item.name, restaurant: r.name, slug: r.slug, image: r.image });
             }

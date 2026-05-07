@@ -12,35 +12,28 @@ export const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
 };
 
 export const RestaurantCardSkeleton: React.FC = () => (
-    <div className="relative bg-surface rounded-[32px] overflow-hidden border border-border-subtle h-[340px] animate-pulse flex flex-col p-8">
-        {/* Top Right Badge */}
-        <div className="absolute top-0 right-0 w-20 h-10 bg-gray-200 dark:bg-gray-800 rounded-bl-2xl" />
-
-        {/* Header: Logo & Name */}
-        <div className="flex items-start gap-5 mb-4">
-            <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-800 shrink-0" />
-            <div className="flex-1 mt-2">
-                <div className="h-8 bg-gray-200 dark:bg-gray-800 w-3/4 rounded-md mb-3" />
-                <div className="flex gap-4">
-                    <div className="h-3 bg-gray-200 dark:bg-gray-800 w-16 rounded" />
-                    <div className="h-3 bg-gray-200 dark:bg-gray-800 w-20 rounded" />
+    <div className="bg-white dark:bg-neutral-900/40 rounded-[32px] p-3 border border-neutral-100 dark:border-white/5 shadow-sm h-full flex flex-col animate-pulse">
+        {/* Image Placeholder */}
+        <div className="aspect-[4/3] w-full bg-neutral-200 dark:bg-neutral-800 rounded-[24px]" />
+        
+        <div className="mt-4 px-1 pb-1 flex flex-col gap-3">
+            {/* Header: Logo & Name */}
+            <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-neutral-200 dark:bg-neutral-800 shrink-0" />
+                    <div className="flex flex-col gap-1.5">
+                        <div className="h-4 bg-neutral-200 dark:bg-neutral-800 w-32 rounded" />
+                        <div className="h-3 bg-neutral-100 dark:bg-neutral-800/50 w-20 rounded" />
+                    </div>
                 </div>
+                <div className="w-10 h-6 bg-amber-100/50 dark:bg-amber-900/20 rounded-lg" />
             </div>
-        </div>
 
-        {/* Body */}
-        <div className="flex-1">
-            <div className="h-4 bg-gray-200 dark:bg-gray-800 w-full rounded mb-2" />
-            <div className="h-4 bg-gray-200 dark:bg-gray-800 w-4/5 rounded" />
-        </div>
+            {/* Location placeholder */}
+            <div className="h-3 bg-neutral-100 dark:bg-neutral-800/50 w-40 rounded ml-1" />
 
-        {/* Footer */}
-        <div className="pt-6 flex items-center justify-between border-t border-border-subtle/30">
-            <div className="flex items-center gap-2.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-gray-200 dark:bg-gray-800" />
-                <div className="h-3 bg-gray-200 dark:bg-gray-800 w-20 rounded" />
-            </div>
-            <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800/50" />
+            {/* CTA Placeholder */}
+            <div className="mt-2 h-10 bg-neutral-50 dark:bg-white/5 rounded-xl border border-neutral-100 dark:border-white/5" />
         </div>
     </div>
 );
