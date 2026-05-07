@@ -4,6 +4,8 @@ import { gsap } from 'gsap';
 import './MenuCategories.css';
 import { translations } from '../../translations';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 /* ─── Types ─────────────────────────────────────────────────────── */
@@ -271,26 +273,23 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   
+  const { addToCart, removeFromCart, clearCart, getItemQty, totalItems, grandTotal, setRestaurantContext, cart } = useCart();
+  const navigate = useNavigate();
   
-  const CART_KEY = `menusmoz_cart_${restaurant?.id || restaurant?.slug || 'default'}`;
-
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const saved = localStorage.getItem(CART_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
   const [showCart, setShowCart] = useState(false);
   const [itemNotes, setItemNotes] = useState<Record<string, string>>({});
   const [expandedNote, setExpandedNote] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Persist cart to localStorage
   useEffect(() => {
-    try {
-      localStorage.setItem(CART_KEY, JSON.stringify(cart));
-    } catch {}
-  }, [cart, CART_KEY]);
+    if (restaurant) {
+      setRestaurantContext(
+        restaurant.id || restaurant.slug || 'default',
+        restaurantName || 'Restaurante',
+        whatsapp || null
+      );
+    }
+  }, [restaurant, restaurantName, whatsapp, setRestaurantContext]);
   
   const viewContainerRef = useRef<HTMLDivElement>(null);
 
@@ -311,7 +310,7 @@ const groupedMenu = useMemo(() => {
     Bebidas: [],
     Sobremesas: []
   };
-  menuCategories.forEach(cat => {
+  menuCategories.forEach((cat: MenuCategory) => {
     const group = getGroup(cat.name);
     result[group].push(cat);
   });
@@ -357,47 +356,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
     else if (view === 'subcategory') navigateTo('entry', null);
   };
 
-  /* ─── Cart Logic ────────────────────────────────────────────── */
-  const addToCart = useCallback((item: MenuItem, categoryName: string) => {
-    setCart(prev => {
-      const existing = prev.find(c => c.name === item.name && c.categoryName === categoryName);
-      if (existing) return prev.map(c => c.name === item.name && c.categoryName === categoryName ? { ...c, qty: c.qty + 1 } : c);
-      return [...prev, { ...item, qty: 1, categoryName }];
-    });
-    // Micro-feedback toast
-    toast.success(`${item.name} adicionado!`, {
-      icon: '🛒',
-      duration: 1500,
-      style: { fontSize: '0.75rem' }
-    });
-  }, []);
-
-  const removeFromCart = useCallback((itemName: string, categoryName: string) => {
-    setCart(prev => {
-      const existing = prev.find(c => c.name === itemName && c.categoryName === categoryName);
-      if (existing && existing.qty > 1) return prev.map(c => c.name === itemName && c.categoryName === categoryName ? { ...c, qty: c.qty - 1 } : c);
-      return prev.filter(c => !(c.name === itemName && c.categoryName === categoryName));
-    });
-  }, []);
-
-  const removeItemCompletely = useCallback((itemName: string, categoryName: string) => {
-    setCart(prev => prev.filter(c => !(c.name === itemName && c.categoryName === categoryName)));
-  }, []);
-
-  const clearCart = useCallback(() => {
-    setCart([]);
-    setItemNotes({});
-  }, []);
-
-  const getItemQty = (itemName: string, categoryName: string) => 
-    cart.find(c => c.name === itemName && c.categoryName === categoryName)?.qty || 0;
-
-  const totalItems = cart.reduce((sum, c) => sum + c.qty, 0);
-
-  const grandTotal = useMemo(() => {
-    return cart.reduce((sum, c) => sum + parsePrice(c.price) * c.qty, 0);
-  }, [cart]);
-
+  /* ─── Cart Logic (from CartContext) ────────────────────────── */
   const noteKey = (itemName: string, cat: string) => `${itemName}__${cat}`;
 
   const sendToWhatsApp = () => {
@@ -409,12 +368,10 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
     const totalLine = grandTotal > 0 ? `\n\nTotal estimado: ${formatTotal(grandTotal)}` : '';
     const msg = `Olá, gostaria de fazer o seguinte pedido no ${restaurantName} via Locais de Moz:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-    // Show success state
     setShowSuccess(true);
     setTimeout(() => {
       setShowSuccess(false);
       setShowCart(false);
-      clearCart();
     }, 2500);
   };
 
@@ -492,7 +449,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                 const sections = getSubcategorySections(groupedMenu[selectedGroup]);
                 
                 // Helper to chunk array
-                const chunkArray = (arr, size) => {
+                const chunkArray = (arr: MenuCategory[], size: number) => {
                   const chunks = [];
                   for (let i = 0; i < arr.length; i += size) {
                     chunks.push(arr.slice(i, i + size));
@@ -510,7 +467,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                         {chunkIdx === 0 ? section : `${section} (...)`}
                       </h3>
                       <div className="netflix-section-grid pb-2">
-                        {chunk.map((cat, idx) => {
+                        {chunk.map((cat: MenuCategory, idx: number) => {
                           const isExpanded = expandedCard === cat.name;
                           return (
                             <div 
@@ -529,7 +486,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                                 {isExpanded && (
                                   <div className="netflix-card-preview animate-in fade-in slide-in-from-top-2 duration-300">
                                     <div className="preview-items-list">
-                                      {cat.items?.slice(0, 3).map((item, i) => (
+                                      {cat.items?.slice(0, 3).map((item: MenuItem, i: number) => (
                                         <div key={i} className="preview-item line-clamp-1">
                                           {item.name}
                                         </div>
@@ -587,7 +544,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                     key={i} 
                     item={item} 
                     qty={getItemQty(item.name, selectedCategory.name)}
-                    onAdd={() => addToCart(item, selectedCategory.name)}
+                    onAdd={() => addToCart({ ...item, categoryName: selectedCategory.name })}
                     onRemove={() => removeFromCart(item.name, selectedCategory.name)}
                   />
                 ))}
@@ -607,7 +564,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                       key={j} 
                       item={item} 
                       qty={getItemQty(item.name, sub.name)}
-                      onAdd={() => addToCart(item, sub.name)}
+                      onAdd={() => addToCart({ ...item, categoryName: sub.name })}
                       onRemove={() => removeFromCart(item.name, sub.name)}
                     />
                   ))}
@@ -742,7 +699,7 @@ const getSubcategorySections = (categories: MenuCategory[]) => {
                                   </button>
                                   <span className="w-5 text-center font-black text-sm">{item.qty}</span>
                                   <button
-                                    onClick={() => addToCart(item, item.categoryName)}
+                                    onClick={() => addToCart({ ...item, categoryName: item.categoryName })}
                                     className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white hover:bg-primary/90 transition-all"
                                   >
                                     <Plus size={13} />

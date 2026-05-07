@@ -10,6 +10,7 @@ export interface TranslationSchema {
     forOwners: { title: string; subtitle: string; form_title: string; name: string; email: string; phone: string; submit: string };
     blog: { tag: string; title: string; subtitle: string; read_more: string; all: string; culture: string; reviews: string; recipes: string; news: string };
     profile: { title: string; favorites: string; reviews: string; settings: string; personal_info: string; security: string; joined: string; logout: string };
+    cart: { title: string; empty_title: string; empty_desc: string; browse_menu: string; clear: string; your_items: string; at: string; subtotal: string; items_count: string; estimated_total: string; note_final: string; send_whatsapp: string; no_whatsapp: string; order_sent: string; redirecting: string; add_note: string; edit_note: string };
 }
 
 export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
@@ -116,6 +117,25 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             security: "Segurança",
             joined: "Membro desde",
             logout: "Sair"
+        },
+        cart: {
+            title: 'O Seu Pedido',
+            empty_title: 'Carrinho Vazio',
+            empty_desc: 'Adicione itens do menu para começar',
+            browse_menu: 'Explorar Cardápio',
+            clear: 'Limpar',
+            your_items: 'O Seu Pedido',
+            at: 'em',
+            subtotal: 'Subtotal',
+            items_count: '{count} {count === 1 ? "item" : "itens"}',
+            estimated_total: 'Total estimado',
+            note_final: '* O valor final será confirmado pelo restaurante',
+            send_whatsapp: 'Finalizar via WhatsApp',
+            no_whatsapp: 'WhatsApp não disponível',
+            order_sent: 'Pedido Enviado!',
+            redirecting: 'A redirecionar para o WhatsApp do restaurante...',
+            add_note: 'Adicionar nota',
+            edit_note: 'Editar nota'
         }
     },
     en: {
@@ -221,6 +241,25 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             security: "Security",
             joined: "Member since",
             logout: "Logout"
+        },
+        cart: {
+            title: 'Your Order',
+            empty_title: 'Empty Cart',
+            empty_desc: 'Add items from the menu to get started',
+            browse_menu: 'Browse Menu',
+            clear: 'Clear',
+            your_items: 'Your Order',
+            at: 'at',
+            subtotal: 'Subtotal',
+            items_count: '{count} {count === 1 ? "item" : "items"}',
+            estimated_total: 'Estimated total',
+            note_final: '* The final amount will be confirmed by the restaurant',
+            send_whatsapp: 'Checkout via WhatsApp',
+            no_whatsapp: 'WhatsApp not available',
+            order_sent: 'Order Sent!',
+            redirecting: 'Redirecting to restaurant WhatsApp...',
+            add_note: 'Add note',
+            edit_note: 'Edit note'
         }
     }
 };

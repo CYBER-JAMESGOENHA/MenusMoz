@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, ShoppingCart, History, User, Search, Bell } from 'lucide-react';
+import { Heart, ShoppingCart, History, User, Bell } from 'lucide-react';
 import { translations } from '../../translations';
 import NavbarSearch from './NavbarSearch';
+import { useCart } from '../../context/CartContext';
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -27,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const location = useLocation();
   const isRestaurantDetail = location.pathname.startsWith('/restaurant/');
   const t = (translations[lang as keyof typeof translations] as any)?.nav ?? translations.pt.nav;
-  const cartCount = 0;
+  const { totalItems } = useCart();
 
   return (
     <nav 
@@ -80,15 +81,18 @@ const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {/* Carrinho */}
-          <button 
+          <Link
+            to="/carrinho"
             className="hidden md:flex w-10 h-10 items-center justify-center rounded-2xl bg-text-main text-bg hover:bg-primary transition-all relative group"
             title="Carrinho"
           >
             <ShoppingCart size={18} className="group-hover:scale-110 transition-transform" />
-            <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-moz-yellow text-text-main text-[10px] font-black rounded-full flex items-center justify-center shadow-lg">
-              {cartCount}
-            </span>
-          </button>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-moz-yellow text-text-main text-[10px] font-black rounded-full flex items-center justify-center shadow-lg">
+                {totalItems}
+              </span>
+            )}
+          </Link>
 
           <div className="w-px h-6 bg-border-subtle mx-1 hidden md:block" />
 

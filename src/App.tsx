@@ -6,6 +6,7 @@ import { useFavorites } from './hooks/useFavorites';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useContent } from './hooks/useContent';
 
+import { CartProvider } from './context/CartContext';
 import CustomCursor from './components/ui/CustomCursor';
 import LoginModal from './components/ui/LoginModal';
 import UserPanel from './components/layout/UserPanel';
@@ -27,6 +28,7 @@ const RestaurantListing = lazy(() => import('./pages/RestaurantListing'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Profile = lazy(() => import('./pages/Profile'));
+const Cart = lazy(() => import('./pages/Cart'));
 
 
 export default function App() {
@@ -52,6 +54,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <Router>
+        <CartProvider>
         <GlobalErrorBoundary lang={selectedLang}>
           <div className="min-h-screen relative bg-bg transition-colors duration-500 selection:bg-primary/20 selection:text-primary overflow-x-hidden">
             <Toaster 
@@ -165,6 +168,7 @@ export default function App() {
                       <Route path="/privacidade" element={<Privacy lang={selectedLang} />} />
                       <Route path="/termos" element={<Terms lang={selectedLang} />} />
                       <Route path="/perfil" element={<Profile lang={selectedLang} />} />
+                      <Route path="/carrinho" element={<Cart lang={selectedLang} />} />
                       
                       <Route path="*" element={
                         <div className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 pt-32 text-center bg-bg relative overflow-hidden">
@@ -198,6 +202,7 @@ export default function App() {
             </div>
           </div>
         </GlobalErrorBoundary>
+        </CartProvider>
       </Router>
     </HelmetProvider>
   );

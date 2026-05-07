@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Home, ShoppingCart, User, Plus, Bookmark } from 'lucide-react';
 import { translations } from '../../translations';
+import { useCart } from '../../context/CartContext';
 
 interface MobileBottomNavProps {
     favoritesCount: number;
@@ -11,6 +12,7 @@ interface MobileBottomNavProps {
 
 export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: MobileBottomNavProps) {
     const location = useLocation();
+    const { totalItems } = useCart();
     const t = (translations[lang as keyof typeof translations] as any)?.nav_mobile ?? translations.pt.nav_mobile;
 
     const isActive = (path: string) => location.pathname === path;
@@ -57,12 +59,19 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                 </div>
 
                 {/* Cart */}
-                <NavLink 
-                    to="/cart" 
-                    className={({ isActive }) => `flex flex-col items-center gap-1 flex-1 transition-colors ${isActive ? 'text-primary' : 'text-text-dim/60 hover:text-text-main'}`}
+                <NavLink
+                    to="/carrinho"
+                    className={({ isActive }) => `flex flex-col items-center gap-1 flex-1 transition-colors relative ${isActive ? 'text-primary' : 'text-text-dim/60 hover:text-text-main'}`}
                 >
-                    {isActive('/cart') && <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full" />}
-                    <ShoppingCart size={24} strokeWidth={1.5} />
+                    {isActive('/carrinho') && <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full" />}
+                    <div className="relative">
+                        <ShoppingCart size={24} strokeWidth={1.5} />
+                        {totalItems > 0 && (
+                            <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 bg-moz-yellow text-text-main text-[9px] font-black rounded-full flex items-center justify-center">
+                                {totalItems}
+                            </span>
+                        )}
+                    </div>
                     <span className="text-[12px] font-black uppercase tracking-widest">Carrinho</span>
                 </NavLink>
 
