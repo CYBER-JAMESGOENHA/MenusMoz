@@ -72,7 +72,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                 const searchLower = searchTerm.toLowerCase();
                 match = r.name.toLowerCase().includes(searchLower) || 
                         r.cuisine?.toLowerCase().includes(searchLower) ||
-                        r.tags?.some(tag => tag.toLowerCase().includes(searchLower)) ?? false;
+                        (r.tags?.some(tag => tag.toLowerCase().includes(searchLower)) ?? false);
             }
             if (activeCategory !== 'Tudo' && match) {
                 match = r.cuisine?.toLowerCase() === activeCategory.toLowerCase();

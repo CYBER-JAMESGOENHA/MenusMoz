@@ -52,13 +52,13 @@ export default function Home({
 
     if (isLoading) {
         return (
-            <div className="pt-32 px-4 max-w-7xl mx-auto space-y-12">
-                <div className="h-12 bg-gray-200 dark:bg-gray-800 w-1/3 rounded-2xl animate-pulse" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="pt-24 px-4 max-w-7xl mx-auto space-y-8">
+                <div className="h-10 bg-gray-200 dark:bg-gray-800 w-1/3 rounded-2xl animate-pulse" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {[1, 2, 3, 4].map(i => <RestaurantCardSkeleton key={i} />)}
                 </div>
-                <div className="h-12 bg-gray-200 dark:bg-gray-800 w-1/4 rounded-2xl animate-pulse" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="h-10 bg-gray-200 dark:bg-gray-800 w-1/4 rounded-2xl animate-pulse" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {[1, 2, 3, 4].map(i => <RestaurantCardSkeleton key={i} />)}
                 </div>
             </div>
@@ -108,8 +108,8 @@ export default function Home({
 
             {/* ── Favorites Grid ────────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-section">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                <section className="max-w-7xl mx-auto px-4 pb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
                         {filteredRestaurants.length === 0
                             ? <EmptyFavorites lang={lang} />
                             : filteredRestaurants.map(rest => (

@@ -244,6 +244,14 @@
   .discovery-pill.active {
     @apply border-moz-yellow text-moz-yellow ring-1 ring-moz-yellow/20;
   }
+
+  .restaurant-card {
+    @apply transition-all duration-400 ease-out;
+  }
+
+  .restaurant-card:hover {
+    @apply z-10;
+  }
 }
 
 /* Animations */
