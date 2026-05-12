@@ -1,4 +1,4 @@
-import React, { useCallback, memo, useMemo } from 'react';
+import React, { useCallback, memo, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
@@ -15,6 +15,15 @@ interface RestaurantCardProps {
     mode?: 'discovery' | 'delivery';
 }
 
+const ATMOSPHERE_IMAGES = [
+    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80',
+    'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=80',
+    'https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=400&q=80',
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=80',
+];
+
+const getAtmosphereImage = (id: number) => ATMOSPHERE_IMAGES[id % ATMOSPHERE_IMAGES.length];
+
 export const RestaurantCard = memo(({
     restaurant,
     isFavorite,
@@ -26,6 +35,7 @@ export const RestaurantCard = memo(({
     mode = 'delivery'
 }: RestaurantCardProps) => {
     const t = translations[lang as 'pt' | 'en'] || translations.pt;
+    const [imageLoaded, setImageLoaded] = useState(false);
     
     const handleToggleFavorite = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -55,82 +65,134 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group flex flex-col bg-white dark:bg-neutral-900/50 rounded-2xl p-2.5 border border-neutral-100 dark:border-white/5 shadow-[0_4px_20px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.12),0_8px_20px_-10px_rgba(220,38,38,0.08)] hover:-translate-y-1 transition-all duration-400 ease-out"
+            className="group relative flex flex-col bg-white dark:bg-[#0A0A0A] rounded-3xl overflow-hidden border border-neutral-100 dark:border-white/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15),0_8px_20px_-8px_rgba(220,38,38,0.06)] hover:-translate-y-1.5 transition-all duration-500 ease-out"
         >
-            {/* IMAGE CONTAINER — Clean Airbnb Style */}
-            <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+            {/* IMAGE CONTAINER — Premium Restaurant Preview */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden">
+                {/* Atmosphere Background (warm placeholder) */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-[#1a1714] dark:via-[#1f1b18] dark:to-[#181615]">
+                    <div className="absolute inset-0 opacity-30" style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                    }} />
+                </div>
+
+                {/* Subtle radial gradient for depth */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.15)_100%)]" />
+
+                {/* Restaurant Image */}
                 {hasImage ? (
-                    <img
-                        src={imageUrl}
-                        alt={restaurant.name}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
+                    <>
+                        <img
+                            src={imageUrl}
+                            alt={restaurant.name}
+                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                            onLoad={() => setImageLoaded(true)}
+                        />
+                        {/* Blur-up placeholder while loading */}
+                        {!imageLoaded && (
+                            <img
+                                src={imageUrl}
+                                alt=""
+                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
+                                aria-hidden="true"
+                            />
+                        )}
+                    </>
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-neutral-50 dark:bg-neutral-800">
-                        <span className="text-4xl font-sans font-bold text-neutral-200 dark:text-neutral-700">
-                            {initial}
-                        </span>
-                    </div>
+                    <>
+                        <img
+                            src={getAtmosphereImage(restaurant.id)}
+                            alt=""
+                            className="absolute inset-0 w-full h-full object-cover opacity-40 blur-[1px] scale-105"
+                            aria-hidden="true"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-16 h-16 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
+                                <span className="text-2xl font-display font-black italic text-amber-900/70 dark:text-amber-100/50">
+                                    {initial}
+                                </span>
+                            </div>
+                        </div>
+                    </>
                 )}
 
-                {/* Top Overlay: Favorite Heart */}
+                {/* Elegant Image Overlay — Top Gradient */}
+                <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent pointer-events-none" />
+                
+                {/* Bottom Atmospheric Overlay */}
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none" />
+
+                {/* Top Overlay: Favorite Heart — Floating Style */}
                 <button
                     onClick={handleToggleFavorite}
-                    className="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-full bg-white/95 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg border border-white/30"
+                    className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/50 dark:border-white/10 hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)]"
                 >
                     <Heart 
-                        size={16} 
-                        className={`transition-colors duration-300 ${isFavorite ? 'fill-primary text-primary' : 'text-neutral-600 dark:text-white/90'}`}
+                        size={15} 
+                        className={`transition-all duration-300 ${isFavorite ? 'fill-primary text-primary scale-110' : 'text-neutral-600 dark:text-white/80'}`}
                         strokeWidth={2.5}
                     />
                 </button>
 
-                {/* Subtle bottom gradient */}
-                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
+                {/* Cuisine Badge — Bottom Left */}
+                {restaurant.cuisine && (
+                    <div className="absolute bottom-3 left-3 z-20">
+                        <span className="px-2.5 py-1 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wide text-neutral-800 dark:text-white/90 shadow-sm border border-white/30 dark:border-white/10">
+                            {restaurant.cuisine}
+                        </span>
+                    </div>
+                )}
             </div>
 
-            {/* CONTENT AREA */}
-            <div className="mt-3 px-1 pb-1 flex flex-col h-full">
+            {/* CONTENT AREA — Refined Information Hierarchy */}
+            <div className="p-4 pb-3 flex flex-col gap-0">
                 {/* Header Row: Logo, Name, Rating */}
-                <div className="flex items-start justify-between gap-2.5">
-                    <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
-                        <div className="w-9 h-9 rounded-full border border-neutral-200 dark:border-white/10 shadow-sm overflow-hidden flex-shrink-0 bg-white">
+                <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 overflow-hidden min-w-0">
+                        {/* Restaurant Logo */}
+                        <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-sm border border-neutral-100 dark:border-white/10 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-[#1a1a1a] dark:to-[#121212]">
                             {logoUrl ? (
                                 <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-neutral-100 text-neutral-400 font-bold text-[10px]">
-                                    {initial}
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <span className="text-sm font-display font-black italic text-neutral-300 dark:text-neutral-600">
+                                        {initial}
+                                    </span>
                                 </div>
                             )}
                         </div>
+                        
+                        {/* Name & Cuisine */}
                         <div className="flex flex-col min-w-0">
-                            <h3 className="font-display text-base font-black italic uppercase tracking-tight truncate leading-[1.1] group-hover:text-primary transition-colors duration-300">
+                            <h3 className="font-display text-[15px] font-black italic text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
                                 {restaurant.name}
                             </h3>
-                            <p className="text-neutral-400 dark:text-neutral-500 text-[11px] font-medium truncate mt-0.5">
+                            <p className="text-[10px] font-medium text-text-dim dark:text-neutral-500 truncate mt-0.5">
                                 {restaurant.cuisine || 'Restaurante'}
                             </p>
                         </div>
                     </div>
-                    <div className="bg-amber-50 dark:bg-amber-950/40 px-2 py-1 rounded-md flex items-center gap-1 flex-shrink-0 border border-amber-100/50 dark:border-amber-800/30">
-                        <Star size={11} className="fill-amber-500 text-amber-500" />
-                        <span className="text-[11px] font-black text-amber-700 dark:text-amber-400 tracking-tight">{rating}</span>
+
+                    {/* Rating Badge */}
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-950/30 border border-amber-100/50 dark:border-amber-800/20 flex-shrink-0">
+                        <Star size={12} className="fill-amber-500 text-amber-500" />
+                        <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 tracking-tight">{rating}</span>
                     </div>
                 </div>
 
-                {/* Location Row — Now below the name */}
-                <div className="mt-3 flex items-center gap-1 text-neutral-400 dark:text-neutral-500 font-medium text-[9px] uppercase tracking-wider pl-0.5">
-                    <MapPin size={10} className="opacity-40" />
-                    <span>{locationDisplay}</span>
+                {/* Location — Elegant Row */}
+                <div className="mt-3 flex items-center gap-1.5 text-text-dim dark:text-neutral-500 text-[11px]">
+                    <MapPin size={11} className="text-primary/70 dark:text-primary/50 flex-shrink-0" />
+                    <span className="font-medium truncate">{locationDisplay}</span>
                 </div>
 
-                {/* CTA Button — Premium touchpoint */}
-                <div className="mt-4">
-                    <div className="w-full py-2.5 rounded-xl bg-neutral-50 dark:bg-white/[0.03] border border-neutral-100 dark:border-white/5 flex items-center justify-between px-4 group-hover:bg-primary group-hover:border-primary transition-all duration-400 shadow-sm">
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500 dark:text-neutral-400 group-hover:text-white transition-colors duration-400">
+                {/* CTA Button — Premium Touchpoint */}
+                <div className="mt-3.5">
+                    <div className="w-full py-2.5 rounded-xl bg-neutral-50/80 dark:bg-white/[0.02] border border-neutral-200/60 dark:border-white/[0.06] flex items-center justify-center gap-2 group-hover:bg-primary group-hover:border-primary/20 transition-all duration-400 ease-out">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-text-dim dark:text-neutral-400 group-hover:text-white transition-colors duration-400">
                             {t.home.view_restaurant}
                         </span>
-                        <ArrowRight size={12} className="text-neutral-400 dark:text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-400" />
+                        <ArrowRight size={13} className="text-neutral-400 dark:text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-400" />
                     </div>
                 </div>
             </div>
