@@ -50,3 +50,26 @@ export const checkIsOpen = (hoursString: string | undefined): boolean => {
 
   return false;
 };
+
+/**
+ * Extracts and formats the closing time from an hours string.
+ * @param {string} hoursString - Format: "HH:MM - HH:MM"
+ * @returns {string} - Format: "10PM" or "12AM"
+ */
+export const formatClosingTime = (hoursString: string | undefined): string | null => {
+  if (!hoursString) return null;
+  
+  const parts = hoursString.split(" - ");
+  if (parts.length !== 2) return null;
+  
+  const [_, end] = parts;
+  const [hour, minute] = end.split(":").map(Number);
+  
+  if (isNaN(hour)) return null;
+  
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  let hour12 = hour % 12;
+  hour12 = hour12 ? hour12 : 12; // the hour '0' should be '12'
+  
+  return `${hour12}${ampm}`;
+};

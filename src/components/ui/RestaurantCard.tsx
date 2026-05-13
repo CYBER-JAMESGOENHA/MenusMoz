@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
 import { translations } from '../../translations';
+import { formatClosingTime } from '../../utils/timeUtils';
 
 interface RestaurantCardProps {
     restaurant: any;
@@ -50,11 +51,17 @@ export const RestaurantCard = memo(({
         return `${distance.toFixed(1)} km`;
     }, [userLatitude, userLongitude, restaurant.latitude, restaurant.longitude]);
 
-    const locationDisplay = useMemo(() => {
-        const city = restaurant.city || restaurant.location?.split(',')[0] || 'Maputo';
-        if (distanceInfo) return `${city} • ${distanceInfo}`;
-        return city;
-    }, [distanceInfo, restaurant.city, restaurant.location]);
+    const closingTime = useMemo(() => formatClosingTime(restaurant.hours), [restaurant.hours]);
+
+    const area = useMemo(() => {
+        const source = restaurant.address || restaurant.location || '';
+        const parts = source.split(',').map((p: string) => p.trim());
+        const knownAreas = ['Polana', 'Baixa', 'Sommerschield', 'Triunfo', 'Costa do Sol'];
+        for (const known of knownAreas) {
+            if (source.includes(known)) return known;
+        }
+        return parts[0] || restaurant.city || 'Maputo';
+    }, [restaurant.address, restaurant.location, restaurant.city]);
 
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
     const logoUrl = restaurant.logo_url || restaurant.logo;
@@ -173,17 +180,27 @@ export const RestaurantCard = memo(({
                         </div>
                     </div>
 
-                    {/* Rating Badge */}
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50/80 dark:bg-amber-950/30 border border-amber-100/50 dark:border-amber-800/20 flex-shrink-0">
-                        <Star size={12} className="fill-amber-500 text-amber-500" />
-                        <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 tracking-tight">{rating}</span>
+                    {/* Rating Badge — Airbnb Style */}
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/10 flex-shrink-0">
+                        <Star size={10} className="fill-white text-white opacity-90" />
+                        <span className="text-[10px] font-bold text-white tracking-tight">{rating}</span>
                     </div>
                 </div>
 
-                {/* Location — Elegant Row */}
-                <div className="mt-3 flex items-center gap-1.5 text-text-dim dark:text-neutral-500 text-[11px]">
-                    <MapPin size={11} className="text-primary/70 dark:text-primary/50 flex-shrink-0" />
-                    <span className="font-medium truncate">{locationDisplay}</span>
+                {/* Editorial Metadata Row */}
+                <div className="mt-2.5 flex items-center gap-2 text-[10px] sm:text-[11px]">
+                    <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500">
+                        <MapPin size={11} strokeWidth={1.5} className="flex-shrink-0" />
+                        <span className="font-medium">{area}</span>
+                    </div>
+                    {closingTime && (
+                        <>
+                            <span className="text-neutral-200 dark:text-neutral-800 font-light">•</span>
+                            <span className="font-medium text-neutral-700 dark:text-neutral-300">
+                                {lang === 'pt' ? 'Aberto até às' : 'Open until'} {closingTime}
+                            </span>
+                        </>
+                    )}
                 </div>
 
                 {/* CTA Button — Premium Touchpoint */}
