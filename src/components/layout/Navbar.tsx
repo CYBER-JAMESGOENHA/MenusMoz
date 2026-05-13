@@ -37,13 +37,12 @@ const Navbar: React.FC<NavbarProps> = ({
     >
       <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2.5rem] px-4 md:px-6 py-1.5 ${isScrolled ? 'glass shadow-premium-lg' : 'bg-transparent'}`}>
 
-        <Link to="/" className="flex items-center gap-3 group transition-all shrink-0">
-          <div className="w-9 h-9 bg-neutral-900 dark:bg-neutral-100 shrink-0 rounded-[14px] flex items-center justify-center text-white dark:text-neutral-900 font-bold text-lg group-hover:scale-105 transition-all shadow-premium" aria-hidden="true">
-            M
-          </div>
+        {/* 1. Branding (Esquerda - Comprimido) */}
+        <Link to="/" className="flex items-center gap-2 group transition-all shrink-0">
+          <div className="w-10 h-10 md:w-9 md:h-9 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-black text-lg md:shadow-primary-glow group-hover:scale-105 transition-transform" aria-hidden="true">L</div>
           <div className="hidden xl:flex flex-col leading-none">
-            <span className="font-bold text-[15px] tracking-tight text-text-main">MenusMoz</span>
-            <span className="text-[7px] font-bold uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-600 italic">Discovery</span>
+            <span className="font-black text-base tracking-tighter text-text-main uppercase">Locais Moz</span>
+            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-primary italic">Marketplace</span>
           </div>
         </Link>
 

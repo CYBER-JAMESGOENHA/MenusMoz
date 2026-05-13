@@ -62,15 +62,15 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
     }, [restaurants, animationClass, rootRef]);
 
     return (
-        <div className="pt-2 pb-6">
-            <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center gap-3">
-                <div className="w-0.5 h-6 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
+        <div className="pt-2 pb-8">
+            <div className="max-w-7xl mx-auto px-6 mb-6 flex items-center gap-4">
+                <div className="w-1 h-10 bg-primary rounded-full shadow-[0_0_12px_rgba(220,38,38,0.25)]" />
                 <div className="flex flex-col">
-                    <h2 className="text-lg md:text-xl font-display font-bold italic text-text-main dark:text-neutral-200 tracking-tight leading-tight">
+                    <h2 className="text-2xl md:text-3xl font-display font-black italic text-text-main tracking-tighter uppercase leading-[0.85]">
                         {title}
                     </h2>
                     {subtitle && (
-                        <p className="text-[9px] font-semibold text-text-dim/50 dark:text-neutral-500 uppercase tracking-widest mt-0.5">
+                        <p className="text-[10px] font-black text-text-dim uppercase tracking-[0.2em] mt-1.5 opacity-60">
                             {subtitle}
                         </p>
                     )}
@@ -93,9 +93,9 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                     <ChevronRight size={20} />
                 </button>
 
-                <div ref={scrollRef} className="flex overflow-x-auto gap-5 px-4 pb-10 pt-1 no-scrollbar snap-x snap-mandatory">
+                <div ref={scrollRef} className="flex overflow-x-auto gap-6 px-4 pb-10 pt-1 no-scrollbar snap-x snap-mandatory">
                     {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-6 shrink-0 w-[80vw] sm:w-[230px] lg:w-[260px] snap-start`}>
+                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-6 shrink-0 w-[85vw] sm:w-[270px] lg:w-[300px] snap-start`}>
                             <RestaurantCard
                                 restaurant={rest}
                                 isFavorite={favorites.includes(rest.id)}

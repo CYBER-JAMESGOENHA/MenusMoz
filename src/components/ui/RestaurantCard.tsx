@@ -110,21 +110,22 @@ export const RestaurantCard = memo(({
     const initial = restaurant.name?.[0]?.toUpperCase() || 'R';
     const rating = typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5';
 
-    return (        <Link
+    return (
+        <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative flex flex-col bg-white dark:bg-[#121212] rounded-2xl overflow-hidden border border-neutral-100 dark:border-white/[0.04] shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_15px_40px_-12px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-500 ease-out"
+            className="group relative flex flex-col bg-white dark:bg-[#0A0A0A] rounded-3xl overflow-hidden border border-neutral-100 dark:border-white/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15),0_8px_20px_-8px_rgba(220,38,38,0.06)] hover:-translate-y-1.5 transition-all duration-500 ease-out"
         >
             {/* IMAGE CONTAINER — Premium Restaurant Preview */}
-            <div className="relative aspect-[16/11] w-full overflow-hidden">
+            <div className="relative aspect-[4/3] w-full overflow-hidden">
                 {/* Atmosphere Background (warm placeholder) */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-orange-50/50 to-rose-50/50 dark:from-[#1a1714] dark:via-[#181615] dark:to-[#161413]">
-                    <div className="absolute inset-0 opacity-20" style={{
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-[#1a1714] dark:via-[#1f1b18] dark:to-[#181615]">
+                    <div className="absolute inset-0 opacity-30" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
                     }} />
                 </div>
 
                 {/* Subtle radial gradient for depth */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.1)_100%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.15)_100%)]" />
 
                 {/* Restaurant Image */}
                 {hasImage ? (
@@ -132,7 +133,7 @@ export const RestaurantCard = memo(({
                         <img
                             src={imageUrl}
                             alt={restaurant.name}
-                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                             onLoad={() => setImageLoaded(true)}
                         />
                         {/* Blur-up placeholder while loading */}
@@ -140,7 +141,7 @@ export const RestaurantCard = memo(({
                             <img
                                 src={imageUrl}
                                 alt=""
-                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-40"
+                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
                                 aria-hidden="true"
                             />
                         )}
@@ -150,12 +151,12 @@ export const RestaurantCard = memo(({
                         <img
                             src={getAtmosphereImage(restaurant.id)}
                             alt=""
-                            className="absolute inset-0 w-full h-full object-cover opacity-30 blur-[1px] scale-105"
+                            className="absolute inset-0 w-full h-full object-cover opacity-40 blur-[1px] scale-105"
                             aria-hidden="true"
                         />
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-white/10 dark:bg-white/5 backdrop-blur-md flex items-center justify-center">
-                                <span className="text-xl font-display font-black italic text-amber-900/40 dark:text-amber-100/30">
+                            <div className="w-16 h-16 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
+                                <span className="text-2xl font-display font-black italic text-amber-900/70 dark:text-amber-100/50">
                                     {initial}
                                 </span>
                             </div>
@@ -164,27 +165,27 @@ export const RestaurantCard = memo(({
                 )}
 
                 {/* Elegant Image Overlay — Top Gradient */}
-                <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent pointer-events-none" />
                 
                 {/* Bottom Atmospheric Overlay */}
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none" />
 
                 {/* Top Overlay: Favorite Heart — Floating Style */}
                 <button
                     onClick={handleToggleFavorite}
-                    className="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm border border-white/40 dark:border-white/5"
+                    className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/50 dark:border-white/10 hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)]"
                 >
                     <Heart 
-                        size={13} 
-                        className={`transition-all duration-300 ${isFavorite ? 'fill-primary text-primary scale-110' : 'text-neutral-500 dark:text-white/60'}`}
+                        size={15} 
+                        className={`transition-all duration-300 ${isFavorite ? 'fill-primary text-primary scale-110' : 'text-neutral-600 dark:text-white/80'}`}
                         strokeWidth={2.5}
                     />
                 </button>
 
                 {/* Cuisine Badge — Bottom Left */}
                 {restaurant.cuisine && (
-                    <div className="absolute bottom-2.5 left-2.5 z-20">
-                        <span className="px-2 py-0.5 rounded-full bg-white/80 dark:bg-black/40 backdrop-blur-md text-[9px] font-bold uppercase tracking-wider text-neutral-700 dark:text-white/80 border border-white/30 dark:border-white/5">
+                    <div className="absolute bottom-3 left-3 z-20">
+                        <span className="px-2.5 py-1 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wide text-neutral-800 dark:text-white/90 shadow-sm border border-white/30 dark:border-white/10">
                             {restaurant.cuisine}
                         </span>
                     </div>
@@ -192,59 +193,61 @@ export const RestaurantCard = memo(({
             </div>
 
             {/* CONTENT AREA — Refined Information Hierarchy */}
-            <div className="p-3.5 pb-2.5 flex flex-col gap-0">
+            <div className="p-4 pb-3 flex flex-col gap-0">
                 {/* Header Row: Logo, Name, Rating */}
                 <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
+                    <div className="flex items-center gap-3 overflow-hidden min-w-0">
                         {/* Restaurant Logo */}
-                        <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 border border-neutral-100 dark:border-white/5 bg-neutral-50 dark:bg-[#1a1a1a]">
+                        <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-sm border border-neutral-100 dark:border-white/10 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-[#1a1a1a] dark:to-[#121212]">
                             {logoUrl ? (
                                 <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                    <span className="text-[10px] font-display font-black italic text-neutral-300 dark:text-neutral-700">
+                                    <span className="text-sm font-display font-black italic text-neutral-300 dark:text-neutral-600">
                                         {initial}
                                     </span>
                                 </div>
                             )}
                         </div>
                         
-                        {/* Name & Subtitle */}
+                        {/* Name & Cuisine */}
                         <div className="flex flex-col min-w-0">
-                            <h3 className="font-display text-[13px] font-bold italic text-text-main dark:text-neutral-100 truncate leading-tight group-hover:text-primary transition-colors duration-300">
+                            <h3 className="font-display text-[15px] font-black italic text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
                                 {restaurant.name}
                             </h3>
-                            <p className="text-[9px] font-medium text-text-dim dark:text-neutral-500 truncate mt-0.5">
+                            <p className="text-[10px] font-medium text-text-dim dark:text-neutral-500 truncate mt-0.5">
                                 {restaurant.cuisine || 'Restaurante'}
                             </p>
                         </div>
                     </div>
 
-                    {/* Rating Badge */}
-                    <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-neutral-50 dark:bg-white/[0.03] border border-neutral-100 dark:border-white/5 flex-shrink-0">
-                        <Star size={9} className="fill-amber-400 text-amber-400" />
-                        <span className="text-[9px] font-bold text-neutral-700 dark:text-neutral-300 tracking-tight">{rating}</span>
+                    {/* Rating Badge — Airbnb Style */}
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md border border-white/10 flex-shrink-0">
+                        <Star size={10} className="fill-white text-white opacity-90" />
+                        <span className="text-[10px] font-bold text-white tracking-tight">{rating}</span>
                     </div>
                 </div>
 
-                {/* Editorial Metadata Row */}
-                <div className="mt-2 flex items-center gap-1.5 text-[10px] whitespace-nowrap overflow-hidden">
-                    <div className="flex items-center gap-1 text-neutral-400 dark:text-neutral-600 shrink-0">
-                        <MapPin size={9} strokeWidth={1.5} />
+                {/* Editorial Metadata Row — Airbnb Inspired */}
+                <div className="mt-2.5 flex items-center gap-2 text-[10px] sm:text-[11px] whitespace-nowrap overflow-hidden">
+                    <div className="flex items-center gap-1 text-neutral-400 dark:text-neutral-500 shrink-0">
+                        <MapPin size={10} strokeWidth={1.2} className="opacity-60" />
                         <span className="font-medium tracking-tight">{area}</span>
                     </div>
                     <span className="text-neutral-200 dark:text-neutral-800 font-light shrink-0">•</span>
-                    <span className="font-medium text-neutral-500 dark:text-neutral-500 truncate tracking-tight">
+                    <span className="font-medium text-neutral-600 dark:text-neutral-400 truncate tracking-tight">
                         {descriptor}
                     </span>
                 </div>
 
-                {/* CTA Link — Subtle Arrow */}
-                <div className="mt-3 flex items-center justify-between">
-                    <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-text-dim/40 dark:text-neutral-600 group-hover:text-primary transition-colors">
-                        {t.home.view_restaurant}
-                    </span>
-                    <ArrowRight size={11} className="text-neutral-300 dark:text-neutral-700 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                {/* CTA Button — Premium Touchpoint */}
+                <div className="mt-3.5">
+                    <div className="w-full py-2.5 rounded-xl bg-neutral-50/80 dark:bg-white/[0.02] border border-neutral-200/60 dark:border-white/[0.06] flex items-center justify-center gap-2 group-hover:bg-primary group-hover:border-primary/20 transition-all duration-400 ease-out">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-text-dim dark:text-neutral-400 group-hover:text-white transition-colors duration-400">
+                            {t.home.view_restaurant}
+                        </span>
+                        <ArrowRight size={13} className="text-neutral-400 dark:text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-400" />
+                    </div>
                 </div>
             </div>
         </Link>
