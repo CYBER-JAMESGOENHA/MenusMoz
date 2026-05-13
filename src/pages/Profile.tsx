@@ -11,7 +11,7 @@ import { translations } from '../translations';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { User } from '@supabase/supabase-js';
 import { useAuth } from '../context/AuthContext';
-import RestaurantCard from '../components/ui/RestaurantCard';
+import { RestaurantCard } from '../components/ui/RestaurantCard';
 import toast from 'react-hot-toast';
 import { gsap } from 'gsap';
 
@@ -126,18 +126,24 @@ export default function Profile({ lang }: ProfileProps) {
 
             // Process Activities
             const allActivities = [
-                ...(favsData?.map(f => ({
-                    type: 'favorite',
-                    title: f.restaurants?.name,
-                    date: new Date(f.created_at),
-                    detail: selectedLang === 'pt' ? `Adicionou ${f.restaurants?.name} aos favoritos` : `Added ${f.restaurants?.name} to favorites`
-                })) || []),
-                ...(reviewsData?.map(r => ({
-                    type: 'review',
-                    title: r.restaurants?.name,
-                    date: new Date(r.created_at),
-                    detail: selectedLang === 'pt' ? `Publicou uma review de ${r.rating} estrelas` : `Published a ${r.rating} stars review`
-                })) || [])
+                ...(favsData?.map(f => {
+                    const restaurant = Array.isArray(f.restaurants) ? f.restaurants[0] : f.restaurants;
+                    return {
+                        type: 'favorite',
+                        title: restaurant?.name,
+                        date: new Date(f.created_at),
+                        detail: selectedLang === 'pt' ? `Adicionou ${restaurant?.name} aos favoritos` : `Added ${restaurant?.name} to favorites`
+                    };
+                }) || []),
+                ...(reviewsData?.map(r => {
+                    const restaurant = Array.isArray(r.restaurants) ? r.restaurants[0] : r.restaurants;
+                    return {
+                        type: 'review',
+                        title: restaurant?.name,
+                        date: new Date(r.created_at),
+                        detail: selectedLang === 'pt' ? `Publicou uma review de ${r.rating} estrelas` : `Published a ${r.rating} stars review`
+                    };
+                }) || [])
             ].sort((a, b) => b.date.getTime() - a.date.getTime());
 
             setActivities(allActivities);
@@ -411,7 +417,7 @@ export default function Profile({ lang }: ProfileProps) {
             <Helmet>
                 <title>{t.title} | Locais de Moz</title>
                 <style>{`
-                    body { background-color: #050505 ! from-black to-[#0A0A0A]; }
+                    body { background-color: #050505; }
                     .profile-sidebar-item { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
                     .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
                 `}</style>
