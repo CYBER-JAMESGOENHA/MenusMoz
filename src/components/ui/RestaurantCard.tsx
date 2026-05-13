@@ -51,29 +51,57 @@ export const RestaurantCard = memo(({
     }, [userLatitude, userLongitude, restaurant.latitude, restaurant.longitude]);
 
     const area = useMemo(() => {
-        const source = restaurant.address || restaurant.location || '';
-        const parts = source.split(',').map((p: string) => p.trim());
-        const knownAreas = ['Polana', 'Baixa', 'Sommerschield', 'Triunfo', 'Costa do Sol', 'Matola', 'Liberdade'];
+        const source = (restaurant.address || restaurant.location || '').toLowerCase();
+        const knownAreas = ['Polana', 'Baixa', 'Sommerschield', 'Triunfo', 'Costa do Sol', 'Matola', 'Liberdade', 'Malhangalene', 'Coop', 'Alto Maé'];
+        
         for (const known of knownAreas) {
-            if (source.includes(known)) return known;
+            if (source.includes(known.toLowerCase())) return known;
         }
-        return parts[0] || restaurant.city || 'Maputo';
+        
+        // Fallback to first part of address if it looks like a neighborhood (short, no numbers)
+        const parts = (restaurant.address || restaurant.location || '').split(',');
+        const firstPart = parts[0]?.trim();
+        if (firstPart && firstPart.length < 15 && !/\d/.test(firstPart)) {
+            return firstPart;
+        }
+        
+        return restaurant.city || 'Maputo';
     }, [restaurant.address, restaurant.location, restaurant.city]);
 
     const descriptor = useMemo(() => {
-        if (restaurant.identity_text) return restaurant.identity_text;
-        if (restaurant.tags && restaurant.tags.length > 0) {
-            const extraTag = restaurant.tags.find((t: any) => t !== restaurant.cuisine);
-            if (extraTag) return extraTag;
-        }
-        if (restaurant.features && restaurant.features.length > 0) return restaurant.features[0];
-        
-        const fallbacks = [
-            'Hidden Gem', 'Local Favorite', 'Sunset Spot', 
-            'Rooftop Dining', 'Authentic Taste', 'Curated Experience',
-            'City Classic', 'Modern Discovery'
+        const lifestyleFallbacks = [
+            'Hidden Gem', 'Rooftop Dining', 'Live Music', 
+            'Local Favorite', 'Sunset Spot', 'Fine Dining',
+            'Street Favorite', 'Authentic Taste', 'Classic Spot',
+            'Garden Seating', 'City Views', 'Elegant Dining'
         ];
-        return fallbacks[Number(restaurant.id) % fallbacks.length];
+
+        let text = '';
+        // Prioritize short, punchy metadata
+        if (restaurant.identity_text && restaurant.identity_text.split(/\s+/).length <= 3) {
+            text = restaurant.identity_text;
+        } else if (restaurant.tags && restaurant.tags.length > 0) {
+            // Find a short tag that isn't the main cuisine
+            const shortTag = restaurant.tags.find((t: any) => 
+                t !== restaurant.cuisine && 
+                typeof t === 'string' && 
+                t.split(/\s+/).length <= 3
+            );
+            text = shortTag || '';
+        } else if (restaurant.features && restaurant.features.length > 0) {
+            const shortFeature = restaurant.features.find((f: any) => 
+                typeof f === 'string' && 
+                f.split(/\s+/).length <= 3
+            );
+            text = shortFeature || '';
+        }
+
+        // Final check: if text is empty or too long, use a curated lifestyle fallback
+        if (!text || text.split(/\s+/).length > 3 || text.length > 22) {
+            return lifestyleFallbacks[Number(restaurant.id) % lifestyleFallbacks.length];
+        }
+
+        return text;
     }, [restaurant.id, restaurant.identity_text, restaurant.tags, restaurant.features, restaurant.cuisine]);
 
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
@@ -200,14 +228,14 @@ export const RestaurantCard = memo(({
                     </div>
                 </div>
 
-                {/* Editorial Metadata Row */}
-                <div className="mt-2.5 flex items-center gap-2.5 text-[10px] sm:text-[11px] whitespace-nowrap overflow-hidden">
-                    <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 shrink-0">
-                        <MapPin size={11} strokeWidth={1.5} className="opacity-70" />
+                {/* Editorial Metadata Row — Airbnb Inspired */}
+                <div className="mt-2.5 flex items-center gap-2 text-[10px] sm:text-[11px] whitespace-nowrap overflow-hidden">
+                    <div className="flex items-center gap-1 text-neutral-400 dark:text-neutral-500 shrink-0">
+                        <MapPin size={10} strokeWidth={1.2} className="opacity-60" />
                         <span className="font-medium tracking-tight">{area}</span>
                     </div>
                     <span className="text-neutral-200 dark:text-neutral-800 font-light shrink-0">•</span>
-                    <span className="font-medium text-neutral-500/80 dark:text-neutral-400/70 truncate tracking-tight">
+                    <span className="font-medium text-neutral-600 dark:text-neutral-400 truncate tracking-tight">
                         {descriptor}
                     </span>
                 </div>
