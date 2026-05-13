@@ -223,87 +223,124 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
           </div>
         )}
 
-        {/* LEVEL 2 — Subcategories */}
+        {/* LEVEL 2 — Subcategories (RETHINK: Split Editorial Layout) */}
         {view === 'subcategory' && selectedGroup && (
-          <div className="animate-in fade-in duration-300">
-            {/* Unified nav: back + breadcrumb */}
-            <div className="flex items-center gap-2 mb-5">
-              <button
-                onClick={() => navigateTo('entry', null)}
-                className="flex items-center gap-1.5 text-primary font-black uppercase tracking-widest text-[9px] hover:opacity-60 transition-opacity"
-              >
-                <ChevronLeft size={12} /> Menu
-              </button>
-              <span className="text-text-dim/30 text-[9px]">/</span>
-              <span className="text-text-main font-black uppercase tracking-widest text-[9px]">{selectedGroup}</span>
-            </div>
+          <div className="subcategory-editorial-layout">
+            {/* LEFT SIDE: Sticky Editorial Navigation */}
+            <aside className="editorial-nav-column">
+              <div className="editorial-nav-sticky">
+                <button
+                  onClick={() => navigateTo('entry', null)}
+                  className="editorial-back-link group"
+                >
+                  <ChevronLeft size={14} className="transition-transform group-hover:-translate-x-1" />
+                  <span>Menu Principal</span>
+                </button>
 
-            <div className="netflix-sections-container">
-              {(() => {
-                const sections = getSubcategorySections(groupedMenu[selectedGroup]);
-                return SECTION_ORDER.filter(s => sections[s]?.length > 0).flatMap(section => {
-                  const subcategories = sections[section];
-                  return (
-                    <div key={section} className="netflix-section-group">
-                      <h3 className="netflix-section-group-title">{section}</h3>
-                      <div className="netflix-section-grid">
-                        {subcategories.map((cat: MenuCategory, idx: number) => {
+                <div className="editorial-context">
+                  <span className="editorial-context-label">Coleção</span>
+                  <h2 className="editorial-context-title">{selectedGroup}</h2>
+                </div>
+
+                <nav className="editorial-nav-list">
+                  {(() => {
+                    const sections = getSubcategorySections(groupedMenu[selectedGroup]);
+                    let globalIdx = 0;
+                    return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
+                      <div key={section} className="editorial-nav-section">
+                        <span className="editorial-nav-section-title">{section}</span>
+                        {sections[section].map((cat) => {
+                          globalIdx++;
                           const isExpanded = expandedCard === cat.name;
                           return (
-                            <div key={idx} className={`netflix-card-container ${isExpanded ? 'is-expanded' : ''}`}>
-                              <button
-                                onClick={() => setExpandedCard(isExpanded ? null : cat.name)}
-                                className={`netflix-card group ${isExpanded ? 'expanded' : ''}`}
-                                data-category-type={getCategoryType(cat.name)}
-                              >
-                                <div className="netflix-card-header">
-                                  <div className="netflix-card-info">
-                                    <span className="netflix-card-index">0{idx + 1}</span>
-                                    <h4 className="netflix-card-title">{cat.name}</h4>
-                                  </div>
-                                  <div className="netflix-card-count">
-                                    {cat.items?.length || 0}
-                                    <span className="text-[8px] opacity-40 ml-1">Itens</span>
-                                  </div>
-                                </div>
-
-                                {isExpanded && (
-                                  <div className="netflix-card-preview">
-                                    <div className="preview-items-list">
-                                      {cat.items?.slice(0, 3).map((item: MenuItem, i: number) => (
-                                        <div key={i} className="preview-item">
-                                          <div className="preview-item-dot" />
-                                          <span className="preview-item-name">{item.name}</span>
-                                          <span className="preview-item-price">{item.price}</span>
-                                        </div>
-                                      ))}
-                                      {(cat.items?.length || 0) > 3 && (
-                                        <div className="preview-item-more">
-                                          Descobrir +{(cat.items?.length || 0) - 3} opções exclusivas
-                                        </div>
-                                      )}
-                                    </div>
-                                    <div className="netflix-card-footer">
-                                      <button
-                                        onClick={(e) => { e.stopPropagation(); navigateTo('dishes', selectedGroup, cat); }}
-                                        className="netflix-cta-button"
-                                      >
-                                        <span>Explorar Seleção</span>
-                                        <ChevronRight size={14} strokeWidth={3} />
-                                      </button>
-                                    </div>
-                                  </div>
-                                )}
-                              </button>
-                            </div>
+                            <button
+                              key={cat.name}
+                              onClick={() => {
+                                setExpandedCard(isExpanded ? null : cat.name);
+                                // Optional: scroll to the element
+                              }}
+                              className={`editorial-nav-item ${isExpanded ? 'active' : ''}`}
+                            >
+                              <span className="nav-item-index">{globalIdx < 10 ? `0${globalIdx}` : globalIdx}</span>
+                              <span className="nav-item-name">{cat.name}</span>
+                            </button>
                           );
                         })}
                       </div>
-                    </div>
-                  );
-                });
-              })()}
-            </div>
+                    ));
+                  })()}
+                </nav>
+              </div>
+            </aside>
+
+            {/* RIGHT SIDE: Modular Editorial Grid */}
+            <main className="editorial-content-column">
+              <div className="modular-grid">
+                {(() => {
+                  const sections = getSubcategorySections(groupedMenu[selectedGroup]);
+                  let globalIdx = 0;
+                  return SECTION_ORDER.filter(s => sections[s]?.length > 0).flatMap(section => {
+                    return sections[section].map((cat: MenuCategory) => {
+                      globalIdx++;
+                      const isExpanded = expandedCard === cat.name;
+                      const itemsCount = cat.items?.length || 0;
+                      
+                      // Dynamic modular sizing logic
+                      let blockSize = 'standard';
+                      if (itemsCount > 8) blockSize = 'featured';
+                      else if (globalIdx % 5 === 0) blockSize = 'wide';
+                      else if (globalIdx % 3 === 0) blockSize = 'tall';
+
+                      return (
+                        <div 
+                          key={cat.name} 
+                          className={`modular-block-wrapper ${blockSize} ${isExpanded ? 'is-expanded' : ''}`}
+                        >
+                          <button
+                            onClick={() => setExpandedCard(isExpanded ? null : cat.name)}
+                            className={`modular-block group ${isExpanded ? 'expanded' : ''}`}
+                            data-category-type={getCategoryType(cat.name)}
+                          >
+                            <div className="block-header">
+                              <div className="block-meta">
+                                <span className="block-index">0{globalIdx}</span>
+                                <span className="block-count">{itemsCount} Escolhas</span>
+                              </div>
+                              <h4 className="block-title">{cat.name}</h4>
+                            </div>
+
+                            <div className="block-preview-area">
+                              <div className="preview-mini-list">
+                                {cat.items?.slice(0, isExpanded ? 5 : 2).map((item, i) => (
+                                  <div key={i} className="preview-mini-item">
+                                    <span className="mini-item-name">{item.name}</span>
+                                    {isExpanded && <span className="mini-item-dots" />}
+                                    {isExpanded && <span className="mini-item-price">{item.price}</span>}
+                                  </div>
+                                ))}
+                              </div>
+                              
+                              <div className="block-cta-area">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); navigateTo('dishes', selectedGroup, cat); }}
+                                  className="block-explore-btn"
+                                >
+                                  <span>Explorar</span>
+                                  <ChevronRight size={14} />
+                                </button>
+                              </div>
+                            </div>
+                            
+                            {/* Decorative background element */}
+                            <div className="block-bg-ornament" />
+                          </button>
+                        </div>
+                      );
+                    });
+                  });
+                })()}
+              </div>
+            </main>
           </div>
         )}
 
