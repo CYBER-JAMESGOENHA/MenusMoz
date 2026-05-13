@@ -1,7 +1,7 @@
 import React, { useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
-import { HeroSlideshow } from '../components/home/HeroSlideshow';
+import { HomeSearch } from '../components/home/HomeSearch';
 import { HorizontalCarousel } from '../components/home/HorizontalCarousel';
 import { EmptyFavorites } from '../components/home/EmptyFavorites';
 import { RestaurantCard } from '../components/ui/RestaurantCard';
@@ -86,8 +86,8 @@ export default function Home({
                 </section>
             )}
 
-            {/* ── Hero Slideshow ────────────────────────────────────────── */}
-            {!showOnlyFavorites && <HeroSlideshow heroSlides={heroSlides} th={th} rootRef={rootRef} />}
+            {/* ── Home Search ─────────────────────────────────────────── */}
+            {!showOnlyFavorites && <HomeSearch lang={lang} restaurants={restaurants} />}
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (

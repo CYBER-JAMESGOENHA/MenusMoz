@@ -47,7 +47,11 @@ const Navbar: React.FC<NavbarProps> = ({
         </Link>
 
         {/* 2. Barra de Busca (Centro - O maior foco) */}
-        <NavbarSearch lang={lang} />
+        {(!isScrolled && location.pathname === '/') ? (
+          <div className="flex-1" />
+        ) : (
+          <NavbarSearch lang={lang} />
+        )}
 
         {/* 3. Controles (Direita - Transacional) */}
         <div className="flex items-center gap-2 md:gap-3">
