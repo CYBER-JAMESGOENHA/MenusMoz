@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
 import { translations } from '../../translations';
-import { formatClosingTime } from '../../utils/timeUtils';
 
 interface RestaurantCardProps {
     restaurant: any;
@@ -51,17 +50,31 @@ export const RestaurantCard = memo(({
         return `${distance.toFixed(1)} km`;
     }, [userLatitude, userLongitude, restaurant.latitude, restaurant.longitude]);
 
-    const closingTime = useMemo(() => formatClosingTime(restaurant.hours), [restaurant.hours]);
-
     const area = useMemo(() => {
         const source = restaurant.address || restaurant.location || '';
         const parts = source.split(',').map((p: string) => p.trim());
-        const knownAreas = ['Polana', 'Baixa', 'Sommerschield', 'Triunfo', 'Costa do Sol'];
+        const knownAreas = ['Polana', 'Baixa', 'Sommerschield', 'Triunfo', 'Costa do Sol', 'Matola', 'Liberdade'];
         for (const known of knownAreas) {
             if (source.includes(known)) return known;
         }
         return parts[0] || restaurant.city || 'Maputo';
     }, [restaurant.address, restaurant.location, restaurant.city]);
+
+    const descriptor = useMemo(() => {
+        if (restaurant.identity_text) return restaurant.identity_text;
+        if (restaurant.tags && restaurant.tags.length > 0) {
+            const extraTag = restaurant.tags.find((t: any) => t !== restaurant.cuisine);
+            if (extraTag) return extraTag;
+        }
+        if (restaurant.features && restaurant.features.length > 0) return restaurant.features[0];
+        
+        const fallbacks = [
+            'Hidden Gem', 'Local Favorite', 'Sunset Spot', 
+            'Rooftop Dining', 'Authentic Taste', 'Curated Experience',
+            'City Classic', 'Modern Discovery'
+        ];
+        return fallbacks[Number(restaurant.id) % fallbacks.length];
+    }, [restaurant.id, restaurant.identity_text, restaurant.tags, restaurant.features, restaurant.cuisine]);
 
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
     const logoUrl = restaurant.logo_url || restaurant.logo;
@@ -188,19 +201,15 @@ export const RestaurantCard = memo(({
                 </div>
 
                 {/* Editorial Metadata Row */}
-                <div className="mt-2.5 flex items-center gap-2 text-[10px] sm:text-[11px]">
-                    <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500">
-                        <MapPin size={11} strokeWidth={1.5} className="flex-shrink-0" />
-                        <span className="font-medium">{area}</span>
+                <div className="mt-2.5 flex items-center gap-2.5 text-[10px] sm:text-[11px] whitespace-nowrap overflow-hidden">
+                    <div className="flex items-center gap-1.5 text-neutral-400 dark:text-neutral-500 shrink-0">
+                        <MapPin size={11} strokeWidth={1.5} className="opacity-70" />
+                        <span className="font-medium tracking-tight">{area}</span>
                     </div>
-                    {closingTime && (
-                        <>
-                            <span className="text-neutral-200 dark:text-neutral-800 font-light">•</span>
-                            <span className="font-medium text-neutral-700 dark:text-neutral-300">
-                                {lang === 'pt' ? 'Aberto até às' : 'Open until'} {closingTime}
-                            </span>
-                        </>
-                    )}
+                    <span className="text-neutral-200 dark:text-neutral-800 font-light shrink-0">•</span>
+                    <span className="font-medium text-neutral-500/80 dark:text-neutral-400/70 truncate tracking-tight">
+                        {descriptor}
+                    </span>
                 </div>
 
                 {/* CTA Button — Premium Touchpoint */}
