@@ -35,14 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({
       className={`fixed z-[1000] left-4 right-4 md:left-8 md:right-8 transition-all duration-700 ${isScrolled ? 'top-1 md:top-1.5' : 'top-2 md:top-2.5'} ${isRestaurantDetail ? 'hidden md:block' : ''}`}
       aria-label="Navegação principal"
     >
-      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2.5rem] px-4 md:px-6 py-2 ${isScrolled ? 'glass shadow-premium-lg' : 'bg-transparent'}`}>
+      <div className={`mx-auto max-w-7xl flex items-center justify-between transition-all duration-700 rounded-[2.5rem] px-4 md:px-6 py-1.5 ${isScrolled ? 'glass shadow-premium-lg' : 'bg-transparent'}`}>
 
         {/* 1. Branding (Esquerda - Comprimido) */}
         <Link to="/" className="flex items-center gap-2 group transition-all shrink-0">
-          <div className="w-12 h-12 md:w-11 md:h-11 bg-primary shrink-0 rounded-[14px] md:rounded-2xl flex items-center justify-center text-white font-black text-xl md:shadow-primary-glow group-hover:scale-105 transition-transform" aria-hidden="true">L</div>
+          <div className="w-10 h-10 md:w-9 md:h-9 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-black text-lg md:shadow-primary-glow group-hover:scale-105 transition-transform" aria-hidden="true">L</div>
           <div className="hidden xl:flex flex-col leading-none">
-            <span className="font-black text-lg tracking-tighter text-text-main uppercase">Locais Moz</span>
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-primary italic">Marketplace</span>
+            <span className="font-black text-base tracking-tighter text-text-main uppercase">Locais Moz</span>
+            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-primary italic">Marketplace</span>
           </div>
         </Link>
 

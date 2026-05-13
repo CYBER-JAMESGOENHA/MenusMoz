@@ -76,76 +76,117 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
         }
     };
 
+    const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
+    const featuredLines = lang === 'pt' ? [
+        { label: 'Destaque de hoje', name: 'Bel Piatto', detail: 'Rooftop Dining' },
+        { label: 'Tendência em Maputo', name: 'Mercado 28', detail: 'Conceito Urbano' },
+        { label: 'Favorito da semana', name: 'Iypslon', detail: 'Cozinha Moderna' },
+        { label: 'Especial Marisco', name: 'Sabor do Mar', detail: 'Fresco e Autêntico' }
+    ] : [
+        { label: 'Featured today', name: 'Bel Piatto', detail: 'Rooftop Dining' },
+        { label: 'Trending in Maputo', name: 'Mercado 28', detail: 'Urban Concept' },
+        { label: 'This week’s favorite', name: 'Iypslon', detail: 'Modern Cuisine' },
+        { label: 'Seafood spotlight', name: 'Sabor do Mar', detail: 'Fresh & Authentic' }
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setActiveFeaturedIndex((prev) => (prev + 1) % featuredLines.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [featuredLines.length]);
+
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 pt-24 pb-24 relative z-[100]">
+        <div ref={searchRef} className="max-w-4xl mx-auto px-4 pt-20 pb-6 relative z-[100]">
             {/* Background Decorative Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-primary/5 blur-[120px] -z-10 pointer-events-none" />
-            <div className="absolute -top-20 left-1/4 w-64 h-64 bg-moz-yellow/5 blur-[100px] -z-10 pointer-events-none animate-pulse" />
-            <div className="text-center mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                <h1 className="text-3xl md:text-5xl font-display italic font-black text-text-main tracking-tighter mb-4 leading-none uppercase">
-                    {lang === 'pt' ? 'Descubra os Melhores Sabores' : 'Discover the Best Flavors'}
-                </h1>
-                <p className="text-text-dim/60 text-sm md:text-base font-medium tracking-tight uppercase italic">
-                    {lang === 'pt' ? 'Maputo • Matola • E muito mais' : 'Maputo • Matola • And much more'}
-                </p>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-48 bg-primary/5 blur-[100px] -z-10 pointer-events-none" />
+            
+            {/* Compact Editorial Featured Line */}
+            <div className="flex justify-center mb-8 h-6">
+                <div className="relative w-full flex justify-center">
+                    {featuredLines.map((line, idx) => (
+                        <div
+                            key={idx}
+                            className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
+                                activeFeaturedIndex === idx 
+                                ? 'opacity-100 translate-y-0' 
+                                : 'opacity-0 translate-y-4 pointer-events-none'
+                            }`}
+                        >
+                            <div className="flex items-center gap-2 group/feat cursor-pointer">
+                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-text-dim/40 italic">
+                                    {line.label}:
+                                </span>
+                                <span className="text-[11px] font-display font-black italic uppercase tracking-tight text-text-main group-hover/feat:text-primary transition-colors">
+                                    {line.name}
+                                </span>
+                                <span className="w-1 h-1 rounded-full bg-primary/30" />
+                                <span className="text-[10px] font-medium text-text-dim/60 italic tracking-wide">
+                                    {line.detail}
+                                </span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div className={`relative flex items-center bg-surface/40 backdrop-blur-3xl border border-border-subtle/50 rounded-[3rem] p-2 transition-all duration-700 ${isFocused ? 'shadow-premium-xl border-primary/30 scale-[1.01]' : 'shadow-premium hover:shadow-premium-lg'}`}>
+            {/* Compact Search Bar */}
+            <div className={`relative flex items-center bg-surface/40 backdrop-blur-3xl border border-border-subtle/50 rounded-[2.5rem] p-1.5 transition-all duration-700 ${isFocused ? 'shadow-premium-xl border-primary/30 scale-[1.01]' : 'shadow-premium hover:shadow-premium-lg'}`}>
                 
                 {/* Section 1: What */}
-                <div className="flex-[1.5] flex flex-col px-6 py-2 border-r border-border-subtle/30 group/what">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-primary mb-0.5 italic">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
-                    <div className="flex items-center gap-3">
-                        <Search size={18} className={`shrink-0 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
+                <div className="flex-[1.5] flex flex-col px-5 py-1 border-r border-border-subtle/30 group/what">
+                    <label className="text-[9px] font-black uppercase tracking-widest text-primary mb-0 italic leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
+                    <div className="flex items-center gap-2.5">
+                        <Search size={16} className={`shrink-0 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
                         <input
                             type="text"
-                            placeholder={lang === 'pt' ? 'Restaurantes, cafés...' : 'Restaurants, cafés...'}
+                            placeholder={lang === 'pt' ? 'Procurar sabores...' : 'Search flavors...'}
                             value={searchQuery}
                             onFocus={() => setIsFocused(true)}
                             onChange={handleSearch}
                             onKeyDown={handleKeyDown}
-                            className="bg-transparent border-none outline-none text-base md:text-lg text-text-main placeholder:text-text-dim/30 w-full font-display font-black italic uppercase tracking-tighter"
+                            className="bg-transparent border-none outline-none text-sm md:text-base text-text-main placeholder:text-text-dim/30 w-full font-display font-black italic uppercase tracking-tighter py-1"
                         />
                     </div>
                 </div>
 
                 {/* Section 2: Where */}
-                <div className="flex-1 hidden md:flex flex-col px-8 py-2 border-r border-border-subtle/30 group/where">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-text-dim/50 mb-0.5 italic">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
+                <div className="flex-1 hidden md:flex flex-col px-6 py-1 border-r border-border-subtle/30 group/where">
+                    <label className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 mb-0 italic leading-none">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
                     <button
                         onClick={handleLocationClick}
-                        className="flex items-center gap-3 w-full text-left group/loc"
+                        className="flex items-center gap-2.5 w-full text-left group/loc py-1"
                     >
-                        <MapPin size={18} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
-                        <span className="text-sm font-black text-text-main/60 uppercase italic tracking-tight truncate">
+                        <MapPin size={16} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
+                        <span className="text-[11px] font-black text-text-main/60 uppercase italic tracking-tight truncate">
                             {lang === 'pt' ? 'Perto de mim' : 'Near me'}
                         </span>
                     </button>
                 </div>
 
                 {/* Section 3: Filter & Action */}
-                <div className="flex items-center gap-3 px-4">
+                <div className="flex items-center gap-2 px-3">
                     <button
-                        className="hidden sm:flex p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/60 hover:text-text-main group/filter"
+                        className="hidden sm:flex p-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/60 hover:text-text-main group/filter"
                         title="Filtros"
                     >
-                        <SlidersHorizontal size={20} className="group-hover/filter:rotate-90 transition-transform duration-500" />
+                        <SlidersHorizontal size={18} className="group-hover/filter:rotate-90 transition-transform duration-500" />
                     </button>
 
                     <button
                         onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-                        className="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-primary-glow hover:scale-105 hover:rotate-[10deg] transition-all duration-500 active:scale-95 shrink-0"
+                        className="flex items-center justify-center w-11 h-11 rounded-full bg-primary text-white shadow-primary-glow hover:scale-105 hover:rotate-[10deg] transition-all duration-500 active:scale-95 shrink-0"
                     >
-                        <Search size={22} strokeWidth={3} />
+                        <Search size={18} strokeWidth={3} />
                     </button>
                 </div>
             </div>
 
             {/* Suggestions Overlay */}
             {suggestions.length > 0 && isFocused && (
-                <div className="absolute top-[calc(100%-2rem)] left-4 right-4 bg-surface/95 backdrop-blur-3xl border border-border-subtle rounded-[2rem] shadow-premium-lg overflow-hidden z-[2000] animate-in fade-in slide-in-from-top-4 duration-500">
-                    <div className="px-8 py-4 bg-primary/5 border-b border-border-subtle">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary italic">
+                <div className="absolute top-[calc(100%-1.5rem)] left-4 right-4 bg-surface/95 backdrop-blur-3xl border border-border-subtle rounded-[2rem] shadow-premium-lg overflow-hidden z-[2000] animate-in fade-in slide-in-from-top-4 duration-500">
+                    <div className="px-8 py-3 bg-primary/5 border-b border-border-subtle">
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary italic">
                             {lang === 'pt' ? 'Sugestões para si' : 'Suggestions for you'}
                         </span>
                     </div>
@@ -158,17 +199,17 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                                 setIsFocused(false);
                                 navigate(`/restaurante/${s.slug}`);
                             }}
-                            className="w-full flex items-center justify-between px-8 py-5 hover:bg-primary/5 transition-all group/item border-b border-border-subtle last:border-0"
+                            className="w-full flex items-center justify-between px-8 py-4 hover:bg-primary/5 transition-all group/item border-b border-border-subtle last:border-0"
                         >
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-full bg-text-main/5 flex items-center justify-center text-text-main group-hover/item:bg-primary/10 group-hover/item:text-primary transition-all">
-                                    <Search size={16} />
+                                <div className="w-8 h-8 rounded-full bg-text-main/5 flex items-center justify-center text-text-main group-hover/item:bg-primary/10 group-hover/item:text-primary transition-all">
+                                    <Search size={14} />
                                 </div>
                                 <div className="text-left">
-                                    <p className="font-bold text-base text-text-main group-hover/item:text-primary transition-colors uppercase tracking-tight">
+                                    <p className="font-bold text-sm text-text-main group-hover/item:text-primary transition-colors uppercase tracking-tight">
                                         {s.name}
                                     </p>
-                                    <p className="text-[10px] text-text-dim/60 uppercase tracking-widest font-black italic">
+                                    <p className="text-[9px] text-text-dim/60 uppercase tracking-widest font-black italic">
                                         {s.type === 'restaurant' ? (lang === 'pt' ? 'Estabelecimento' : 'Restaurant') : `${lang === 'pt' ? 'Prato' : 'Dish'} • ${s.restaurant}`}
                                     </p>
                                 </div>
