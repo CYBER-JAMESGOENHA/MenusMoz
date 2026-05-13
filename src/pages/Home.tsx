@@ -92,8 +92,8 @@ export default function Home({
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
                 <HorizontalCarousel
-                    title="Os Mais Pedidos"
-                    subtitle="Os clássicos que nunca falham"
+                    title={lang === 'pt' ? 'Mais procurados em Maputo' : 'Most popular in Maputo'}
+                    subtitle={lang === 'pt' ? 'Os clássicos que todos adoram' : 'The classics everyone loves'}
                     restaurants={mostOrdered}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}
@@ -133,8 +133,8 @@ export default function Home({
             {/* ── Carousel: Recomendados ────────────────────────────────── */}
             {!showOnlyFavorites && (
                 <HorizontalCarousel
-                    title={th.recommended_title}
-                    subtitle={th.top_picks}
+                    title={lang === 'pt' ? 'Recomendações para si' : 'Personal recommendations'}
+                    subtitle={lang === 'pt' ? 'Descobertas baseadas no seu gosto' : 'Discoveries based on your taste'}
                     restaurants={recommended}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}

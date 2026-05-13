@@ -38,19 +38,19 @@
 :root {
   --bg-color: #FFFFFF;
   --surface-color: #FFFFFF;
-  --text-color: #0A0A0A;
-  --text-dim-color: #4B5563;
-  --border-color: rgba(0, 0, 0, 0.06);
+  --text-color: #1A1A1A;
+  --text-dim-color: #717171;
+  --border-color: rgba(0, 0, 0, 0.05);
   background-color: #FFFFFF;
 }
 
 .dark {
-  --bg-color: #000000;
-  --surface-color: #000000;
-  --text-color: #FDFDFD;
-  --text-dim-color: #9CA3AF;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  --bg-color: #111111;
+  --surface-color: #161616;
+  --text-color: #E5E5E5;
+  --text-dim-color: #737373;
+  --border-color: rgba(255, 255, 255, 0.04);
+  --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 }
 
 @layer base {
@@ -75,8 +75,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-black italic tracking-tighter uppercase;
-    line-height: 0.9;
+    @apply font-display font-bold italic tracking-tight;
+    line-height: 1.1;
   }
 
   /* Improved accessibility outlines */
@@ -93,28 +93,28 @@
   .glass {
     @apply backdrop-blur-3xl border border-border-subtle transition-all duration-700;
     background-color: var(--surface-color); /* Fallback */
-    background-color: color-mix(in srgb, var(--surface-color), transparent 15%);
+    background-color: color-mix(in srgb, var(--surface-color), transparent 10%);
   }
 
   .dark .glass {
-    background-color: color-mix(in srgb, var(--surface-color), transparent 40%);
+    background-color: color-mix(in srgb, var(--surface-color), transparent 30%);
   }
 
   /* High-Impact Brand Typography */
   .title-reveal {
-    @apply font-display font-black italic tracking-tighter uppercase leading-[0.85];
+    @apply font-display font-bold italic tracking-tight leading-tight;
   }
 
   .label-brand {
-    @apply text-[10px] font-black uppercase tracking-[0.5em] italic;
+    @apply text-[10px] font-bold uppercase tracking-[0.3em] italic;
   }
 
   .shadow-premium {
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.12), 0 18px 36px -18px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 4px 12px -4px rgba(0, 0, 0, 0.02);
   }
 
   .dark .shadow-premium {
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 18px 36px -18px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.2);
   }
 
   /* ── Botão Login — Bandeira de Moçambique ──────────────────────────────── */
