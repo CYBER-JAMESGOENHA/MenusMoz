@@ -256,23 +256,42 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
                                 className={`netflix-card group ${isExpanded ? 'expanded' : ''}`}
                                 data-category-type={getCategoryType(cat.name)}
                               >
-                                <h4 className="netflix-card-title">{cat.name}</h4>
+                                <div className="netflix-card-header">
+                                  <div className="netflix-card-info">
+                                    <span className="netflix-card-index">0{idx + 1}</span>
+                                    <h4 className="netflix-card-title">{cat.name}</h4>
+                                  </div>
+                                  <div className="netflix-card-count">
+                                    {cat.items?.length || 0}
+                                    <span className="text-[8px] opacity-40 ml-1">Itens</span>
+                                  </div>
+                                </div>
+
                                 {isExpanded && (
                                   <div className="netflix-card-preview">
                                     <div className="preview-items-list">
-                                      {cat.items?.slice(0, 4).map((item: MenuItem, i: number) => (
-                                        <div key={i} className="preview-item">{item.name}</div>
+                                      {cat.items?.slice(0, 3).map((item: MenuItem, i: number) => (
+                                        <div key={i} className="preview-item">
+                                          <div className="preview-item-dot" />
+                                          <span className="preview-item-name">{item.name}</span>
+                                          <span className="preview-item-price">{item.price}</span>
+                                        </div>
                                       ))}
-                                      {(cat.items?.length || 0) > 4 && (
-                                        <div className="preview-item text-text-dim/40">+{(cat.items?.length || 0) - 4} mais</div>
+                                      {(cat.items?.length || 0) > 3 && (
+                                        <div className="preview-item-more">
+                                          Descobrir +{(cat.items?.length || 0) - 3} opções exclusivas
+                                        </div>
                                       )}
                                     </div>
-                                    <button
-                                      onClick={(e) => { e.stopPropagation(); navigateTo('dishes', selectedGroup, cat); }}
-                                      className="netflix-cta-button"
-                                    >
-                                      Ver Pratos <ChevronRight size={12} />
-                                    </button>
+                                    <div className="netflix-card-footer">
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); navigateTo('dishes', selectedGroup, cat); }}
+                                        className="netflix-cta-button"
+                                      >
+                                        <span>Explorar Seleção</span>
+                                        <ChevronRight size={14} strokeWidth={3} />
+                                      </button>
+                                    </div>
                                   </div>
                                 )}
                               </button>
