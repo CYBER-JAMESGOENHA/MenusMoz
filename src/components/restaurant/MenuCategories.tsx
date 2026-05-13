@@ -69,25 +69,36 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
 );
 
 const MenuItemList = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: () => void, onRemove: () => void, qty: number }) => (
-  <div className={`group flex items-center justify-between gap-4 py-3 px-3 rounded-xl transition-all duration-300 cursor-pointer ${qty > 0 ? 'bg-primary/5 border border-primary/20 shadow-sm' : 'border-b border-border-subtle/50 hover:bg-surface'}`}>
+  <div className={`group relative flex items-start justify-between gap-4 py-4 px-1 transition-all duration-500 ${qty > 0 ? 'bg-primary/[0.03]' : 'hover:bg-primary/[0.01]'}`}>
     <div className="flex-1 min-w-0">
-      <h4 className="font-bold text-text-main text-[15px] leading-tight">{item.name}</h4>
-      {(item.desc || item.description) && <p className="text-text-dim text-xs mt-0.5 leading-relaxed line-clamp-2">{item.desc || item.description}</p>}
+      <div className="flex items-baseline gap-2 mb-0.5">
+        <h4 className="font-display font-bold text-text-main text-[16px] tracking-tight">{item.name}</h4>
+        <div className="flex-1 border-b border-dotted border-text-dim/10 mx-1" />
+        <span className="font-display font-black text-primary text-[15px] italic tracking-tighter shrink-0">{item.price}</span>
+      </div>
+      {(item.desc || item.description) && (
+        <p className="text-text-dim text-[11px] leading-relaxed italic opacity-70 font-medium pr-8">
+          {item.desc || item.description}
+        </p>
+      )}
     </div>
-    <div className="flex items-center gap-3 shrink-0">
-      <span className="font-black text-primary text-[15px]">{item.price}</span>
+    
+    <div className="shrink-0 pt-0.5">
       {qty === 0 ? (
-        <button onClick={onAdd} className="px-3 py-1.5 bg-primary text-white font-black text-xs rounded-lg hover:bg-primary/90 transition-all duration-200 active:scale-95">
-          +
+        <button 
+          onClick={onAdd} 
+          className="w-8 h-8 rounded-full bg-surface border border-border-subtle flex items-center justify-center text-text-dim hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 active:scale-90"
+        >
+          <Plus size={14} />
         </button>
       ) : (
-        <div className="flex items-center gap-1 bg-primary rounded-lg p-0.5">
-          <button onClick={onRemove} className="w-7 h-7 rounded-md bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform">
-            {item.qty === 1 ? <Trash2 size={10} /> : <Minus size={10} />}
+        <div className="flex flex-col items-center gap-1.5 bg-surface border border-primary/20 rounded-full p-1 shadow-sm animate-in fade-in zoom-in duration-300">
+          <button onClick={onAdd} className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white active:scale-90 transition-transform">
+            <Plus size={12} />
           </button>
-          <span className="w-5 text-center font-black text-xs text-white">{qty}</span>
-          <button onClick={onAdd} className="w-7 h-7 rounded-md bg-white flex items-center justify-center text-primary shadow-sm active:scale-90 transition-transform">
-            <Plus size={10} />
+          <span className="font-display font-black text-[11px] text-primary tabular-nums">{qty}</span>
+          <button onClick={onRemove} className="w-7 h-7 rounded-full bg-bg border border-border-subtle flex items-center justify-center text-text-dim active:scale-90 transition-transform">
+            {qty === 1 ? <Trash2 size={10} /> : <Minus size={10} />}
           </button>
         </div>
       )}
@@ -128,7 +139,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [view, setView] = useState<MenuView>('entry');
   const [selectedGroup, setSelectedGroup] = useState<MenuGroup | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
-  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [activeSubId, setActiveSubId] = useState<string | null>(null);
 
   const { addToCart, removeFromCart, clearCart, getItemQty, totalItems, grandTotal, setRestaurantContext, cart } = useCart();
 
@@ -144,6 +155,23 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   }, [restaurant, restaurantName, whatsapp, setRestaurantContext]);
 
   const viewContainerRef = useRef<HTMLDivElement>(null);
+  const navScrollRef = useRef<HTMLDivElement>(null);
+  const activePillRef = useRef<HTMLButtonElement>(null);
+
+  // Auto-scroll active pill into view
+  useEffect(() => {
+    if (activeSubId && navScrollRef.current && activePillRef.current) {
+      const container = navScrollRef.current;
+      const pill = activePillRef.current;
+      
+      const scrollLeft = pill.offsetLeft - (container.offsetWidth / 2) + (pill.offsetWidth / 2);
+      
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  }, [activeSubId]);
 
   const getSubcategorySection = (name: string): string => {
     const n = name.toLowerCase();
@@ -172,12 +200,23 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   };
 
   const navigateTo = (newView: MenuView, group: MenuGroup | null = null, cat: MenuCategory | null = null) => {
+    // If we're already in subcategory view and just changing category, do a smoother transition
+    if (view === 'subcategory' && newView === 'subcategory' && group === selectedGroup && cat) {
+      setSelectedCategory(cat);
+      setActiveSubId(cat.name);
+      return;
+    }
+
     if (!viewContainerRef.current) {
       setView(newView);
       if (group !== undefined) setSelectedGroup(group);
-      if (cat !== undefined) setSelectedCategory(cat);
+      if (cat !== undefined) {
+        setSelectedCategory(cat);
+        setActiveSubId(cat.name);
+      }
       return;
     }
+
     gsap.to(viewContainerRef.current, {
       opacity: 0,
       y: 8,
@@ -186,8 +225,17 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
       onComplete: () => {
         setView(newView);
         if (group !== undefined) setSelectedGroup(group);
-        if (cat !== undefined) setSelectedCategory(cat);
-        setExpandedCard(null);
+        
+        // When going to subcategory view, default to first category if none provided
+        if (newView === 'subcategory' && group && !cat) {
+          const firstCat = groupedMenu[group][0];
+          setSelectedCategory(firstCat);
+          setActiveSubId(firstCat?.name || null);
+        } else if (cat !== undefined) {
+          setSelectedCategory(cat);
+          setActiveSubId(cat?.name || null);
+        }
+
         gsap.fromTo(viewContainerRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
       }
     });
@@ -223,184 +271,81 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
           </div>
         )}
 
-        {/* LEVEL 2 — Subcategories (RETHINK: Split Editorial Layout) */}
+        {/* LEVEL 2 — Horizontal Subcategory Navigation & Dishes */}
         {view === 'subcategory' && selectedGroup && (
-          <div className="subcategory-editorial-layout">
-            {/* LEFT SIDE: Sticky Editorial Navigation */}
-            <aside className="editorial-nav-column">
-              <div className="editorial-nav-sticky">
-                <button
-                  onClick={() => navigateTo('entry', null)}
-                  className="editorial-back-link group"
-                >
-                  <ChevronLeft size={14} className="transition-transform group-hover:-translate-x-1" />
-                  <span>Menu Principal</span>
-                </button>
-
-                <div className="editorial-context">
-                  <span className="editorial-context-label">Coleção</span>
-                  <h2 className="editorial-context-title">{selectedGroup}</h2>
-                </div>
-
-                <nav className="editorial-nav-list">
-                  {(() => {
-                    const sections = getSubcategorySections(groupedMenu[selectedGroup]);
-                    let globalIdx = 0;
-                    return SECTION_ORDER.filter(s => sections[s]?.length > 0).map(section => (
-                      <div key={section} className="editorial-nav-section">
-                        <span className="editorial-nav-section-title">{section}</span>
-                        {sections[section].map((cat) => {
-                          globalIdx++;
-                          const isExpanded = expandedCard === cat.name;
-                          return (
-                            <button
-                              key={cat.name}
-                              onClick={() => {
-                                setExpandedCard(isExpanded ? null : cat.name);
-                                // Optional: scroll to the element
-                              }}
-                              className={`editorial-nav-item ${isExpanded ? 'active' : ''}`}
-                            >
-                              <span className="nav-item-index">{globalIdx < 10 ? `0${globalIdx}` : globalIdx}</span>
-                              <span className="nav-item-name">{cat.name}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    ));
-                  })()}
-                </nav>
-              </div>
-            </aside>
-
-            {/* RIGHT SIDE: Modular Editorial Grid */}
-            <main className="editorial-content-column">
-              <div className="modular-grid">
-                {(() => {
-                  const sections = getSubcategorySections(groupedMenu[selectedGroup]);
-                  let globalIdx = 0;
-                  return SECTION_ORDER.filter(s => sections[s]?.length > 0).flatMap(section => {
-                    return sections[section].map((cat: MenuCategory) => {
-                      globalIdx++;
-                      const isExpanded = expandedCard === cat.name;
-                      const itemsCount = cat.items?.length || 0;
-                      
-                      // Dynamic modular sizing logic
-                      let blockSize = 'standard';
-                      if (itemsCount > 8) blockSize = 'featured';
-                      else if (globalIdx % 5 === 0) blockSize = 'wide';
-                      else if (globalIdx % 3 === 0) blockSize = 'tall';
-
-                      return (
-                        <div 
-                          key={cat.name} 
-                          className={`modular-block-wrapper ${blockSize} ${isExpanded ? 'is-expanded' : ''}`}
-                        >
-                          <button
-                            onClick={() => setExpandedCard(isExpanded ? null : cat.name)}
-                            className={`modular-block group ${isExpanded ? 'expanded' : ''}`}
-                            data-category-type={getCategoryType(cat.name)}
-                          >
-                            <div className="block-header">
-                              <div className="block-meta">
-                                <span className="block-index">0{globalIdx}</span>
-                                <span className="block-count">{itemsCount} Escolhas</span>
-                              </div>
-                              <h4 className="block-title">{cat.name}</h4>
-                            </div>
-
-                            <div className="block-preview-area">
-                              <div className="preview-mini-list">
-                                {cat.items?.slice(0, isExpanded ? 5 : 2).map((item, i) => (
-                                  <div key={i} className="preview-mini-item">
-                                    <span className="mini-item-name">{item.name}</span>
-                                    {isExpanded && <span className="mini-item-dots" />}
-                                    {isExpanded && <span className="mini-item-price">{item.price}</span>}
-                                  </div>
-                                ))}
-                              </div>
-                              
-                              <div className="block-cta-area">
-                                <button
-                                  onClick={(e) => { e.stopPropagation(); navigateTo('dishes', selectedGroup, cat); }}
-                                  className="block-explore-btn"
-                                >
-                                  <span>Explorar</span>
-                                  <ChevronRight size={14} />
-                                </button>
-                              </div>
-                            </div>
-                            
-                            {/* Decorative background element */}
-                            <div className="block-bg-ornament" />
-                          </button>
-                        </div>
-                      );
-                    });
-                  });
-                })()}
-              </div>
-            </main>
-          </div>
-        )}
-
-        {/* LEVEL 3 — Dishes */}
-        {view === 'dishes' && selectedCategory && (
-          <div className="animate-in fade-in duration-300">
-            {/* Unified nav: back + breadcrumb */}
-            <div className="flex items-center gap-2 mb-4 pb-4 border-b border-border-subtle/50">
+          <div className="menu-experience-view">
+            {/* Top Navigation Bar (Horizontal Scroll) */}
+            <div className="subcategory-nav-wrapper">
               <button
-                onClick={() => navigateTo('subcategory', selectedGroup)}
-                className="flex items-center gap-1.5 text-primary font-black uppercase tracking-widest text-[9px] hover:opacity-60 transition-opacity"
+                onClick={() => navigateTo('entry', null)}
+                className="nav-back-button"
               >
-                <ChevronLeft size={12} /> {selectedGroup}
+                <ChevronLeft size={16} />
               </button>
-              <span className="text-text-dim/30 text-[9px]">/</span>
-              <span className="text-text-main font-black uppercase tracking-widest text-[9px]">{selectedCategory.name}</span>
-            </div>
-
-            <div className="mb-1">
-              <div className="flex items-baseline justify-between">
-                <h2 className="text-xl font-display font-black italic uppercase tracking-tighter text-text-main">{selectedCategory.name}</h2>
-                <p className="text-[9px] font-black uppercase tracking-widest text-text-dim/60">{selectedCategory.items?.length || 0} itens</p>
-              </div>
-            </div>
-
-            {/* Dish list */}
-            {selectedCategory.items && selectedCategory.items.length > 0 && (
-              <div className="menu-list-container">
-                {selectedCategory.items.map((item, i) => (
-                  <MenuItemList
-                    key={i}
-                    item={item}
-                    qty={getItemQty(item.name, selectedCategory.name)}
-                    onAdd={() => addToCart({ ...item, categoryName: selectedCategory.name })}
-                    onRemove={() => removeFromCart(item.name, selectedCategory.name)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Sub-subcategories */}
-            {selectedCategory.subcategories?.filter(sub => sub.name.toLowerCase() !== 'geral').map((sub, i) => (
-              <div key={i} className="mt-6 pt-5 border-t border-border-subtle/30">
-                <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-sm font-bold text-text-main tracking-tight uppercase italic">{sub.name}</h3>
-                  <div className="flex-1 h-px bg-border-subtle/20" />
+              
+              <div className="subcategory-nav-scroll-container">
+                <div ref={navScrollRef} className="subcategory-nav-scroll">
+                  {groupedMenu[selectedGroup].map((cat) => (
+                    <button
+                      key={cat.name}
+                      ref={activeSubId === cat.name ? activePillRef : null}
+                      onClick={() => navigateTo('subcategory', selectedGroup, cat)}
+                      className={`subcategory-nav-pill ${activeSubId === cat.name ? 'active' : ''}`}
+                    >
+                      <span className="pill-text">{cat.name}</span>
+                      <div className="pill-indicator" />
+                    </button>
+                  ))}
                 </div>
+                <div className="scroll-edge-fade-left" />
+                <div className="scroll-edge-fade-right" />
+              </div>
+            </div>
+
+            {/* Content Area: Active Category Dishes */}
+            {selectedCategory && (
+              <div key={selectedCategory.name} className="category-content-fade-in">
+                <div className="category-header-minimal">
+                  <div className="header-line" />
+                  <h3 className="category-title-serif">{selectedCategory.name}</h3>
+                  <p className="category-count-meta">{selectedCategory.items?.length || 0} Especialidades</p>
+                </div>
+
+                {/* Dish List */}
                 <div className="menu-list-container">
-                  {(sub.items || []).map((item, j) => (
+                  {selectedCategory.items?.map((item, i) => (
                     <MenuItemList
-                      key={j}
+                      key={i}
                       item={item}
-                      qty={getItemQty(item.name, sub.name)}
-                      onAdd={() => addToCart({ ...item, categoryName: sub.name })}
-                      onRemove={() => removeFromCart(item.name, sub.name)}
+                      qty={getItemQty(item.name, selectedCategory.name)}
+                      onAdd={() => addToCart({ ...item, categoryName: selectedCategory.name })}
+                      onRemove={() => removeFromCart(item.name, selectedCategory.name)}
                     />
                   ))}
                 </div>
+
+                {/* Sub-subcategories if any */}
+                {selectedCategory.subcategories?.filter(sub => sub.name.toLowerCase() !== 'geral').map((sub, i) => (
+                  <div key={i} className="sub-section-container">
+                    <div className="sub-section-header">
+                      <h4 className="sub-section-title">{sub.name}</h4>
+                      <div className="sub-section-divider" />
+                    </div>
+                    <div className="menu-list-container">
+                      {(sub.items || []).map((item, j) => (
+                        <MenuItemList
+                          key={j}
+                          item={item}
+                          qty={getItemQty(item.name, sub.name)}
+                          onAdd={() => addToCart({ ...item, categoryName: sub.name })}
+                          onRemove={() => removeFromCart(item.name, sub.name)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         )}
       </div>
