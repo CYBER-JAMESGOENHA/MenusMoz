@@ -20,7 +20,7 @@ export class PaymentManager {
 
     try {
       // 2. Transfere a complexidade para o provider injetado
-      console.log(`Iniciando checkout de ${amount}MTn para ${phone}...`);
+      if (import.meta.env.DEV) console.log(`Iniciando checkout de ${amount}MTn para ${phone}...`);
       const response = await this.provider.initiatePayment(phone, amount);
       
       return response;

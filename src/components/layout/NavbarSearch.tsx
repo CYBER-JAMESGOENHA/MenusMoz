@@ -30,7 +30,6 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
 
   const fetchLocationFromProfile = async (userId: string) => {
     if (!isSupabaseConfigured || !supabase) {
-      console.log('Supabase not configured, skipping profile fetch');
       return;
     }
     const { data, error } = await supabase
@@ -39,7 +38,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
       .eq('id', userId)
       .single();
     if (error) {
-      console.log('Error fetching location from profile:', error);
+      if (import.meta.env.DEV) console.log('Error fetching location from profile:', error);
       return;
     }
     if (data?.preferred_location) {
@@ -56,30 +55,29 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   const detectAndSaveLocation = async (): Promise<string> => {
     return new Promise((resolve) => {
       if (!navigator.geolocation) {
-        console.log('Geolocation not supported');
         resolve('Maxaquene');
         return;
       }
       setIsLoadingLocation(true);
-      console.log('Requesting geolocation...');
+      if (import.meta.env.DEV) console.log('Requesting geolocation...');
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          console.log('Got position:', position.coords.latitude, position.coords.longitude);
+          if (import.meta.env.DEV) console.log('Got position:', position.coords.latitude, position.coords.longitude);
           try {
             const response = await fetch(
               `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=pt`
             );
             const data = await response.json();
-            console.log('Nominatim response:', data);
+            if (import.meta.env.DEV) console.log('Nominatim response:', data);
             let city = 'Minha Localização';
             if (data.address) {
               city = data.address.city || data.address.town || data.address.village || data.address.municipality || 'Minha Localização';
             }
-            console.log('Detected city:', city);
+            if (import.meta.env.DEV) console.log('Detected city:', city);
             setLocation(city);
             
             if (isSupabaseConfigured && supabase && user) {
-              console.log('Saving location to profile for user:', user.id);
+              if (import.meta.env.DEV) console.log('Saving location to profile for user:', user.id);
               await supabase
                 .from('profiles')
                 .update({
@@ -99,7 +97,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
           }
         },
         (err) => {
-          console.log('Geolocation error:', err.message);
+          if (import.meta.env.DEV) console.log('Geolocation error:', err.message);
           setIsLoadingLocation(false);
           resolve('Maxaquene');
         },

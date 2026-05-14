@@ -66,7 +66,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     url: window.location.href
                 });
             } catch (err) {
-                console.log('Share error:', err);
+                if (import.meta.env.DEV) console.log('Share error:', err);
             }
         }
     };
