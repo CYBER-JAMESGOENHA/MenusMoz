@@ -39,7 +39,12 @@ const CART_METADATA_KEY = 'menusmoz_cart_metadata';
 
 const parsePrice = (priceStr: string): number => {
   if (!priceStr) return 0;
-  const cleaned = priceStr.replace(/[^\d,.]/g, '').replace(',', '.');
+  let cleaned = priceStr.replace(/MT|MZN/gi, '').trim();
+  if (cleaned.includes(',')) {
+    cleaned = cleaned.replace(/\./g, '').replace(',', '.');
+  } else {
+    cleaned = cleaned.replace(/\./g, '');
+  }
   return parseFloat(cleaned) || 0;
 };
 
