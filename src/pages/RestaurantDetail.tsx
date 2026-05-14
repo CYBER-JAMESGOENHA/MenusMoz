@@ -374,7 +374,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     </section>
 
                     {/* --- Events (Lightweight) --- */}
-                    {(restaurant.events?.length > 0 || restaurant.specials?.length > 0) && (
+                    {((restaurant.events && restaurant.events.length > 0) || (restaurant.specials && restaurant.specials.length > 0)) && (
                         <section>
                             <div className="flex items-center gap-3 mb-5">
                                 <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">

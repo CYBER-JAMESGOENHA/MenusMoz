@@ -40,6 +40,9 @@ export interface Restaurant {
   identity_text?: string;
   location?: string;
   hours?: any;
+  hours_weekday?: string;
+  hours_saturday?: string;
+  hours_sunday?: string;
   // New rich fields
   story?: string;
   dress_code?: string;
