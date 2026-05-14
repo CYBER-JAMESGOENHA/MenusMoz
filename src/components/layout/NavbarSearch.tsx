@@ -156,14 +156,14 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
 
   return (
     <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12">
-      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:shadow-premium-lg ring-primary/5 focus-within:ring-2 focus-within:border-primary/30 h-14">
+      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:shadow-premium-lg ring-primary/5 focus-within:ring-2 focus-within:border-primary/30 h-11">
         
         {/* Location Selector (Left) */}
         <button
           onClick={() => detectAndSaveLocation()}
-          className="flex items-center gap-2 h-full px-6 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
+          className="flex items-center gap-2 h-full px-4 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
         >
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
+          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
             {isLoadingLocation ? (
               <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             ) : (
@@ -171,33 +171,33 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
             )}
           </div>
           <div className="flex flex-col items-start leading-none">
-            <span className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
+            <span className="text-[8px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
             <div className="flex items-center gap-1">
-              <span className="text-xs font-black text-text-main truncate max-w-[80px] uppercase italic">{location}</span>
-              <ChevronDown size={12} className="text-primary" />
+              <span className="text-[11px] font-black text-text-main truncate max-w-[80px] uppercase italic">{location}</span>
+              <ChevronDown size={11} className="text-primary" />
             </div>
           </div>
         </button>
 
         {/* Search Field (Rest) */}
         <div className="flex-1 flex items-center px-4 relative">
-          <Search size={18} className="text-text-dim/40 mr-3" />
+          <Search size={14} className="text-text-dim/40 mr-3" />
           <input
             type="text"
             placeholder={t.hero?.search_placeholder || 'Procure por pratos ou restaurantes'}
             value={searchQuery}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}
-            className="bg-transparent border-none outline-none text-sm font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
+            className="bg-transparent border-none outline-none text-[13px] font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
           />
           
           {/* Magnifying Glass Indicator or Button */}
           {searchQuery && (
             <button 
               onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-              className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2"
+              className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2"
             >
-              <Search size={16} strokeWidth={3} />
+              <Search size={14} strokeWidth={3} />
             </button>
           )}
         </div>

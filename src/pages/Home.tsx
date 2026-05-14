@@ -74,12 +74,12 @@ export default function Home({
 
             {/* ── Favorites header ─────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="pt-8 pb-section px-4 text-center">
+                <section className="pt-1 pb-3 px-4 text-center">
                     <div className="max-w-7xl mx-auto">
-                        <span className="inline-block bg-primary/10 text-primary px-5 py-1.5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] mb-6">
+                        <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             ❤️ {lang === 'pt' ? 'Os teus favoritos' : 'Your Favorites'}
                         </span>
-                        <h1 className="text-4xl md:text-6xl mb-4 leading-[0.9] tracking-tighter text-text-main font-display italic">
+                        <h1 className="text-text-main">
                             {lang === 'pt' ? 'Os teus' : 'Your'} <span className="text-primary italic">{lang === 'pt' ? 'Favoritos' : 'Favorites'}</span>
                         </h1>
                     </div>
@@ -108,8 +108,8 @@ export default function Home({
 
             {/* ── Favorites Grid ────────────────────────────────────────── */}
             {showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 pb-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+                <section className="max-w-7xl mx-auto px-4 pb-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
                         {filteredRestaurants.length === 0
                             ? <EmptyFavorites lang={lang} />
                             : filteredRestaurants.map(rest => (

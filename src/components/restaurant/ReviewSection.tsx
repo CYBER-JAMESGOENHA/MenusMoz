@@ -52,7 +52,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
     const avatarUrl = review.avatar || review.profiles?.avatar_url;
 
     return (
-        <div className="bg-surface border border-border-subtle rounded-[2rem] p-8 flex flex-col gap-6 hover:shadow-premium transition-all duration-500 group relative overflow-hidden">
+        <div className="bg-surface border border-border-subtle rounded-3xl p-6 flex flex-col gap-5 hover:shadow-premium transition-all duration-500 group relative overflow-hidden">
             <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-full -mr-8 -mt-8 opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="flex items-start justify-between gap-3">
@@ -77,9 +77,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
                         </div>
                     )}
                     <div>
-                        <p className="font-black text-text-main text-base uppercase tracking-tight italic">{displayName}</p>
+                        <p className="font-extrabold text-text-main text-[15px] tracking-tight">{displayName}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-[9px] text-green-600 font-black uppercase tracking-widest bg-green-50 px-2 py-0.5 rounded-md border border-green-100">
+                            <span className="text-[8px] text-green-600 font-extrabold uppercase tracking-widest bg-green-50 px-2 py-0.5 rounded-md border border-green-100">
                                 Diner Verificado
                             </span>
                         </div>
@@ -93,18 +93,18 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
             </div>
             
             <div className="relative">
-                <p className="text-text-dim text-base leading-relaxed italic font-medium relative z-10">
+                <p className="text-text-dim text-[14px] leading-relaxed font-medium opacity-80">
                     "{review.comment}"
                 </p>
             </div>
 
             {/* Simulated Owner Response */}
             {review.id === (typeof review.id === 'number' ? review.id : 0) && (
-                <div className="mt-2 pl-6 border-l-2 border-primary/20 py-2 space-y-2">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                        <Users size={12} /> Resposta do Proprietário
+                <div className="mt-1 pl-4 border-l-2 border-primary/20 py-1 space-y-1">
+                    <p className="text-[9px] font-extrabold uppercase tracking-widest text-primary flex items-center gap-2">
+                        <Users size={10} /> Resposta do Proprietário
                     </p>
-                    <p className="text-sm text-text-dim/80 font-medium italic">
+                    <p className="text-[13px] text-text-dim/70 font-medium">
                         "Obrigado pela sua visita e pelo feedback positivo. Esperamos vê-lo(a) novamente em breve!"
                     </p>
                 </div>
@@ -177,22 +177,22 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ restaurant, user, 
     return (
         <div className="mt-16 pt-12 border-t-2 border-border-subtle/50">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                 <div>
-                    <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter text-text-main italic uppercase leading-none">
+                    <h2 className="text-2xl md:text-3xl font-display font-extrabold tracking-tight text-text-main">
                         {t.reviews_title ?? 'O que dizem os clientes'}
                     </h2>
                     {avgRating && (
                         <div className="flex items-center gap-3 mt-4">
                             <div className="flex items-center gap-1.5 bg-accent/10 px-3 py-1.5 rounded-xl border border-accent/20">
-                                <span className="text-lg font-black text-accent leading-none">{avgRating}</span>
+                                <span className="text-lg font-extrabold text-accent leading-none">{avgRating}</span>
                                 <div className="flex items-center">
                                     {[1,2,3,4,5].map(i => (
                                         <Star key={i} size={14} className={i <= Math.round(Number(avgRating)) ? 'text-accent fill-accent' : 'text-text-dim/20'} />
                                     ))}
                                 </div>
                             </div>
-                            <span className="text-xs font-black text-text-dim uppercase tracking-widest pl-2 border-l-2 border-border-subtle">
+                            <span className="text-[10px] font-extrabold text-text-dim uppercase tracking-widest pl-2 border-l-2 border-border-subtle">
                                 {localReviews.length} avaliações
                             </span>
                         </div>
@@ -201,12 +201,12 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ restaurant, user, 
             </div>
 
             {/* Write Review Form */}
-            <div className="glass rounded-[2rem] p-8 mb-12 border border-border-subtle shadow-premium">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                        <Send size={20} />
+            <div className="glass rounded-3xl p-6 mb-10 border border-border-subtle shadow-premium">
+                <div className="flex items-center gap-3 mb-5">
+                    <div className="w-9 h-9 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                        <Send size={18} />
                     </div>
-                    <h3 className="font-black text-lg text-text-main uppercase tracking-tighter italic">
+                    <h3 className="font-extrabold text-[16px] text-text-main tracking-tight">
                         {t.write_review ?? 'Escrever Avaliação'}
                     </h3>
                 </div>
@@ -214,9 +214,9 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ restaurant, user, 
                 {!user ? (
                     <button
                         onClick={onLoginOpen}
-                        className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-2xl font-black text-sm transition-all duration-300 shadow-primary-glow hover:scale-[1.02] active:scale-95"
+                        className="flex items-center gap-3 bg-primary text-white px-6 py-3 rounded-xl font-extrabold text-xs transition-all duration-300 shadow-primary-glow hover:scale-[1.02] active:scale-95"
                     >
-                        <LogIn size={18} />
+                        <LogIn size={16} />
                         {t.review_login ?? 'Inicie sessão para avaliar'}
                     </button>
                 ) : (
@@ -236,8 +236,8 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ restaurant, user, 
                                 onChange={e => setComment(e.target.value)}
                                 placeholder={t.review_placeholder ?? 'Partilhe a sua experiência...'}
                                 disabled={status === 'submitting'}
-                                rows={4}
-                                className="w-full bg-surface/50 border-2 border-border-subtle rounded-2xl px-5 py-4 text-sm text-text-main font-bold placeholder:text-text-dim/40 outline-none focus:border-primary transition-all duration-300 resize-none group-hover:border-primary/30"
+                                rows={3}
+                                className="w-full bg-surface/50 border border-border-subtle rounded-xl px-4 py-3 text-[13px] text-text-main font-medium placeholder:text-text-dim/40 outline-none focus:border-primary transition-all duration-300 resize-none group-hover:border-primary/30"
                             />
                         </div>
 
@@ -245,12 +245,12 @@ export const ReviewSection: React.FC<ReviewSectionProps> = ({ restaurant, user, 
                             <button
                                 type="submit"
                                 disabled={status === 'submitting' || userRating === 0 || !comment.trim()}
-                                className="flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:brightness-110 h-14 active:scale-95 transition-all duration-300 shadow-primary-glow disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed disabled:scale-100"
+                                className="flex items-center gap-2.5 bg-primary text-white px-8 py-3 rounded-xl font-extrabold text-[11px] uppercase tracking-widest hover:brightness-110 h-12 active:scale-95 transition-all duration-300 shadow-primary-glow disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed disabled:scale-100"
                             >
                                 {status === 'submitting' ? (
-                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
-                                    <Send size={18} />
+                                    <Send size={14} />
                                 )}
                                 {status === 'submitting' ? 'A publicar...' : (t.review_submit ?? 'Publicar Avaliação')}
                             </button>

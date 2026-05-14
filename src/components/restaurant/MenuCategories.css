@@ -68,10 +68,10 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 0;
+  padding: 0.5rem 0;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border-subtle);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   margin-left: -1rem;
   margin-right: -1rem;
   padding-left: 1rem;
@@ -165,12 +165,10 @@
 
 .pill-text {
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--color-text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  font-style: italic;
+  letter-spacing: 0.01em;
   transition: color 0.3s;
 }
 
@@ -207,7 +205,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding: 0 1rem;
 }
 
@@ -221,19 +219,18 @@
 
 .category-title-serif {
   font-family: var(--font-display);
-  font-size: 1.85rem;
+  font-size: 1.5rem;
   color: var(--color-text-main);
-  font-style: italic;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.2rem;
 }
 
 .category-count-meta {
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.6rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   color: var(--color-text-dim);
   opacity: 0.4;
 }
@@ -247,24 +244,23 @@
 
 /* Sub-sections (for secondary subcategories) */
 .sub-section-container {
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .sub-section-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .sub-section-title {
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--color-text-main);
   white-space: nowrap;
-  font-style: italic;
 }
 
 .sub-section-divider {
@@ -277,8 +273,8 @@
 /* Desktop Adaptation */
 @media (min-width: 1024px) {
   .subcategory-nav-wrapper {
-    padding: 1.25rem 0;
-    margin-bottom: 3rem;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
   }
 
   .subcategory-nav-scroll {
@@ -297,7 +293,7 @@
   }
 
   .category-title-serif {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 }
 

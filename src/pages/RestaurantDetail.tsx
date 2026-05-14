@@ -150,12 +150,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                         <div className="flex-1 min-w-0">
                             {/* Name + Category */}
-                            <div className="flex flex-wrap items-center gap-2 mb-2">
-                                <h1 className="text-2xl md:text-3xl font-display font-black text-text-main italic uppercase tracking-tighter leading-none">
+                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                                <h1 className="text-text-main">
                                     {restaurant.name}
                                 </h1>
                                 {restaurant.cuisine && (
-                                    <span className="px-3 py-1 rounded-full bg-bg border border-border-subtle text-text-dim text-[10px] font-black uppercase tracking-widest">
+                                    <span className="px-2.5 py-1 rounded-full bg-bg border border-border-subtle text-text-dim text-[9px] font-bold uppercase tracking-widest">
                                         {restaurant.cuisine}
                                     </span>
                                 )}
@@ -185,36 +185,36 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
                         {/* Status Badge */}
                         <div className="flex items-center gap-2 shrink-0">
-                            <div className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-black uppercase tracking-wider ${isOpenNow ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
-                                <div className={`w-2 h-2 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-wider ${isOpenNow ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
+                                <div className={`w-1.5 h-1.5 rounded-full ${isOpenNow ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
                                 {isOpenNow ? (isEn ? 'Open' : 'Aberto') : (isEn ? 'Closed' : 'Fechado')}
                             </div>
                         </div>
                     </div>
 
                     {/* Quick Actions */}
-                    <div className="flex flex-wrap gap-2 mt-5">
+                    <div className="flex flex-wrap gap-2 mt-4">
                         <button
                             onClick={() => {
                                 document.getElementById('menu-section')?.scrollIntoView({ behavior: 'smooth' });
                             }}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-primary/90 transition-all shadow-sm"
+                            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full font-bold text-[9px] uppercase tracking-widest hover:bg-primary/90 transition-all shadow-sm"
                         >
-                            <BookOpen size={14} />
+                            <BookOpen size={13} />
                             {isEn ? 'View Menu' : 'Ver Menu'}
                         </button>
                         <button
                             onClick={() => window.open(`https://wa.me/${restaurant.whatsapp?.replace(/\D/g, '')}`, '_blank')}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-border-subtle text-text-main rounded-full font-black text-[10px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
+                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-border-subtle text-text-main rounded-full font-bold text-[9px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
                         >
-                            <CalendarCheck size={14} />
+                            <CalendarCheck size={13} />
                             {isEn ? 'Reserve Table' : 'Reservar Mesa'}
                         </button>
                         <button
                             onClick={() => window.open(`tel:${restaurant.phone || restaurant.whatsapp}`)}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-border-subtle text-text-main rounded-full font-black text-[10px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
+                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-border-subtle text-text-main rounded-full font-bold text-[9px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
                         >
-                            <Phone size={14} />
+                            <Phone size={13} />
                             {isEn ? 'Call' : 'Ligar'}
                         </button>
                         <button
@@ -224,9 +224,9 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     : `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name)}`;
                                 window.open(url, '_blank');
                             }}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-border-subtle text-text-main rounded-full font-black text-[10px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
+                            className="flex items-center gap-2 px-4 py-2 bg-surface border border-border-subtle text-text-main rounded-full font-bold text-[9px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
                         >
-                            <Navigation size={14} />
+                            <Navigation size={13} />
                             {isEn ? 'Directions' : 'Como Chegar'}
                         </button>
                     </div>
@@ -235,25 +235,25 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
             {/* Main Single Scroll Content */}
             <main className="max-w-6xl mx-auto px-4 md:px-8">
-                <div className="flex flex-col gap-12">
+                <div className="flex flex-col gap-10">
 
                     {/* --- Signature Dishes --- */}
-                    <section className="pt-10">
-                        <div className="flex items-end justify-between mb-6">
+                    <section className="pt-8">
+                        <div className="flex items-end justify-between mb-5">
                             <div>
-                                <span className="text-primary font-black uppercase tracking-widest text-[10px] mb-2 block">
+                                <span className="text-primary font-bold uppercase tracking-widest text-[9px] mb-1 block">
                                     {isEn ? 'Favorites' : 'Favoritos'}
                                 </span>
-                                <h2 className="text-2xl md:text-3xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                                <h2 className="text-text-main">
                                     {isEn ? 'Signature Dishes' : 'Pratos de Assinatura'}
                                 </h2>
                             </div>
                             <button
                                 onClick={() => document.getElementById('menu-section')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-[10px] hover:opacity-70 transition-opacity"
+                                className="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-[9px] hover:opacity-70 transition-opacity pb-1"
                             >
                                 {isEn ? 'View Full Menu' : 'Ver Menu Completo'}
-                                <ArrowRight size={14} />
+                                <ArrowRight size={13} />
                             </button>
                         </div>
 
@@ -266,13 +266,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                             alt={item.name}
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
-                                        <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary text-white text-[8px] font-black uppercase tracking-wider rounded-full">
+                                        <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary text-white text-[7px] font-bold uppercase tracking-wider rounded-full">
                                             {item.tag}
                                         </div>
                                     </div>
                                     <div className="px-0.5">
-                                        <h4 className="text-sm md:text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">{item.name}</h4>
-                                        <p className="text-primary font-black text-xs mt-0.5">{item.price}</p>
+                                        <h4 className="text-xs md:text-sm font-bold text-text-main group-hover:text-primary transition-colors leading-tight">{item.name}</h4>
+                                        <p className="text-primary font-bold text-[10px] mt-0.5">{item.price}</p>
                                     </div>
                                 </div>
                             ))}
@@ -281,11 +281,11 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
 
                     {/* --- Menu --- */}
                     <section id="menu-section">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                <Utensils size={18} />
+                        <div className="flex items-center gap-3 mb-5">
+                            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                <Utensils size={16} />
                             </div>
-                            <h2 className="text-2xl md:text-3xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                            <h2 className="text-text-main">
                                 {isEn ? 'Menu' : 'Cardápio'}
                             </h2>
                         </div>
@@ -295,12 +295,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     {/* --- About & Location (Compact) --- */}
                     <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* About */}
-                        <div className="bg-surface border border-border-subtle rounded-3xl p-6 md:p-8">
-                            <div className="flex items-center gap-3 mb-5">
-                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                    <Heart size={18} />
+                        <div className="bg-surface border border-border-subtle rounded-3xl p-5 md:p-7">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                    <Heart size={16} />
                                 </div>
-                                <h3 className="text-xl font-display font-black italic uppercase tracking-tighter text-text-main">
+                                <h3 className="text-text-main">
                                     {isEn ? 'About' : 'Sobre Nós'}
                                 </h3>
                             </div>
@@ -312,9 +312,9 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             {restaurant.awards && restaurant.awards.length > 0 && (
                                 <div className="flex flex-wrap gap-3">
                                     {restaurant.awards.slice(0, 2).map((award: any, i: number) => (
-                                        <div key={i} className="flex items-center gap-2 px-3 py-1.5 bg-bg rounded-full border border-border-subtle">
-                                            <Star size={12} className="text-primary fill-primary" />
-                                            <span className="text-[10px] font-black uppercase tracking-wider text-text-main">{award.title}</span>
+                                        <div key={i} className="flex items-center gap-2 px-2.5 py-1 bg-bg rounded-full border border-border-subtle">
+                                            <Star size={11} className="text-primary fill-primary" />
+                                            <span className="text-[9px] font-bold uppercase tracking-wider text-text-main">{award.title}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -322,12 +322,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                         </div>
 
                         {/* Hours & Location */}
-                        <div className="bg-surface border border-border-subtle rounded-3xl p-6 md:p-8 flex flex-col">
-                            <div className="flex items-center gap-3 mb-5">
-                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                    <Clock size={18} />
+                        <div className="bg-surface border border-border-subtle rounded-3xl p-5 md:p-7 flex flex-col">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                    <Clock size={16} />
                                 </div>
-                                <h3 className="text-xl font-display font-black italic uppercase tracking-tighter text-text-main">
+                                <h3 className="text-text-main">
                                     {isEn ? 'Hours & Location' : 'Horário & Localização'}
                                 </h3>
                             </div>
@@ -340,8 +340,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                     { days: isEn ? 'Sunday' : 'Domingo', hours: restaurant.hours_sunday || '12:00 – 22:00' }
                                 ].map((h, i) => (
                                     <div key={i} className="flex justify-between items-center">
-                                        <span className="text-text-dim text-xs font-black uppercase tracking-widest">{h.days}</span>
-                                        <span className="text-text-main text-xs font-bold">{h.hours}</span>
+                                        <span className="text-text-dim text-[11px] font-bold uppercase tracking-widest">{h.days}</span>
+                                        <span className="text-text-main text-[11px] font-bold">{h.hours}</span>
                                     </div>
                                 ))}
                             </div>
@@ -360,11 +360,11 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                                 : `https://maps.google.com/maps?q=${encodeURIComponent(restaurant.location || restaurant.address || restaurant.name)}`;
                                             window.open(url, '_blank');
                                         }}
-                                        className="flex items-center gap-2 text-primary font-black uppercase tracking-widest text-[10px] hover:opacity-70 transition-opacity"
+                                        className="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-[9px] hover:opacity-70 transition-opacity"
                                     >
-                                        <Navigation size={14} />
+                                        <Navigation size={13} />
                                         {isEn ? 'Get Directions' : 'Como Chegar'}
-                                        <ArrowRight size={12} />
+                                        <ArrowRight size={11} />
                                     </button>
                                 </div>
                             )}
@@ -374,11 +374,11 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                     {/* --- Events (Lightweight) --- */}
                     {(restaurant.events?.length > 0 || restaurant.specials?.length > 0) && (
                         <section>
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                    <Music size={18} />
+                            <div className="flex items-center gap-3 mb-5">
+                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                    <Music size={16} />
                                 </div>
-                                <h2 className="text-2xl md:text-3xl font-display font-black text-text-main italic uppercase tracking-tighter">
+                                <h2 className="text-text-main">
                                     {isEn ? 'Events' : 'Eventos'}
                                 </h2>
                             </div>
@@ -395,12 +395,12 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="p-4">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">{event.title}</p>
-                                            <h4 className="text-sm font-bold text-text-main leading-tight line-clamp-1">{event.title}</h4>
+                                        <div className="p-3">
+                                            <p className="text-[9px] font-bold uppercase tracking-widest text-primary mb-1">{event.title}</p>
+                                            <h4 className="text-xs font-bold text-text-main leading-tight line-clamp-1">{event.title}</h4>
                                             {event.event_time && (
-                                                <p className="text-text-dim text-[10px] font-bold uppercase tracking-widest mt-2 flex items-center gap-1">
-                                                    <Clock size={10} /> {event.event_time}
+                                                <p className="text-text-dim text-[9px] font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
+                                                    <Clock size={9} /> {event.event_time}
                                                 </p>
                                             )}
                                         </div>
