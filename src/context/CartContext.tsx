@@ -19,6 +19,8 @@ interface CartMetadata {
 
 interface CartContextType {
   cart: CartItem[];
+  itemNotes: Record<string, string>;
+  setItemNote: (key: string, note: string) => void;
   addToCart: (item: Omit<CartItem, 'qty'>) => void;
   removeFromCart: (name: string, categoryName: string) => void;
   updateQty: (name: string, categoryName: string, qty: number) => void;
@@ -68,13 +70,13 @@ const saveMetadata = (metadata: CartMetadata) => {
   } catch {}
 };
 
-const scanAndRestoreCart = (): { cart: CartItem[]; metadata: CartMetadata | null } => {
+const scanAndRestoreCart = (): { cart: CartItem[]; metadata: CartMetadata | null; itemNotes: Record<string, string> } => {
   try {
     const allKeys = Object.keys(localStorage);
     const cartKeys = allKeys.filter(k => k.startsWith('menusmoz_cart_') && k !== CART_METADATA_KEY);
     
     if (cartKeys.length === 0) {
-      return { cart: [], metadata: null };
+      return { cart: [], metadata: null, itemNotes: {} };
     }
 
     let mostRecentKey: string | null = null;
@@ -102,33 +104,26 @@ const scanAndRestoreCart = (): { cart: CartItem[]; metadata: CartMetadata | null
       const metadata = getStoredMetadata();
       if (saved && metadata) {
         const cart = JSON.parse(saved);
-        return { cart: Array.isArray(cart) ? cart : [], metadata };
+        const itemNotesStr = localStorage.getItem(`${mostRecentKey}_notes`);
+        const itemNotes = itemNotesStr ? JSON.parse(itemNotesStr) : {};
+        return { cart: Array.isArray(cart) ? cart : [], metadata, itemNotes: typeof itemNotes === 'object' ? itemNotes : {} };
       }
     }
 
-    return { cart: [], metadata: null };
+    return { cart: [], metadata: null, itemNotes: {} };
   } catch {
-    return { cart: [], metadata: null };
+    return { cart: [], metadata: null, itemNotes: {} };
   }
 };
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const restored = scanAndRestoreCart();
-    return restored.cart;
-  });
-  const [restaurantId, setRestaurantId] = useState<string | null>(() => {
-    const restored = scanAndRestoreCart();
-    return restored.metadata?.restaurantId || null;
-  });
-  const [restaurantName, setRestaurantName] = useState<string | null>(() => {
-    const restored = scanAndRestoreCart();
-    return restored.metadata?.restaurantName || null;
-  });
-  const [whatsapp, setWhatsapp] = useState<string | null>(() => {
-    const restored = scanAndRestoreCart();
-    return restored.metadata?.whatsapp || null;
-  });
+  const restoredData = scanAndRestoreCart();
+  
+  const [cart, setCart] = useState<CartItem[]>(restoredData.cart);
+  const [itemNotes, setItemNotes] = useState<Record<string, string>>(restoredData.itemNotes);
+  const [restaurantId, setRestaurantId] = useState<string | null>(restoredData.metadata?.restaurantId || null);
+  const [restaurantName, setRestaurantName] = useState<string | null>(restoredData.metadata?.restaurantName || null);
+  const [whatsapp, setWhatsapp] = useState<string | null>(restoredData.metadata?.whatsapp || null);
 
   const CART_KEY = `menusmoz_cart_${restaurantId || 'default'}`;
 
@@ -145,6 +140,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(cart));
       localStorage.setItem(`${CART_KEY}_mtime`, Date.now().toString());
+      localStorage.setItem(`${CART_KEY}_notes`, JSON.stringify(itemNotes));
       if (restaurantId && restaurantName) {
         saveMetadata({
           restaurantId,
@@ -153,7 +149,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
       }
     } catch {}
-  }, [cart, CART_KEY, restaurantId, restaurantName, whatsapp]);
+  }, [cart, itemNotes, CART_KEY, restaurantId, restaurantName, whatsapp]);
 
   const setRestaurantContext = (id: string, name: string, wh: string | null, _slug?: string) => {
     if (id !== restaurantId) {
@@ -214,7 +210,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const clearCart = useCallback(() => setCart([]), []);
+  const clearCart = useCallback(() => {
+    setCart([]);
+    setItemNotes({});
+  }, []);
+
+  const setItemNote = useCallback((key: string, note: string) => {
+    setItemNotes(prev => ({ ...prev, [key]: note }));
+  }, []);
 
   const getItemQty = useCallback((name: string, categoryName: string) => {
     return cart.find(c => c.name === name && c.categoryName === categoryName)?.qty || 0;
@@ -226,6 +229,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider value={{
       cart,
+      itemNotes,
+      setItemNote,
       addToCart,
       removeFromCart,
       updateQty,

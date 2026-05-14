@@ -141,10 +141,9 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<MenuCategory | null>(null);
   const [activeSubId, setActiveSubId] = useState<string | null>(null);
 
-  const { addToCart, removeFromCart, clearCart, getItemQty, totalItems, grandTotal, setRestaurantContext, cart } = useCart();
+  const { addToCart, removeFromCart, clearCart, getItemQty, totalItems, grandTotal, setRestaurantContext, cart, itemNotes, setItemNote } = useCart();
 
   const [showCart, setShowCart] = useState(false);
-  const [itemNotes, setItemNotes] = useState<Record<string, string>>({});
   const [expandedNote, setExpandedNote] = useState<string | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -454,7 +453,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
                                   type="text"
                                   placeholder="Ex: sem cebola..."
                                   value={itemNotes[nk] || ''}
-                                  onChange={e => setItemNotes(prev => ({ ...prev, [nk]: e.target.value }))}
+                                  onChange={e => setItemNote(nk, e.target.value)}
                                   onBlur={() => setExpandedNote(null)}
                                   autoFocus
                                   className="flex-1 text-xs bg-bg border border-border-subtle rounded-lg px-3 py-1.5 text-text-main placeholder-text-dim/40 outline-none focus:border-primary/50 transition-colors"

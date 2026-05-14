@@ -11,10 +11,9 @@ interface CartPageProps {
 }
 
 export default function CartPage({ lang }: CartPageProps) {
-    const { cart, addToCart, removeFromCart, clearCart, totalItems, grandTotal, restaurantName, whatsapp } = useCart();
+    const { cart, addToCart, removeFromCart, clearCart, totalItems, grandTotal, restaurantName, whatsapp, itemNotes, setItemNote } = useCart();
     const navigate = useNavigate();
     const [expandedNote, setExpandedNote] = useState<string | null>(null);
-    const [itemNotes, setItemNotes] = useState<Record<string, string>>({});
     const [showSuccess, setShowSuccess] = useState(false);
     const selectedLang = (lang === 'en' || lang === 'pt' ? lang : 'pt') as 'en' | 'pt';
     const t = (translations[selectedLang] || translations.pt) as any;
@@ -188,7 +187,7 @@ export default function CartPage({ lang }: CartPageProps) {
                                                                         type="text"
                                                                         placeholder="Ex: sem cebola, bem passado..."
                                                                         value={itemNotes[nk] || ''}
-                                                                        onChange={e => setItemNotes(prev => ({ ...prev, [nk]: e.target.value }))}
+                                                                        onChange={e => setItemNote(nk, e.target.value)}
                                                                         onBlur={() => setExpandedNote(null)}
                                                                         autoFocus
                                                                         className="text-xs sm:text-sm bg-bg border border-border-subtle rounded-xl px-3 sm:px-4 py-2 sm:py-2.5 text-text-main placeholder-text-dim/40 outline-none focus:border-primary/50 transition-colors w-40 sm:w-52 md:w-64"
