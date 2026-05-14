@@ -61,9 +61,9 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
     <div className="absolute bottom-3 left-4 text-left z-10 text-white">
       <div className="flex items-center gap-1.5 mb-1 opacity-90">
         <div className="p-1 bg-white/10 backdrop-blur-xl rounded-md border border-white/20">{config.icon}</div>
-        <span className="text-[7px] font-black uppercase tracking-[0.25em] opacity-70">{config.subtitle}</span>
+        <span className="text-[8px] font-extrabold uppercase tracking-widest opacity-70">{config.subtitle}</span>
       </div>
-      <h3 className="text-xl md:text-2xl font-display font-black italic uppercase tracking-tighter leading-none">{title}</h3>
+      <h3 className="text-xl md:text-2xl font-display font-extrabold tracking-tight leading-none">{title}</h3>
     </div>
   </button>
 );
@@ -72,12 +72,12 @@ const MenuItemList = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: (
   <div className={`group relative flex items-start justify-between gap-4 py-4 px-1 transition-all duration-500 ${qty > 0 ? 'bg-primary/[0.03]' : 'hover:bg-primary/[0.01]'}`}>
     <div className="flex-1 min-w-0">
       <div className="flex items-baseline gap-2 mb-0.5">
-        <h4 className="font-display font-bold text-text-main text-[16px] tracking-tight">{item.name}</h4>
+        <h4 className="font-display font-bold text-text-main text-[15px] tracking-tight">{item.name}</h4>
         <div className="flex-1 border-b border-dotted border-text-dim/10 mx-1" />
-        <span className="font-display font-black text-primary text-[15px] italic tracking-tighter shrink-0">{item.price}</span>
+        <span className="font-display font-extrabold text-primary text-[14px] tracking-tight shrink-0">{item.price}</span>
       </div>
       {(item.desc || item.description) && (
-        <p className="text-text-dim text-[11px] leading-relaxed italic opacity-70 font-medium pr-8">
+        <p className="text-text-dim text-[11px] leading-relaxed opacity-60 font-medium pr-8">
           {item.desc || item.description}
         </p>
       )}
@@ -96,7 +96,7 @@ const MenuItemList = ({ item, onAdd, onRemove, qty }: { item: MenuItem, onAdd: (
           <button onClick={onAdd} className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white active:scale-90 transition-transform">
             <Plus size={12} />
           </button>
-          <span className="font-display font-black text-[11px] text-primary tabular-nums">{qty}</span>
+          <span className="font-display font-extrabold text-[11px] text-primary tabular-nums">{qty}</span>
           <button onClick={onRemove} className="w-7 h-7 rounded-full bg-bg border border-border-subtle flex items-center justify-center text-text-dim active:scale-90 transition-transform">
             {qty === 1 ? <Trash2 size={10} /> : <Minus size={10} />}
           </button>
@@ -358,14 +358,14 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
             className="w-full bg-[#111] text-white h-[52px] rounded-2xl flex items-center justify-between px-5 shadow-[0_16px_40px_rgba(0,0,0,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group"
           >
             <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center font-black text-white text-xs shadow-sm">{totalItems}</div>
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center font-extrabold text-white text-xs shadow-sm">{totalItems}</div>
               <div>
-                <span className="font-black uppercase tracking-widest text-[8px] block opacity-50">O Seu Pedido</span>
-                <span className="font-black text-sm">{totalItems} {totalItems === 1 ? 'item' : 'itens'}</span>
+                <span className="font-extrabold uppercase tracking-widest text-[8px] block opacity-40">O Seu Pedido</span>
+                <span className="font-extrabold text-sm">{totalItems} {totalItems === 1 ? 'item' : 'itens'}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              {grandTotal > 0 && <span className="font-black text-primary text-sm">{formatTotal(grandTotal)}</span>}
+              {grandTotal > 0 && <span className="font-extrabold text-primary text-sm">{formatTotal(grandTotal)}</span>}
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center"><ShoppingBag size={14} className="text-white" /></div>
             </div>
           </button>
@@ -392,8 +392,8 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
               <>
                 <div className="flex items-center justify-between px-6 pt-6 pb-3 border-b border-border-subtle shrink-0">
                   <div>
-                    <h3 className="text-xl font-display font-black italic uppercase tracking-tighter">O Seu Pedido</h3>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-text-dim opacity-40 mt-0.5">{restaurantName}</p>
+                    <h3 className="text-xl font-display font-extrabold tracking-tight">O Seu Pedido</h3>
+                    <p className="text-[8px] font-extrabold uppercase tracking-widest text-text-dim opacity-40 mt-0.5">{restaurantName}</p>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {cart.length > 0 && (

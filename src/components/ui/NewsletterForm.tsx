@@ -49,40 +49,40 @@ const NewsletterForm: React.FC<NewsletterFormProps> = ({ lang }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="w-full max-w-md">
-      <div aria-live="polite" aria-atomic="true" className="min-h-[24px]">
+    <form onSubmit={handleSubmit} noValidate className="w-full max-w-sm">
+      <div aria-live="polite" aria-atomic="true" className="min-h-[20px]">
         {state === 'duplicate' && (
-          <p className="text-[10px] font-black text-amber-500 mb-2 flex items-center gap-1.5 uppercase tracking-widest animate-in fade-in slide-in-from-top-1" role="alert">
-            <AlertCircle size={14} aria-hidden="true" />
+          <p className="text-[9px] font-black text-amber-500 mb-1 flex items-center gap-1.5 uppercase tracking-widest animate-in fade-in slide-in-from-top-1" role="alert">
+            <AlertCircle size={12} aria-hidden="true" />
             {lang === 'pt' ? 'Este email já faz parte da nossa mesa.' : 'This email is already at our table.'}
           </p>
         )}
         {state === 'error' && (
-          <p className="text-[10px] font-black text-red-500 mb-2 flex items-center gap-1.5 uppercase tracking-widest animate-in fade-in slide-in-from-top-1" role="alert">
-            <AlertCircle size={14} aria-hidden="true" />
+          <p className="text-[9px] font-black text-red-500 mb-1 flex items-center gap-1.5 uppercase tracking-widest animate-in fade-in slide-in-from-top-1" role="alert">
+            <AlertCircle size={12} aria-hidden="true" />
             {lang === 'pt' ? 'Email inválido ou erro de sistema.' : 'Invalid email or system error.'}
           </p>
         )}
       </div>
       <div className="relative group">
-        <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-primary/5 rounded-xl blur-lg transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
         <input
           type="email"
           value={email}
           onChange={e => { setEmail(e.target.value); if (state !== 'idle') setState('idle'); }}
-          placeholder={lang === 'pt' ? 'Seu melhor email para novos sabores...' : 'Your best email for new flavors...'}
+          placeholder={lang === 'pt' ? 'Seu melhor email...' : 'Your best email...'}
           maxLength={200}
-          className="relative w-full h-16 pl-6 pr-32 rounded-2xl glass border border-border-subtle text-text-main placeholder:text-text-dim/40 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-bold text-sm"
+          className="relative w-full h-11 pl-4 pr-24 rounded-xl glass border border-border-subtle text-text-main placeholder:text-text-dim/40 focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all font-bold text-[13px]"
           disabled={state === 'loading'}
           aria-label={lang === 'pt' ? 'Subscrever newsletter' : 'Subscribe newsletter'}
         />
         <button
           type="submit"
           disabled={state === 'loading'}
-          className="absolute right-2 top-2 bottom-2 bg-primary text-white px-7 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] hover:brightness-110 active:scale-95 transition-all shadow-primary-glow disabled:opacity-70 flex items-center gap-2 z-10"
+          className="absolute right-1.5 top-1.5 bottom-1.5 bg-primary text-white px-5 rounded-lg font-black text-[9px] uppercase tracking-[0.2em] hover:brightness-110 active:scale-95 transition-all shadow-primary-glow disabled:opacity-70 flex items-center gap-2 z-10"
           aria-label={lang === 'pt' ? 'Subscrever' : 'Subscribe'}
         >
-          {state === 'loading' ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : 'OK'}
+          {state === 'loading' ? <Loader2 size={12} className="animate-spin" aria-hidden="true" /> : 'OK'}
         </button>
       </div>
     </form>

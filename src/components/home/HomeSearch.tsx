@@ -97,12 +97,11 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
     }, [featuredLines.length]);
 
     return (
-        <div ref={searchRef} className="max-w-4xl mx-auto px-4 pt-20 pb-6 relative z-[100]">
-            {/* Background Decorative Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-48 bg-primary/5 blur-[100px] -z-10 pointer-events-none" />
+        <div ref={searchRef} className="max-w-3xl mx-auto px-4 pt-2 pb-0 relative z-[100]">
+            {/* Background Decorative Glow — Removed for cleaner look */}
             
             {/* Compact Editorial Featured Line */}
-            <div className="flex justify-center mb-8 h-6">
+            <div className="flex justify-center mb-2 h-5">
                 <div className="relative w-full flex justify-center">
                     {featuredLines.map((line, idx) => (
                         <div
@@ -114,10 +113,10 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                             }`}
                         >
                             <div className="flex items-center gap-2 group/feat cursor-pointer">
-                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-text-dim/40 italic">
+                                <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-text-dim/40">
                                     {line.label}:
                                 </span>
-                                <span className="text-[11px] font-display font-black italic uppercase tracking-tight text-text-main group-hover/feat:text-primary transition-colors">
+                                <span className="text-[9px] font-bold tracking-tight text-text-main group-hover/feat:text-primary transition-colors">
                                     {line.name}
                                 </span>
                                 <span className="w-1 h-1 rounded-full bg-primary/30" />
@@ -131,13 +130,13 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
             </div>
 
             {/* Compact Search Bar */}
-            <div className={`relative flex items-center bg-surface/40 backdrop-blur-3xl border border-border-subtle/50 rounded-[2.5rem] p-1.5 transition-all duration-700 ${isFocused ? 'shadow-premium-xl border-primary/30 scale-[1.01]' : 'shadow-premium hover:shadow-premium-lg'}`}>
+            <div className={`relative flex items-center bg-surface/40 backdrop-blur-3xl border border-border-subtle/50 rounded-xl p-0.5 transition-all duration-700 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>
                 
                 {/* Section 1: What */}
-                <div className="flex-[1.5] flex flex-col px-5 py-1 border-r border-border-subtle/30 group/what">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-primary mb-0 italic leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
-                    <div className="flex items-center gap-2.5">
-                        <Search size={16} className={`shrink-0 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
+                <div className="flex-[1.5] flex flex-col px-3 py-0.25 border-r border-border-subtle/30 group/what">
+                    <label className="text-[6px] font-bold uppercase tracking-widest text-primary mb-0 leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
+                    <div className="flex items-center gap-2 mt-0.5">
+                        <Search size={11} className={`shrink-0 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
                         <input
                             type="text"
                             placeholder={lang === 'pt' ? 'Procurar sabores...' : 'Search flavors...'}
@@ -145,48 +144,46 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                             onFocus={() => setIsFocused(true)}
                             onChange={handleSearch}
                             onKeyDown={handleKeyDown}
-                            className="bg-transparent border-none outline-none text-sm md:text-base text-text-main placeholder:text-text-dim/30 w-full font-display font-black italic uppercase tracking-tighter py-1"
+                            className="bg-transparent border-none outline-none text-[11px] text-text-main placeholder:text-text-dim/30 w-full font-bold tracking-tight py-0.5"
                         />
                     </div>
                 </div>
 
                 {/* Section 2: Where */}
-                <div className="flex-1 hidden md:flex flex-col px-6 py-1 border-r border-border-subtle/30 group/where">
-                    <label className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 mb-0 italic leading-none">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
+                <div className="flex-1 hidden md:flex flex-col px-4 py-0.25 border-r border-border-subtle/30 group/where">
+                    <label className="text-[6px] font-bold uppercase tracking-widest text-text-dim/50 mb-0 leading-none">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
                     <button
                         onClick={handleLocationClick}
-                        className="flex items-center gap-2.5 w-full text-left group/loc py-1"
+                        className="flex items-center gap-2 w-full text-left group/loc py-0.5 mt-0.5 text-[10px] font-bold text-text-dim/70"
                     >
-                        <MapPin size={16} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
-                        <span className="text-[11px] font-black text-text-main/60 uppercase italic tracking-tight truncate">
+                        <MapPin size={11} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
                             {lang === 'pt' ? 'Perto de mim' : 'Near me'}
-                        </span>
                     </button>
                 </div>
 
                 {/* Section 3: Filter & Action */}
                 <div className="flex items-center gap-2 px-3">
                     <button
-                        className="hidden sm:flex p-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/60 hover:text-text-main group/filter"
+                        className="hidden sm:flex p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/60 hover:text-text-main group/filter"
                         title="Filtros"
                     >
-                        <SlidersHorizontal size={18} className="group-hover/filter:rotate-90 transition-transform duration-500" />
+                        <SlidersHorizontal size={14} className="group-hover/filter:rotate-90 transition-transform duration-500" />
                     </button>
 
                     <button
                         onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-                        className="flex items-center justify-center w-11 h-11 rounded-full bg-primary text-white shadow-primary-glow hover:scale-105 hover:rotate-[10deg] transition-all duration-500 active:scale-95 shrink-0"
+                        className="flex items-center justify-center w-6 h-6 rounded-lg bg-primary text-white hover:scale-105 transition-all duration-500 active:scale-95 shrink-0 shadow-lg shadow-primary/10"
                     >
-                        <Search size={18} strokeWidth={3} />
+                        <Search size={12} strokeWidth={2.5} />
                     </button>
                 </div>
             </div>
 
             {/* Suggestions Overlay */}
             {suggestions.length > 0 && isFocused && (
-                <div className="absolute top-[calc(100%-1.5rem)] left-4 right-4 bg-surface/95 backdrop-blur-3xl border border-border-subtle rounded-[2rem] shadow-premium-lg overflow-hidden z-[2000] animate-in fade-in slide-in-from-top-4 duration-500">
-                    <div className="px-8 py-3 bg-primary/5 border-b border-border-subtle">
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary italic">
+                <div className="absolute top-[calc(100%-1rem)] left-4 right-4 bg-surface/95 backdrop-blur-3xl border border-border-subtle rounded-2xl shadow-premium-lg overflow-hidden z-[2000] animate-in fade-in slide-in-from-top-2 duration-500">
+                    <div className="px-6 py-2 bg-primary/5 border-b border-border-subtle">
+                        <span className="text-[8px] font-extrabold uppercase tracking-[0.15em] text-primary">
                             {lang === 'pt' ? 'Sugestões para si' : 'Suggestions for you'}
                         </span>
                     </div>
@@ -199,17 +196,17 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                                 setIsFocused(false);
                                 navigate(`/restaurante/${s.slug}`);
                             }}
-                            className="w-full flex items-center justify-between px-8 py-4 hover:bg-primary/5 transition-all group/item border-b border-border-subtle last:border-0"
+                            className="w-full flex items-center justify-between px-6 py-3 hover:bg-primary/5 transition-all group/item border-b border-border-subtle last:border-0"
                         >
-                            <div className="flex items-center gap-4">
-                                <div className="w-8 h-8 rounded-full bg-text-main/5 flex items-center justify-center text-text-main group-hover/item:bg-primary/10 group-hover/item:text-primary transition-all">
-                                    <Search size={14} />
+                            <div className="flex items-center gap-3">
+                                <div className="w-7 h-7 rounded-full bg-text-main/5 flex items-center justify-center text-text-main group-hover/item:bg-primary/10 group-hover/item:text-primary transition-all">
+                                    <Search size={12} />
                                 </div>
                                 <div className="text-left">
-                                    <p className="font-bold text-sm text-text-main group-hover/item:text-primary transition-colors uppercase tracking-tight">
+                                    <p className="font-extrabold text-[13px] text-text-main group-hover/item:text-primary transition-colors tracking-tight">
                                         {s.name}
                                     </p>
-                                    <p className="text-[9px] text-text-dim/60 uppercase tracking-widest font-black italic">
+                                    <p className="text-[8px] text-text-dim/60 uppercase tracking-widest font-extrabold">
                                         {s.type === 'restaurant' ? (lang === 'pt' ? 'Estabelecimento' : 'Restaurant') : `${lang === 'pt' ? 'Prato' : 'Dish'} • ${s.restaurant}`}
                                     </p>
                                 </div>

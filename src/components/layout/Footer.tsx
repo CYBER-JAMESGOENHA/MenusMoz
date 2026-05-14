@@ -24,8 +24,8 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
 
   return (
     <footer className="bg-[#1a1a1a] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 py-12 md:py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+      <div className="max-w-7xl mx-auto px-6 py-10 md:py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-sm">
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-8 pt-4 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-xs">
             © {currentYear} MenusMoz. {lang === 'pt' ? 'Curadoria Digital Moçambique.' : 'Digital Curator Mozambique.'}
           </p>
