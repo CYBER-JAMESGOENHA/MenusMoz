@@ -642,7 +642,14 @@ export default function Profile({ lang }: ProfileProps) {
                                             <RestaurantCard 
                                                 key={restaurant.id} 
                                                 restaurant={restaurant} 
-                                                lang={selectedLang} 
+                                                lang={selectedLang}
+                                                isFavorite={true}
+                                                toggleFavorite={async (id: any) => {
+                                                    if (!supabase || !user) return;
+                                                    await supabase.from('favorites').delete().eq('user_id', user.id).eq('restaurant_id', id);
+                                                    setFavoriteRestaurants(prev => prev.filter(r => r.id !== id));
+                                                    setStats(prev => ({ ...prev, favorites: Math.max(0, prev.favorites - 1) }));
+                                                }}
                                             />
                                         ))}
                                     </div>
