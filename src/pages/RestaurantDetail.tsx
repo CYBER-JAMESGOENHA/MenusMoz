@@ -339,17 +339,13 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             </div>
 
                             {/* Hours */}
-                            <div className="space-y-3 mb-5">
-                                {[
-                                    { days: isEn ? 'Mon – Fri' : 'Seg – Sex', hours: restaurant.hours_weekday || '12:00 – 23:00' },
-                                    { days: isEn ? 'Saturday' : 'Sábado', hours: restaurant.hours_saturday || '12:00 – 00:00' },
-                                    { days: isEn ? 'Sunday' : 'Domingo', hours: restaurant.hours_sunday || '12:00 – 22:00' }
-                                ].map((h, i) => (
-                                    <div key={i} className="flex justify-between items-center">
-                                        <span className="text-text-dim text-[11px] font-bold uppercase tracking-widest">{h.days}</span>
-                                        <span className="text-text-main text-[11px] font-bold">{h.hours}</span>
-                                    </div>
-                                ))}
+                            <div className="mb-5">
+                                <span className="text-text-dim text-[11px] font-bold uppercase tracking-widest block mb-1">{isEn ? 'Opening Hours' : 'Horário'}</span>
+                                {restaurant.hours ? (
+                                    <span className="text-text-main text-[11px] font-bold">{restaurant.hours}</span>
+                                ) : (
+                                    <span className="text-text-dim text-[11px] italic">{isEn ? 'Hours not provided' : 'Horário não informado'}</span>
+                                )}
                             </div>
 
                             {/* Location */}
