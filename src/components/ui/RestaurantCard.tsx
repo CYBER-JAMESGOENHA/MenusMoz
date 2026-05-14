@@ -173,6 +173,8 @@ export const RestaurantCard = memo(({
                 {/* Top Overlay: Favorite Heart — Floating Style */}
                 <button
                     onClick={handleToggleFavorite}
+                    aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+                    aria-pressed={isFavorite}
                     className="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/50 dark:border-white/10 hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)]"
                 >
                     <Heart 
