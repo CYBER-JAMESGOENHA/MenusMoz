@@ -62,6 +62,8 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
                             <img
                                 src={avatarUrl}
                                 alt={displayName}
+                                loading="lazy"
+                                decoding="async"
                                 className="w-14 h-14 rounded-2xl object-cover border-2 border-primary/20 shadow-md"
                             />
                             <div className="absolute -bottom-1 -right-1 bg-green-500 text-white p-0.5 rounded-full border-2 border-white shadow-sm">

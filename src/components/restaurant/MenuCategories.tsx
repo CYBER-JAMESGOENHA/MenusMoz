@@ -56,7 +56,7 @@ const EntryCard = ({ title, config, onClick }: { title: string, config: any, onC
     onClick={onClick}
     className="group relative overflow-hidden rounded-[1.5rem] w-full h-full min-h-[120px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] bg-surface border border-border-subtle"
   >
-    <img src={config.img} alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+    <img src={config.img} alt={title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:bg-black/70 transition-colors duration-500" />
     <div className="absolute bottom-3 left-4 text-left z-10 text-white">
       <div className="flex items-center gap-1.5 mb-1 opacity-90">
@@ -427,7 +427,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
                             <div className="flex items-start gap-3">
                               {item.image_url && (
                                 <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-border-subtle bg-bg">
-                                  <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                                  <img src={item.image_url} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                                 </div>
                               )}
                               <div className="flex-1 min-w-0">

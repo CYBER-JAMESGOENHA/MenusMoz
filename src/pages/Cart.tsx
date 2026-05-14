@@ -158,7 +158,7 @@ export default function CartPage({ lang }: CartPageProps) {
                                                             {/* Thumbnail */}
                                                             {item.image_url && (
                                                                 <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden shrink-0 border border-border-subtle bg-bg">
-                                                                    <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                                                                    <img src={item.image_url} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                                                                 </div>
                                                             )}
 

@@ -222,7 +222,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
                 className="flex items-center gap-4 px-6 py-4 hover:bg-primary/5 transition-all group border-b border-border-subtle/50 last:border-0"
               >
                 <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-premium group-hover:scale-105 transition-transform duration-500">
-                  <img src={s.image} className="w-full h-full object-cover" alt={s.name} />
+                  <img src={s.image} className="w-full h-full object-cover" alt={s.name} loading="lazy" decoding="async" />
                 </div>
                 <div className="flex-1">
                   <p className="font-display font-black text-base text-text-main group-hover:text-primary transition-colors italic uppercase leading-tight tracking-tighter">{s.name}</p>

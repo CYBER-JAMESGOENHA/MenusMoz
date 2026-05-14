@@ -32,6 +32,8 @@ export const EventsSection: React.FC<EventsSectionProps> = ({ restaurant, lang }
                                     <img
                                         src={event.image_url}
                                         alt={event.title}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                     {event.event_date && (

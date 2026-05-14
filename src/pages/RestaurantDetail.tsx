@@ -17,7 +17,7 @@ import {
     Share2,
     Heart
 } from 'lucide-react';
-import { restaurantService } from '../services/restaurantService';
+import { restaurantService, Restaurant } from '../services/restaurantService';
 import { translations } from '../translations';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { DetailSkeleton } from '../components/ui/Skeleton';
@@ -34,7 +34,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     const { user } = useAuth();
     const navigate = useNavigate();
     const { slug } = useParams<{ slug: string }>();
-    const [restaurant, setRestaurant] = useState<any>(null);
+    const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
     const t = (translations[lang as keyof typeof translations] as any)?.detail ?? translations.pt.detail;
@@ -82,7 +82,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
         </div>
     );
 
-    const isFavorite = (favorites || []).includes(restaurant.id);
+    const isFavorite = (favorites || []).includes(restaurant.id as number);
     const isOpenNow = restaurant.isOpen;
 
     const signatureDishes = restaurant.signature_dishes || [
@@ -169,8 +169,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                             <Star key={i} size={13} className={i <= Math.round(restaurant.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-text-dim/20'} />
                                         ))}
                                         <span className="font-black text-text-main ml-1">{Number(restaurant.rating).toFixed(1)}</span>
-                                        {restaurant.review_count && (
-                                            <span className="text-[11px] font-bold text-text-dim/60">({restaurant.review_count})</span>
+                                        {restaurant.reviewCount && (
+                                            <span className="text-[11px] font-bold text-text-dim/60">({restaurant.reviewCount})</span>
                                         )}
                                     </div>
                                 )}
@@ -264,6 +264,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                         <img
                                             src={item.image_url || item.img}
                                             alt={item.name}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
                                         <div className="absolute top-2 left-2 px-2 py-0.5 bg-primary text-white text-[7px] font-bold uppercase tracking-wider rounded-full">
@@ -305,7 +307,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                 </h3>
                             </div>
                             <p className="text-text-dim text-sm leading-relaxed mb-5">
-                                {restaurant.bio || restaurant.description || (isEn
+                                {restaurant.story || restaurant.description || (isEn
                                     ? 'A landmark for those who value quality and tradition.'
                                     : 'Um marco para quem valoriza a qualidade e a tradição.')}
                             </p>

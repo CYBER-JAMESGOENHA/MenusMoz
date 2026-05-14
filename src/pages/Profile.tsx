@@ -755,7 +755,7 @@ export default function Profile({ lang }: ProfileProps) {
                                         { name: 'Vista para o Mar', count: 3, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80' },
                                     ].map((list, i) => (
                                         <div key={i} className="aspect-[16/9] rounded-[3rem] overflow-hidden relative group cursor-pointer border border-white/5">
-                                            <img src={list.image} alt={list.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                                            <img src={list.image} alt={list.name} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                                             <div className="absolute inset-x-10 bottom-10">
                                                 <h4 className="text-2xl font-display font-black italic text-white uppercase tracking-tighter mb-2">{list.name}</h4>

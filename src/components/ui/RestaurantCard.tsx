@@ -119,6 +119,8 @@ export const RestaurantCard = memo(({
                         <img
                             src={imageUrl}
                             alt={restaurant.name}
+                            loading="lazy"
+                            decoding="async"
                             className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                             onLoad={() => setImageLoaded(true)}
                         />
@@ -127,6 +129,8 @@ export const RestaurantCard = memo(({
                             <img
                                 src={imageUrl}
                                 alt=""
+                                loading="lazy"
+                                decoding="async"
                                 className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
                                 aria-hidden="true"
                             />
