@@ -212,6 +212,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             <MessageCircle size={13} />
                             {isEn ? 'Reserve via WhatsApp' : 'Reservar via WhatsApp'}
                         </button>
+                        {(restaurant.phone || restaurant.whatsapp) && (
                         <button
                             onClick={() => window.open(`tel:${restaurant.phone || restaurant.whatsapp}`)}
                             className="flex items-center gap-2 px-4 py-2 bg-surface border border-border-subtle text-text-main rounded-full font-bold text-[9px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
@@ -219,6 +220,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             <Phone size={13} />
                             {isEn ? 'Call' : 'Ligar'}
                         </button>
+                    )}
                         <button
                             onClick={() => {
                                 const url = (restaurant.lat && restaurant.lng)
