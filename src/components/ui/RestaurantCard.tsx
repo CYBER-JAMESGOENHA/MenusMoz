@@ -69,40 +69,26 @@ export const RestaurantCard = memo(({
     }, [restaurant.address, restaurant.location, restaurant.city]);
 
     const descriptor = useMemo(() => {
-        const lifestyleFallbacks = [
-            'Hidden Gem', 'Rooftop Dining', 'Live Music', 
-            'Local Favorite', 'Sunset Spot', 'Fine Dining',
-            'Street Favorite', 'Authentic Taste', 'Classic Spot',
-            'Garden Seating', 'City Views', 'Elegant Dining'
-        ];
-
-        let text = '';
-        // Prioritize short, punchy metadata
         if (restaurant.identity_text && restaurant.identity_text.split(/\s+/).length <= 3) {
-            text = restaurant.identity_text;
-        } else if (restaurant.tags && restaurant.tags.length > 0) {
-            // Find a short tag that isn't the main cuisine
-            const shortTag = restaurant.tags.find((t: any) => 
-                t !== restaurant.cuisine && 
-                typeof t === 'string' && 
+            return restaurant.identity_text;
+        }
+        if (restaurant.tags && restaurant.tags.length > 0) {
+            const shortTag = restaurant.tags.find((t: any) =>
+                t !== restaurant.cuisine &&
+                typeof t === 'string' &&
                 t.split(/\s+/).length <= 3
             );
-            text = shortTag || '';
-        } else if (restaurant.features && restaurant.features.length > 0) {
-            const shortFeature = restaurant.features.find((f: any) => 
-                typeof f === 'string' && 
+            if (shortTag) return shortTag;
+        }
+        if (restaurant.features && restaurant.features.length > 0) {
+            const shortFeature = restaurant.features.find((f: any) =>
+                typeof f === 'string' &&
                 f.split(/\s+/).length <= 3
             );
-            text = shortFeature || '';
+            if (shortFeature) return shortFeature;
         }
-
-        // Final check: if text is empty or too long, use a curated lifestyle fallback
-        if (!text || text.split(/\s+/).length > 3 || text.length > 22) {
-            return lifestyleFallbacks[Number(restaurant.id) % lifestyleFallbacks.length];
-        }
-
-        return text;
-    }, [restaurant.id, restaurant.identity_text, restaurant.tags, restaurant.features, restaurant.cuisine]);
+        return '';
+    }, [restaurant.identity_text, restaurant.tags, restaurant.features, restaurant.cuisine]);
 
     const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
     const logoUrl = restaurant.logo_url || restaurant.logo;
@@ -236,10 +222,14 @@ export const RestaurantCard = memo(({
                         <MapPin size={9} strokeWidth={1.5} className="opacity-50" />
                         <span className="font-medium tracking-tight">{area}</span>
                     </div>
-                    <span className="text-neutral-200 dark:text-neutral-800 font-light shrink-0">•</span>
-                    <span className="font-medium text-neutral-500 dark:text-neutral-400 truncate tracking-tight">
-                        {descriptor}
-                    </span>
+                    {descriptor && (
+                        <>
+                            <span className="text-neutral-200 dark:text-neutral-800 font-light shrink-0">•</span>
+                            <span className="font-medium text-neutral-500 dark:text-neutral-400 truncate tracking-tight">
+                                {descriptor}
+                            </span>
+                        </>
+                    )}
                 </div>
 
                 {/* CTA Button — Premium Touchpoint */}
