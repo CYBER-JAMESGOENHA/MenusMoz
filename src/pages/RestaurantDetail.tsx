@@ -21,6 +21,7 @@ import { restaurantService, Restaurant } from '../services/restaurantService';
 import { translations } from '../translations';
 import { MenuCategories } from '../components/restaurant/MenuCategories';
 import { DetailSkeleton } from '../components/ui/Skeleton';
+import { ReviewSection } from '../components/restaurant/ReviewSection';
 import { useAuth } from '../context/AuthContext';
 
 interface RestaurantDetailProps {
@@ -411,6 +412,15 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             </div>
                         </section>
                     )}
+
+                    {/* --- Reviews --- */}
+                    <ReviewSection
+                        restaurant={restaurant}
+                        user={user}
+                        lang={lang}
+                        t={t}
+                        onLoginOpen={showLogin}
+                    />
 
 
 
