@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { 
     User as UserIcon, Mail, Calendar, Heart, MessageSquare, Settings, LogOut, 
     ChevronRight, Shield, Award, Camera, MapPin, Lock, CheckCircle, 
-    AlertCircle, CreditCard, Receipt, Download, Compass, Bookmark, 
+    AlertCircle, CreditCard, Receipt, Download, Compass, 
     Clock, Utensils, Zap, Share2, Edit3, Bell, Grid, List, X, Loader2
 } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
@@ -36,7 +36,7 @@ export default function Profile({ lang }: ProfileProps) {
     const { user: authUser, updatePassword: updatePasswordFn } = useAuth();
     const [user, setUser] = useState<User | null>(null);
     const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [stats, setStats] = useState<Stats>({ favorites: 0, reviews: 0, collections: 2, points: 1250 });
+    const [stats, setStats] = useState<Stats>({ favorites: 0, reviews: 0, collections: 0, points: 0 });
     const [favoriteRestaurants, setFavoriteRestaurants] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
@@ -401,15 +401,7 @@ export default function Profile({ lang }: ProfileProps) {
         { id: 'overview', icon: Compass, label: selectedLang === 'pt' ? 'Visão Geral' : 'Overview' },
         { id: 'activity', icon: Clock, label: selectedLang === 'pt' ? 'Actividade' : 'Activity' },
         { id: 'favorites', icon: Heart, label: selectedLang === 'pt' ? 'Favoritos' : 'Favorites' },
-        { id: 'collections', icon: Bookmark, label: selectedLang === 'pt' ? 'Colecções' : 'Collections' },
         { id: 'settings', icon: Settings, label: selectedLang === 'pt' ? 'Definições' : 'Settings' },
-    ];
-
-    const discoveryInsights = [
-        { icon: Utensils, label: 'Cozinha Favorita', value: 'Fusion Mediterrânea', color: 'from-orange-500/20 to-orange-500/5' },
-        { icon: MapPin, label: 'Zona Explorada', value: 'Polana Cimento', color: 'from-blue-500/20 to-blue-500/5' },
-        { icon: Zap, label: 'Atmosfera Preferida', value: 'Cosy Editorial', color: 'from-purple-500/20 to-purple-500/5' },
-        { icon: Clock, label: 'Horas Activas', value: '20:00 - 23:00', color: 'from-emerald-500/20 to-emerald-500/5' },
     ];
 
     return (
@@ -506,11 +498,7 @@ export default function Profile({ lang }: ProfileProps) {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="absolute -bottom-2 -right-2 bg-primary px-4 py-1.5 rounded-full border-4 border-[#0A0A0A] shadow-xl">
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-white italic flex items-center gap-2">
-                                            <Award size={12} /> Gold
-                                        </span>
-                                    </div>
+                                    
                                 </div>
 
                                 {/* User Details */}
@@ -527,16 +515,14 @@ export default function Profile({ lang }: ProfileProps) {
                                         </button>
                                     </div>
                                     
-                                    <p className="text-lg text-white/60 font-medium italic mb-8 max-w-lg">
-                                        Entusiasta da gastronomia local, sempre em busca de sabores autênticos e atmosferas que contam histórias.
+                                    <p className="text-lg text-white/30 font-medium italic mb-8 max-w-lg">
+                                        {selectedLang === 'pt' ? 'Sem bio adicionado' : 'No bio added'}
                                     </p>
 
                                     <div className="flex flex-wrap justify-center md:justify-start gap-8">
                                         {[
                                             { icon: Heart, label: t.favorites, value: stats.favorites },
                                             { icon: MessageSquare, label: 'Reviews', value: stats.reviews },
-                                            { icon: List, label: 'Listas', value: stats.collections },
-                                            { icon: Zap, label: 'Points', value: stats.points },
                                         ].map((stat, i) => (
                                             <div key={i} className="flex flex-col items-center md:items-start">
                                                 <div className="flex items-center gap-2 text-white/40 mb-1">
@@ -629,23 +615,9 @@ export default function Profile({ lang }: ProfileProps) {
 
                                     {/* Small Sidebar Stats or Progress */}
                                     <div className="space-y-6">
-                                        <div className="p-10 rounded-[3rem] border border-white/5 bg-white/[0.02] relative overflow-hidden group">
-                                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16" />
-                                            <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 italic mb-6">Próximo Nível</h4>
-                                            <div className="flex justify-between items-end mb-4">
-                                                <span className="text-4xl font-display font-black italic text-white leading-none">PLATINUM</span>
-                                                <span className="text-sm font-bold text-primary italic">85%</span>
-                                            </div>
-                                            <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-8">
-                                                <div className="h-full bg-primary w-[85%] shadow-[0_0_15px_rgba(220,38,38,0.5)]" />
-                                            </div>
-                                            <p className="text-[10px] text-white/40 font-bold italic">Faltam 250 pontos para desbloquear benefícios exclusivos.</p>
-                                        </div>
-
                                         <div className="p-10 rounded-[3rem] border border-white/5 bg-white/[0.02]">
                                             <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 italic mb-6">Membro Desde</h4>
                                             <p className="text-2xl font-display font-black italic text-white uppercase tracking-tighter mb-2">{joinDate}</p>
-                                            <p className="text-[10px] text-primary font-black uppercase tracking-[0.2em] italic">Legacy Explorer</p>
                                         </div>
                                     </div>
                                 </div>
@@ -738,36 +710,6 @@ export default function Profile({ lang }: ProfileProps) {
                                     )}
                                 </div>
                              </div>
-                        )}
-
-                        {activeTab === 'collections' && (
-                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                                <div className="flex items-center justify-between mb-12 px-4">
-                                    <h3 className="text-3xl font-display font-black italic tracking-tighter text-white uppercase flex items-center gap-4">
-                                        <Bookmark size={32} className="text-primary fill-primary" /> Minhas Colecções
-                                    </h3>
-                                    <button className="bg-white/5 hover:bg-white/10 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest italic border border-white/5 transition-all">+ Nova Lista</button>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {[
-                                        { name: 'Jantares de Sábado', count: 5, image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80' },
-                                        { name: 'Vista para o Mar', count: 3, image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80' },
-                                    ].map((list, i) => (
-                                        <div key={i} className="aspect-[16/9] rounded-[3rem] overflow-hidden relative group cursor-pointer border border-white/5">
-                                            <img src={list.image} alt={list.name} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                                            <div className="absolute inset-x-10 bottom-10">
-                                                <h4 className="text-2xl font-display font-black italic text-white uppercase tracking-tighter mb-2">{list.name}</h4>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-primary italic">{list.count} Lugares Guardados</p>
-                                            </div>
-                                            <div className="absolute top-8 right-8 w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-white opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all">
-                                                <ChevronRight size={24} />
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         )}
 
                         {activeTab === 'settings' && (
