@@ -398,7 +398,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                                             )}
                                         </div>
                                         <div className="p-3">
-                                            <p className="text-[9px] font-bold uppercase tracking-widest text-primary mb-1">{event.title}</p>
+                                            <p className="text-[9px] font-bold uppercase tracking-widest text-primary mb-1">{event.category || (isEn ? 'Event' : 'Evento')}</p>
                                             <h4 className="text-xs font-bold text-text-main leading-tight line-clamp-1">{event.title}</h4>
                                             {event.event_time && (
                                                 <p className="text-text-dim text-[9px] font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1">
