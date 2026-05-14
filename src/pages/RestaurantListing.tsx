@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, Filter, X, MapPin, SlidersHorizontal, ChevronRight, Star, Clock, Heart } from 'lucide-react';
-import { CATEGORIES } from '../data/mockData';
+import { restaurantService } from '../services/restaurantService';
+
+const DEFAULT_CATEGORIES = ['Tudo', 'Mariscos', 'Portuguesa', 'Pastelaria', 'Street Food', 'Moçambicana', 'Grelhados'];
 import { RestaurantCard } from '../components/ui/RestaurantCard';
 import { gsap } from 'gsap';
 import { Restaurant } from '../services/restaurantService';
@@ -35,6 +37,16 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     const [minRating, setMinRating] = useState(0);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const [sortBy, setSortBy] = useState<'rating' | 'newest'>('rating');
+    const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+
+    useEffect(() => {
+        restaurantService.getCuisineCategories().then((data) => {
+            if (data && data.length > 0) {
+                const categoryNames = data.map((c: any) => c.name);
+                setCategories(['Tudo', ...categoryNames]);
+            }
+        }).catch(() => { /* keep defaults */ });
+    }, []);
 
     useEffect(() => {
         const cat = searchParams.get('category');
@@ -238,7 +250,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                             >
                                 Tudo
                             </button>
-                            {(CATEGORIES || []).map(cat => (
+                            {(categories || []).map(cat => (
                                 <button 
                                     key={cat}
                                     onClick={() => handleCategoryClick(cat)}
