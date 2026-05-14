@@ -1,3 +1,12 @@
+-- ================================================================
+-- ⚠️  MIGRATION SUPERSEDED - See migration 006 for safer version
+-- This file contains duplicate/older profile creation logic.
+-- Migration 006_profile_trigger.sql contains the safer implementation
+-- with ON CONFLICT DO NOTHING to prevent duplicate key errors.
+-- This migration is kept for backward compatibility but the
+-- trigger function is effectively superseded by migration 006.
+-- ================================================================
+
 -- 1. Criar a Tabela de Perfis
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
