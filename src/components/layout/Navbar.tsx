@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({
         <Link to="/" className="flex items-center gap-1 group transition-all shrink-0">
           <div className="w-7.5 h-7.5 bg-primary shrink-0 rounded-lg flex items-center justify-center text-white font-bold text-[13px] group-hover:scale-105 transition-transform" aria-hidden="true">L</div>
           <div className="hidden xl:flex flex-col leading-none">
-            <span className="font-bold text-[12px] tracking-tight text-text-main">Locais Moz</span>
+            <span className="font-bold text-[12px] tracking-tight text-text-main">Locais de Moz</span>
             <span className="text-[5.5px] font-bold uppercase tracking-[0.12em] text-primary">Marketplace</span>
           </div>
         </Link>
