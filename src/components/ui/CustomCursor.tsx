@@ -11,8 +11,9 @@ export default function CustomCursor() {
         const follower = followerRef.current;
         const spotlight = spotlightRef.current;
 
-        const isMouse = window.matchMedia('(pointer: fine)').matches;
-        if (!isMouse || !cursor || !follower || !spotlight) return;
+        const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+        const isFine = window.matchMedia('(pointer: fine)').matches;
+        if (isCoarse || !isFine || !cursor || !follower || !spotlight) return;
 
         const onMouseMove = (e: MouseEvent) => {
             const { clientX: x, clientY: y } = e;
@@ -96,6 +97,8 @@ export default function CustomCursor() {
         };
     }, []);
 
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
+
     return (
         <>
             {/* Ambient Spotlight */}
@@ -103,7 +106,7 @@ export default function CustomCursor() {
                 ref={spotlightRef}
                 className="fixed top-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full pointer-events-none z-[0] -translate-x-1/2 -translate-y-1/2 blur-[120px] hidden md:block"
             />
-            
+
             {/* The Main Ring */}
             <div
                 ref={followerRef}
