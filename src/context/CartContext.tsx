@@ -10,6 +10,13 @@ export interface CartItem {
   note?: string;
 }
 
+interface CartMetadata {
+  restaurantId: string;
+  restaurantName: string;
+  whatsapp: string | null;
+  restaurantSlug?: string;
+}
+
 interface CartContextType {
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'qty'>) => void;
@@ -22,11 +29,13 @@ interface CartContextType {
   restaurantId: string | null;
   restaurantName: string | null;
   whatsapp: string | null;
-  setRestaurantContext: (id: string, name: string, whatsapp: string | null) => void;
+  setRestaurantContext: (id: string, name: string, whatsapp: string | null, slug?: string) => void;
   formatTotal: (amount: number) => string;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
+
+const CART_METADATA_KEY = 'menusmoz_cart_metadata';
 
 const parsePrice = (priceStr: string): number => {
   if (!priceStr) return 0;
@@ -39,11 +48,82 @@ export const formatPrice = (amount: number): string => {
   return `${amount.toFixed(0)} MZN`;
 };
 
+const getStoredMetadata = (): CartMetadata | null => {
+  try {
+    const saved = localStorage.getItem(CART_METADATA_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveMetadata = (metadata: CartMetadata) => {
+  try {
+    localStorage.setItem(CART_METADATA_KEY, JSON.stringify(metadata));
+  } catch {}
+};
+
+const scanAndRestoreCart = (): { cart: CartItem[]; metadata: CartMetadata | null } => {
+  try {
+    const allKeys = Object.keys(localStorage);
+    const cartKeys = allKeys.filter(k => k.startsWith('menusmoz_cart_') && k !== CART_METADATA_KEY);
+    
+    if (cartKeys.length === 0) {
+      return { cart: [], metadata: null };
+    }
+
+    let mostRecentKey: string | null = null;
+    let mostRecentTime = 0;
+
+    for (const key of cartKeys) {
+      const item = localStorage.getItem(key);
+      if (item) {
+        try {
+          const parsed = JSON.parse(item);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const lastModified = localStorage.getItem(`${key}_mtime`);
+            const time = lastModified ? parseInt(lastModified, 10) : 0;
+            if (time >= mostRecentTime) {
+              mostRecentTime = time;
+              mostRecentKey = key;
+            }
+          }
+        } catch {}
+      }
+    }
+
+    if (mostRecentKey) {
+      const saved = localStorage.getItem(mostRecentKey);
+      const metadata = getStoredMetadata();
+      if (saved && metadata) {
+        const cart = JSON.parse(saved);
+        return { cart: Array.isArray(cart) ? cart : [], metadata };
+      }
+    }
+
+    return { cart: [], metadata: null };
+  } catch {
+    return { cart: [], metadata: null };
+  }
+};
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [restaurantId, setRestaurantId] = useState<string | null>(null);
-  const [restaurantName, setRestaurantName] = useState<string | null>(null);
-  const [whatsapp, setWhatsapp] = useState<string | null>(null);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const restored = scanAndRestoreCart();
+    return restored.cart;
+  });
+  const [restaurantId, setRestaurantId] = useState<string | null>(() => {
+    const restored = scanAndRestoreCart();
+    return restored.metadata?.restaurantId || null;
+  });
+  const [restaurantName, setRestaurantName] = useState<string | null>(() => {
+    const restored = scanAndRestoreCart();
+    return restored.metadata?.restaurantName || null;
+  });
+  const [whatsapp, setWhatsapp] = useState<string | null>(() => {
+    const restored = scanAndRestoreCart();
+    return restored.metadata?.whatsapp || null;
+  });
 
   const CART_KEY = `menusmoz_cart_${restaurantId || 'default'}`;
 
@@ -59,12 +139,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      localStorage.setItem(`${CART_KEY}_mtime`, Date.now().toString());
+      if (restaurantId && restaurantName) {
+        saveMetadata({
+          restaurantId,
+          restaurantName,
+          whatsapp,
+        });
+      }
     } catch {}
-  }, [cart, CART_KEY]);
+  }, [cart, CART_KEY, restaurantId, restaurantName, whatsapp]);
 
-  const setRestaurantContext = (id: string, name: string, wh: string | null) => {
+  const setRestaurantContext = (id: string, name: string, wh: string | null, _slug?: string) => {
     if (id !== restaurantId) {
-      const oldKey = `menusmoz_cart_${restaurantId || 'default'}`;
       const newKey = `menusmoz_cart_${id}`;
       try {
         const saved = localStorage.getItem(newKey);
