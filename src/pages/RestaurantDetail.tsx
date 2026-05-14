@@ -13,6 +13,7 @@ import {
     ArrowRight,
     Utensils,
     Music,
+    MessageCircle,
     CalendarCheck,
     Share2,
     Heart
@@ -208,8 +209,8 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
                             onClick={() => window.open(`https://wa.me/${restaurant.whatsapp?.replace(/\D/g, '')}`, '_blank')}
                             className="flex items-center gap-2 px-4 py-2 bg-surface border border-border-subtle text-text-main rounded-full font-bold text-[9px] uppercase tracking-widest hover:border-primary/50 hover:text-primary transition-all"
                         >
-                            <CalendarCheck size={13} />
-                            {isEn ? 'Reserve Table' : 'Reservar Mesa'}
+                            <MessageCircle size={13} />
+                            {isEn ? 'Reserve via WhatsApp' : 'Reservar via WhatsApp'}
                         </button>
                         <button
                             onClick={() => window.open(`tel:${restaurant.phone || restaurant.whatsapp}`)}
