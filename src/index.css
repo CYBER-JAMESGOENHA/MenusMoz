@@ -221,8 +221,9 @@
 }
 
 .hero-floating-essence-img {
-  animation: float-essence 7s ease-in-out infinite;
+  animation: float-essence 8s ease-in-out infinite;
   will-change: transform;
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
@@ -254,7 +255,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 

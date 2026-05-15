@@ -18,8 +18,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ children }) => {
                 </div>
 
                 {/* Floating detail image placeholder - desktop only */}
-                <div className="hidden lg:block absolute -right-4 top-1/2 -translate-y-1/2 w-48 h-64 pointer-events-none">
-                    {/* Placeholder for floating image structure - to be implemented separately */}
+                <div className="hidden md:block hero-floating-essence absolute -right-4 top-1/2 -translate-y-1/2 w-48 h-64 pointer-events-none">
+                    <div className="hero-floating-essence-img pebble-mask w-full h-full opacity-90">
+                        {/* Placeholder for floating image - to be implemented separately */}
+                    </div>
                 </div>
             </div>
         </section>
