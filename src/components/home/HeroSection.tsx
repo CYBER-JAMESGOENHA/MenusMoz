@@ -14,6 +14,7 @@ interface HeroSectionProps {
     floatingImageSrc?: string;
 }
 
+// Active headline: 'discover' | 'where' | 'tables'
 export const HeroSection: React.FC<HeroSectionProps> = ({ children, headline = 'discover', floatingImageSrc }) => {
     return (
         <section className="relative w-full pt-12 md:pt-16 pb-2 px-4">
