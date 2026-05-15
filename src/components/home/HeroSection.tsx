@@ -8,17 +8,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ children }) => {
     return (
         <section className="relative w-full pt-16 pb-2 px-4">
             <div className="max-w-7xl mx-auto relative">
-                {/* Semantic H1 - visually hidden but accessible */}
-                <h1 className="sr-only">
+                <h1 className="text-center mb-4 font-normal text-[22px] md:text-[24px] tracking-wide text-primary/80">
                     Discover Maputo through food.
                 </h1>
-
-                {/* Visual heading above search area */}
-                <div className="text-center mb-4">
-                    <span className="inline-block text-xs font-bold uppercase tracking-[0.25em] text-primary/80">
-                        Discover Maputo through food.
-                    </span>
-                </div>
 
                 {/* Content wrapper */}
                 <div className="relative">
