@@ -215,6 +215,69 @@
   }
 }
 
+/* ── Hero: The Floating Essence ───────────────────────────────────────── */
+.hero-floating-essence {
+  position: relative;
+}
+
+.hero-floating-essence-img {
+  animation: float-essence 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .hero-floating-essence-img {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-floating-essence-img {
+    animation: none;
+  }
+}
+
+.hero-floating-essence-img.pebble-mask {
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  overflow: hidden;
+}
+
+.hero-floating-essence-img.pebble-mask img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes float-essence {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes float-essence {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(0);
+    }
+  }
+}
+
+.light .hero-floating-essence-img,
+.hero-floating-essence-img {
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.12));
+}
+
+.dark .hero-floating-essence-img {
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+}
+
   .discovery-scroller {
     @apply flex overflow-x-auto snap-x snap-mandatory;
     -ms-overflow-style: none;

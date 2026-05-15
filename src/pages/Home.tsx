@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { translations } from '../translations';
 import { HomeSearch } from '../components/home/HomeSearch';
+import { HeroSection } from '../components/home/HeroSection';
 import { HorizontalCarousel } from '../components/home/HorizontalCarousel';
 import { EmptyFavorites } from '../components/home/EmptyFavorites';
 import { RestaurantCard } from '../components/ui/RestaurantCard';
@@ -87,7 +88,11 @@ export default function Home({
             )}
 
             {/* ── Home Search ─────────────────────────────────────────── */}
-            {!showOnlyFavorites && <HomeSearch lang={lang} restaurants={restaurants} />}
+            {!showOnlyFavorites && (
+                <HeroSection>
+                    <HomeSearch lang={lang} restaurants={restaurants} />
+                </HeroSection>
+            )}
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
