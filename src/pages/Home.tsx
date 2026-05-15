@@ -96,7 +96,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="mt-12">
+                <section className="mt-6">
                 <HorizontalCarousel
                     title="Os Mais Pedidos"
                     subtitle="Os clássicos que nunca falham"
