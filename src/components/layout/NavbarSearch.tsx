@@ -153,33 +153,33 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   };
 
   return (
-    <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12">
-      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:shadow-premium-lg ring-primary/5 focus-within:ring-2 focus-within:border-primary/30 h-11">
+    <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12 animate-in fade-in slide-in-from-top-3 duration-500 ease-out">
+      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:bg-surface/10 hover:shadow-premium-lg focus-within:shadow-[0_0_25px_rgba(206,17,38,0.08)] focus-within:border-primary/30 focus-within:-translate-y-[1px] h-11">
         
         {/* Location Selector (Left) */}
         <button
           onClick={() => detectAndSaveLocation()}
-          className="flex items-center gap-2 h-full px-4 hover:bg-primary/5 transition-colors group/loc border-r border-border-subtle shrink-0"
+          className="flex items-center gap-2 h-full px-4 hover:bg-primary/8 transition-all group/loc border-r border-border-subtle/80 shrink-0 relative hover:-translate-y-[0.5px] active:translate-y-0"
         >
-          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:scale-110 transition-transform">
+          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:bg-primary/20 group-hover/loc:scale-105 group-hover/loc:shadow-[0_0_10px_rgba(206,17,38,0.25)] transition-all duration-300">
             {isLoadingLocation ? (
               <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             ) : (
-              <MapPin size={16} />
+              <MapPin size={15} />
             )}
           </div>
           <div className="flex flex-col items-start leading-none">
             <span className="text-[8px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
             <div className="flex items-center gap-1">
               <span className="text-[11px] font-black text-text-main truncate max-w-[80px] uppercase italic">{location}</span>
-              <ChevronDown size={11} className="text-primary" />
+              <ChevronDown size={11} className="text-primary group-hover/loc:translate-y-0.5 transition-transform duration-300" />
             </div>
           </div>
         </button>
 
         {/* Search Field (Rest) */}
         <div className="flex-1 flex items-center px-4 relative">
-          <Search size={14} className="text-text-dim/40 mr-3" />
+          <Search size={14} className="text-text-dim/40 mr-3 group-hover:text-text-main transition-colors duration-300" />
           <input
             type="text"
             placeholder={t.hero?.search_placeholder || 'Procure por pratos ou restaurantes'}
@@ -193,7 +193,7 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
           {searchQuery && (
             <button 
               onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-              className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2"
+              className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2 hover:scale-105 active:scale-95 transition-transform"
             >
               <Search size={14} strokeWidth={3} />
             </button>
@@ -204,11 +204,11 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
       {/* Suggestions Dropdown */}
       {suggestions.length > 0 && (
         <div
-          className="absolute top-full left-0 right-0 mt-4 bg-surface/90 backdrop-blur-3xl border border-border-subtle rounded-[2rem] shadow-premium-lg overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-500"
+          className="absolute top-full left-0 right-0 mt-3.5 bg-surface/95 backdrop-blur-3xl border border-border-subtle rounded-[24px] shadow-premium-lg overflow-hidden z-[2000] text-left animate-in fade-in slide-in-from-top-4 duration-500 border-white/10"
           role="listbox"
           aria-label="Sugestões de pesquisa"
         >
-          <div className="px-6 py-4 bg-primary/5 border-b border-border-subtle flex items-center justify-between">
+          <div className="px-6 py-4 bg-primary/5 border-b border-border-subtle/60 flex items-center justify-between">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary italic">Resultados para você</span>
             <div className="w-1.5 h-1.5 rounded-full bg-moz-green animate-pulse" />
           </div>
@@ -219,9 +219,9 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
                 to={`/restaurante/${s.slug}`}
                 role="option"
                 onClick={() => { setSuggestions([]); setSearchQuery(''); }}
-                className="flex items-center gap-4 px-6 py-4 hover:bg-primary/5 transition-all group border-b border-border-subtle/50 last:border-0"
+                className="flex items-center gap-4 px-6 py-4 hover:bg-primary/5 transition-all group border-b border-border-subtle/40 last:border-0"
               >
-                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-premium group-hover:scale-105 transition-transform duration-500">
+                <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-premium border border-border-subtle/50 group-hover:scale-105 transition-transform duration-500">
                   <img src={s.image} className="w-full h-full object-cover" alt={s.name} loading="lazy" decoding="async" />
                 </div>
                 <div className="flex-1">

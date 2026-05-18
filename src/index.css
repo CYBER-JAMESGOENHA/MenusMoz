@@ -41,6 +41,8 @@
   --text-color: #1A1A1A;
   --text-dim-color: #6B7280;
   --border-color: rgba(0, 0, 0, 0.06);
+  --active-slide-glow: rgba(0, 0, 0, 0.04);
+  --active-slide-border: rgba(0, 0, 0, 0.06);
   background-color: #FAFAFA;
 }
 
@@ -50,6 +52,8 @@
   --text-color: #F5F5F0;
   --text-dim-color: #A8A8A0;
   --border-color: rgba(255, 255, 255, 0.08);
+  --active-slide-glow: rgba(255, 255, 255, 0.015);
+  --active-slide-border: rgba(255, 255, 255, 0.08);
   --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
 }
 
@@ -358,6 +362,61 @@
 .view-wrapper {
     @apply transition-all duration-500 ease-in-out;
 }
+
+/* Calm Luxury Micro-Animations */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.25); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.25); }
+  70% { transform: scale(1); }
+}
+
+.group:hover .animate-heartbeat-hover {
+  animation: heartbeat 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes cart-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  15% { transform: translate(-1px, -1.5px) rotate(-8deg); }
+  30% { transform: translate(1px, -1px) rotate(6deg); }
+  45% { transform: translate(-1px, 1px) rotate(-4deg); }
+  60% { transform: translate(1px, 1px) rotate(3deg); }
+  75% { transform: translate(-0.5px, -0.5px) rotate(-1deg); }
+  90% { transform: translate(0.5px, -0.5px) rotate(1deg); }
+}
+
+.group:hover .animate-cart-hover {
+  animation: cart-shake 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes history-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+.group:hover .animate-history-hover {
+  animation: history-spin 0.85s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes badge-pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(206, 17, 38, 0.4); }
+  50% { box-shadow: 0 0 8px 2px rgba(206, 17, 38, 0.7); }
+}
+
+.badge-glow-red {
+  animation: badge-pulse-red 2s infinite ease-in-out;
+}
+
+@keyframes badge-pulse-yellow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(252, 227, 0, 0.4); }
+  50% { box-shadow: 0 0 8px 2px rgba(252, 227, 0, 0.7); }
+}
+
+.badge-glow-yellow {
+  animation: badge-pulse-yellow 2s infinite ease-in-out;
+}
+
 
 
 

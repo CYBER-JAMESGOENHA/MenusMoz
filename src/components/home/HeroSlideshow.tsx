@@ -64,8 +64,26 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
         }
         slideshowTimerRef.current = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % SLIDES.length);
-        }, 6000); // 6 seconds duration
+        }, 6500); // 6.5 seconds duration
     }, []);
+
+    // Set dynamic slide-specific glow and border colors for Option C header integration
+    useEffect(() => {
+        const colors = [
+            { glow: 'rgba(212, 175, 55, 0.18)', border: 'rgba(212, 175, 55, 0.35)' }, // Gold
+            { glow: 'rgba(230, 138, 0, 0.14)', border: 'rgba(230, 138, 0, 0.28)' },   // Amber
+            { glow: 'rgba(0, 154, 68, 0.12)', border: 'rgba(0, 154, 68, 0.25)' },     // Emerald Green
+            { glow: 'rgba(255, 107, 107, 0.14)', border: 'rgba(255, 107, 107, 0.30)' } // Coral Rose
+        ];
+        const active = colors[currentIndex] || colors[0];
+        document.documentElement.style.setProperty('--active-slide-glow', active.glow);
+        document.documentElement.style.setProperty('--active-slide-border', active.border);
+
+        return () => {
+            document.documentElement.style.removeProperty('--active-slide-glow');
+            document.documentElement.style.removeProperty('--active-slide-border');
+        };
+    }, [currentIndex]);
 
     useEffect(() => {
         startSlideshow();
@@ -160,12 +178,12 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                     isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
                                 }`}
                             >
-                                {/* Active image zoom pan effect */}
+                                {/* Active image Ken Burns scale effect */}
                                 <img
                                     src={slide.image}
                                     alt="Locais de Moz premium ambience"
                                     className={`w-full h-full object-cover transition-transform ease-out select-none pointer-events-none ${
-                                        isActive ? 'scale-105 duration-[6000ms]' : 'scale-100 duration-500'
+                                        isActive ? 'scale-[1.06] duration-[6500ms]' : 'scale-100 duration-500'
                                     }`}
                                     draggable={false}
                                 />
@@ -177,15 +195,15 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 <div className="absolute inset-0 z-20 flex items-center pl-[7%] sm:pl-[8%] md:pl-[10%] pr-6">
                                     <div className="w-full max-w-[420px] lg:max-w-[500px] flex flex-col items-start text-left pointer-events-auto">
                                         
-                                        {/* Dynamic Category/Highlight Badge */}
-                                        <span className="inline-block bg-[#CE1126]/20 text-[#FF4D5A] border border-[#CE1126]/35 px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.25em] mb-2 sm:mb-3 uppercase backdrop-blur-xs select-none">
+                                        {/* Dynamic Category/Highlight Gold Badge */}
+                                        <span className="inline-block bg-[#D4AF37]/15 text-[#E6C762] border border-[#D4AF37]/35 px-2.5 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.25em] mb-2 sm:mb-3 uppercase backdrop-blur-xs select-none">
                                             {isPt ? slide.badge.pt : slide.badge.en}
                                         </span>
 
-                                        {/* Elegantly styled serif display text with primary red emphasis */}
+                                        {/* Elegantly styled serif display text with primary Gold emphasis */}
                                         <h1 className="font-display font-medium text-white leading-[1.1] tracking-tight text-[26px] sm:text-[34px] md:text-[42px] lg:text-[48px]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
-                                            <span className="text-[#CE1126] font-semibold">
+                                            <span className="text-[#D4AF37] font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
                                             </span>
                                             {isPt ? slide.title2.pt : slide.title2.en}
@@ -196,13 +214,13 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                             {isPt ? slide.subtitle.pt : slide.subtitle.en}
                                         </p>
 
-                                        {/* Custom styled CTA outline button */}
+                                        {/* Custom styled Gold CTA outline button */}
                                         <button
                                             onClick={handleCtaClick}
-                                            className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/20 hover:border-[#CE1126]/75 bg-black/30 hover:bg-black/50 text-white font-body text-[10px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-2 hover:shadow-[0_0_15px_rgba(206,17,38,0.25)] cursor-pointer"
+                                            className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/20 hover:border-[#D4AF37]/75 bg-black/30 hover:bg-black/50 text-white font-body text-[10px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-2 hover:shadow-[0_0_15px_rgba(212,175,55,0.25)] cursor-pointer"
                                         >
                                             {isPt ? 'Explorar Agora' : 'Explore Now'}
-                                            <span className="text-[#CE1126] group-hover:translate-x-1 transition-transform">→</span>
+                                            <span className="text-[#D4AF37] group-hover:translate-x-1 transition-transform">→</span>
                                         </button>
 
                                     </div>
@@ -213,7 +231,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                     })}
                 </div>
 
-                {/* Miniature Pagination Dots */}
+                {/* Miniature Gold Pagination Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 select-none">
                     {SLIDES.map((_, idx) => {
                         const isActive = idx === currentIndex;
@@ -223,7 +241,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 onClick={() => navigateTo(idx)}
                                 className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                                     isActive 
-                                        ? 'w-6 bg-[#CE1126]' 
+                                        ? 'w-6 bg-[#D4AF37]' 
                                         : 'w-1.5 bg-white/40 hover:bg-white/70'
                                 }`}
                                 aria-label={`Go to slide ${idx + 1}`}
