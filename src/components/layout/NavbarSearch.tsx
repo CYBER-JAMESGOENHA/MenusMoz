@@ -153,49 +153,49 @@ const NavbarSearch: React.FC<NavbarSearchProps> = ({ lang }) => {
   };
 
   return (
-    <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-12 animate-in fade-in slide-in-from-top-3 duration-500 ease-out">
-      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:bg-surface/10 hover:shadow-premium-lg focus-within:shadow-[0_0_25px_rgba(206,17,38,0.08)] focus-within:border-primary/30 focus-within:-translate-y-[1px] h-11">
+    <div ref={searchRef} className="relative hidden lg:block flex-1 max-w-2xl mx-16 animate-in fade-in slide-in-from-top-3 duration-500 ease-out">
+      <div className="flex items-center glass border border-border-subtle rounded-full overflow-hidden transition-all duration-500 bg-surface/5 hover:bg-surface/10 hover:shadow-premium-lg focus-within:shadow-[0_0_25px_rgba(206,17,38,0.08)] focus-within:border-primary/30 focus-within:-translate-y-[1px] h-12">
         
         {/* Location Selector (Left) */}
         <button
           onClick={() => detectAndSaveLocation()}
           className="flex items-center gap-2 h-full px-4 hover:bg-primary/8 transition-all group/loc border-r border-border-subtle/80 shrink-0 relative hover:-translate-y-[0.5px] active:translate-y-0"
         >
-          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:bg-primary/20 group-hover/loc:scale-105 group-hover/loc:shadow-[0_0_10px_rgba(206,17,38,0.25)] transition-all duration-300">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover/loc:bg-primary/20 group-hover/loc:scale-105 group-hover/loc:shadow-[0_0_10px_rgba(206,17,38,0.25)] transition-all duration-300">
             {isLoadingLocation ? (
-              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             ) : (
-              <MapPin size={15} />
+              <MapPin size={17} />
             )}
           </div>
           <div className="flex flex-col items-start leading-none">
-            <span className="text-[8px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-text-dim/50 italic">Onde?</span>
             <div className="flex items-center gap-1">
-              <span className="text-[11px] font-black text-text-main truncate max-w-[80px] uppercase italic">{location}</span>
-              <ChevronDown size={11} className="text-primary group-hover/loc:translate-y-0.5 transition-transform duration-300" />
+              <span className="text-[12px] font-black text-text-main truncate max-w-[90px] uppercase italic">{location}</span>
+              <ChevronDown size={12} className="text-primary group-hover/loc:translate-y-0.5 transition-transform duration-300" />
             </div>
           </div>
         </button>
 
         {/* Search Field (Rest) */}
         <div className="flex-1 flex items-center px-4 relative">
-          <Search size={14} className="text-text-dim/40 mr-3 group-hover:text-text-main transition-colors duration-300" />
+          <Search size={16} className="text-text-dim/40 mr-3 group-hover:text-text-main transition-colors duration-300" />
           <input
             type="text"
             placeholder={t.hero?.search_placeholder || 'Procure por pratos ou restaurantes'}
             value={searchQuery}
             onChange={handleSearch}
             onKeyDown={handleKeyDown}
-            className="bg-transparent border-none outline-none text-[13px] font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
+            className="bg-transparent border-none outline-none text-[14px] font-black text-text-main placeholder:text-text-dim/30 w-full italic uppercase tracking-tight"
           />
           
           {/* Magnifying Glass Indicator or Button */}
           {searchQuery && (
             <button 
               onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-              className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2 hover:scale-105 active:scale-95 transition-transform"
+              className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center shadow-primary-glow animate-in fade-in zoom-in duration-300 ml-2 hover:scale-105 active:scale-95 transition-transform"
             >
-              <Search size={14} strokeWidth={3} />
+              <Search size={16} strokeWidth={3} />
             </button>
           )}
         </div>
