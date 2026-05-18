@@ -112,7 +112,7 @@ export default function App() {
                   lang={selectedLang}
                 />
 
-                <main className="flex-grow pb-24 md:pb-0">
+                <main className="flex-grow pb-24 md:pb-0 pt-[88px] md:pt-[96px]">
                   <Suspense fallback={<LoadingSpinner />}>
                     <Routes>
                       <Route path="/" element={
