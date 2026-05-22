@@ -1,6 +1,6 @@
 import React, { useCallback, memo, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
+import { Heart, Star, MapPin } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
 import { translations } from '../../translations';
 import { checkIsOpen } from '../../utils/timeUtils';
@@ -125,113 +125,94 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative flex flex-col bg-[#FAF7F2] dark:bg-[#FAF7F2] rounded-xl overflow-hidden border border-stone-200/60 dark:border-stone-200/40 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
+            className="group relative flex flex-col bg-white dark:bg-[#121212] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out"
         >
-            {/* IMAGE CONTAINER — Premium Restaurant Preview */}
-            <div className="relative aspect-[3/2] w-full overflow-hidden">
-                {/* Atmosphere Background (warm placeholder) */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-neutral-900/60 dark:via-zinc-900/40 dark:to-neutral-950/60">
-                    <div className="absolute inset-0 opacity-30" style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-                    }} />
-                </div>
-
+            {/* IMAGE CONTAINER — Cinematic & Prominent (Concept A & B) */}
+            <div className="relative aspect-[4/3] w-full bg-neutral-100 dark:bg-neutral-900">
                 {/* Restaurant Image */}
                 <img
                     src={imageUrl}
                     alt={restaurant.name}
                     loading="lazy"
                     decoding="async"
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setImageLoaded(true)}
                 />
-                {/* Blur-up placeholder while loading */}
+                
+                {/* Blur-up placeholder */}
                 {!imageLoaded && (
                     <img
                         src={imageUrl}
                         alt=""
-                        loading="lazy"
-                        decoding="async"
-                        className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
+                        className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-50"
                         aria-hidden="true"
                     />
                 )}
 
-                {/* Elegant Image Overlay — Top Gradient (Softer) */}
-                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-black/15 to-transparent pointer-events-none" />
+                {/* Cinematic Gradient Overlays (Concept B Elegance) */}
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-10" />
+                <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/40 to-transparent pointer-events-none z-10" />
 
-                {/* Top Overlay: Favorite Heart — Floating Style */}
+                {/* Top Overlay: Favorite Heart */}
                 <button
                     onClick={handleToggleFavorite}
                     aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-                    aria-pressed={isFavorite}
-                    className="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-white/50 dark:border-white/10 hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)]"
+                    className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/20 dark:bg-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/30 dark:hover:bg-black/60 border border-white/20"
                 >
                     <Heart 
-                        size={13} 
-                        className={`transition-all duration-300 ${isFavorite ? 'fill-primary text-primary scale-110' : 'text-neutral-600 dark:text-white/80'}`}
+                        size={15} 
+                        className={`transition-all duration-300 ${isFavorite ? 'fill-rose-500 text-rose-500 scale-110' : 'text-white'}`}
                         strokeWidth={2.5}
                     />
                 </button>
+
+                {/* Overlapping Logo (Concept A Structure) */}
+                <div className="absolute -bottom-6 left-4 z-20 w-14 h-14 rounded-full overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] border-[3px] border-white dark:border-[#121212] bg-white flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                        <span className="text-lg font-bold tracking-tight text-neutral-400">
+                            {initial}
+                        </span>
+                    )}
+                </div>
             </div>
 
-            {/* CONTENT AREA — Refined Information Hierarchy */}
-            <div className="p-3 pb-3 flex flex-col gap-1.5 bg-[#FAF7F2] dark:bg-[#FAF7F2] border-t border-stone-200/50 dark:border-stone-200/30 rounded-b-xl">
-                {/* Header Row: Logo, Name */}
-                <div className="flex items-center gap-2.5 min-w-0">
-                    {/* Restaurant Logo */}
-                    <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-stone-300/40 bg-white flex items-center justify-center">
-                        {logoUrl ? (
-                            <img src={logoUrl} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-[10px] font-bold tracking-tight text-stone-400">
-                                {initial}
-                            </span>
-                        )}
-                    </div>
+            {/* CONTENT AREA — Minimalist & Crisp (Concept B Elegance) */}
+            <div className="pt-9 pb-5 px-5 flex flex-col gap-2.5 relative z-0">
+                {/* Header Row: Name & Rating */}
+                <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-body text-base font-bold text-neutral-900 dark:text-neutral-50 leading-tight truncate group-hover:text-primary transition-colors duration-300">
+                        {restaurant.name}
+                    </h3>
                     
-                    {/* Name */}
-                    <div className="flex flex-col min-w-0 justify-center">
-                        <h3 className="font-body text-[13.5px] font-bold text-stone-900 truncate leading-tight group-hover:text-primary transition-colors duration-300">
-                            {restaurant.name}
-                        </h3>
+                    {/* Premium Rating Badge */}
+                    <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/10 px-1.5 py-0.5 rounded-md shrink-0">
+                        <Star size={11} className="fill-primary text-primary" />
+                        <span className="text-[11px] font-bold text-neutral-900 dark:text-neutral-100">{rating}</span>
                     </div>
                 </div>
 
-                {/* Cuisine & Location */}
-                <div className="flex items-center gap-1 text-[9.5px] text-stone-500 font-semibold tracking-tight truncate">
+                {/* Metadata Row: Cuisine, Status, Location */}
+                <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-500 dark:text-neutral-400 font-medium tracking-tight">
                     <span>{restaurant.cuisine || 'Restaurante'}</span>
-                    <span className="text-stone-300">•</span>
-                    <MapPin size={9.5} className="text-stone-400 shrink-0" />
-                    <span className="truncate">{area}</span>
-                </div>
-
-                {/* Rating & Status */}
-                <div className="flex items-center gap-1.5 text-[9.5px] font-bold tracking-tight">
-                    <div className="flex items-center gap-0.5 text-primary">
-                        <Star size={9.5} className="fill-primary text-primary" />
-                        <span>{rating}</span>
-                    </div>
-                    <span className="text-stone-300 font-light">•</span>
-                    <span className={`font-semibold ${isOpen ? 'text-emerald-700' : 'text-rose-700'}`}>
-                        {isOpen ? (lang === 'pt' ? 'Aberto agora' : 'Open now') : (lang === 'pt' ? 'Fechado' : 'Closed')}
+                    <span className="text-neutral-300 dark:text-neutral-700">•</span>
+                    <span className={`flex items-center gap-1 ${isOpen ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                        {isOpen ? (lang === 'pt' ? 'Aberto' : 'Open') : (lang === 'pt' ? 'Fechado' : 'Closed')}
+                    </span>
+                    <span className="text-neutral-300 dark:text-neutral-700">•</span>
+                    <span className="flex items-center gap-0.5 truncate">
+                        <MapPin size={11} className="shrink-0" />
+                        <span className="truncate">{area}</span>
                     </span>
                 </div>
 
-                {/* Highlight Line */}
-                <div className="text-[9.5px] font-semibold text-stone-600 border-l-2 border-primary/45 pl-1.5 italic truncate">
-                    {lang === 'pt' ? 'Especialidade' : 'Specialty'}: {highlightLine}
-                </div>
-
-                {/* CTA Button */}
-                <div className="mt-1">
-                    <div className="w-full py-1.5 rounded-lg bg-stone-100 dark:bg-stone-100 border border-stone-200/80 flex items-center justify-center gap-1 transition-all duration-300 ease-out group-hover:bg-stone-200/50 group-hover:border-primary/20">
-                        <span className="text-[9px] font-bold uppercase tracking-wider text-stone-600 group-hover:text-primary transition-colors duration-300">
-                            {t.home.view_restaurant}
-                        </span>
-                        <ArrowRight size={9.5} className="text-stone-500 group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-300" />
+                {/* Specialty / Highlight Line */}
+                {highlightLine && (
+                    <div className="mt-1 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 italic border-l-2 border-primary/40 pl-2">
+                        {highlightLine}
                     </div>
-                </div>
+                )}
             </div>
         </Link>
     );
