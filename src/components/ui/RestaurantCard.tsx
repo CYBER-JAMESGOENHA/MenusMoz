@@ -98,16 +98,15 @@ export const RestaurantCard = memo(({
         return '';
     }, [restaurant.identity_text, restaurant.tags, restaurant.features, restaurant.cuisine]);
 
-    const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url;
+    const imageUrl = restaurant.image || restaurant.hero_image_url || restaurant.cover_url || getAtmosphereImage(restaurant.id);
     const logoUrl = restaurant.logo_url || restaurant.logo;
-    const hasImage = !!imageUrl;
     const initial = restaurant.name?.[0]?.toUpperCase() || 'R';
     const rating = typeof restaurant.rating === 'number' ? restaurant.rating.toFixed(1) : restaurant.rating || '4.5';
 
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative flex flex-col bg-surface rounded-xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-500 ease-out"
+            className="group relative flex flex-col bg-surface dark:bg-[#1E1C1B] rounded-xl overflow-hidden border border-border-subtle dark:border-white/5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-500 ease-out"
         >
             {/* IMAGE CONTAINER — Premium Restaurant Preview */}
             <div className="relative aspect-[3/2] w-full overflow-hidden">
@@ -118,55 +117,29 @@ export const RestaurantCard = memo(({
                     }} />
                 </div>
 
-                {/* Subtle radial gradient for depth */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.15)_100%)]" />
-
                 {/* Restaurant Image */}
-                {hasImage ? (
-                    <>
-                        <img
-                            src={imageUrl}
-                            alt={restaurant.name}
-                            loading="lazy"
-                            decoding="async"
-                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                            onLoad={() => setImageLoaded(true)}
-                        />
-                        {/* Blur-up placeholder while loading */}
-                        {!imageLoaded && (
-                            <img
-                                src={imageUrl}
-                                alt=""
-                                loading="lazy"
-                                decoding="async"
-                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
-                                aria-hidden="true"
-                            />
-                        )}
-                    </>
-                ) : (
-                    <>
-                        <img
-                            src={getAtmosphereImage(restaurant.id)}
-                            alt=""
-                            className="absolute inset-0 w-full h-full object-cover opacity-40 blur-[1px] scale-105"
-                            aria-hidden="true"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-16 h-16 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-md flex items-center justify-center">
-                                <span className="text-xl font-display font-bold text-amber-900/40 dark:text-amber-100/30">
-                                    {initial}
-                                </span>
-                            </div>
-                        </div>
-                    </>
+                <img
+                    src={imageUrl}
+                    alt={restaurant.name}
+                    loading="lazy"
+                    decoding="async"
+                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    onLoad={() => setImageLoaded(true)}
+                />
+                {/* Blur-up placeholder while loading */}
+                {!imageLoaded && (
+                    <img
+                        src={imageUrl}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
+                        aria-hidden="true"
+                    />
                 )}
 
                 {/* Elegant Image Overlay — Top Gradient (Softer) */}
-                <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/20 to-transparent pointer-events-none" />
-                
-                {/* Bottom Atmospheric Overlay (Softer) */}
-                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-black/15 to-transparent pointer-events-none" />
 
                 {/* Open/Closed Badge — Top Left */}
                 <div className="absolute top-2.5 left-2.5 z-20">
@@ -188,41 +161,30 @@ export const RestaurantCard = memo(({
                         strokeWidth={2.5}
                     />
                 </button>
-
-                {/* Cuisine Badge — Bottom Left */}
-                {restaurant.cuisine && (
-                    <div className="absolute bottom-3 left-3 z-20">
-                        <span className="px-2 py-0.5 rounded-full bg-white/90 dark:bg-black/60 backdrop-blur-md text-[9px] font-bold uppercase tracking-wider text-neutral-800 dark:text-white/90 shadow-sm border border-white/30 dark:border-white/10">
-                            {restaurant.cuisine}
-                        </span>
-                    </div>
-                )}
             </div>
 
             {/* CONTENT AREA — Refined Information Hierarchy */}
-            <div className="p-2.5 pb-2 flex flex-col gap-0">
+            <div className="p-3 pb-2.5 flex flex-col gap-0">
                 {/* Header Row: Logo, Name, Rating */}
                 <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
+                    <div className="flex items-center gap-3 overflow-hidden min-w-0">
                         {/* Restaurant Logo */}
-                        <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-border-subtle bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-surface dark:to-bg">
+                        <div className="w-9 h-9 rounded-xl overflow-hidden flex-shrink-0 shadow-sm border border-neutral-200/50 dark:border-white/10 bg-white dark:bg-neutral-800/80 flex items-center justify-center">
                             {logoUrl ? (
                                 <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <span className="text-xs font-display font-bold text-neutral-300 dark:text-neutral-700">
-                                        {initial}
-                                    </span>
-                                </div>
+                                <span className="text-sm font-semibold tracking-tight text-neutral-400 dark:text-neutral-500">
+                                    {initial}
+                                </span>
                             )}
                         </div>
                         
                         {/* Name & Cuisine */}
-                        <div className="flex flex-col min-w-0">
-                            <h3 className="font-display text-[13px] font-bold text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
+                        <div className="flex flex-col min-w-0 justify-center">
+                            <h3 className="font-display text-[13.5px] font-bold text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
                                 {restaurant.name}
                             </h3>
-                            <p className="text-[9px] font-medium text-text-dim dark:text-neutral-600 truncate mt-0.5 uppercase tracking-wide">
+                            <p className="text-[9px] font-semibold text-text-dim dark:text-neutral-500 truncate mt-0.5 uppercase tracking-wide">
                                 {restaurant.cuisine || 'Restaurante'}
                             </p>
                         </div>
@@ -238,7 +200,7 @@ export const RestaurantCard = memo(({
                 {/* Editorial Metadata Row — Airbnb Inspired */}
                 <div className="mt-1 flex items-center gap-1 text-[9px] whitespace-nowrap overflow-hidden">
                     <div className="flex items-center gap-1 text-neutral-400 dark:text-neutral-500 shrink-0">
-                        <MapPin size={9} strokeWidth={1.5} className="opacity-50" />
+                        <MapPin size={9.5} strokeWidth={1.5} className="opacity-50" />
                         <span className="font-medium tracking-tight">{area}</span>
                     </div>
                     {descriptor && (
@@ -252,12 +214,12 @@ export const RestaurantCard = memo(({
                 </div>
 
                 {/* CTA Button — Premium Touchpoint */}
-                <div className="mt-1.5">
-                    <div className="w-full py-1 rounded-lg bg-neutral-50/50 dark:bg-surface/30 border border-neutral-200/40 dark:border-border-subtle/60 flex items-center justify-center gap-1.5 group-hover:bg-primary group-hover:border-primary/20 transition-all duration-400 ease-out">
-                        <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-text-dim dark:text-neutral-500 group-hover:text-white transition-colors duration-400">
+                <div className="mt-2.5">
+                    <div className="w-full py-1.5 rounded-lg bg-neutral-100/50 dark:bg-neutral-800/20 border border-neutral-200/60 dark:border-white/5 flex items-center justify-center gap-1.5 transition-all duration-300 ease-out group-hover:bg-neutral-200/50 dark:group-hover:bg-neutral-800/50 group-hover:border-primary/30">
+                        <span className="text-[9.5px] font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
                             {t.home.view_restaurant}
                         </span>
-                        <ArrowRight size={9} className="text-neutral-400 dark:text-neutral-600 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-400" />
+                        <ArrowRight size={9.5} className="text-neutral-500 dark:text-neutral-500 group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-300" />
                     </div>
                 </div>
             </div>
