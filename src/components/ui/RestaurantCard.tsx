@@ -1,6 +1,6 @@
 import React, { useCallback, memo, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Star, MapPin } from 'lucide-react';
+import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
 import { translations } from '../../translations';
 import { checkIsOpen } from '../../utils/timeUtils';
@@ -213,6 +213,16 @@ export const RestaurantCard = memo(({
                         {highlightLine}
                     </div>
                 )}
+
+                {/* Elegant CTA Button */}
+                <div className="mt-3 pt-2 border-t border-neutral-100 dark:border-white/5">
+                    <div className="w-full py-2 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/50 dark:border-white/5 flex items-center justify-center gap-1.5 transition-all duration-300 group-hover:bg-primary group-hover:border-primary group-hover:text-white">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-300 group-hover:text-white transition-colors duration-300">
+                            {t.home.view_restaurant}
+                        </span>
+                        <ArrowRight size={11} className="text-neutral-400 dark:text-neutral-500 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                    </div>
+                </div>
             </div>
         </Link>
     );
