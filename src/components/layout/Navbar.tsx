@@ -58,7 +58,12 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* 2. Barra de Busca (Centro - O maior foco) */}
         {(!isScrolled && location.pathname === '/') ? (
-          <div className="flex-1" />
+          <>
+            {/* Show search in navbar on desktop even when not scrolled */}
+            <NavbarSearch lang={lang} />
+            {/* Empty space for mobile when not scrolled */}
+            <div className="lg:hidden flex-1" />
+          </>
         ) : (
           <NavbarSearch lang={lang} />
         )}

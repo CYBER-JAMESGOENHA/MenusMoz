@@ -176,14 +176,14 @@ export default function Home({
 
             {/* ── Home Search ─────────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <div id="search-section" className="relative z-40 -mt-10 sm:-mt-14 md:-mt-16">
+                <div id="search-section" className="relative z-40 -mt-10 sm:-mt-14 md:-mt-16 lg:hidden">
                     <HomeSearch lang={lang} restaurants={restaurants} />
                 </div>
             )}
 
             {/* ── Category Pills Scroller ────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mt-8 md:mt-10 mb-4">
+                <section className="max-w-7xl mx-auto px-4 mt-5 md:mt-7 mb-2.5">
                     <div className="flex items-center justify-center">
                         <div className="flex gap-2 overflow-x-auto scrollbar-none py-2 px-1 max-w-full justify-start md:justify-center">
                             {categories.map((cat) => {
@@ -209,7 +209,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8">
+                <section className="py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     subtitle={th.most_ordered_subtitle}
@@ -252,7 +252,7 @@ export default function Home({
 
             {/* ── Recomendados Grid ────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8">
+                <section className="max-w-7xl mx-auto px-4 py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
                         <div>
                             <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
@@ -306,7 +306,7 @@ export default function Home({
 
             {/* ── Explorar por Bairro ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8 mb-8">
+                <section className="max-w-7xl mx-auto px-4 py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5 mb-5">
                     <div className="text-center mb-10 max-w-xl mx-auto">
                         <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             📍 {lang === 'pt' ? 'Zonas Gastronómicas' : 'Gastronomic Zones'}

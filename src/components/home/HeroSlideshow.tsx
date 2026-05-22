@@ -163,7 +163,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
             onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
             onTouchEnd={handleDragEnd}
         >
-            <div className="relative w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] xl:h-[480px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
+            <div className="relative w-full h-[320px] sm:h-[350px] md:h-[370px] lg:h-[390px] xl:h-[410px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
                 
                 {/* Drag hint overlay */}
                 <div 
@@ -197,12 +197,12 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                     <div className="w-full max-w-[450px] sm:max-w-[550px] lg:max-w-[650px] flex flex-col items-start text-left pointer-events-auto">
                                         
                                         {/* Dynamic Category/Highlight Red Badge */}
-                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.2em] mb-3 sm:mb-4 uppercase backdrop-blur-xs select-none">
+                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.2em] mb-2.5 sm:mb-3 uppercase backdrop-blur-xs select-none">
                                             {isPt ? slide.badge.pt : slide.badge.en}
                                         </span>
 
                                         {/* Elegantly styled serif display text with primary Red emphasis */}
-                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] xl:text-[50px]">
+                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[24px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
                                             <span className="text-primary font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
@@ -211,7 +211,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </h1>
 
                                         {/* Premium subtle description */}
-                                        <p className="text-white/80 dark:text-white/70 text-xs sm:text-sm md:text-base font-light mt-3 sm:mt-4 mb-5 sm:mb-6 leading-relaxed max-w-[340px] sm:max-w-[460px] md:max-w-[520px] select-none">
+                                        <p className="text-white/80 dark:text-white/70 text-xs sm:text-sm md:text-base font-light mt-2.5 sm:mt-3 mb-4 sm:mb-5 leading-relaxed max-w-[340px] sm:max-w-[460px] md:max-w-[520px] select-none">
                                             {isPt ? slide.subtitle.pt : slide.subtitle.en}
                                         </p>
 

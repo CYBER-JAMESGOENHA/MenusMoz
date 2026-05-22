@@ -44,7 +44,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
         home: {
             featured_tag: "Destaque do Dia",
             order_now: "Encomendar Agora",
-            view_restaurant: "Ver Restaurante",
+            view_restaurant: "Ver menu",
             open_now: "Aberto agora",
             closed: "Fechado",
             view_full_menu: "Ver Menu Completo",
@@ -170,7 +170,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
         home: {
             featured_tag: "Dish of the Day",
             order_now: "Order Now",
-            view_restaurant: "View Restaurant",
+            view_restaurant: "View menu",
             open_now: "Open now",
             closed: "Closed",
             view_full_menu: "View Full Menu",
