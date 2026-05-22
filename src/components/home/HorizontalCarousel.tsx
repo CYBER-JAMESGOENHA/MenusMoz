@@ -63,18 +63,18 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
 
     return (
         <div className="pt-0 pb-2">
-            <div className="max-w-7xl mx-auto px-5 mb-3 flex items-center gap-3">
-                <div className="w-0.5 h-4 bg-primary rounded-full" />
-                <div className="flex flex-col">
-                    <h2 className="text-[13px] font-bold text-text-main tracking-tight">
-                        {title}
-                    </h2>
-                    {subtitle && (
-                        <p className="text-[7px] font-bold text-text-dim uppercase tracking-[0.12em] mt-0.5 opacity-40">
-                            {subtitle}
-                        </p>
-                    )}
-                </div>
+            <div className="max-w-7xl mx-auto px-4 mb-6">
+                <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full font-semibold text-[9px] uppercase tracking-wider mb-2.5">
+                    {lang === 'pt' ? 'Populares' : 'Popular'}
+                </span>
+                <h2 className="text-2xl md:text-3xl font-display font-medium text-text-main tracking-tight leading-none">
+                    {title}
+                </h2>
+                {subtitle && (
+                    <p className="text-xs text-text-dim/60 font-body mt-2">
+                        {subtitle}
+                    </p>
+                )}
             </div>
 
             <section ref={sectionRef} className="max-w-7xl mx-auto px-4 pb-1 relative group/carousel">

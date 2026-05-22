@@ -183,7 +183,7 @@ export default function Home({
 
             {/* ── Category Pills Scroller ────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mt-4 md:mt-5 mb-2">
+                <section className="max-w-7xl mx-auto px-4 mt-8 md:mt-10 mb-4">
                     <div className="flex items-center justify-center">
                         <div className="flex gap-2 overflow-x-auto scrollbar-none py-2 px-1 max-w-full justify-start md:justify-center">
                             {categories.map((cat) => {
@@ -192,7 +192,7 @@ export default function Home({
                                     <button
                                         key={cat}
                                         onClick={() => setSelectedCategory(cat)}
-                                        className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shrink-0 border cursor-pointer ${
+                                        className={`px-4 py-1.5 rounded-full text-[11px] font-semibold font-body transition-all duration-300 shrink-0 border cursor-pointer ${
                                             isActive
                                                 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-[1.03]'
                                                 : 'bg-surface text-text-dim/80 border-border-subtle backdrop-blur-md hover:bg-surface/80 hover:text-text-main hover:border-border-subtle/80 hover:scale-[1.01]'
@@ -209,7 +209,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="mt-2 md:mt-3">
+                <section className="py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     subtitle={th.most_ordered_subtitle}
@@ -252,7 +252,7 @@ export default function Home({
 
             {/* ── Recomendados Grid ────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-8 border-t border-border-subtle mt-4 md:mt-5">
+                <section className="max-w-7xl mx-auto px-4 py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
                         <div>
                             <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
@@ -268,7 +268,7 @@ export default function Home({
                         {recommended.length > 8 && (
                             <Link
                                 to={`/restaurantes?category=${encodeURIComponent(selectedCategory)}`}
-                                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors mt-4 md:mt-0 group"
+                                className="inline-flex items-center gap-2 text-xs font-semibold text-primary hover:text-primary-dark transition-colors mt-4 md:mt-0 group"
                             >
                                 {lang === 'pt' ? 'Ver Todos' : 'View All'}
                                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -306,7 +306,7 @@ export default function Home({
 
             {/* ── Explorar por Bairro ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-10 border-t border-border-subtle mt-4 md:mt-6 mb-8">
+                <section className="max-w-7xl mx-auto px-4 py-10 md:py-14 border-t border-border-subtle/30 mt-6 md:mt-8 mb-8">
                     <div className="text-center mb-10 max-w-xl mx-auto">
                         <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             📍 {lang === 'pt' ? 'Zonas Gastronómicas' : 'Gastronomic Zones'}
@@ -346,10 +346,10 @@ export default function Home({
                                     {/* Content */}
                                     <div className="absolute inset-0 flex flex-col justify-end p-6 z-20">
                                         <div className="flex items-center justify-between gap-2">
-                                            <h3 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors leading-none">
+                                            <h3 className="font-body text-base md:text-lg font-semibold text-white group-hover:text-primary transition-colors leading-none">
                                                 {bairro.name}
                                             </h3>
-                                            <span className="bg-primary/20 border border-primary/30 text-white backdrop-blur-md px-2.5 py-0.5 rounded-full text-[8px] uppercase tracking-widest font-extrabold flex items-center gap-1 shrink-0">
+                                            <span className="bg-black/50 border border-white/10 text-white backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] font-semibold tracking-wider flex items-center gap-1 shrink-0">
                                                 <MapPin size={8} />
                                                 {count} {lang === 'pt' ? 'spots' : 'spots'}
                                             </span>

@@ -181,7 +181,7 @@ export const RestaurantCard = memo(({
                         
                         {/* Name & Cuisine */}
                         <div className="flex flex-col min-w-0 justify-center">
-                            <h3 className="font-display text-[13.5px] font-bold text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
+                            <h3 className="font-body text-[13.5px] font-bold text-text-main dark:text-white truncate leading-tight group-hover:text-primary dark:group-hover:text-primary transition-colors duration-300">
                                 {restaurant.name}
                             </h3>
                             <p className="text-[9px] font-semibold text-text-dim dark:text-neutral-500 truncate mt-0.5 uppercase tracking-wide">
