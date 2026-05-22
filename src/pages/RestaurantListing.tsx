@@ -22,6 +22,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     const navigate = useNavigate();
     const query = searchParams.get('q') || '';
     const categoryParam = searchParams.get('category') || 'Tudo';
+    const bairroParam = searchParams.get('bairro') || '';
     const shouldAutoFocus = searchParams.get('autoFocus') === 'true';
     
     const searchInputRef = useRef<HTMLInputElement>(null);
@@ -92,6 +93,10 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
             if (minRating > 0 && match) {
                 match = (r.rating || 0) >= minRating;
             }
+            if (bairroParam && match) {
+                const source = (r.address || r.location || '').toLowerCase();
+                match = source.includes(bairroParam.toLowerCase());
+            }
             return match;
         });
 
@@ -100,7 +105,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
         }
 
         return result;
-    }, [restaurants, searchTerm, activeCategory, minRating, sortBy]);
+    }, [restaurants, searchTerm, activeCategory, minRating, sortBy, bairroParam]);
 
     useEffect(() => {
         if (!gridContainerRef.current) return;
@@ -273,10 +278,10 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
                         <div className="flex items-center gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                             <h2 className="text-xs font-black uppercase tracking-[0.3em] text-text-dim">
-                                {filteredRestaurants.length} Resultados Encontrados
+                                {filteredRestaurants.length} Resultados Encontrados {bairroParam && ` em ${bairroParam}`}
                             </h2>
                         </div>
-                        {(searchTerm || activeCategory !== 'Tudo' || minRating > 0) && (
+                        {(searchTerm || activeCategory !== 'Tudo' || minRating > 0 || bairroParam) && (
                             <button 
                                 onClick={clearFilters}
                                 className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline underline-offset-4"

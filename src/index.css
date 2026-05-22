@@ -47,14 +47,14 @@
 }
 
 .dark {
-  --bg-color: #1A1818;
-  --surface-color: #242220;
-  --text-color: #F5F5F0;
-  --text-dim-color: #A8A8A0;
-  --border-color: rgba(255, 255, 255, 0.08);
+  --bg-color: #0E0E10;
+  --surface-color: #17171A;
+  --text-color: #F4F4F5;
+  --text-dim-color: #A1A1AA;
+  --border-color: rgba(255, 255, 255, 0.05);
   --active-slide-glow: rgba(255, 255, 255, 0.015);
-  --active-slide-border: rgba(255, 255, 255, 0.08);
-  --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  --active-slide-border: rgba(255, 255, 255, 0.06);
+  --discovery-rim-light: linear-gradient(to right, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
 }
 
 @layer base {
@@ -80,7 +80,7 @@
   }
 
   .dark body {
-    background-image: linear-gradient(180deg, rgba(26, 24, 24, 0.5) 0%, transparent 100%);
+    background-image: linear-gradient(180deg, rgba(23, 23, 26, 0.5) 0%, transparent 100%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -111,7 +111,7 @@
 
   .dark .glass {
     background-color: color-mix(in srgb, var(--surface-color), transparent 60%);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.06);
   }
 
   /* High-Impact Brand Typography */
@@ -128,7 +128,7 @@
   }
 
   .dark .shadow-premium {
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 18px 36px -18px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.45), 0 12px 24px -16px rgba(0, 0, 0, 0.25);
   }
 
   /* ── Botão Login — Bandeira de Moçambique ──────────────────────────────── */
@@ -231,7 +231,7 @@
 }
 
 .dark .hero-calm-bg {
-  background: linear-gradient(180deg, rgba(26, 24, 24, 0.6) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(23, 23, 26, 0.6) 0%, transparent 100%);
 }
 
 /* ── Hero: The Floating Essence ───────────────────────────────────────── */

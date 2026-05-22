@@ -56,7 +56,9 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             step3_title: "Visite",
             step3_desc: "Vá até ao local ou encomende o sabor da tradição.",
             recommended_title: "Mais Recomendados",
-            top_picks: "Top picks para si"
+            top_picks: "Top picks para si",
+            most_ordered_title: "Os Mais Pedidos",
+            most_ordered_subtitle: "Os clássicos que nunca falham"
         },
         detail: {
             quick_res: "Reserva Rápida",
@@ -180,7 +182,9 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             step3_title: "Visit",
             step3_desc: "Go to the location or order the flavor of tradition.",
             recommended_title: "Most Recommended",
-            top_picks: "Top picks for you"
+            top_picks: "Top picks for you",
+            most_ordered_title: "Most Popular",
+            most_ordered_subtitle: "The classics that never fail"
         },
         detail: {
             quick_res: "Quick Booking",

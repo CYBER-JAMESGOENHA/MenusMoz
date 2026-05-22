@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin, ArrowRight } from 'lucide-react';
 import { calculateDistance } from '../../hooks/useUserLocation';
 import { translations } from '../../translations';
+import { checkIsOpen } from '../../utils/timeUtils';
 
 interface RestaurantCardProps {
     restaurant: any;
@@ -42,6 +43,13 @@ export const RestaurantCard = memo(({
         e.stopPropagation();
         toggleFavorite(restaurant.id);
     }, [restaurant.id, toggleFavorite]);
+
+    const isOpen = useMemo(() => {
+        if (restaurant.isOpen !== undefined) return restaurant.isOpen;
+        if (restaurant.is_open !== undefined) return restaurant.is_open;
+        if (restaurant.hours) return checkIsOpen(restaurant.hours);
+        return true;
+    }, [restaurant.isOpen, restaurant.is_open, restaurant.hours]);
 
     const distanceInfo = useMemo(() => {
         if (!userLatitude || !userLongitude || !restaurant.latitude || !restaurant.longitude) return null;
@@ -99,12 +107,12 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative flex flex-col bg-white dark:bg-[#0A0A0A] rounded-xl overflow-hidden border border-neutral-100 dark:border-white/[0.04] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-500 ease-out"
+            className="group relative flex flex-col bg-surface rounded-xl overflow-hidden border border-border-subtle shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-500 ease-out"
         >
             {/* IMAGE CONTAINER — Premium Restaurant Preview */}
             <div className="relative aspect-[3/2] w-full overflow-hidden">
                 {/* Atmosphere Background (warm placeholder) */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-[#1a1714] dark:via-[#1f1b18] dark:to-[#181615]">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-neutral-900/60 dark:via-zinc-900/40 dark:to-neutral-950/60">
                     <div className="absolute inset-0 opacity-30" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
                     }} />
@@ -160,6 +168,13 @@ export const RestaurantCard = memo(({
                 {/* Bottom Atmospheric Overlay (Softer) */}
                 <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none" />
 
+                {/* Open/Closed Badge — Top Left */}
+                <div className="absolute top-2.5 left-2.5 z-20">
+                    <span className={`px-2 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider shadow-sm border backdrop-blur-md ${isOpen ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'}`}>
+                        {isOpen ? (lang === 'pt' ? 'Aberto' : 'Open') : (lang === 'pt' ? 'Fechado' : 'Closed')}
+                    </span>
+                </div>
+
                 {/* Top Overlay: Favorite Heart — Floating Style */}
                 <button
                     onClick={handleToggleFavorite}
@@ -190,7 +205,7 @@ export const RestaurantCard = memo(({
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
                         {/* Restaurant Logo */}
-                        <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-neutral-100 dark:border-white/10 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-[#1a1a1a] dark:to-[#121212]">
+                        <div className="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-border-subtle bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-surface dark:to-bg">
                             {logoUrl ? (
                                 <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
@@ -215,7 +230,7 @@ export const RestaurantCard = memo(({
 
                     {/* Rating Badge — Airbnb Style */}
                     <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-md border border-white/10 flex-shrink-0">
-                        <Star size={9} className="fill-white text-white opacity-90" />
+                        <Star size={9} className="fill-primary text-primary" />
                         <span className="text-[9px] font-bold text-white tracking-tight">{rating}</span>
                     </div>
                 </div>
@@ -238,7 +253,7 @@ export const RestaurantCard = memo(({
 
                 {/* CTA Button — Premium Touchpoint */}
                 <div className="mt-1.5">
-                    <div className="w-full py-1 rounded-lg bg-neutral-50/50 dark:bg-white/[0.01] border border-neutral-200/40 dark:border-white/[0.04] flex items-center justify-center gap-1.5 group-hover:bg-primary group-hover:border-primary/20 transition-all duration-400 ease-out">
+                    <div className="w-full py-1 rounded-lg bg-neutral-50/50 dark:bg-surface/30 border border-neutral-200/40 dark:border-border-subtle/60 flex items-center justify-center gap-1.5 group-hover:bg-primary group-hover:border-primary/20 transition-all duration-400 ease-out">
                         <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-text-dim dark:text-neutral-500 group-hover:text-white transition-colors duration-400">
                             {t.home.view_restaurant}
                         </span>
