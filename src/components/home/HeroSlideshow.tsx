@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 interface Slide {
     image: string;
@@ -189,7 +190,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 />
                                 
                                 {/* Deep Premium Left Vignette Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/75 via-stone-950/40 to-transparent z-10 pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20 md:from-black/80 md:via-black/35 md:to-transparent z-10 pointer-events-none" />
 
                                 {/* Slide Content Panel */}
                                 <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-[64px] md:pt-[72px]">
@@ -201,7 +202,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </span>
 
                                         {/* Elegantly styled serif display text with primary Red emphasis */}
-                                        <h1 className="font-display font-medium text-white leading-[1.1] tracking-tight text-[28px] sm:text-[38px] md:text-[46px] lg:text-[54px] xl:text-[60px]">
+                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[24px] sm:text-[32px] md:text-[40px] lg:text-[46px] xl:text-[50px]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
                                             <span className="text-primary font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
@@ -217,10 +218,10 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         {/* Solid Red CTA Button */}
                                         <button
                                             onClick={handleCtaClick}
-                                            className="px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[10px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-2 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] cursor-pointer"
+                                            className="group/btn px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[10px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-2 hover:shadow-[0_4px_12px_rgba(220,38,38,0.2)] cursor-pointer"
                                         >
                                             {isPt ? 'Explorar Agora' : 'Explore Now'}
-                                            <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                            <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
                                         </button>
 
                                     </div>
@@ -231,23 +232,31 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                     })}
                 </div>
 
-                {/* Miniature Red Pagination Dots */}
-                <div className="absolute bottom-6 right-8 md:bottom-8 md:right-10 z-30 flex items-center gap-2 select-none">
-                    {SLIDES.map((_, idx) => {
-                        const isActive = idx === currentIndex;
-                        return (
-                            <button
-                                key={idx}
-                                onClick={() => navigateTo(idx)}
-                                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                                    isActive 
-                                        ? 'w-6 bg-primary shadow-[0_0_8px_rgba(220,38,38,0.4)]' 
-                                        : 'w-1.5 bg-white/40 hover:bg-white/70'
-                                  }`}
-                                aria-label={`Go to slide ${idx + 1}`}
-                            />
-                        );
-                    })}
+                {/* Miniature Premium Pagination Dots */}
+                <div className="absolute bottom-6 right-8 md:bottom-8 md:right-10 z-30 flex items-center gap-2.5 bg-stone-950/45 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 select-none">
+                    <span className="text-[10px] font-mono font-bold text-white/50 tracking-wider">
+                        0{currentIndex + 1}
+                        <span className="mx-1 text-white/20">/</span>
+                        0{SLIDES.length}
+                    </span>
+                    <span className="w-[1px] h-2.5 bg-white/15" />
+                    <div className="flex items-center gap-1.5">
+                        {SLIDES.map((_, idx) => {
+                            const isActive = idx === currentIndex;
+                            return (
+                                <button
+                                    key={idx}
+                                    onClick={() => navigateTo(idx)}
+                                    className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
+                                        isActive 
+                                            ? 'w-5 bg-primary' 
+                                            : 'w-1.5 bg-white/30 hover:bg-white/60'
+                                      }`}
+                                    aria-label={`Go to slide ${idx + 1}`}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
 
             </div>

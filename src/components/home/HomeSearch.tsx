@@ -130,13 +130,13 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
             </div>
 
             {/* Compact Search Bar */}
-            <div className={`relative flex items-center bg-surface/40 backdrop-blur-3xl border border-border-subtle/50 rounded-xl p-0.5 transition-all duration-700 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>
+            <div className={`relative flex items-center bg-surface/85 backdrop-blur-xl border border-border-subtle/60 rounded-2xl p-1.5 transition-all duration-500 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>
                 
                 {/* Section 1: What */}
-                <div className="flex-[1.5] flex flex-col px-3 py-0.25 border-r border-border-subtle/30 group/what">
-                    <label className="text-[6px] font-bold uppercase tracking-widest text-primary mb-0 leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
-                    <div className="flex items-center gap-2 mt-0.5">
-                        <Search size={11} className={`shrink-0 transition-colors duration-500 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
+                <div className="flex-[1.5] flex flex-col pl-4 pr-3 py-1.5 group/what">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-primary mb-1 leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
+                    <div className="flex items-center gap-2.5 mt-0.5">
+                        <Search size={14} className={`shrink-0 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
                         <input
                             type="text"
                             placeholder={lang === 'pt' ? 'Procurar sabores...' : 'Search flavors...'}
@@ -144,27 +144,30 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
                             onFocus={() => setIsFocused(true)}
                             onChange={handleSearch}
                             onKeyDown={handleKeyDown}
-                            className="bg-transparent border-none outline-none text-[11px] text-text-main placeholder:text-text-dim/30 w-full font-bold tracking-tight py-0.5"
+                            className="bg-transparent border-none outline-none text-xs sm:text-sm text-text-main placeholder:text-text-dim/45 w-full font-medium tracking-tight py-0.5"
                         />
                     </div>
                 </div>
 
+                {/* Elegant vertical divider between fields */}
+                <div className="w-[1px] h-8 bg-border-subtle/30 self-center hidden md:block mx-1" />
+
                 {/* Section 2: Where */}
-                <div className="flex-1 hidden md:flex flex-col px-4 py-0.25 border-r border-border-subtle/30 group/where">
-                    <label className="text-[6px] font-bold uppercase tracking-widest text-text-dim/50 mb-0 leading-none">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
+                <div className="flex-1 hidden md:flex flex-col px-4 py-1.5 group/where">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-text-dim/50 mb-1 leading-none">{lang === 'pt' ? 'Onde?' : 'Where?'}</label>
                     <button
                         onClick={handleLocationClick}
-                        className="flex items-center gap-2 w-full text-left group/loc py-0.5 mt-0.5 text-[10px] font-bold text-text-dim/70"
+                        className="flex items-center gap-2.5 w-full text-left group/loc py-0.5 mt-0.5 text-xs font-medium text-text-dim/80 hover:text-primary transition-colors cursor-pointer"
                     >
-                        <MapPin size={11} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
-                            {lang === 'pt' ? 'Perto de mim' : 'Near me'}
+                        <MapPin size={14} className="text-text-dim/40 group-hover/loc:text-primary transition-colors" />
+                        {lang === 'pt' ? 'Perto de mim' : 'Near me'}
                     </button>
                 </div>
 
                 {/* Section 3: Filter & Action */}
-                <div className="flex items-center gap-2 px-3">
+                <div className="flex items-center gap-3 px-3">
                     <button
-                        className="hidden sm:flex p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/60 hover:text-text-main group/filter"
+                        className="hidden sm:flex p-2.5 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-text-dim/50 hover:text-text-main group/filter border border-transparent hover:border-border-subtle/30 cursor-pointer"
                         title="Filtros"
                     >
                         <SlidersHorizontal size={14} className="group-hover/filter:rotate-90 transition-transform duration-500" />
@@ -172,9 +175,10 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
 
                     <button
                         onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-                        className="flex items-center justify-center w-6 h-6 rounded-lg bg-primary text-white hover:scale-105 transition-all duration-500 active:scale-95 shrink-0 shadow-lg shadow-primary/10"
+                        className="h-11 px-4 sm:px-6 aspect-square sm:aspect-auto rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 hover:bg-primary-dark hover:shadow-[0_4px_12px_rgba(220,38,38,0.25)] active:scale-95 cursor-pointer shrink-0 shadow-lg shadow-primary/10"
                     >
-                        <Search size={12} strokeWidth={2.5} />
+                        <Search size={14} strokeWidth={2.5} />
+                        <span className="hidden sm:inline">{lang === 'pt' ? 'Procurar' : 'Search'}</span>
                     </button>
                 </div>
             </div>
