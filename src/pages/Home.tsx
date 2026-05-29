@@ -181,35 +181,10 @@ export default function Home({
                 </div>
             )}
 
-            {/* ── Category Pills Scroller ────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-6 mt-5 md:mt-7 mb-2.5">
-                    <div className="flex items-center justify-center">
-                        <div className="flex gap-2 overflow-x-auto no-scrollbar py-2 px-1 max-w-full justify-start md:justify-center">
-                            {categories.map((cat) => {
-                                const isActive = selectedCategory === cat;
-                                return (
-                                    <button
-                                        key={cat}
-                                        onClick={() => setSelectedCategory(cat)}
-                                        className={`px-4 py-1.5 rounded-full text-[11px] font-semibold font-body transition-all duration-300 shrink-0 border cursor-pointer ${
-                                            isActive
-                                                ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-[1.03]'
-                                                : 'bg-surface text-text-dim/80 border-border-subtle backdrop-blur-md hover:bg-surface/80 hover:text-text-main hover:border-border-subtle/80 hover:scale-[1.01]'
-                                        }`}
-                                    >
-                                        {cat}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </section>
-            )}
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="py-7 md:py-10 border-t border-border-subtle/30 mt-8 sm:mt-5">
+                <section className="py-4 md:py-10 border-t border-border-subtle/30 mt-3 sm:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     subtitle={th.most_ordered_subtitle}
@@ -252,8 +227,8 @@ export default function Home({
 
             {/* ── Recomendados Grid ────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <section className="max-w-7xl mx-auto px-4 py-4 md:py-10 border-t border-border-subtle/30 mt-2 md:mt-5">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 md:mb-8">
                         <div>
                             <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                                 ✨ {lang === 'pt' ? 'Altamente Avaliados' : 'Top Rated'}
@@ -285,7 +260,7 @@ export default function Home({
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
                             {recommended.slice(0, 8).map((rest) => (
                                 <div key={rest.id} className="restaurant-grid-item hover:scale-[1.01] transition-transform duration-500">
                                     <RestaurantCard
@@ -306,8 +281,8 @@ export default function Home({
 
             {/* ── Explorar por Bairro ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5 mb-5">
-                    <div className="text-center mb-10 max-w-xl mx-auto">
+                <section className="max-w-7xl mx-auto px-4 py-4 md:py-10 border-t border-border-subtle/30 mt-2 md:mt-5 mb-2 md:mb-5">
+                    <div className="text-center mb-5 md:mb-10 max-w-xl mx-auto">
                         <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             📍 {lang === 'pt' ? 'Zonas Gastronómicas' : 'Gastronomic Zones'}
                         </span>
@@ -321,7 +296,7 @@ export default function Home({
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[200px] md:auto-rows-[250px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 auto-rows-[200px] md:auto-rows-[250px]">
                         {neighborhoods.map((bairro, idx) => {
                             const count = getBairroCount(bairro.name);
                             const gridClass = getGridClasses(idx);

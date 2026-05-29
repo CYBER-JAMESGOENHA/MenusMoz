@@ -154,7 +154,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
 
     return (
         <section 
-            className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 -mt-[64px] md:-mt-[72px] mb-6 md:mb-8 select-none"
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 -mt-[64px] md:-mt-[72px] mb-3 md:mb-8 select-none"
             onMouseDown={(e) => handleDragStart(e.clientX)}
             onMouseMove={(e) => handleDragMove(e.clientX)}
             onMouseUp={handleDragEnd}
@@ -189,8 +189,9 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                     draggable={false}
                                 />
                                 
-                                {/* Deep Premium Left Vignette Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-tr from-black/95 via-black/70 to-black/20 md:bg-gradient-to-r md:from-black/80 md:via-black/35 md:to-transparent z-10 pointer-events-none" />
+                                {/* Strong Dark Gradients for Text Readability: Left-to-Right and Bottom-to-Top */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent z-10 pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent z-10 pointer-events-none" />
 
                                 {/* Slide Content Panel */}
                                 <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-[64px] md:pt-[72px]">

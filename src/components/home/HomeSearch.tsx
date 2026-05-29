@@ -76,58 +76,10 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
         }
     };
 
-    const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
-    const featuredLines = lang === 'pt' ? [
-        { label: 'Destaque de hoje', name: 'Bel Piatto', detail: 'Rooftop Dining' },
-        { label: 'Tendência em Maputo', name: 'Mercado 28', detail: 'Conceito Urbano' },
-        { label: 'Favorito da semana', name: 'Iypslon', detail: 'Cozinha Moderna' },
-        { label: 'Especial Marisco', name: 'Sabor do Mar', detail: 'Fresco e Autêntico' }
-    ] : [
-        { label: 'Featured today', name: 'Bel Piatto', detail: 'Rooftop Dining' },
-        { label: 'Trending in Maputo', name: 'Mercado 28', detail: 'Urban Concept' },
-        { label: 'This week’s favorite', name: 'Iypslon', detail: 'Modern Cuisine' },
-        { label: 'Seafood spotlight', name: 'Sabor do Mar', detail: 'Fresh & Authentic' }
-    ];
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveFeaturedIndex((prev) => (prev + 1) % featuredLines.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [featuredLines.length]);
-
     return (
         <div ref={searchRef} className="max-w-3xl mx-auto px-6 sm:px-4 pt-2 pb-0 relative z-[100]">
             {/* Background Decorative Glow — Removed for cleaner look */}
             
-            {/* Compact Editorial Featured Line */}
-            <div className="flex justify-center mb-2 h-5">
-                <div className="relative w-full flex justify-center">
-                    {featuredLines.map((line, idx) => (
-                        <div
-                            key={idx}
-                            className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
-                                activeFeaturedIndex === idx 
-                                ? 'opacity-100 translate-y-0' 
-                                : 'opacity-0 translate-y-4 pointer-events-none'
-                            }`}
-                        >
-                            <div className="flex items-center gap-2 group/feat cursor-pointer">
-                                <span className="text-[7px] font-bold uppercase tracking-[0.12em] text-text-dim/40">
-                                    {line.label}:
-                                </span>
-                                <span className="text-[9px] font-bold tracking-tight text-text-main group-hover/feat:text-primary transition-colors">
-                                    {line.name}
-                                </span>
-                                <span className="w-1 h-1 rounded-full bg-primary/30" />
-                                <span className="text-[10px] font-medium text-text-dim/60 italic tracking-wide">
-                                    {line.detail}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
 
             {/* Compact Search Bar */}
             <div className={`relative flex items-center bg-surface/85 backdrop-blur-xl border border-border-subtle/60 rounded-2xl p-1 sm:p-1.5 transition-all duration-500 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>

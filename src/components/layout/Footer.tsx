@@ -24,7 +24,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
 
   return (
     <footer className="bg-[#1a1a1a] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 py-10 md:py-8">
+      <div className="max-w-7xl mx-auto px-6 pt-10 pb-[calc(96px+env(safe-area-inset-bottom))] md:py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
