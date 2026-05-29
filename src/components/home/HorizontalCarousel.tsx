@@ -63,7 +63,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
 
     return (
         <div className="pt-0 pb-2">
-            <div className="max-w-7xl mx-auto px-6 md:px-4 mb-1.5 md:mb-6">
+            <div className="max-w-7xl mx-auto px-6 md:px-4 mb-1 md:mb-6">
                 <h2 className="text-2xl md:text-3xl font-display font-medium text-text-main tracking-tight leading-none">
                     {title}
                 </h2>

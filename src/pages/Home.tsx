@@ -149,7 +149,7 @@ export default function Home({
     }
 
     return (
-        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20">
+        <div ref={rootRef} className="relative overflow-hidden selection:bg-primary/20 -mt-[64px] md:mt-0">
             <Helmet>
                 <title>{t.meta.title}</title>
                 <meta name="description" content={t.meta.description} />
@@ -169,16 +169,16 @@ export default function Home({
                 </section>
             )}
 
-            {/* ── Mobile Top Search Bar ───────────────────────────────── */}
-            {!showOnlyFavorites && (
-                <div className="md:hidden w-full pt-[calc(20px+env(safe-area-inset-top,0px))] pb-3 relative z-50">
-                    <HomeSearch lang={lang} restaurants={restaurants} isMobileTop={true} />
-                </div>
-            )}
-
             {/* ── Hero Cinematic Slideshow ─────────────────────────────── */}
             {!showOnlyFavorites && (
                 <HeroSlideshow lang={lang} />
+            )}
+
+            {/* ── Mobile Search Bar (Below Hero) ────────────────────── */}
+            {!showOnlyFavorites && (
+                <div className="md:hidden w-full pt-0.5 pb-1 relative z-50">
+                    <HomeSearch lang={lang} restaurants={restaurants} isMobileTop={true} />
+                </div>
             )}
 
             {/* ── Home Search ─────────────────────────────────────────── */}

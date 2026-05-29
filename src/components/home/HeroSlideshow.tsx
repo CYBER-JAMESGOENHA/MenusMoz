@@ -154,7 +154,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
 
     return (
         <section 
-            className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-2 md:-mt-[72px] mb-3 md:mb-8 select-none"
+            className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-2 md:-mt-[72px] mb-1.5 md:mb-8 select-none"
             onMouseDown={(e) => handleDragStart(e.clientX)}
             onMouseMove={(e) => handleDragMove(e.clientX)}
             onMouseUp={handleDragEnd}
