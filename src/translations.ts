@@ -3,7 +3,7 @@ export interface TranslationSchema {
     nav: { home: string; sabor: string; about: string; owners: string; login: string };
     nav_mobile: { home: string; favorites: string; search: string; profile: string };
     hero: { badge: string; title_part1: string; title_part2: string; subtitle: string; search_placeholder: string; location_btn: string; location_tooltip: string };
-    home: { featured_tag: string; order_now: string; view_restaurant: string; open_now: string; closed: string; view_full_menu: string; how_it_works: string; step1_title: string; step1_desc: string; step2_title: string; step2_desc: string; step3_title: string; step3_desc: string; recommended_title: string; top_picks: string };
+    home: { featured_tag: string; order_now: string; view_restaurant: string; open_now: string; closed: string; view_full_menu: string; how_it_works: string; step1_title: string; step1_desc: string; step2_title: string; step2_desc: string; step3_title: string; step3_desc: string; recommended_title: string; top_picks: string; most_ordered_title: string; most_ordered_subtitle: string };
     detail: { quick_res: string; res_desc: string; whatsapp_res: string; total_est: string; back: string; share: string; reviews_title: string; write_review: string; review_placeholder: string; review_submit: string; review_login: string; review_thanks: string; review_error: string; scroll_more: string; ligar: string };
     footer: { desc: string; platform: string };
     about: { manifesto: string; title: string; subtitle: string; mission: string; mission_desc: string; future: string; future_desc: string };

@@ -169,6 +169,13 @@ export default function Home({
                 </section>
             )}
 
+            {/* ── Mobile Top Search Bar ───────────────────────────────── */}
+            {!showOnlyFavorites && (
+                <div className="md:hidden w-full pt-[calc(20px+env(safe-area-inset-top,0px))] pb-3 relative z-50">
+                    <HomeSearch lang={lang} restaurants={restaurants} isMobileTop={true} />
+                </div>
+            )}
+
             {/* ── Hero Cinematic Slideshow ─────────────────────────────── */}
             {!showOnlyFavorites && (
                 <HeroSlideshow lang={lang} />
@@ -176,7 +183,7 @@ export default function Home({
 
             {/* ── Home Search ─────────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <div id="search-section" className="relative z-40 -mt-10 sm:-mt-14 md:-mt-16 lg:hidden">
+                <div id="search-section" className="relative z-40 -mt-10 sm:-mt-14 md:-mt-16 hidden md:block lg:hidden">
                     <HomeSearch lang={lang} restaurants={restaurants} />
                 </div>
             )}
@@ -184,7 +191,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="pt-0 pb-4 md:py-10 md:border-t md:border-border-subtle/30 mt-0.5 sm:mt-5">
+                <section className="pt-0 pb-2 md:pb-10 md:py-10 md:border-t md:border-border-subtle/30 mt-0.5 sm:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     restaurants={mostOrdered}
@@ -226,7 +233,7 @@ export default function Home({
 
             {/* ── Recomendados Grid ────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-2 md:py-10 md:border-t md:border-border-subtle/30 mt-1 md:mt-5">
+                <section className="max-w-7xl mx-auto px-4 py-1.5 md:py-10 md:border-t md:border-border-subtle/30 mt-0.5 md:mt-5">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 md:mb-8">
                         <div>
                             <span className="hidden md:inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
@@ -280,7 +287,7 @@ export default function Home({
 
             {/* ── Explorar por Bairro ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-2 md:py-10 md:border-t md:border-border-subtle/30 mt-1 md:mt-5 mb-1 md:mb-5">
+                <section className="max-w-7xl mx-auto px-4 py-1.5 md:py-10 md:border-t md:border-border-subtle/30 mt-0.5 md:mt-5 mb-1 md:mb-5">
                     <div className="text-center mb-2.5 md:mb-10 max-w-xl mx-auto">
                         <span className="hidden md:inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             📍 {lang === 'pt' ? 'Zonas Gastronómicas' : 'Gastronomic Zones'}

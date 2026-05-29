@@ -14,9 +14,10 @@ interface Suggestion {
 interface HomeSearchProps {
     lang: string;
     restaurants?: any[];
+    isMobileTop?: boolean;
 }
 
-export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }) => {
+export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [], isMobileTop = false }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
     const [isFocused, setIsFocused] = useState(false);
@@ -75,6 +76,71 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
             );
         }
     };
+
+    if (isMobileTop) {
+        return (
+            <div ref={searchRef} className="w-[90%] max-w-md mx-auto relative z-[100]">
+                {/* Search Bar Pill */}
+                <div className={`relative flex items-center bg-[#09090b]/85 backdrop-blur-xl border border-zinc-800 rounded-full px-5 transition-all duration-300 ${isFocused ? 'shadow-premium ring-1 ring-primary/40 border-primary/40' : 'hover:border-zinc-700'}`} style={{ height: '60px' }}>
+                    <Search size={20} className={`shrink-0 mr-3 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-text-dim/60'}`} />
+                    <input
+                        type="text"
+                        placeholder={lang === 'pt' ? 'Inicie sua busca' : 'Start your search'}
+                        value={searchQuery}
+                        onFocus={() => setIsFocused(true)}
+                        onChange={handleSearch}
+                        onKeyDown={handleKeyDown}
+                        className="bg-transparent border-none outline-none text-sm text-white placeholder:text-text-dim/50 w-full font-medium tracking-tight py-1"
+                    />
+                    {searchQuery && (
+                        <button
+                            onClick={() => setSearchQuery('')}
+                            className="p-1 rounded-full hover:bg-white/10 text-white/70"
+                        >
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
+
+                {/* Suggestions Overlay */}
+                {suggestions.length > 0 && isFocused && (
+                    <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-[#0E0E10]/95 backdrop-blur-3xl border border-zinc-850 rounded-2xl shadow-premium-lg overflow-hidden z-[2000] animate-in fade-in slide-in-from-top-2 duration-500">
+                        <div className="px-5 py-2 bg-primary/5 border-b border-zinc-850">
+                            <span className="text-[8px] font-extrabold uppercase tracking-[0.15em] text-primary">
+                                {lang === 'pt' ? 'Sugestões para si' : 'Suggestions for you'}
+                            </span>
+                        </div>
+                        {suggestions.map((s, i) => (
+                            <button
+                                key={i}
+                                onClick={() => {
+                                    setSuggestions([]);
+                                    setSearchQuery('');
+                                    setIsFocused(false);
+                                    navigate(`/restaurante/${s.slug}`);
+                                }}
+                                className="w-full flex items-center justify-between px-5 py-3 hover:bg-primary/5 transition-all group/item border-b border-zinc-850 last:border-0"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center text-white group-hover/item:bg-primary/10 group-hover/item:text-primary transition-all">
+                                        <Search size={12} />
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="font-extrabold text-[13px] text-white group-hover/item:text-primary transition-colors tracking-tight">
+                                            {s.name}
+                                        </p>
+                                        <p className="text-[8px] text-white/50 uppercase tracking-widest font-extrabold">
+                                            {s.type === 'restaurant' ? (lang === 'pt' ? 'Estabelecimento' : 'Restaurant') : `${lang === 'pt' ? 'Prato' : 'Dish'} • ${s.restaurant}`}
+                                        </p>
+                                    </div>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div ref={searchRef} className="max-w-3xl mx-auto px-6 sm:px-4 pt-2 pb-0 relative z-[100]">

@@ -211,7 +211,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
       if (group !== undefined) setSelectedGroup(group);
       if (cat !== undefined) {
         setSelectedCategory(cat);
-        setActiveSubId(cat.name);
+        setActiveSubId(cat?.name ?? null);
       }
       return;
     }
