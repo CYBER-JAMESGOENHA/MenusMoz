@@ -17,54 +17,54 @@ const Terms = ({ lang }: TermsProps) => {
         pt: {
             title: "Termos de Uso",
             updated: "Última atualização: 25 de Março de 2026",
-            intro: "Ao utilizar o portal Locais de Moz, você concorda legalmente com os termos e condições descritos abaixo. Estes termos regem a sua interação com o nosso ecossistema.",
+            intro: "Ao utilizar o portal MUZY, você concorda legalmente com os termos e condições descritos abaixo. Estes termos regem a sua interação com o nosso ecossistema.",
             sections: [
                 {
                     icon: BookOpen,
                     title: "1. Termos de Serviço",
-                    content: "Ao aceder ao Locais de Moz, você concorda em cumprir integralmente estes termos de serviço, todas as leis e regulamentos de Moçambique e assume total responsabilidade pelo cumprimento de todas as leis locais aplicáveis."
+                    content: "Ao aceder ao MUZY, você concorda em cumprir integralmente estes termos de serviço, todas as leis e regulamentos de Moçambique e assume total responsabilidade pelo cumprimento de todas as leis locais aplicáveis."
                 },
                 {
                     icon: FileCheck,
                     title: "2. Licença de Utilização",
-                    content: "É concedida permissão para navegar e interagir com os materiais no site Locais de Moz apenas para visualização e uso pessoal e não comercial. Esta é a concessão de uma licença, não uma transferência de título."
+                    content: "É concedida permissão para navegar e interagir com os materiais no site MUZY apenas para visualização e uso pessoal e não comercial. Esta é a concessão de uma licença, não uma transferência de título."
                 },
                 {
                     icon: AlertCircle,
                     title: "3. Limitação de Responsabilidade",
-                    content: "Os materiais no portal Locais de Moz são fornecidos 'como estão'. Não oferecemos garantias, expressas ou implícitas, e, por este meio, isentamos e negamos todas as outras garantias, incluindo, sem limitação, garantias de comercialização."
+                    content: "Os materiais no portal MUZY são fornecidos 'como estão'. Não oferecemos garantias, expressas ou implícitas, e, por este meio, isentamos e negamos todas as outras garantias, incluindo, sem limitação, garantias de comercialização."
                 },
                 {
                     icon: Scale,
                     title: "4. Jurisdição Legal",
-                    content: "Qualquer reclamação relativa ao portal Locais de Moz será regida pelas leis do estado de Moçambique, independentemente do conflito de disposições legais."
+                    content: "Qualquer reclamação relativa ao portal MUZY será regida pelas leis do estado de Moçambique, independentemente do conflito de disposições legais."
                 }
             ]
         },
         en: {
             title: "Terms of Use",
             updated: "Last updated: March 25, 2026",
-            intro: "By using the Locais de Moz portal, you legally agree to the terms and conditions described below. These terms govern your interaction with our ecosystem.",
+            intro: "By using the MUZY portal, you legally agree to the terms and conditions described below. These terms govern your interaction with our ecosystem.",
             sections: [
                 {
                     icon: BookOpen,
                     title: "1. Terms of Service",
-                    content: "By accessing Locais de Moz, you agree to fully comply with these terms of service, all laws and regulations of Mozambique and assume full responsibility for compliance with all applicable local laws."
+                    content: "By accessing MUZY, you agree to fully comply with these terms of service, all laws and regulations of Mozambique and assume full responsibility for compliance with all applicable local laws."
                 },
                 {
                     icon: FileCheck,
                     title: "2. License for Use",
-                    content: "Permission is granted to browse and interact with the materials on the Locais de Moz website for personal, non-commercial viewing and use only. This is the grant of a license, not a transfer of title."
+                    content: "Permission is granted to browse and interact with the materials on the MUZY website for personal, non-commercial viewing and use only. This is the grant of a license, not a transfer of title."
                 },
                 {
                     icon: AlertCircle,
                     title: "3. Limitation of Liability",
-                    content: "Materials on the Locais de Moz portal are provided 'as is'. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties, including, without limitation, merchantability warranties."
+                    content: "Materials on the MUZY portal are provided 'as is'. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties, including, without limitation, merchantability warranties."
                 },
                 {
                     icon: Scale,
                     title: "4. Legal Jurisdiction",
-                    content: "Any claim relating to the Locais de Moz portal will be governed by the laws of the state of Mozambique, regardless of conflict of law provisions."
+                    content: "Any claim relating to the MUZY portal will be governed by the laws of the state of Mozambique, regardless of conflict of law provisions."
                 }
             ]
         }
@@ -130,7 +130,7 @@ const Terms = ({ lang }: TermsProps) => {
                             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/60 mb-6 italic">Legal Department</p>
                             <p className="text-xl md:text-2xl font-black text-text-main italic uppercase tracking-tight leading-relaxed max-w-md mx-auto">
                                 {lang === 'pt' ? 'Para suporte jurídico especializado:' : 'For specialized legal support:'}
-                                <span className="block text-primary mt-4 underline underline-offset-8 decoration-2 hover:decoration-4 transition-all cursor-pointer">legal@locaisdemoz.co.mz</span>
+                                <span className="block text-primary mt-4 underline underline-offset-8 decoration-2 hover:decoration-4 transition-all cursor-pointer">legal@muzy.co.mz</span>
                             </p>
                          </div>
                     </div>

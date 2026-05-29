@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { X, Mail, Loader2, CheckCircle, AlertCircle, Wand2, MailOpen } from 'lucide-react';
+import { X, Mail, Loader2, CheckCircle, AlertCircle, MailOpen } from 'lucide-react';
 import { gsap } from 'gsap';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
@@ -18,7 +18,7 @@ export default function LoginModal({ isOpen, onClose, lang }: LoginModalProps) {
     const [success, setSuccess] = useState('');
 
     const t = lang === 'pt' ? {
-        title: 'Aceder ao MenusMoz',
+        title: 'Aceder ao MUZY',
         subtitle: 'Acesso seguro sem palavras-passe.',
         email: 'O teu Email',
         login: 'Enviar Magic Link',
@@ -30,7 +30,7 @@ export default function LoginModal({ isOpen, onClose, lang }: LoginModalProps) {
         check_inbox: 'Verifica o teu email — enviámos-te um link de acesso.',
         supabase_missing: 'Serviço de autenticação não disponível.',
     } : {
-        title: 'Sign in to MenusMoz',
+        title: 'Sign in to MUZY',
         subtitle: 'Secure passwordless access.',
         email: 'Your Email address',
         login: 'Send Magic Link',
@@ -156,9 +156,7 @@ export default function LoginModal({ isOpen, onClose, lang }: LoginModalProps) {
                 </button>
 
                 <div className="text-center mb-8 login-reveal">
-                    <div className="w-16 h-16 bg-gradient-to-tr from-primary to-primary/80 rounded-2xl flex items-center justify-center text-white mx-auto mb-5 shadow-primary-glow group hover:scale-110 hover:rotate-3 transition-transform duration-500">
-                        <Wand2 size={30} className="group-hover:animate-pulse" />
-                    </div>
+                    <img src="/logo_red.png" alt="MUZY Logo" className="w-16 h-16 object-contain mx-auto mb-5 group hover:scale-110 hover:rotate-3 transition-transform duration-500" />
                     <h2 id="login-modal-title" className="text-3xl font-display font-black italic text-text-main mb-2 tracking-tighter uppercase">
                         {t.title}
                     </h2>

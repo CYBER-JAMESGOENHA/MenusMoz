@@ -92,7 +92,7 @@ export const MenuBook: React.FC<MenuBookProps> = ({ menuCategories, activePage, 
 
                 <div ref={pageRef} className="flex-1 p-6 md:p-10 relative z-10 [transform-style:preserve-3d] will-change-[transform,opacity]">
                     <div className="text-center mb-8">
-                        <p className="text-[10px] font-black uppercase tracking-[0.6em] text-primary/60 mb-2 ml-1">Locais de Moz — Menu Digital</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.6em] text-primary/60 mb-2 ml-1">MUZY — Menu Digital</p>
                         <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-text-main leading-none font-display italic uppercase">
                             {currentCategory?.name || 'Menu'}
                         </h2>

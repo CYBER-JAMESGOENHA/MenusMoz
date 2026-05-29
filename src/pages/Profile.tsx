@@ -318,7 +318,7 @@ export default function Profile({ lang }: ProfileProps) {
     if (isResetMode) {
         return (
             <div className="min-h-screen bg-[#050505] pt-40 pb-24 selection:bg-primary/20">
-                <Helmet><title>{selectedLang === 'pt' ? 'Nova Palavra-passe' : 'New Password'} | Locais de Moz</title></Helmet>
+                <Helmet><title>{selectedLang === 'pt' ? 'Nova Palavra-passe' : 'New Password'} | MUZY</title></Helmet>
                 <div className="max-w-md mx-auto px-6">
                     <div className="bg-[#0A0A0A] rounded-[3.5rem] p-10 md:p-14 border border-white/5 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-60 h-60 bg-primary/5 rounded-full blur-[80px] -mr-30 -mt-30" />
@@ -407,7 +407,7 @@ export default function Profile({ lang }: ProfileProps) {
     return (
         <div className="min-h-screen bg-[#050505] text-white selection:bg-primary/20">
             <Helmet>
-                <title>{t.title} | Locais de Moz</title>
+                <title>{t.title} | MUZY</title>
                 <style>{`
                     body { background-color: #050505; }
                     .profile-sidebar-item { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }

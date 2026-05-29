@@ -255,7 +255,7 @@ export default function UserPanel({
                 {/* Footer */}
                 <div className="px-6 pb-24 pt-4 border-t border-border-subtle">
                     <p className="text-center text-[10px] font-black uppercase tracking-widest text-text-dim/30 leading-loose">
-                        Locais de Moz © {new Date().getFullYear()}
+                        MUZY © {new Date().getFullYear()}
                     </p>
                 </div>
             </div>

@@ -28,7 +28,7 @@ export default function CartPage({ lang }: CartPageProps) {
         });
         const totalLine = grandTotal > 0 ? `\n\nTotal estimado: ${formatPrice(grandTotal)}` : '';
         const resName = restaurantName ? ` no ${restaurantName}` : '';
-        const msg = `Olá, gostaria de fazer o seguinte pedido${resName} via Locais de Moz:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
+        const msg = `Olá, gostaria de fazer o seguinte pedido${resName} via MUZY:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
         window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
         setShowSuccess(true);
         setTimeout(() => {
@@ -41,7 +41,7 @@ export default function CartPage({ lang }: CartPageProps) {
     return (
         <div className="min-h-screen bg-bg pt-24 pb-8 md:pt-32 md:pb-16 lg:pt-36 lg:pb-12">
             <Helmet>
-                <title>O Seu Pedido — Locais de Moz</title>
+                <title>O Seu Pedido — MUZY</title>
             </Helmet>
 
             {/* Back button */}

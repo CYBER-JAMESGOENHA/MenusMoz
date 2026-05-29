@@ -28,10 +28,8 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                L
-              </div>
-              <span className="text-white font-semibold text-lg">Locais de Moz</span>
+              <img src="/logo_red.png" alt="MUZY Logo" className="w-8 h-8 object-contain" />
+              <span className="text-white font-bold text-xl uppercase tracking-tight italic">MUZY</span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-5 max-w-xs">
               {lang === 'pt' 
@@ -98,7 +96,7 @@ const Footer: React.FC<FooterProps> = ({ lang }) => {
 
         <div className="mt-8 pt-4 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-xs">
-            © {currentYear} MenusMoz. {lang === 'pt' ? 'Curadoria Digital Moçambique.' : 'Digital Curator Mozambique.'}
+            © {currentYear} MUZY. {lang === 'pt' ? 'Curadoria Digital Moçambique.' : 'Digital Curator Mozambique.'}
           </p>
           <nav className="flex gap-6">
             <Link to="/privacidade" className="text-gray-500 text-xs hover:text-white transition-colors">

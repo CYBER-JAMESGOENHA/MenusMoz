@@ -63,7 +63,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
         if (navigator.share && restaurant) {
             try {
                 await navigator.share({
-                    title: `Locais de Moz — ${restaurant.name}`,
+                    title: `MUZY — ${restaurant.name}`,
                     text: restaurant.description,
                     url: window.location.href
                 });
@@ -96,7 +96,7 @@ export default function RestaurantDetail({ lang, favorites, toggleFavorite, show
     return (
         <div ref={containerRef} className="min-h-screen bg-bg pb-20">
             <Helmet>
-                <title>{restaurant.name} | Locais de Moz</title>
+                <title>{restaurant.name} | MUZY</title>
                 <meta name="description" content={restaurant.description} />
             </Helmet>
 

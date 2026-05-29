@@ -17,7 +17,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
         pt: {
             title: "Política de Privacidade",
             updated: "Última atualização: 25 de Março de 2026",
-            intro: "No Locais de Moz, a sua privacidade é a nossa prioridade. Esta política explica como recolhemos e protegemos os seus dados de forma transparente e rigorosa.",
+            intro: "No MUZY, a sua privacidade é a nossa prioridade. Esta política explica como recolhemos e protegemos os seus dados de forma transparente e rigorosa.",
             sections: [
                 {
                     icon: Eye,
@@ -44,7 +44,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
         en: {
             title: "Privacy Policy",
             updated: "Last updated: March 25, 2026",
-            intro: "At Locais de Moz, your privacy is our priority. This policy explains how we collect and protect your data in a transparent and rigorous manner.",
+            intro: "At MUZY, your privacy is our priority. This policy explains how we collect and protect your data in a transparent and rigorous manner.",
             sections: [
                 {
                     icon: Eye,
@@ -130,7 +130,7 @@ const Privacy = ({ lang }: PrivacyProps) => {
                             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/60 mb-6 italic">Support & Security</p>
                             <p className="text-xl md:text-2xl font-black text-text-main italic uppercase tracking-tight leading-relaxed max-w-md mx-auto">
                                 {lang === 'pt' ? 'Para qualquer dúvida, contacte-nos em:' : 'For any questions, contact us at:'}
-                                <span className="block text-primary mt-4 underline underline-offset-8 decoration-2 hover:decoration-4 transition-all cursor-pointer">privacidade@locaisdemoz.co.mz</span>
+                                <span className="block text-primary mt-4 underline underline-offset-8 decoration-2 hover:decoration-4 transition-all cursor-pointer">privacidade@muzy.co.mz</span>
                             </p>
                          </div>
                     </div>

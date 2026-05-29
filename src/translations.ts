@@ -16,7 +16,7 @@ export interface TranslationSchema {
 export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
     pt: {
         meta: {
-            title: "Locais de Moz — O Melhor da Gastronomia de Moçambique",
+            title: "MUZY — O Melhor da Gastronomia de Moçambique",
             description: "Descubra os melhores restaurantes de Maputo, Matola e Beira. Navega menus digitais, faz reservas e poupa tempo."
         },
         nav: {
@@ -48,7 +48,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             open_now: "Aberto agora",
             closed: "Fechado",
             view_full_menu: "Ver Menu Completo",
-            how_it_works: "Como Funciona o Locais de Moz?",
+            how_it_works: "Como Funciona o MUZY?",
             step1_title: "Explore",
             step1_desc: "Navegue pelos melhores restaurantes da sua zona.",
             step2_title: "Escolha",
@@ -84,7 +84,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
         about: {
             manifesto: "O Nosso Manifesto",
             title: "Digitalizando o sabor de",
-            subtitle: "Locais de Moz nasceu da paixão pela gastronomia e da vontade de colocar a alma culinária do país na palma da mão de todos.",
+            subtitle: "MUZY nasceu da paixão pela gastronomia e da vontade de colocar a alma culinária do país na palma da mão de todos.",
             mission: "A Nossa Missão",
             mission_desc: "Democratizamos o acesso à informação gastronómica de qualidade em Moçambique, capacitando restauradores locais com ferramentas digitais de elite e guiando clientes a descobertas autênticas.",
             future: "O Futuro",
@@ -142,7 +142,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
     },
     en: {
         meta: {
-            title: "Locais de Moz — The Best of Mozambican Gastronomy",
+            title: "MUZY — The Best of Mozambican Gastronomy",
             description: "Discover the best restaurants in Maputo, Matola and Beira. Browse digital menus, make reservations and save time."
         },
         nav: {
@@ -174,7 +174,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
             open_now: "Open now",
             closed: "Closed",
             view_full_menu: "View Full Menu",
-            how_it_works: "How Locais de Moz Works?",
+            how_it_works: "How MUZY Works?",
             step1_title: "Explore",
             step1_desc: "Browse through the best restaurants in your area.",
             step2_title: "Choose",
@@ -210,7 +210,7 @@ export const translations: { pt: TranslationSchema; en: TranslationSchema } = {
         about: {
             manifesto: "Our Manifesto",
             title: "Digitalizing the flavor of",
-            subtitle: "Locais de Moz was born from a passion for gastronomy and the desire to put the country's culinary soul in everyone's palm.",
+            subtitle: "MUZY was born from a passion for gastronomy and the desire to put the country's culinary soul in everyone's palm.",
             mission: "Our Mission",
             mission_desc: "We democratize access to quality gastronomic information in Mozambique, empowering local restaurateurs with elite digital tools and guiding customers to authentic discoveries.",
             future: "The Future",

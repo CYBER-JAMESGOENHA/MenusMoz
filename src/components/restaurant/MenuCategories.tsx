@@ -249,7 +249,7 @@ export const MenuCategories: React.FC<MenuCategoriesProps> = ({
       return `• ${c.qty}x ${c.name} (${c.price})${note ? ` — Nota: ${note}` : ''}`;
     });
     const totalLine = grandTotal > 0 ? `\n\nTotal estimado: ${grandTotal.toFixed(0)} MZN` : '';
-    const msg = `Olá, gostaria de fazer o seguinte pedido no ${restaurantName} via Locais de Moz:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
+    const msg = `Olá, gostaria de fazer o seguinte pedido no ${restaurantName} via MUZY:\n\n${lines.join('\n')}${totalLine}\n\nObrigado!`;
     window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
     setShowSuccess(true);
     setTimeout(() => { setShowSuccess(false); setShowCart(false); }, 2500);

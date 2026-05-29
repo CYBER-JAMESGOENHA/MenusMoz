@@ -139,7 +139,7 @@ export default function BlogPost({ lang, posts = [] }: BlogPostProps) {
                     <div className="w-16 h-1 w-full bg-primary/20 rounded-full mb-10 overflow-hidden">
                         <div className="h-full bg-primary w-1/3 shadow-primary-glow" />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-text-dim italic opacity-40">Locais de Moz Editorial</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-text-dim italic opacity-40">MUZY Editorial</p>
                 </div>
             </div>
         </div>

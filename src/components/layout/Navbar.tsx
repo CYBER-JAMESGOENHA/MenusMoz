@@ -49,9 +49,9 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* 1. Branding (Esquerda - Logo Premium) */}
         <Link to="/" className="flex items-center gap-2.5 group transition-all shrink-0">
-          <div className="w-8 h-8 bg-primary shrink-0 rounded-xl flex items-center justify-center text-white font-black text-xs group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(220,38,38,0.25)]" aria-hidden="true">L</div>
+          <img src="/logo_red.png" alt="MUZY Logo" className="w-8 h-8 object-contain group-hover:scale-105 transition-transform duration-300" />
           <div className="flex flex-col leading-none">
-            <span className="font-black text-[13px] tracking-tight text-white uppercase italic">Locais de Moz</span>
+            <span className="font-black text-[15px] tracking-tight text-white uppercase italic">MUZY</span>
             <span className="text-[7px] font-black uppercase tracking-[0.18em] text-primary/70">Marketplace</span>
           </div>
         </Link>
