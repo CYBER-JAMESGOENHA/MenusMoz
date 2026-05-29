@@ -39,7 +39,7 @@ export default function CartPage({ lang }: CartPageProps) {
     };
 
     return (
-        <div className="min-h-screen bg-bg pt-24 pb-32 md:pt-32 md:pb-40 lg:pt-36 lg:pb-12">
+        <div className="min-h-screen bg-bg pt-24 pb-8 md:pt-32 md:pb-16 lg:pt-36 lg:pb-12">
             <Helmet>
                 <title>O Seu Pedido — Locais de Moz</title>
             </Helmet>

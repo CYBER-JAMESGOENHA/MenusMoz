@@ -184,10 +184,9 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="py-4 md:py-10 border-t border-border-subtle/30 mt-3 sm:mt-5">
+                <section className="pt-1 pb-4 md:py-10 border-t border-border-subtle/30 mt-1 sm:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
-                    subtitle={th.most_ordered_subtitle}
                     restaurants={mostOrdered}
                     favorites={favorites}
                     toggleFavorite={toggleFavorite}

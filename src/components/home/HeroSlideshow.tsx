@@ -234,13 +234,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                 </div>
 
                 {/* Miniature Premium Pagination Dots */}
-                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center gap-2 bg-stone-950/45 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 select-none">
-                    <span className="text-[9px] sm:text-[10px] font-mono font-bold text-white/50 tracking-wider">
-                        0{currentIndex + 1}
-                        <span className="mx-1 text-white/20">/</span>
-                        0{SLIDES.length}
-                    </span>
-                    <span className="w-[1px] h-2.5 bg-white/15" />
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center bg-stone-950/45 backdrop-blur-md p-1.5 rounded-full border border-white/10 select-none">
                     <div className="flex items-center gap-1">
                         {SLIDES.map((_, idx) => {
                             const isActive = idx === currentIndex;

@@ -145,7 +145,7 @@ export default function RestaurantListing({ lang, favorites, toggleFavorite, res
     };
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-bg pt-24 md:pt-32 pb-20">
+        <div ref={containerRef} className="min-h-screen bg-bg pt-24 md:pt-32 pb-6 md:pb-20">
             <Helmet>
                 <title>Explorar Restaurantes | Locais de Moz</title>
             </Helmet>
