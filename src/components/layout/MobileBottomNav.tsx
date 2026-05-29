@@ -18,9 +18,9 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
     const isActive = (path: string) => location.pathname === path;
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-[1000] md:hidden px-4 pb-4 pt-2 pointer-events-none">
+        <div className="fixed bottom-0 left-0 right-0 z-[1000] md:hidden px-6 pb-[calc(16px+env(safe-area-inset-bottom))] pt-2 pointer-events-none">
             {/* The main bar */}
-            <div className="bg-surface/90 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-premium flex items-center justify-between px-2 py-4 relative pointer-events-auto min-h-[80px] pb-[calc(12px+env(safe-area-inset-bottom))]">
+            <div className="bg-surface/90 backdrop-blur-xl border border-border-subtle rounded-2xl shadow-premium flex items-center justify-between px-2 relative pointer-events-auto h-[72px]">
                 
                 {/* Home */}
                 <NavLink 
@@ -29,7 +29,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                 >
                     {isActive('/') && <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full" />}
                     <Home size={24} strokeWidth={1.5} />
-                    <span className="text-[12px] font-black uppercase tracking-widest">Início</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Início</span>
                 </NavLink>
 
                 {/* Bookmark (Favorites) */}
@@ -44,7 +44,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                             {favoritesCount}
                         </span>
                     )}
-                    <span className="text-[12px] font-black uppercase tracking-widest">Favoritos</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Favoritos</span>
                 </NavLink>
 
                 {/* Center Floating + Button */}
@@ -52,7 +52,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                     {/* Inner button */}
                     <NavLink 
                         to="/restaurantes"
-                        className="absolute -top-[30px] left-1/2 -translate-x-1/2 w-[52px] h-[52px] bg-primary rounded-full shadow-primary-glow flex items-center justify-center hover:scale-105 transition-all z-50"
+                        className="absolute -top-[26px] left-1/2 -translate-x-1/2 w-[52px] h-[52px] bg-primary rounded-full shadow-primary-glow flex items-center justify-center hover:scale-105 transition-all z-50"
                     >
                         <Plus size={28} strokeWidth={2} className="text-white" />
                     </NavLink>
@@ -72,7 +72,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                             </span>
                         )}
                     </div>
-                    <span className="text-[12px] font-black uppercase tracking-widest">Carrinho</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Carrinho</span>
                 </NavLink>
 
                 {/* Profile / Account */}
@@ -81,7 +81,7 @@ export default function MobileBottomNav({ favoritesCount, onPanelOpen, lang }: M
                     className="flex flex-col items-center gap-1 flex-1 text-text-dim/60 hover:text-text-main transition-colors focus:outline-none"
                 >
                     <User size={24} strokeWidth={1.5} />
-                    <span className="text-[12px] font-black uppercase tracking-widest">Perfil</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest">Perfil</span>
                 </button>
             </div>
         </div>

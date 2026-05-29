@@ -97,7 +97,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
     }, [featuredLines.length]);
 
     return (
-        <div ref={searchRef} className="max-w-3xl mx-auto px-4 pt-2 pb-0 relative z-[100]">
+        <div ref={searchRef} className="max-w-3xl mx-auto px-6 sm:px-4 pt-2 pb-0 relative z-[100]">
             {/* Background Decorative Glow — Removed for cleaner look */}
             
             {/* Compact Editorial Featured Line */}
@@ -130,10 +130,10 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
             </div>
 
             {/* Compact Search Bar */}
-            <div className={`relative flex items-center bg-surface/85 backdrop-blur-xl border border-border-subtle/60 rounded-2xl p-1.5 transition-all duration-500 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>
+            <div className={`relative flex items-center bg-surface/85 backdrop-blur-xl border border-border-subtle/60 rounded-2xl p-1 sm:p-1.5 transition-all duration-500 ${isFocused ? 'shadow-premium border-primary/20 scale-[1.005]' : 'hover:shadow-md'}`}>
                 
                 {/* Section 1: What */}
-                <div className="flex-[1.5] flex flex-col pl-4 pr-3 py-1.5 group/what">
+                <div className="flex-[1.5] flex flex-col pl-3 pr-2 py-1 sm:pl-4 sm:pr-3 sm:py-1.5 group/what">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-primary mb-1 leading-none">{lang === 'pt' ? 'O quê?' : 'What?'}</label>
                     <div className="flex items-center gap-2.5 mt-0.5">
                         <Search size={14} className={`shrink-0 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-text-dim/40'}`} />
@@ -175,9 +175,9 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [] }
 
                     <button
                         onClick={() => navigate(`/restaurantes?q=${encodeURIComponent(searchQuery)}`)}
-                        className="h-11 px-4 sm:px-6 aspect-square sm:aspect-auto rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 hover:bg-primary-dark hover:shadow-[0_4px_12px_rgba(220,38,38,0.25)] active:scale-95 cursor-pointer shrink-0 shadow-lg shadow-primary/10"
+                        className="h-9 sm:h-11 px-3.5 sm:px-6 aspect-square sm:aspect-auto rounded-lg sm:rounded-xl bg-primary text-white font-bold text-[10px] sm:text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 hover:bg-primary-dark hover:shadow-[0_4px_12px_rgba(220,38,38,0.25)] active:scale-95 cursor-pointer shrink-0 shadow-lg shadow-primary/10"
                     >
-                        <Search size={14} strokeWidth={2.5} />
+                        <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.5} />
                         <span className="hidden sm:inline">{lang === 'pt' ? 'Procurar' : 'Search'}</span>
                     </button>
                 </div>

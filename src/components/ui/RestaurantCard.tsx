@@ -128,7 +128,7 @@ export const RestaurantCard = memo(({
             className="group relative flex flex-col bg-white dark:bg-[#121212] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out"
         >
             {/* IMAGE CONTAINER — Cinematic & Prominent (Concept A & B) */}
-            <div className="relative aspect-[4/3] w-full bg-neutral-100 dark:bg-neutral-900">
+            <div className="relative h-[220px] xs:h-[240px] sm:h-auto sm:aspect-[4/3] w-full bg-neutral-100 dark:bg-neutral-900">
                 {/* Restaurant Image */}
                 <img
                     src={imageUrl}
@@ -167,11 +167,11 @@ export const RestaurantCard = memo(({
                 </button>
 
                 {/* Overlapping Logo (Concept A Structure) */}
-                <div className="absolute -bottom-6 left-4 z-20 w-14 h-14 rounded-full overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] border-[3px] border-white dark:border-[#121212] bg-white flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                <div className="absolute -bottom-8 sm:-bottom-6 left-4 z-20 w-[68px] h-[68px] sm:w-14 sm:h-14 rounded-full overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)] border-[3px] border-white dark:border-[#121212] bg-white flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
                     {logoUrl ? (
                         <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                     ) : (
-                        <span className="text-lg font-bold tracking-tight text-neutral-400">
+                        <span className="text-base sm:text-lg font-bold tracking-tight text-neutral-400">
                             {initial}
                         </span>
                     )}
@@ -179,22 +179,22 @@ export const RestaurantCard = memo(({
             </div>
 
             {/* CONTENT AREA — Minimalist & Crisp (Concept B Elegance) */}
-            <div className="pt-9 pb-5 px-5 flex flex-col gap-2.5 relative z-0">
+            <div className="pt-10 pb-4 px-4 sm:pt-9 sm:pb-5 sm:px-5 flex flex-col gap-2 sm:gap-2.5 relative z-0">
                 {/* Header Row: Name & Rating */}
                 <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-body text-base font-bold text-neutral-900 dark:text-neutral-50 leading-tight truncate group-hover:text-primary transition-colors duration-300">
+                    <h3 className="font-body text-sm xs:text-base font-bold text-neutral-900 dark:text-neutral-50 leading-tight truncate group-hover:text-primary transition-colors duration-300">
                         {restaurant.name}
                     </h3>
                     
                     {/* Premium Rating Badge */}
                     <div className="flex items-center gap-1 bg-neutral-100 dark:bg-white/10 px-1.5 py-0.5 rounded-md shrink-0">
                         <Star size={11} className="fill-primary text-primary" />
-                        <span className="text-[11px] font-bold text-neutral-900 dark:text-neutral-100">{rating}</span>
+                        <span className="text-[10px] xs:text-[11px] font-bold text-neutral-900 dark:text-neutral-100">{rating}</span>
                     </div>
                 </div>
 
                 {/* Metadata Row: Cuisine, Status, Location */}
-                <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-500 dark:text-neutral-400 font-medium tracking-tight">
+                <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[10px] xs:text-xs text-neutral-500 dark:text-neutral-400 font-medium tracking-tight">
                     <span>{restaurant.cuisine || 'Restaurante'}</span>
                     <span className="text-neutral-300 dark:text-neutral-700">•</span>
                     <span className={`flex items-center gap-1 ${isOpen ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
@@ -209,13 +209,13 @@ export const RestaurantCard = memo(({
 
                 {/* Specialty / Highlight Line */}
                 {highlightLine && (
-                    <div className="mt-1 text-[11px] font-medium text-neutral-500 dark:text-neutral-400 italic border-l-2 border-primary/40 pl-2">
+                    <div className="mt-1 text-[10px] xs:text-[11px] font-medium text-neutral-500 dark:text-neutral-400 italic border-l-2 border-primary/40 pl-2">
                         {highlightLine}
                     </div>
                 )}
 
                 {/* Elegant CTA Button */}
-                <div className="mt-3 pt-2 border-t border-neutral-100 dark:border-white/5">
+                <div className="mt-2 pt-2 sm:mt-3 border-t border-neutral-100 dark:border-white/5">
                     <div className="w-full py-2 rounded-xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/50 dark:border-white/5 flex items-center justify-center gap-1.5 transition-all duration-300 group-hover:bg-primary group-hover:border-primary group-hover:text-white">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-300 group-hover:text-white transition-colors duration-300">
                             {t.home.view_restaurant}

@@ -36,14 +36,14 @@ const Navbar: React.FC<NavbarProps> = ({
       className={`fixed z-[1000] left-0 right-0 top-0 w-full transition-all duration-300 ${
         isScrolled 
           ? 'bg-[#0E0E10]/80 backdrop-blur-md border-b border-white/5 shadow-sm py-1' 
-          : 'bg-transparent py-1.5 md:py-2'
+          : 'bg-transparent py-1 md:py-2'
       } ${isRestaurantDetail ? 'hidden md:block' : ''}`}
       aria-label="Navegação principal"
     >
       <div 
-        className="mx-auto max-w-7xl flex items-center justify-between px-5 md:px-8"
+        className="mx-auto max-w-7xl flex items-center justify-between px-6 md:px-8"
         style={{
-          minHeight: '44px',
+          minHeight: '40px',
         }}
       >
 

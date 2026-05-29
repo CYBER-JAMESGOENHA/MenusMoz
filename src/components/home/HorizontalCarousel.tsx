@@ -63,7 +63,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
 
     return (
         <div className="pt-0 pb-2">
-            <div className="max-w-7xl mx-auto px-4 mb-6">
+            <div className="max-w-7xl mx-auto px-6 md:px-4 mb-6">
                 <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full font-semibold text-[9px] uppercase tracking-wider mb-2.5">
                     {lang === 'pt' ? 'Populares' : 'Popular'}
                 </span>
@@ -77,7 +77,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                 )}
             </div>
 
-            <section ref={sectionRef} className="max-w-7xl mx-auto px-4 pb-1 relative group/carousel">
+            <section ref={sectionRef} className="max-w-7xl mx-auto px-0 md:px-4 pb-1 relative group/carousel">
                 <button
                     onClick={() => scrollCarousel('left')}
                     className="absolute left-4 md:-left-2 top-[42%] -translate-y-1/2 z-30 w-7.5 h-7.5 rounded-full glass bg-surface/90 text-text-main hidden sm:flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all duration-300 hover:scale-105 hover:text-primary border border-black/5"
@@ -93,9 +93,9 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                     <ChevronRight size={18} />
                 </button>
 
-                <div ref={scrollRef} className="flex overflow-x-auto gap-3 px-4 pb-4 pt-0.5 no-scrollbar snap-x snap-mandatory">
+                <div ref={scrollRef} className="flex overflow-x-auto gap-3 px-6 md:px-4 pb-4 pt-0.5 no-scrollbar snap-x snap-mandatory">
                     {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-4 shrink-0 w-[75vw] sm:w-[200px] lg:w-[240px] snap-start`}>
+                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-4 shrink-0 w-[84vw] sm:w-[200px] lg:w-[240px] snap-start`}>
                             <RestaurantCard
                                 restaurant={rest}
                                 isFavorite={favorites.includes(rest.id)}

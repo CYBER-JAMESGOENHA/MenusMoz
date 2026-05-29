@@ -163,7 +163,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
             onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
             onTouchEnd={handleDragEnd}
         >
-            <div className="relative w-full h-[320px] sm:h-[350px] md:h-[370px] lg:h-[390px] xl:h-[410px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
+            <div className="relative w-full h-[300px] sm:h-[350px] md:h-[370px] lg:h-[390px] xl:h-[410px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
                 
                 {/* Drag hint overlay */}
                 <div 
@@ -190,19 +190,19 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 />
                                 
                                 {/* Deep Premium Left Vignette Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20 md:from-black/80 md:via-black/35 md:to-transparent z-10 pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-tr from-black/95 via-black/70 to-black/20 md:bg-gradient-to-r md:from-black/80 md:via-black/35 md:to-transparent z-10 pointer-events-none" />
 
                                 {/* Slide Content Panel */}
                                 <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-[64px] md:pt-[72px]">
-                                    <div className="w-full max-w-[450px] sm:max-w-[550px] lg:max-w-[650px] flex flex-col items-start text-left pointer-events-auto">
+                                    <div className="w-full max-w-[80%] sm:max-w-[550px] lg:max-w-[650px] flex flex-col items-start text-left pointer-events-auto">
                                         
                                         {/* Dynamic Category/Highlight Red Badge */}
-                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.2em] mb-2.5 sm:mb-3 uppercase backdrop-blur-xs select-none">
+                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.2em] mb-2 sm:mb-3 uppercase backdrop-blur-xs select-none">
                                             {isPt ? slide.badge.pt : slide.badge.en}
                                         </span>
 
                                         {/* Elegantly styled serif display text with primary Red emphasis */}
-                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[24px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px]">
+                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[19px] xs:text-[22px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
                                             <span className="text-primary font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
@@ -211,14 +211,14 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </h1>
 
                                         {/* Premium subtle description */}
-                                        <p className="text-white/80 dark:text-white/70 text-xs sm:text-sm md:text-base font-light mt-2.5 sm:mt-3 mb-4 sm:mb-5 leading-relaxed max-w-[340px] sm:max-w-[460px] md:max-w-[520px] select-none">
+                                        <p className="text-white/80 dark:text-white/70 text-[10px] xs:text-[11px] sm:text-sm md:text-base font-light mt-1.5 sm:mt-3 mb-3.5 sm:mb-5 leading-relaxed max-w-[90%] sm:max-w-[460px] md:max-w-[520px] select-none">
                                             {isPt ? slide.subtitle.pt : slide.subtitle.en}
                                         </p>
 
                                         {/* Solid Red CTA Button */}
                                         <button
                                             onClick={handleCtaClick}
-                                            className="group/btn px-5 py-2.5 sm:px-6 sm:py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[10px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-2 hover:shadow-[0_4px_12px_rgba(220,38,38,0.2)] cursor-pointer"
+                                            className="group/btn px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[9px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-1.5 hover:shadow-[0_4px_12px_rgba(220,38,38,0.2)] cursor-pointer"
                                         >
                                             {isPt ? 'Explorar Agora' : 'Explore Now'}
                                             <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
@@ -233,14 +233,14 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                 </div>
 
                 {/* Miniature Premium Pagination Dots */}
-                <div className="absolute bottom-6 right-8 md:bottom-8 md:right-10 z-30 flex items-center gap-2.5 bg-stone-950/45 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 select-none">
-                    <span className="text-[10px] font-mono font-bold text-white/50 tracking-wider">
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center gap-2 bg-stone-950/45 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 select-none">
+                    <span className="text-[9px] sm:text-[10px] font-mono font-bold text-white/50 tracking-wider">
                         0{currentIndex + 1}
                         <span className="mx-1 text-white/20">/</span>
                         0{SLIDES.length}
                     </span>
                     <span className="w-[1px] h-2.5 bg-white/15" />
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                         {SLIDES.map((_, idx) => {
                             const isActive = idx === currentIndex;
                             return (
@@ -249,8 +249,8 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                     onClick={() => navigateTo(idx)}
                                     className={`h-1 rounded-full transition-all duration-500 cursor-pointer ${
                                         isActive 
-                                            ? 'w-5 bg-primary' 
-                                            : 'w-1.5 bg-white/30 hover:bg-white/60'
+                                            ? 'w-4 bg-primary' 
+                                            : 'w-1 bg-white/30 hover:bg-white/60'
                                       }`}
                                     aria-label={`Go to slide ${idx + 1}`}
                                 />

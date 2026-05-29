@@ -183,9 +183,9 @@ export default function Home({
 
             {/* ── Category Pills Scroller ────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 mt-5 md:mt-7 mb-2.5">
+                <section className="max-w-7xl mx-auto px-6 mt-5 md:mt-7 mb-2.5">
                     <div className="flex items-center justify-center">
-                        <div className="flex gap-2 overflow-x-auto scrollbar-none py-2 px-1 max-w-full justify-start md:justify-center">
+                        <div className="flex gap-2 overflow-x-auto no-scrollbar py-2 px-1 max-w-full justify-start md:justify-center">
                             {categories.map((cat) => {
                                 const isActive = selectedCategory === cat;
                                 return (
@@ -209,7 +209,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="py-7 md:py-10 border-t border-border-subtle/30 mt-4 md:mt-5">
+                <section className="py-7 md:py-10 border-t border-border-subtle/30 mt-8 sm:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     subtitle={th.most_ordered_subtitle}
