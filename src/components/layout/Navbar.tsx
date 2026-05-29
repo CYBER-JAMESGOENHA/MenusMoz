@@ -28,6 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const location = useLocation();
   const isRestaurantDetail = location.pathname.startsWith('/restaurant/');
+  const isHome = location.pathname === '/';
   const t = (translations[lang as keyof typeof translations] as any)?.nav ?? translations.pt.nav;
   const { totalItems } = useCart();
 
@@ -37,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({
         isScrolled 
           ? 'bg-[#0E0E10]/80 backdrop-blur-md border-b border-white/5 shadow-sm py-1' 
           : 'bg-transparent py-1 md:py-2'
-      } ${isRestaurantDetail ? 'hidden md:block' : ''}`}
+      } ${isRestaurantDetail ? 'hidden md:block' : ''} ${isHome ? 'hidden md:block' : ''}`}
       aria-label="Navegação principal"
     >
       <div 

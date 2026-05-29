@@ -184,7 +184,7 @@ export default function Home({
 
             {/* ── Carousel: Os Mais Pedidos ─────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="pt-1 pb-4 md:py-10 border-t border-border-subtle/30 mt-1 sm:mt-5">
+                <section className="pt-0 pb-4 md:py-10 md:border-t md:border-border-subtle/30 mt-0.5 sm:mt-5">
                 <HorizontalCarousel
                     title={th.most_ordered_title}
                     restaurants={mostOrdered}
@@ -226,16 +226,16 @@ export default function Home({
 
             {/* ── Recomendados Grid ────────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-4 md:py-10 border-t border-border-subtle/30 mt-2 md:mt-5">
+                <section className="max-w-7xl mx-auto px-4 py-2 md:py-10 md:border-t md:border-border-subtle/30 mt-1 md:mt-5">
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 md:mb-8">
                         <div>
-                            <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
+                            <span className="hidden md:inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                                 ✨ {lang === 'pt' ? 'Altamente Avaliados' : 'Top Rated'}
                             </span>
                             <h2 className="text-2xl md:text-3xl font-display font-medium text-text-main tracking-tight leading-none">
                                 {th.recommended_title}
                             </h2>
-                            <p className="text-xs text-text-dim/60 font-body mt-2">
+                            <p className="hidden md:block text-xs text-text-dim/60 font-body mt-2">
                                 {th.top_picks}
                             </p>
                         </div>
@@ -280,15 +280,15 @@ export default function Home({
 
             {/* ── Explorar por Bairro ──────────────────────────────────── */}
             {!showOnlyFavorites && (
-                <section className="max-w-7xl mx-auto px-4 py-4 md:py-10 border-t border-border-subtle/30 mt-2 md:mt-5 mb-2 md:mb-5">
-                    <div className="text-center mb-5 md:mb-10 max-w-xl mx-auto">
-                        <span className="inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
+                <section className="max-w-7xl mx-auto px-4 py-2 md:py-10 md:border-t md:border-border-subtle/30 mt-1 md:mt-5 mb-1 md:mb-5">
+                    <div className="text-center mb-2.5 md:mb-10 max-w-xl mx-auto">
+                        <span className="hidden md:inline-block bg-primary/15 text-primary px-3 py-1 rounded-full font-bold text-[8px] uppercase tracking-[0.2em] mb-3">
                             📍 {lang === 'pt' ? 'Zonas Gastronómicas' : 'Gastronomic Zones'}
                         </span>
                         <h2 className="text-2xl md:text-3xl font-display font-medium text-text-main tracking-tight leading-none">
                             {lang === 'pt' ? 'Explorar por Bairro' : 'Explore by Neighborhood'}
                         </h2>
-                        <p className="text-xs text-text-dim/60 font-body mt-2 leading-relaxed">
+                        <p className="hidden md:block text-xs text-text-dim/60 font-body mt-2 leading-relaxed">
                             {lang === 'pt'
                                 ? 'Descubra a identidade gastronómica de cada recanto de Maputo e encontre o spot perfeito.'
                                 : 'Discover the culinary identity of each corner of Maputo and find the perfect spot.'}

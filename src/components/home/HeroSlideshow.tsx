@@ -190,11 +190,11 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 />
                                 
                                 {/* Strong Dark Gradients for Text Readability: Left-to-Right and Bottom-to-Top */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent z-10 pointer-events-none" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent z-10 pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 via-black/50 to-black/30 md:from-black/90 md:via-black/70 md:to-transparent z-10 pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/85 via-black/40 to-black/30 md:from-black/90 md:via-black/60 md:to-transparent z-10 pointer-events-none" />
 
                                 {/* Slide Content Panel */}
-                                <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-[64px] md:pt-[72px]">
+                                <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-6 sm:pt-8 md:pt-[72px]">
                                     <div className="w-full max-w-[80%] sm:max-w-[550px] lg:max-w-[650px] flex flex-col items-start text-left pointer-events-auto">
                                         
                                         {/* Dynamic Category/Highlight Red Badge */}
@@ -203,7 +203,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </span>
 
                                         {/* Elegantly styled serif display text with primary Red emphasis */}
-                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[19px] xs:text-[22px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px]">
+                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[19px] xs:text-[22px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
                                             <span className="text-primary font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
@@ -212,7 +212,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </h1>
 
                                         {/* Premium subtle description */}
-                                        <p className="text-white/80 dark:text-white/70 text-[10px] xs:text-[11px] sm:text-sm md:text-base font-light mt-1.5 sm:mt-3 mb-3.5 sm:mb-5 leading-relaxed max-w-[90%] sm:max-w-[460px] md:max-w-[520px] select-none">
+                                        <p className="text-white/90 dark:text-white/80 text-[10px] xs:text-[11px] sm:text-sm md:text-base font-light mt-1.5 sm:mt-3 mb-3.5 sm:mb-5 leading-relaxed max-w-[90%] sm:max-w-[460px] md:max-w-[520px] select-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
                                             {isPt ? slide.subtitle.pt : slide.subtitle.en}
                                         </p>
 
@@ -234,7 +234,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                 </div>
 
                 {/* Miniature Premium Pagination Dots */}
-                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center bg-stone-950/45 backdrop-blur-md p-1.5 rounded-full border border-white/10 select-none">
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 hidden md:flex items-center bg-stone-950/45 backdrop-blur-md p-1.5 rounded-full border border-white/10 select-none">
                     <div className="flex items-center gap-1">
                         {SLIDES.map((_, idx) => {
                             const isActive = idx === currentIndex;
