@@ -81,7 +81,7 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [], 
         return (
             <div ref={searchRef} className="w-[90%] max-w-md mx-auto relative z-[100]">
                 {/* Search Bar Pill */}
-                <div className={`relative flex items-center bg-[#09090b]/85 backdrop-blur-xl border border-zinc-800 rounded-full px-5 transition-all duration-300 ${isFocused ? 'shadow-premium ring-1 ring-primary/40 border-primary/40' : 'hover:border-zinc-700'}`} style={{ height: '60px' }}>
+                <div className={`relative flex items-center bg-[#09090b]/85 backdrop-blur-xl border border-zinc-800 rounded-full pl-5 pr-2 transition-all duration-300 ${isFocused ? 'shadow-premium ring-1 ring-primary/40 border-primary/40' : 'hover:border-zinc-700'}`} style={{ height: '60px' }}>
                     <Search size={20} className={`shrink-0 mr-3 transition-colors duration-300 ${isFocused ? 'text-primary' : 'text-text-dim/60'}`} />
                     <input
                         type="text"
@@ -95,11 +95,17 @@ export const HomeSearch: React.FC<HomeSearchProps> = ({ lang, restaurants = [], 
                     {searchQuery && (
                         <button
                             onClick={() => setSearchQuery('')}
-                            className="p-1 rounded-full hover:bg-white/10 text-white/70"
+                            className="p-1.5 rounded-full hover:bg-white/10 text-white/70 mr-1.5 shrink-0 transition-colors"
                         >
                             <X size={16} />
                         </button>
                     )}
+                    <button
+                        className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white transition-all active:scale-95 shrink-0 ml-1 cursor-pointer"
+                        title="Filtros"
+                    >
+                        <SlidersHorizontal size={16} />
+                    </button>
                 </div>
 
                 {/* Suggestions Overlay */}
