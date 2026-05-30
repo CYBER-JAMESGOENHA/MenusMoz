@@ -42,7 +42,7 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative block w-full aspect-[16/9] xs:aspect-[16/9.5] sm:aspect-[16/9.5] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
+            className="group relative block w-full aspect-[4/3] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
         >
             {/* Restaurant Image */}
             <img
@@ -80,12 +80,12 @@ export const RestaurantCard = memo(({
                 />
             </button>
 
-            {/* Blurred bottom third overlay (Layer 3) */}
-            <div className="absolute inset-x-0 bottom-0 h-[35%] bg-black/40 backdrop-blur-md border-t border-white/10 z-10 flex items-center justify-between px-3">
+            {/* Blurred bottom overlay (Layer 3 - 20% height) */}
+            <div className="absolute inset-x-0 bottom-0 h-[20%] bg-black/40 backdrop-blur-md border-t border-white/10 z-10 flex items-center justify-between px-3">
                 {/* Bottom-left Brand row */}
                 <div className="flex items-center gap-2.5">
                     {/* Larger Circular Logo (slightly overlapping bottom boundary) */}
-                    <div className="w-10.5 h-10.5 sm:w-11.5 sm:h-11.5 rounded-full overflow-hidden border-2 border-white/30 bg-white flex items-center justify-center shrink-0 shadow-lg -translate-y-2.5 group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-10.5 h-10.5 sm:w-11.5 sm:h-11.5 rounded-full overflow-hidden border-2 border-white/30 bg-white flex items-center justify-center shrink-0 shadow-lg -translate-y-2 group-hover:scale-105 transition-transform duration-500">
                         {logoUrl ? (
                             <img src={logoUrl} alt="" className="w-full h-full object-cover" />
                         ) : (
