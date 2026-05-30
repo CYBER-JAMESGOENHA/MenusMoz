@@ -42,7 +42,7 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative block w-full aspect-[16/9] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
+            className="group relative block w-full aspect-[6/5] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
         >
             {/* Restaurant Image */}
             <img
