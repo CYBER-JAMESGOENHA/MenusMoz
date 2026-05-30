@@ -42,7 +42,7 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative block w-full aspect-[20/9] xs:aspect-[20/9.5] sm:aspect-[16/9.5] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
+            className="group relative block w-full aspect-[16/9] xs:aspect-[16/9.5] sm:aspect-[16/9.5] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
         >
             {/* Restaurant Image */}
             <img
@@ -64,38 +64,46 @@ export const RestaurantCard = memo(({
                 />
             )}
 
-            {/* Gradient Overlay for bottom text readability */}
-            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none z-10" />
+            {/* Subtle top gradient for heart readability */}
+            <div className="absolute inset-x-0 top-0 h-1/3 bg-gradient-to-b from-black/40 to-transparent pointer-events-none z-10" />
 
             {/* Top-right Favorite Heart */}
             <button
                 onClick={handleToggleFavorite}
                 aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-                className="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-black/60 border border-white/10"
+                className="absolute top-3 right-3 z-20 w-9.5 h-9.5 rounded-full bg-black/45 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-black/60 border border-white/10 shadow-md"
             >
                 <Heart 
-                    size={13} 
+                    size={17} 
                     className={`transition-all duration-300 ${isFavorite ? 'fill-rose-500 text-rose-500 scale-110' : 'text-white'}`}
                     strokeWidth={2.5}
                 />
             </button>
 
-            {/* Bottom-left Logo and Name */}
-            <div className="absolute bottom-2.5 left-2.5 right-2.5 z-20 flex items-center gap-2">
-                {/* Circular Logo */}
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/20 bg-white flex items-center justify-center shrink-0 shadow-md">
-                    {logoUrl ? (
-                        <img src={logoUrl} alt="" className="w-full h-full object-cover" />
-                    ) : (
-                        <span className="text-[10px] font-bold text-neutral-400">
-                            {initial}
-                        </span>
-                    )}
+            {/* Blurred bottom third overlay (Layer 3) */}
+            <div className="absolute inset-x-0 bottom-0 h-[35%] bg-black/40 backdrop-blur-md border-t border-white/10 z-10 flex items-center justify-between px-3">
+                {/* Bottom-left Brand row */}
+                <div className="flex items-center gap-2.5">
+                    {/* Larger Circular Logo (slightly overlapping bottom boundary) */}
+                    <div className="w-10.5 h-10.5 sm:w-11.5 sm:h-11.5 rounded-full overflow-hidden border-2 border-white/30 bg-white flex items-center justify-center shrink-0 shadow-lg -translate-y-2.5 group-hover:scale-105 transition-transform duration-500">
+                        {logoUrl ? (
+                            <img src={logoUrl} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-[12px] font-bold text-neutral-400">
+                                {initial}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Restaurant Name */}
+                    <span className="text-[11px] sm:text-xs font-bold text-white truncate max-w-[120px] sm:max-w-[150px] drop-shadow-sm font-body">
+                        {restaurant.name}
+                    </span>
                 </div>
 
-                {/* Restaurant Name */}
-                <span className="text-xs sm:text-sm font-bold text-white truncate drop-shadow-sm font-body">
-                    {restaurant.name}
+                {/* Bottom-right: Category text */}
+                <span className="text-[8px] sm:text-[9px] font-bold tracking-widest uppercase text-white/80 bg-white/10 px-2 py-0.5 rounded border border-white/5 font-body">
+                    {restaurant.cuisine || 'Fast Food'}
                 </span>
             </div>
         </Link>
