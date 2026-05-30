@@ -96,6 +96,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                                 userLatitude={userLatitude}
                                 userLongitude={userLongitude}
                                 userCity={userCity}
+                                variant="carousel"
                             />
                         </div>
                     ))}
