@@ -163,7 +163,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
             onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
             onTouchEnd={handleDragEnd}
         >
-            <div className="relative w-full h-[250px] xs:h-[270px] sm:h-[350px] md:h-[370px] lg:h-[390px] xl:h-[410px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
+            <div className="relative w-full h-[175px] xs:h-[190px] sm:h-[245px] md:h-[260px] lg:h-[275px] xl:h-[290px] rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-premium bg-stone-900 group">
                 
                 {/* Drag hint overlay */}
                 <div 
@@ -195,16 +195,16 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/85 via-black/40 to-black/30 md:from-black/90 md:via-black/60 md:to-transparent z-10 pointer-events-none" />
  
                                 {/* Slide Content Panel */}
-                                <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-6 sm:pt-8 md:pt-[72px]">
+                                <div className="absolute inset-0 z-20 flex items-center pl-[6%] sm:pl-[8%] md:pl-[10%] pr-6 pt-2.5 sm:pt-4 md:pt-8">
                                     <div className="w-full max-w-[80%] sm:max-w-[550px] lg:max-w-[650px] flex flex-col items-start text-left pointer-events-auto">
                                         
                                         {/* Dynamic Category/Highlight Red Badge */}
-                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold tracking-[0.2em] mb-1.5 sm:mb-3 uppercase backdrop-blur-xs select-none">
+                                        <span className="inline-block bg-primary/10 text-primary border border-primary/20 px-2.5 py-0.5 sm:py-1 rounded-full text-[8.5px] sm:text-[10px] font-bold tracking-[0.2em] mb-1 sm:mb-2 uppercase backdrop-blur-xs select-none">
                                             {isPt ? slide.badge.pt : slide.badge.en}
                                         </span>
  
                                         {/* Elegantly styled serif display text with primary Red emphasis */}
-                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[19px] xs:text-[22px] sm:text-[30px] md:text-[36px] lg:text-[40px] xl:text-[44px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                                        <h1 className="font-display font-medium text-white leading-[1.2] tracking-tight text-[16px] xs:text-[19px] sm:text-[26px] md:text-[30px] lg:text-[34px] xl:text-[38px] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                                             {isPt ? slide.title1.pt : slide.title1.en}
                                             <span className="text-primary font-semibold">
                                                 {isPt ? slide.highlight.pt : slide.highlight.en}
@@ -213,27 +213,27 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                                         </h1>
  
                                         {/* Premium subtle description */}
-                                        <p className="text-white/90 dark:text-white/80 text-[10px] xs:text-[11px] sm:text-sm md:text-base font-light mt-1 sm:mt-3 mb-2.5 sm:mb-5 leading-relaxed max-w-[90%] sm:max-w-[460px] md:max-w-[520px] select-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+                                        <p className="text-white/90 dark:text-white/80 text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-light mt-0.5 sm:mt-1.5 mb-1.5 sm:mb-3 leading-relaxed max-w-[90%] sm:max-w-[460px] md:max-w-[520px] select-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
                                             {isPt ? slide.subtitle.pt : slide.subtitle.en}
                                         </p>
  
                                         {/* Solid Red CTA Button */}
                                         <button
                                             onClick={handleCtaClick}
-                                            className="group/btn px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[9px] sm:text-[11px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-1.5 hover:shadow-[0_4px_12px_rgba(220,38,38,0.2)] cursor-pointer"
+                                            className="group/btn px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full bg-primary hover:bg-primary-dark text-white font-body text-[8.5px] sm:text-[10px] font-bold tracking-widest uppercase transition-all duration-300 transform active:scale-95 flex items-center gap-1.5 hover:shadow-[0_4px_12px_rgba(220,38,38,0.2)] cursor-pointer"
                                         >
                                             {isPt ? 'Explorar Agora' : 'Explore Now'}
-                                            <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
+                                            <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform duration-300" />
                                         </button>
  
                                     </div>
                                 </div>
-
-							</div>
+ 
+                            </div>
                         );
                     })}
                 </div>
-
+ 
                 {/* Miniature Premium Pagination Dots */}
                 <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 hidden md:flex items-center bg-stone-950/45 backdrop-blur-md p-1.5 rounded-full border border-white/10 select-none">
                     <div className="flex items-center gap-1">
@@ -254,11 +254,10 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ lang }) => {
                         })}
                     </div>
                 </div>
-
+ 
             </div>
         </section>
     );
 };
 
 export default HeroSlideshow;
-
