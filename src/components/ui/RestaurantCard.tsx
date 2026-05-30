@@ -42,7 +42,7 @@ export const RestaurantCard = memo(({
     return (
         <Link
             to={`/restaurante/${restaurant.slug || restaurant.id}`}
-            className="group relative block w-full aspect-[4/3] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
+            className="group relative block w-full aspect-[16/9] rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 ease-out bg-neutral-100 dark:bg-neutral-900"
         >
             {/* Restaurant Image */}
             <img
@@ -80,30 +80,25 @@ export const RestaurantCard = memo(({
                 />
             </button>
 
-            {/* Blurred bottom overlay (Layer 3 - 20% height) */}
-            <div className="absolute inset-x-0 bottom-0 h-[20%] bg-black/40 backdrop-blur-md border-t border-white/10 z-10 flex items-center justify-between px-3">
-                {/* Bottom-left Brand row */}
-                <div className="flex items-center gap-2.5">
-                    {/* Larger Circular Logo (slightly overlapping bottom boundary) */}
-                    <div className="w-10.5 h-10.5 sm:w-11.5 sm:h-11.5 rounded-full overflow-hidden border-2 border-white/30 bg-white flex items-center justify-center shrink-0 shadow-lg -translate-y-2 group-hover:scale-105 transition-transform duration-500">
-                        {logoUrl ? (
-                            <img src={logoUrl} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="text-[12px] font-bold text-neutral-400">
-                                {initial}
-                            </span>
-                        )}
-                    </div>
+            {/* Bottom shadow/gradient for logo/text readability */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none z-10" />
 
-                    {/* Restaurant Name */}
-                    <span className="text-[11px] sm:text-xs font-bold text-white truncate max-w-[120px] sm:max-w-[150px] drop-shadow-sm font-body">
-                        {restaurant.name}
-                    </span>
+            {/* Bottom-left Brand row directly on image */}
+            <div className="absolute bottom-3 left-3 z-20 flex items-center gap-2.5">
+                {/* Circular Logo */}
+                <div className="w-8.5 h-8.5 rounded-full overflow-hidden border border-white/30 bg-white flex items-center justify-center shrink-0 shadow-lg">
+                    {logoUrl ? (
+                        <img src={logoUrl} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                        <span className="text-[10px] font-bold text-neutral-400">
+                            {initial}
+                        </span>
+                    )}
                 </div>
 
-                {/* Bottom-right: Category text */}
-                <span className="text-[8px] sm:text-[9px] font-bold tracking-widest uppercase text-white/80 bg-white/10 px-2 py-0.5 rounded border border-white/5 font-body">
-                    {restaurant.cuisine || 'Fast Food'}
+                {/* Restaurant Name */}
+                <span className="text-xs font-bold text-white truncate max-w-[150px] drop-shadow-md font-body">
+                    {restaurant.name}
                 </span>
             </div>
         </Link>
