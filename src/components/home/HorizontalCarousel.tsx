@@ -63,7 +63,7 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
 
     return (
         <div className="pt-0 pb-2">
-            <div className="max-w-7xl mx-auto px-6 md:px-4 mb-1 md:mb-6">
+            <div className="hidden md:block max-w-7xl mx-auto px-6 md:px-4 mb-1 md:mb-6">
                 <h2 className="text-2xl md:text-3xl font-display font-medium text-text-main tracking-tight leading-none">
                     {title}
                 </h2>
@@ -85,9 +85,9 @@ export const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({
                     <ChevronRight size={18} />
                 </button>
 
-                <div ref={scrollRef} className="flex overflow-x-auto gap-3 px-6 md:px-4 pb-4 pt-0.5 no-scrollbar snap-x snap-mandatory">
+                <div ref={scrollRef} className="flex overflow-x-auto gap-3 px-[8vw] sm:px-4 pb-4 pt-0.5 no-scrollbar snap-x snap-mandatory">
                     {restaurants.map((rest, idx) => (
-                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-4 shrink-0 w-[84vw] sm:w-[200px] lg:w-[240px] snap-start`}>
+                        <div key={`${animationClass}-${rest.id}-${idx}`} className={`${animationClass} opacity-0 translate-y-4 shrink-0 w-[84vw] sm:w-[200px] lg:w-[240px] snap-center sm:snap-start`}>
                             <RestaurantCard
                                 restaurant={rest}
                                 isFavorite={favorites.includes(rest.id)}
